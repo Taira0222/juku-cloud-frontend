@@ -1,43 +1,31 @@
 - name: bug
-  color: "d73a4a"
+  color: 'd73a4a'
   description: バグ報告
 
 - name: feature
-  color: "a2eeef"
+  color: 'a2eeef'
   description: 新機能の提案
 
 - name: documentation
-  color: "0075ca"
+  color: '0075ca'
   description: ドキュメントの新規作成・改善
 
 - name: test
-  color: "e4e669"
+  color: 'e4e669'
   description: テストコード関連
 
 - name: refactor
-  color: "cfd3d7"
+  color: 'cfd3d7'
   description: リファクタリング目的
 
 - name: infra
-  color: "0e8a16"
+  color: '0e8a16'
   description: CI/CDに関わる環境構築やインフラ設定（例：Docker、AWS、VPC、セキュリティグループなど）
 
-- name: ci/cd
-  color: "a295d6"
-  description: GitHub Actionsや自動テスト、デプロイフローなどCI/CDに関するIssue
-
-- name: "priority: high"
-  color: "b60205"
+- name: 'priority: high'
+  color: 'b60205'
   description: 最優先で対応すべき課題
 
-- name: "status: in progress"
-  color: "fbca04"
+- name: 'status: in progress'
+  color: 'fbca04'
   description: 現在対応中のIssue
-
-- name: frontend
-  color: "1d76db"
-  description: フロントエンド関連
-
-- name: backend
-  color: "5319e7"
-  description: バックエンド関連
