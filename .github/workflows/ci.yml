@@ -13,7 +13,7 @@ defaults:
     shell: bash
 
 jobs:
-  Lint and Test:
+  lint-and-test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
