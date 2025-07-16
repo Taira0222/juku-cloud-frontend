@@ -2,6 +2,11 @@ name: Lint and Test
 
 on:
   push:
+    branches: ['main']
+  pull_request:
+    branches: ['main']
+  # 手動で実行可能
+  workflow_dispatch:
 
 defaults:
   run:
