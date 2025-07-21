@@ -5,6 +5,11 @@ import { Label } from '@/components/ui/label';
 import axios from 'axios';
 import { useState, type FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
+import type {
+  AuthHeader,
+  LoginErrorResponse,
+  LoginSuccessResponse,
+} from '@/types/auth';
 
 export function LoginForm({
   className,
@@ -21,25 +26,35 @@ export function LoginForm({
     setError(null); // エラーをリセット
 
     try {
-      const response = await axios.post('/api/login', {
-        user: { email: email, password: password },
-      });
-      console.log('ログイン成功:', response.data);
-      navigate('#'); // ログイン成功後のリダイレクト先を指定
-    } catch (err) {
-      // エラー処理
-      if (axios.isAxiosError(err)) {
-        // AxiosError 型のエラー処理
-        console.error('Axiosエラー:', err.response?.data);
-        setError('ログインに失敗しました。もう一度お試しください。');
-      } else {
-        // その他のエラー処理
-        console.error('予期しないエラー:', err);
-        setError('予期しないエラーが発生しました。');
+      const response = await axios.post<LoginSuccessResponse>(
+        'http://localhost:3000/api/v1/auth/sign_in',
+        { email: email, password: password }
+      );
+      // ログイン成功時の処理
+      const headers = response.headers as AuthHeader;
+      const accessToken = headers['access-token'];
+      const client = headers['client'];
+      const uid = headers['uid'];
+      const tokenType = headers['token-type'];
+      // LocalStorageにトークンを保存
+      localStorage.setItem('access-token', accessToken);
+      localStorage.setItem('client', client);
+      localStorage.setItem('uid', uid);
+      localStorage.setItem('token-type', tokenType);
+      // ログイン成功後のリダイレクト先を指定
+      navigate('/student_management');
+    } catch (err: unknown) {
+      if (axios.isAxiosError<LoginErrorResponse>(err)) {
+        if (err.response) {
+          // レスポンスがある場合、エラーメッセージを設定
+          setError(err.response.data.errors.join(', '));
+        } else {
+          // レスポンスがない場合、一般的なエラーメッセージを設定
+          setError('ログインに失敗しました。もう一度お試しください。');
+        }
       }
     }
   };
-
   return (
     <form
       className={cn('flex flex-col gap-6', className)}
@@ -52,7 +67,7 @@ export function LoginForm({
           メールアドレスを入力してログインしてください
         </p>
       </div>
-
+      {/** エラーメッセージの表示 */}
       {error && <p className="text-red-500 text-center">{error}</p>}
 
       <div className="grid gap-6">
