@@ -1,4 +1,9 @@
 export const StudentManagement = () => {
+  // 生徒のデータをfetch
+  // const fetchStudents = async () => {
+  //   const response = await api.get('/students');
+  //   return response.data;
+  // };
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-4">学生管理</h1>
