@@ -24,7 +24,9 @@ export function LoginForm({
   const { setAuth } = useAuthStore();
   const { VITE_API_BASE_URL } = import.meta.env;
   const warningMessage = useWarningStore((state) => state.warningMessage);
-  const setWarningMessage = useWarningStore((state) => state.setWarningMessage);
+  const setClearWarningMessage = useWarningStore(
+    (state) => state.setClearWarningMessage
+  );
 
   const isAuthHeader = (headers: unknown): headers is AuthHeader => {
     // headers がオブジェクトであり、必要なプロパティがすべて存在するかをチェック
@@ -43,7 +45,7 @@ export function LoginForm({
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault(); // フォームのデフォルト動作を防ぐ
     setError(null); // エラーをリセット
-    setWarningMessage(''); // 警告メッセージをリセット
+    setClearWarningMessage(); // 警告メッセージをクリア
 
     try {
       const response = await axios.post<LoginSuccessResponse>(

@@ -1,6 +1,6 @@
 import { GalleryVerticalEnd } from 'lucide-react';
 import { LoginForm } from './login-form';
-import HomeImage from '../../../public/Home.svg';
+import HomeImage from '@/assets/images/home.png';
 
 export const Home = () => {
   return (

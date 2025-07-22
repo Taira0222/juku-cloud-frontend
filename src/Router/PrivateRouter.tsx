@@ -3,7 +3,7 @@ import { useWarningStore } from '@/stores/warningStore';
 import { useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 
-export const PrivateRouter = () => {
+export const ProtectedRoute = () => {
   const auth = useAuthStore((state) => state.auth);
   const navigate = useNavigate();
   const setWarningMessage = useWarningStore((state) => state.setWarningMessage);
