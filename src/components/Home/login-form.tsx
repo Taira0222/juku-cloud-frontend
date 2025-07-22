@@ -10,6 +10,7 @@ import type {
   LoginErrorResponse,
   LoginSuccessResponse,
 } from '@/types/auth';
+import { useAuthStore } from '@/stores/authStore';
 
 export function LoginForm({
   className,
@@ -19,6 +20,7 @@ export function LoginForm({
   const [password, setPassword] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
+  const { setAuth } = useAuthStore();
 
   // フォーム送信ハンドラー
   const handleSubmit = async (event: FormEvent) => {
@@ -32,15 +34,10 @@ export function LoginForm({
       );
       // ログイン成功時の処理
       const headers = response.headers as AuthHeader;
-      const accessToken = headers['access-token'];
-      const client = headers['client'];
-      const uid = headers['uid'];
-      const tokenType = headers['token-type'];
-      // LocalStorageにトークンを保存
-      localStorage.setItem('access-token', accessToken);
-      localStorage.setItem('client', client);
-      localStorage.setItem('uid', uid);
-      localStorage.setItem('token-type', tokenType);
+      // インメモリ(Zustand)に header 情報を保存
+      // Zustandの persist がLocalstorageにも保存してくれる。
+      setAuth(headers);
+
       // ログイン成功後のリダイレクト先を指定
       navigate('/student_management');
     } catch (err: unknown) {
