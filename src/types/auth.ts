@@ -26,13 +26,21 @@ export type AuthHeader = Pick<
   'access-token' | 'client' | 'uid' | 'token-type'
 >;
 
-export type LoginRequest = {
-  email: string;
-  password: string;
+// LongSuccessResponseは、Railsでいうresponse.body の部分です。
+export type LoginSuccessResponse = {
+  data: {
+    email: string;
+    provider: string;
+    uid: string;
+    id: number;
+    allow_password_change: boolean;
+    name: string;
+    role: 'teacher' | 'admin';
+    school_stage: 'bachelor' | 'master';
+    grade: number;
+    graduated_university: string;
+  };
 };
-
-// LoginResponseは、ログイン成功時のレスポンスを表す型です。
-export type LoginSuccessResponse = object;
 
 // LoginErrorResponseは、ログイン失敗時のレスポンスを表す型です。
 export type LoginErrorResponse = {

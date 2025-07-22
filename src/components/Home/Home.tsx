@@ -1,5 +1,6 @@
 import { GalleryVerticalEnd } from 'lucide-react';
 import { LoginForm } from './login-form';
+import HomeImage from '@/assets/images/home.png';
 
 export const Home = () => {
   return (
@@ -24,7 +25,7 @@ export const Home = () => {
         {/* TODO::右側の細かい実装は後で実装。ISSUES#4 に記載済 */}
         <div className="bg-muted relative hidden lg:block">
           <img
-            src="src/assets/Home.svg"
+            src={HomeImage}
             alt="Homeの画像"
             className="absolute inset-0 object-cover dark:brightness-[0.2] dark:grayscale"
           />

@@ -21,6 +21,20 @@ export function LoginForm({
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
   const { setAuth } = useAuthStore();
+  const { VITE_API_BASE_URL } = import.meta.env;
+
+  const isAuthHeader = (headers: unknown): headers is AuthHeader => {
+    // headers がオブジェクトであり、必要なプロパティがすべて存在するかをチェック
+    if (typeof headers !== 'object' || headers === null) return false;
+    // headers の型を Record<string, unknown> として扱い、必要なプロパティの型をチェック
+    const h = headers as Record<string, unknown>;
+    return (
+      typeof h['access-token'] === 'string' &&
+      typeof h['client'] === 'string' &&
+      typeof h['uid'] === 'string' &&
+      typeof h['token-type'] === 'string'
+    );
+  };
 
   // フォーム送信ハンドラー
   const handleSubmit = async (event: FormEvent) => {
@@ -29,17 +43,19 @@ export function LoginForm({
 
     try {
       const response = await axios.post<LoginSuccessResponse>(
-        'http://localhost:3000/api/v1/auth/sign_in',
-        { email: email, password: password }
+        `${VITE_API_BASE_URL}/auth/sign_in`,
+        { email, password }
       );
-      // ログイン成功時の処理
-      const headers = response.headers as AuthHeader;
-      // インメモリ(Zustand)に header 情報を保存
-      // Zustandの persist がLocalstorageにも保存してくれる。
-      setAuth(headers);
 
-      // ログイン成功後のリダイレクト先を指定
-      navigate('/student_management');
+      const headers = response.headers;
+      // レスポンスヘッダーが AuthHeader 型であるかをチェック
+      if (isAuthHeader(headers)) {
+        // headers が AuthHeader 型であることが保証される
+        setAuth(headers);
+        navigate('/student_management');
+      } else {
+        throw new Error('認証ヘッダーが不足しています');
+      }
     } catch (err: unknown) {
       if (axios.isAxiosError<LoginErrorResponse>(err)) {
         if (err.response) {
@@ -49,6 +65,8 @@ export function LoginForm({
           // レスポンスがない場合、一般的なエラーメッセージを設定
           setError('ログインに失敗しました。もう一度お試しください。');
         }
+      } else {
+        setError('予期しないエラーが発生しました。');
       }
     }
   };
