@@ -26,7 +26,7 @@ export type AuthHeader = Pick<
   'access-token' | 'client' | 'uid' | 'token-type'
 >;
 
-// LongSuccessResponseは、Railsでいうresponse.body の部分です。
+// LoginSuccessResponseは、Railsでいうresponse.body の部分です。
 export type LoginSuccessResponse = {
   data: {
     email: string;

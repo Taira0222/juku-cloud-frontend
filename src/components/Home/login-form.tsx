@@ -26,7 +26,7 @@ export function LoginForm({
   const isAuthHeader = (headers: unknown): headers is AuthHeader => {
     // headers がオブジェクトであり、必要なプロパティがすべて存在するかをチェック
     if (typeof headers !== 'object' || headers === null) return false;
-    // headers の型を Record<string, unknown> として扱い、必要なプロパティの型をチェック
+    // headers を Record<string, unknown> 型として扱い、必要なプロパティの型をチェック
     const h = headers as Record<string, unknown>;
     return (
       typeof h['access-token'] === 'string' &&
@@ -82,7 +82,7 @@ export function LoginForm({
           メールアドレスを入力してログインしてください
         </p>
       </div>
-      {/** エラーメッセージの表示 */}
+      {/* エラーメッセージの表示 */}
       {error && <p className="text-red-500 text-center">{error}</p>}
 
       <div className="grid gap-6">
