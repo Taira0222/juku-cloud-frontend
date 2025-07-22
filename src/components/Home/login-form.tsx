@@ -11,6 +11,7 @@ import type {
   LoginSuccessResponse,
 } from '@/types/auth';
 import { useAuthStore } from '@/stores/authStore';
+import { useWarningStore } from '@/stores/warningStore';
 
 export function LoginForm({
   className,
@@ -22,6 +23,8 @@ export function LoginForm({
   const navigate = useNavigate();
   const { setAuth } = useAuthStore();
   const { VITE_API_BASE_URL } = import.meta.env;
+  const warningMessage = useWarningStore((state) => state.warningMessage);
+  const setWarningMessage = useWarningStore((state) => state.setWarningMessage);
 
   const isAuthHeader = (headers: unknown): headers is AuthHeader => {
     // headers がオブジェクトであり、必要なプロパティがすべて存在するかをチェック
@@ -40,6 +43,7 @@ export function LoginForm({
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault(); // フォームのデフォルト動作を防ぐ
     setError(null); // エラーをリセット
+    setWarningMessage(''); // 警告メッセージをリセット
 
     try {
       const response = await axios.post<LoginSuccessResponse>(
@@ -83,6 +87,9 @@ export function LoginForm({
         </p>
       </div>
       {/* エラーメッセージの表示 */}
+      {warningMessage && (
+        <p className="text-red-500 text-center">{warningMessage}</p>
+      )}
       {error && <p className="text-red-500 text-center">{error}</p>}
 
       <div className="grid gap-6">
