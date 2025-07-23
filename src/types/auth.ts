@@ -42,7 +42,7 @@ export type LoginSuccessResponse = {
   };
 };
 
-// LoginErrorResponseは、ログイン失敗時のレスポンスを表す型です。
+// LoginErrorResponseは、railsでいうresponse.body の部分です。
 export type LoginErrorResponse = {
   success: boolean;
   errors: Array<string>;
