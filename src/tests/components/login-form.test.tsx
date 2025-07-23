@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest';
+import { beforeEach, describe, expect, test } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import { LoginForm } from '@/components/Home/login-form';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
@@ -27,10 +27,13 @@ describe('LoginForm unit tests', () => {
   });
 });
 
+beforeEach(() => {
+  // 認証ストアを初期化
+  useAuthStore.getState().clearAuth();
+});
+
 describe('LoginForm integration tests', () => {
   test('confirm login when email and password are correct', async () => {
-    useAuthStore.getState().clearAuth();
-
     render(
       <MemoryRouter initialEntries={['/']}>
         <Routes>
@@ -67,7 +70,6 @@ describe('LoginForm integration tests', () => {
   });
 
   test('shows error message when email or password is incorrect', async () => {
-    useAuthStore.getState().clearAuth();
     render(
       <MemoryRouter>
         <LoginForm />

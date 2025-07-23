@@ -11,15 +11,23 @@ export const handlers = [
   http.post<LoginPathParams, LoginRequestBodyType, LoginResponseBodyType>(
     `${VITE_API_BASE_URL}/auth/sign_in`,
     async ({ request }) => {
+      // リクエストボディからemailとpasswordを取得
       const body = await request.json();
       const { email, password } = body;
 
-      if (email === 'test@example.com' && password === 'password123') {
+      // テスト用の認証情報
+      const testEmail = 'test@example.com';
+      const testPassword = 'password123';
+
+      // エラーメッセージの内容
+      const errorMessage = 'ログインに失敗しました。もう一度お試しください。';
+
+      if (email === testEmail && password === testPassword) {
         // 成功時のレスポンス
         return HttpResponse.json(
           {
             data: {
-              email: 'test@example.com',
+              email: testEmail,
               provider: 'email',
               uid: 'fake-uid',
               id: 1,
@@ -46,7 +54,7 @@ export const handlers = [
         return HttpResponse.json(
           {
             success: false,
-            errors: ['ログインに失敗しました。もう一度お試しください。'],
+            errors: [errorMessage],
           },
           {
             status: 401,
