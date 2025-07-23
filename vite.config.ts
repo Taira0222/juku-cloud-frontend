@@ -16,5 +16,16 @@ export default defineConfig({
     globals: true,
     environment: 'happy-dom',
     setupFiles: ['./vitest-setup.ts'],
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'json', 'html'],
+      include: ['src/**/*.{ts,tsx}'],
+      exclude: [
+        'src/components/ui/**', // ← shadcn/ui のディレクトリを除外
+        'src/tests/**',
+        'src/types/**',
+        'vite-env.d.ts',
+      ],
+    },
   },
 });

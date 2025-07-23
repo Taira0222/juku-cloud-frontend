@@ -28,19 +28,6 @@ export function LoginForm({
     (state) => state.setClearWarningMessage
   );
 
-  const isAuthHeader = (headers: unknown): headers is AuthHeader => {
-    // headers がオブジェクトであり、必要なプロパティがすべて存在するかをチェック
-    if (typeof headers !== 'object' || headers === null) return false;
-    // headers を Record<string, unknown> 型として扱い、必要なプロパティの型をチェック
-    const h = headers as Record<string, unknown>;
-    return (
-      typeof h['access-token'] === 'string' &&
-      typeof h['client'] === 'string' &&
-      typeof h['uid'] === 'string' &&
-      typeof h['token-type'] === 'string'
-    );
-  };
-
   // フォーム送信ハンドラー
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault(); // フォームのデフォルト動作を防ぐ
@@ -54,10 +41,23 @@ export function LoginForm({
       );
 
       const headers = response.headers;
-      // レスポンスヘッダーが AuthHeader 型であるかをチェック
-      if (isAuthHeader(headers)) {
-        // headers が AuthHeader 型であることが保証される
-        setAuth(headers);
+
+      // 必要なプロパティが存在するかチェック
+      if (
+        headers['access-token'] &&
+        headers['client'] &&
+        headers['uid'] &&
+        headers['token-type']
+      ) {
+        // AuthHeader型に必要なプロパティのみを抽出
+        const authHeader: AuthHeader = {
+          'access-token': headers['access-token'],
+          'client': headers['client'],
+          'uid': headers['uid'],
+          'token-type': headers['token-type'],
+        };
+
+        setAuth(authHeader);
         navigate('/student_management');
       } else {
         throw new Error('認証ヘッダーが不足しています');
