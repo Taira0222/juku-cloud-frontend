@@ -13,7 +13,7 @@ import type {
 import { useAuthStore } from '@/stores/authStore';
 import { useWarningStore } from '@/stores/warningStore';
 
-export function LoginForm({
+export function SignInForm({
   className,
   ...props
 }: React.ComponentProps<'form'>) {
@@ -52,8 +52,8 @@ export function LoginForm({
         // AuthHeader型に必要なプロパティのみを抽出
         const authHeader: AuthHeader = {
           'access-token': headers['access-token'],
-          'client': headers['client'],
-          'uid': headers['uid'],
+          client: headers['client'],
+          uid: headers['uid'],
           'token-type': headers['token-type'],
         };
 
