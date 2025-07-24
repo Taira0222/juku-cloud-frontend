@@ -9,10 +9,10 @@ export const ProtectedRoute = () => {
   const setWarningMessage = useWarningStore((state) => state.setWarningMessage);
 
   useEffect(() => {
-    // 認証情報がない場合はホームへリダイレクト
+    // 認証情報がない場合はログインページへリダイレクト
     if (!auth) {
       setWarningMessage('認証情報がありません。ログインしてください。');
-      navigate('/');
+      navigate('/sign_in');
     }
   }, [auth, navigate, setWarningMessage]);
   // 認証情報がある場合は子コンポーネントを表示
