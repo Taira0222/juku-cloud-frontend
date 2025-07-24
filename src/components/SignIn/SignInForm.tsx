@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import axios from 'axios';
 import { useState, type FormEvent } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import type {
   AuthHeader,
   LoginErrorResponse,
@@ -28,7 +28,6 @@ export function SignInForm({
     (state) => state.setClearWarningMessage
   );
 
-  // フォーム送信ハンドラー
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault(); // フォームのデフォルト動作を防ぐ
     setError(null); // エラーをリセット
@@ -85,7 +84,7 @@ export function SignInForm({
       <div className="flex flex-col items-center gap-2 text-center">
         <h1 className="text-2xl font-bold">アカウントにログイン</h1>
         <p className="text-muted-foreground text-sm text-balance">
-          メールアドレスを入力してログインしてください
+          メールアドレスとパスワードを入力してログインしてください
         </p>
       </div>
       {/* エラーメッセージの表示 */}
@@ -145,9 +144,9 @@ export function SignInForm({
 
       <div className="text-center text-sm">
         アカウントをお持ちではありませんか？{' '}
-        <a href="#" className="underline underline-offset-4">
-          サインアップ
-        </a>
+        <Link to="/sign_up" className="underline underline-offset-4">
+          会員登録
+        </Link>
       </div>
     </form>
   );
