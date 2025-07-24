@@ -101,7 +101,7 @@ export function SignUpForm({
           <Input
             id="name"
             type="text"
-            placeholder="name"
+            placeholder="山田 太郎"
             onChange={(e) => setName(e.target.value)}
             required
           />
@@ -126,17 +126,18 @@ export function SignUpForm({
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-
-          <div className="grid gap-3">
-            <Label htmlFor="password_confirmation">パスワード確認</Label>
-            <Input
-              id="password_confirmation"
-              type="password"
-              onChange={(e) => setPasswordConfirmation(e.target.value)}
-              required
-            />
-          </div>
         </div>
+
+        <div className="grid gap-3">
+          <Label htmlFor="password_confirmation">パスワード確認</Label>
+          <Input
+            id="password_confirmation"
+            type="password"
+            onChange={(e) => setPasswordConfirmation(e.target.value)}
+            required
+          />
+        </div>
+
         <Button type="submit" className="w-full">
           会員登録
         </Button>
