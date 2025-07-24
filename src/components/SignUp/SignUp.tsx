@@ -1,9 +1,9 @@
 import { CloudCog } from 'lucide-react';
-import { SignInForm } from './SignInForm';
+import { SignUpForm } from './SignUpForm';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Link } from 'react-router-dom';
 
-export const SignIn = () => {
+export const SignUp = () => {
   return (
     <div className="bg-muted flex min-h-svh flex-col items-center justify-center p-6 md:p-10">
       <Card className="w-full max-w-sm py-10">
@@ -19,7 +19,7 @@ export const SignIn = () => {
           </Link>
         </CardHeader>
         <CardContent className="px-10">
-          <SignInForm />
+          <SignUpForm />
         </CardContent>
       </Card>
     </div>
