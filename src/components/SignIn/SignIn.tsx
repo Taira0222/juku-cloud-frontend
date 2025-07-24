@@ -1,6 +1,6 @@
 import { CloudCog } from 'lucide-react';
 import { SignInForm } from './SigninForm';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Link } from 'react-router-dom';
 
 export const SignIn = () => {
@@ -19,7 +19,6 @@ export const SignIn = () => {
           </Link>
         </CardHeader>
         <CardContent>
-          <CardTitle className="text-center "></CardTitle>
           <SignInForm />
         </CardContent>
       </Card>
