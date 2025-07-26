@@ -24,7 +24,7 @@ export type SignUpErrorResponse = {
     allow_password_change: boolean;
     name: string;
     role: string;
-    school_stage?: number | null;
+    school_stage?: string | null;
     grade?: number | null;
     graduated_university?: string | null;
     email: string;

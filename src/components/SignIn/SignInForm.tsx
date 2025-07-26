@@ -135,9 +135,9 @@ export function SignInForm({
         </div>
         <Button
           type="submit"
-          className={`w-full ${
-            isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
-          }`}
+          className={cn('w-full', {
+            'opacity-50 cursor-not-allowed': isSubmitting,
+          })}
           disabled={isSubmitting}
         >
           {isSubmitting ? 'ログイン中...' : 'ログイン'}
