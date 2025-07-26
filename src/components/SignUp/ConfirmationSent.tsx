@@ -12,8 +12,9 @@ import {
 } from '@/components/ui/card';
 
 export const ConfirmationSent = () => {
+  const COUNTDOWN_SECONDS: number = 5; // カウントダウンの秒数
   const navigate = useNavigate();
-  const [countdown, setCountdown] = useState(5); // 5秒後にホームに戻る
+  const [countdown, setCountdown] = useState(COUNTDOWN_SECONDS); // 5秒後にホームに戻る
 
   useEffect(() => {
     const timer = setInterval(() => {
