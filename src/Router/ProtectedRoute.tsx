@@ -8,6 +8,7 @@ export const ProtectedRoute = () => {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const navigate = useNavigate();
   const setWarningMessage = useWarningStore((state) => state.setWarningMessage);
+  const MILLSECONDS_IN_SECOND: number = 1000;
 
   useEffect(() => {
     // 認証情報が不完全または存在しない場合はログインページへリダイレクト
@@ -16,13 +17,14 @@ export const ProtectedRoute = () => {
       navigate('/sign_in');
     }
 
-    // expiry がnullable であることを考慮
+    // expiry がnullの可能性があることを考慮
     const expiryTimestamp = auth?.expiry ? Number(auth.expiry) : null;
     // expiry が存在し、かつ現在の時刻よりも前の場合はログインページへリダイレクト
     // NaNは期限切れとして扱う
     if (
       expiryTimestamp !== null &&
-      (Number.isNaN(expiryTimestamp) || expiryTimestamp * 1000 < Date.now())
+      (Number.isNaN(expiryTimestamp) ||
+        expiryTimestamp * MILLSECONDS_IN_SECOND < Date.now())
     ) {
       setWarningMessage('セッションが期限切れです。再度ログインしてください。');
       navigate('/sign_in');

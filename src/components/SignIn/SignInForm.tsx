@@ -68,7 +68,7 @@ export function SignInForm({
         if (err.response) {
           setError(
             err.response?.data?.errors?.length > 0
-              ? err.response?.data?.errors?.[0]
+              ? err.response.data.errors[0]
               : 'ログインに失敗しました。もう一度お試しください。'
           );
         } else {
