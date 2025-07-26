@@ -60,6 +60,7 @@ describe('SignIn form integration tests', () => {
         client: 'fake-client',
         uid: 'fake-uid',
         'token-type': 'Bearer',
+        expiry: '1754694561',
       });
     });
 
@@ -88,7 +89,7 @@ describe('SignIn form integration tests', () => {
     // 認証状態の確認
     await waitFor(() => {
       const auth = useAuthStore.getState().auth;
-      expect(auth).toEqual(undefined);
+      expect(auth).toEqual(null);
     });
 
     // エラーメッセージが表示されていることを確認
