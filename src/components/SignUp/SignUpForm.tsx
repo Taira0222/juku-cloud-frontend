@@ -54,7 +54,7 @@ export function SignUpForm({
     setIsSubmitting(true); // 送信中フラグを立てる
 
     try {
-      await api.post<SignUpSuccessResponse>('/api/v1/auth', requestData, {
+      await api.post<SignUpSuccessResponse>('/auth', requestData, {
         headers,
       });
       navigate('/sign_up/confirmation_sent', { replace: true });
@@ -127,11 +127,7 @@ export function SignUpForm({
             className="absolute right-3 top-9"
             onClick={() => setShowPassword((prev) => !prev)}
             tabIndex={-1} // ボタンがフォーカスされないようにする
-            aria-label={
-              showPasswordConfirmation
-                ? 'Hide password confirmation'
-                : 'Show password confirmation'
-            }
+            aria-label={showPassword ? 'Hide password' : 'Show password'}
           >
             {showPassword ? (
               <EyeOff className="h-4 w-4" />

@@ -38,10 +38,10 @@ export function SignInForm({
     setIsSubmitting(true); // 送信中フラグを立てる
 
     try {
-      const response = await api.post<LoginSuccessResponse>(
-        '/api/v1/auth/sign_in',
-        { email, password }
-      );
+      const response = await api.post<LoginSuccessResponse>('/auth/sign_in', {
+        email,
+        password,
+      });
 
       const headers = response.headers;
 

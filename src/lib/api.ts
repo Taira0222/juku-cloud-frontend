@@ -3,7 +3,7 @@ import axios, { type InternalAxiosRequestConfig } from 'axios';
 
 export const api = axios.create({
   // APIのベースURLを環境変数から取得
-  baseURL: `${import.meta.env.VITE_API_BASE_URL}`,
+  baseURL: `${import.meta.env.VITE_API_BASE_URL}/api/v1`,
 });
 
 // ヘッダー名の定数を定義
