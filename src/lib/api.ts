@@ -11,6 +11,7 @@ const HEADER_ACCESS_TOKEN = 'access-token';
 const HEADER_CLIENT = 'client';
 const HEADER_UID = 'uid';
 const HEADER_TOKEN_TYPE = 'token-type';
+const HEADER_EXPIRY = 'expiry';
 
 // リクエスト前に自動でヘッダーを付与
 api.interceptors.request.use(
@@ -23,6 +24,7 @@ api.interceptors.request.use(
       config.headers[HEADER_CLIENT] = auth.client;
       config.headers[HEADER_UID] = auth.uid;
       config.headers[HEADER_TOKEN_TYPE] = auth['token-type'];
+      config.headers[HEADER_EXPIRY] = auth.expiry;
     }
     return config;
   },

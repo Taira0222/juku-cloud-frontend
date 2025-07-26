@@ -12,6 +12,7 @@ import type {
 } from '@/types/auth';
 import { useAuthStore } from '@/stores/authStore';
 import { useWarningStore } from '@/stores/warningStore';
+import { api } from '@/lib/api';
 
 export function SignInForm({
   className,
@@ -22,22 +23,25 @@ export function SignInForm({
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
   const { setAuth } = useAuthStore();
-  const { VITE_API_BASE_URL } = import.meta.env;
   const warningMessage = useWarningStore((state) => state.warningMessage);
   const setClearWarningMessage = useWarningStore(
     (state) => state.setClearWarningMessage
   );
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault(); // フォームのデフォルト動作を防ぐ
     setError(null); // エラーをリセット
     setClearWarningMessage(); // 警告メッセージをクリア
 
+    if (isSubmitting) return; // すでに送信中の場合は何もしない
+    setIsSubmitting(true); // 送信中フラグを立てる
+
     try {
-      const response = await axios.post<LoginSuccessResponse>(
-        `${VITE_API_BASE_URL}/auth/sign_in`,
-        { email, password }
-      );
+      const response = await api.post<LoginSuccessResponse>('/auth/sign_in', {
+        email,
+        password,
+      });
 
       const headers = response.headers;
 
@@ -59,7 +63,7 @@ export function SignInForm({
         };
 
         setAuth(authHeader);
-        navigate('/student_management');
+        navigate('/student_management', { replace: true });
       } else {
         throw new Error('認証ヘッダーが不足しています');
       }
@@ -78,6 +82,8 @@ export function SignInForm({
       } else {
         setError('予期しないエラーが発生しました。');
       }
+    } finally {
+      setIsSubmitting(false); // 送信中フラグを下ろす
     }
   };
   return (
@@ -127,8 +133,14 @@ export function SignInForm({
             required
           />
         </div>
-        <Button type="submit" className="w-full">
-          ログイン
+        <Button
+          type="submit"
+          className={cn('w-full', {
+            'opacity-50 cursor-not-allowed': isSubmitting,
+          })}
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? 'ログイン中...' : 'ログイン'}
         </Button>
 
         {/* <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">

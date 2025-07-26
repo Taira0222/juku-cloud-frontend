@@ -9,7 +9,7 @@ const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export const handlers = [
   http.post<LoginPathParams, LoginRequestBodyType, LoginResponseBodyType>(
-    `${VITE_API_BASE_URL}/auth/sign_in`,
+    `${VITE_API_BASE_URL}/api/v1/auth/sign_in`,
     async ({ request }) => {
       // リクエストボディからemailとpasswordを取得
       const body = await request.json();
