@@ -30,7 +30,6 @@ export function SignUpForm({
   const confirmSuccessUrl = `${VITE_FRONTEND_URL}/confirmed`;
   // 最初の画面から登録するユーザーは管理者
   const ROLE_ADMIN: string = 'admin';
-  const role: string = ROLE_ADMIN;
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
@@ -41,7 +40,7 @@ export function SignUpForm({
       password,
       name,
       password_confirmation: passwordConfirmation,
-      role,
+      role: ROLE_ADMIN,
       confirm_success_url: confirmSuccessUrl,
     };
 
@@ -126,7 +125,6 @@ export function SignUpForm({
             type="button"
             className="absolute right-3 top-9"
             onClick={() => setShowPassword((prev) => !prev)}
-            tabIndex={-1} // ボタンがフォーカスされないようにする
             aria-label={showPassword ? 'Hide password' : 'Show password'}
           >
             {showPassword ? (
@@ -149,7 +147,6 @@ export function SignUpForm({
             type="button"
             className="absolute right-3 top-9"
             onClick={() => setShowPasswordConfirmation((prev) => !prev)}
-            tabIndex={-1} // ボタンがフォーカスされないようにする
             aria-label={
               showPasswordConfirmation
                 ? 'Hide password confirmation'
