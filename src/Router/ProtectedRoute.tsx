@@ -11,7 +11,7 @@ export const ProtectedRoute = () => {
 
   useEffect(() => {
     // 認証情報が不完全または存在しない場合はログインページへリダイレクト
-    if (!isAuthenticated) {
+    if (!isAuthenticated()) {
       setWarningMessage('認証情報が不完全です。ログインしてください。');
       navigate('/sign_in');
     }
@@ -27,10 +27,8 @@ export const ProtectedRoute = () => {
       setWarningMessage('セッションが期限切れです。再度ログインしてください。');
       navigate('/sign_in');
     }
-  }, [auth, navigate, setWarningMessage, isAuthenticated]);
+  }, [auth, navigate, setWarningMessage, isAuthenticated()]);
 
   // 認証情報が完全な場合は子コンポーネントを表示
-  return auth && auth['access-token'] && auth['client'] && auth['uid'] ? (
-    <Outlet />
-  ) : null;
+  return isAuthenticated() ? <Outlet /> : null;
 };
