@@ -21,10 +21,13 @@ export type FullHeaders = {
 };
 
 // AuthHeaderは、認証に必要なヘッダー情報を抽出した型です。
-export type AuthHeader = Pick<
-  FullHeaders,
-  'access-token' | 'client' | 'uid' | 'token-type'
->;
+export type AuthHeader = {
+  'access-token': string;
+  client: string;
+  uid: string;
+  'token-type': string;
+  expiry: string;
+};
 
 // LoginSuccessResponseは、Railsでいうresponse.body の部分です。
 export type LoginSuccessResponse = {

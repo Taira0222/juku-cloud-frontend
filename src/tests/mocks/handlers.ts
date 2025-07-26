@@ -46,6 +46,7 @@ export const handlers = [
               client: 'fake-client',
               uid: 'fake-uid',
               'token-type': 'Bearer',
+              expiry: '1754694561', // string としてわたってくるので、Date型に変換する必要はない
             },
           }
         );

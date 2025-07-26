@@ -46,7 +46,8 @@ export function SignInForm({
         headers['access-token'] &&
         headers['client'] &&
         headers['uid'] &&
-        headers['token-type']
+        headers['token-type'] &&
+        headers['expiry']
       ) {
         // AuthHeader型に必要なプロパティのみを抽出
         const authHeader: AuthHeader = {
@@ -54,6 +55,7 @@ export function SignInForm({
           client: headers['client'],
           uid: headers['uid'],
           'token-type': headers['token-type'],
+          expiry: headers['expiry'],
         };
 
         setAuth(authHeader);
@@ -64,8 +66,11 @@ export function SignInForm({
     } catch (err: unknown) {
       if (axios.isAxiosError<LoginErrorResponse>(err)) {
         if (err.response) {
-          // レスポンスがある場合、エラーメッセージを設定
-          setError(err.response.data.errors.join(', '));
+          setError(
+            err.response?.data?.errors?.length > 0
+              ? err.response.data.errors[0]
+              : 'ログインに失敗しました。もう一度お試しください。'
+          );
         } else {
           // レスポンスがない場合、一般的なエラーメッセージを設定
           setError('ログインに失敗しました。もう一度お試しください。');
