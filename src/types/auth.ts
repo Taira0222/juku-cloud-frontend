@@ -26,7 +26,7 @@ export type AuthHeader = {
   client: string;
   uid: string;
   'token-type': string;
-  expiry?: string; // expiryはオプション
+  expiry: string;
 };
 
 // LoginSuccessResponseは、Railsでいうresponse.body の部分です。

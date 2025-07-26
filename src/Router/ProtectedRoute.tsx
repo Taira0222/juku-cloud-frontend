@@ -16,20 +16,16 @@ export const ProtectedRoute = () => {
       navigate('/sign_in');
     }
 
-    // expiryが過去の場合もログインページへリダイレクト
-    // authオブジェクトが存在し、expiryが設定されている場合
-    if (auth && auth['expiry']) {
-      const expiryTimestamp = Number(auth['expiry']);
-      // expiryが数値(NaNではない)であり、現在の時刻よりも過去の場合
-      if (
-        !Number.isFinite(expiryTimestamp) ||
-        expiryTimestamp * 1000 < Date.now()
-      ) {
-        setWarningMessage(
-          'セッションが期限切れです。再度ログインしてください。'
-        );
-        navigate('/sign_in');
-      }
+    // expiry がnullable であることを考慮
+    const expiryTimestamp = auth?.expiry ? Number(auth.expiry) : null;
+    // expiry が存在し、かつ現在の時刻よりも前の場合はログインページへリダイレクト
+    // NaNは期限切れとして扱う
+    if (
+      expiryTimestamp !== null &&
+      (Number.isNaN(expiryTimestamp) || expiryTimestamp * 1000 < Date.now())
+    ) {
+      setWarningMessage('セッションが期限切れです。再度ログインしてください。');
+      navigate('/sign_in');
     }
   }, [auth, navigate, setWarningMessage, isAuthenticated]);
 
