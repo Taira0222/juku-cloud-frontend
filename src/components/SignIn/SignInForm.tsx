@@ -66,10 +66,9 @@ export function SignInForm({
     } catch (err: unknown) {
       if (axios.isAxiosError<LoginErrorResponse>(err)) {
         if (err.response) {
-          const hasErrors = err.response?.data?.errors?.length > 0;
           setError(
-            hasErrors
-              ? err.response.data.errors[0]
+            err.response?.data?.errors?.length > 0
+              ? err.response?.data?.errors?.[0]
               : 'ログインに失敗しました。もう一度お試しください。'
           );
         } else {

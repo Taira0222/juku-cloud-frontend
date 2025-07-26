@@ -27,7 +27,7 @@ export const ProtectedRoute = () => {
       setWarningMessage('セッションが期限切れです。再度ログインしてください。');
       navigate('/sign_in');
     }
-  }, [auth, navigate, setWarningMessage, isAuthenticated()]);
+  }, [auth, navigate, setWarningMessage, isAuthenticated]);
 
   // 認証情報が完全な場合は子コンポーネントを表示
   return isAuthenticated() ? <Outlet /> : null;
