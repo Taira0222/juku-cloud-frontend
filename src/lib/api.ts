@@ -3,7 +3,7 @@ import axios, { type InternalAxiosRequestConfig } from 'axios';
 
 export const api = axios.create({
   // APIのベースURLを環境変数から取得
-  baseURL: `${import.meta.env.VITE_API_BASE_URL}/api/v1`,
+  baseURL: `${import.meta.env.VITE_API_BASE_URL}`,
 });
 
 // ヘッダー名の定数を定義
@@ -11,6 +11,7 @@ const HEADER_ACCESS_TOKEN = 'access-token';
 const HEADER_CLIENT = 'client';
 const HEADER_UID = 'uid';
 const HEADER_TOKEN_TYPE = 'token-type';
+const HEADER_EXPIRY = 'expiry';
 
 // リクエスト前に自動でヘッダーを付与
 api.interceptors.request.use(
@@ -23,6 +24,7 @@ api.interceptors.request.use(
       config.headers[HEADER_CLIENT] = auth.client;
       config.headers[HEADER_UID] = auth.uid;
       config.headers[HEADER_TOKEN_TYPE] = auth['token-type'];
+      config.headers[HEADER_EXPIRY] = auth.expiry;
     }
     return config;
   },
