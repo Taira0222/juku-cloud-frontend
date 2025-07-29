@@ -28,7 +28,7 @@ export const ConfirmedPage = () => {
     return () => clearInterval(timer);
   }, [navigate, success]);
 
-  const handleManualRedirect = () => {
+  const handleManualNavigation = () => {
     if (success) {
       navigate('/sign_in', { replace: true });
     } else {
@@ -36,7 +36,7 @@ export const ConfirmedPage = () => {
     }
   };
 
-  const handleHomeRedirect = () => {
+  const handleNavigateToHome = () => {
     navigate('/');
   };
 
@@ -44,8 +44,8 @@ export const ConfirmedPage = () => {
     <ConfirmationCard
       isSuccess={success}
       countdown={countdown}
-      onManualRedirect={handleManualRedirect}
-      onHomeRedirect={handleHomeRedirect}
+      onManualRedirect={handleManualNavigation}
+      onHomeRedirect={handleNavigateToHome}
     />
   );
 };
