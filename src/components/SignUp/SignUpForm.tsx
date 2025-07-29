@@ -17,19 +17,15 @@ export function SignUpForm({
   ...props
 }: React.ComponentProps<'form'>) {
   const [name, setName] = useState<string>('');
-  const [passwordConfirmation, setPasswordConfirmation] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [passwordConfirmation, setPasswordConfirmation] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState<boolean>(false); // パスワード表示/非表示
   const [showPasswordConfirmation, setShowPasswordConfirmation] =
     useState<boolean>(false); // 確認用パスワード表示/非表示
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const navigate = useNavigate();
-  const { VITE_FRONTEND_URL } = import.meta.env;
-  const confirmSuccessUrl = `${VITE_FRONTEND_URL}/confirmed`;
-  // 最初の画面から登録するユーザーは管理者
-  const ROLE_ADMIN: string = 'admin';
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
@@ -40,22 +36,13 @@ export function SignUpForm({
       password,
       name,
       password_confirmation: passwordConfirmation,
-      role: ROLE_ADMIN,
-      confirm_success_url: confirmSuccessUrl,
-    };
-
-    const headers = {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
     };
 
     if (isSubmitting) return; // すでに送信中の場合は何もしない
     setIsSubmitting(true); // 送信中フラグを立てる
 
     try {
-      await api.post<SignUpSuccessResponse>('/auth', requestData, {
-        headers,
-      });
+      await api.post<SignUpSuccessResponse>('/auth', requestData);
       navigate('/sign_up/confirmation_sent', { replace: true });
     } catch (err: unknown) {
       if (axios.isAxiosError<SignUpErrorResponse>(err)) {
