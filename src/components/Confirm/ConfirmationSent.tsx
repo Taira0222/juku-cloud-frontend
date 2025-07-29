@@ -12,9 +12,9 @@ import {
 } from '@/components/ui/card';
 
 export const ConfirmationSent = () => {
-  const COUNTDOWN_SECONDS: number = 5; // カウントダウンの秒数
+  const COUNTDOWN_SECONDS: number = 10; // カウントダウンの秒数
   const navigate = useNavigate();
-  const [countdown, setCountdown] = useState(COUNTDOWN_SECONDS); // 5秒後にホームに戻る
+  const [countdown, setCountdown] = useState(COUNTDOWN_SECONDS); // 10秒後にホームに戻る
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -26,7 +26,7 @@ export const ConfirmationSent = () => {
         return prev - 1;
       });
     }, 1000);
-
+    // クリーンアップ関数でタイマーをクリア
     return () => clearInterval(timer);
   }, [navigate]);
 
