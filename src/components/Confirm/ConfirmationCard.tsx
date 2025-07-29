@@ -67,7 +67,7 @@ export const ConfirmationCard = (props: ConfirmationCardProps) => {
         </CardHeader>
 
         <CardContent className="space-y-4">
-          <div className="text-center space-y-4">
+          <div className="space-y-4 text-center">
             <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
               <Clock className="h-4 w-4" />
               <span>

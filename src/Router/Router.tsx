@@ -5,7 +5,7 @@ import { ProtectedRoute } from './ProtectedRoute';
 import { SignIn } from '@/components/SignIn/SignIn';
 import { SignUp } from '@/components/SignUp/SignUp';
 import { ConfirmationSent } from '@/components/Confirm/ConfirmationSent';
-import { ConfirmedPage } from '@/components/Confirm/ConfimedPage';
+import { ConfirmedPage } from '@/components/Confirm/ConfirmedPage';
 
 export const Router = () => {
   return (
