@@ -4,7 +4,8 @@ import { Route, Routes } from 'react-router-dom';
 import { ProtectedRoute } from './ProtectedRoute';
 import { SignIn } from '@/components/SignIn/SignIn';
 import { SignUp } from '@/components/SignUp/SignUp';
-import { ConfirmationSent } from '@/components/SignUp/ConfirmationSent';
+import { ConfirmationSent } from '@/components/Confirm/ConfirmationSent';
+import { ConfirmedPage } from '@/components/Confirm/ConfirmedPage';
 
 export const Router = () => {
   return (
@@ -13,6 +14,7 @@ export const Router = () => {
       <Route path="/sign_in" element={<SignIn />} />
       <Route path="/sign_up" element={<SignUp />} />
       <Route path="/sign_up/confirmation_sent" element={<ConfirmationSent />} />
+      <Route path="/confirmed" element={<ConfirmedPage />} />
       <Route element={<ProtectedRoute />}>
         <Route path="/student_management" element={<StudentManagement />} />
       </Route>
