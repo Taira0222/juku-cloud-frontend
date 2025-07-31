@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { CheckCircle2, Mail, ArrowLeft } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
@@ -10,13 +10,22 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { useWarningStore } from '@/stores/warningStore';
 
 export const ConfirmationSent = () => {
   const COUNTDOWN_SECONDS: number = 10; // カウントダウンの秒数
   const navigate = useNavigate();
+  const location = useLocation();
+  const setWarningMessage = useWarningStore((state) => state.setWarningMessage);
   const [countdown, setCountdown] = useState(COUNTDOWN_SECONDS); // 10秒後にホームに戻る
 
   useEffect(() => {
+    if (location.state?.from !== '/sign_up') {
+      // 直接アクセスされた場合はSignUpページにリダイレクト
+      navigate('/sign_up');
+      setWarningMessage('会員登録が必要です。');
+      return;
+    }
     const timer = setInterval(() => {
       setCountdown((prev) => {
         if (prev <= 1) {
@@ -28,7 +37,7 @@ export const ConfirmationSent = () => {
     }, 1000);
     // クリーンアップ関数でタイマーをクリア
     return () => clearInterval(timer);
-  }, [navigate]);
+  }, [navigate, location, setWarningMessage]);
 
   const handleBackToHome = () => {
     navigate('/');
