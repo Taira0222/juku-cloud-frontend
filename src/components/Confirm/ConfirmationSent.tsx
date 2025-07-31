@@ -21,7 +21,7 @@ export const ConfirmationSent = () => {
 
   useEffect(() => {
     if (location.state?.from !== '/sign_up') {
-      // 直接アクセスされた場合はホームにリダイレクト
+      // 直接アクセスされた場合はSignUpページにリダイレクト
       navigate('/sign_up');
       setWarningMessage('会員登録が必要です。');
       return;

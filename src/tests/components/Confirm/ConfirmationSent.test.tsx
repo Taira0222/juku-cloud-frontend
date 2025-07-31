@@ -49,6 +49,7 @@ describe('ConfirmationSent component unit tests', () => {
     expect(homeButton).toBeInTheDocument();
   });
 });
+
 describe('ConfirmationSent component navigation tests', () => {
   const renderWithRouter = (state: string | null) => {
     return render(
