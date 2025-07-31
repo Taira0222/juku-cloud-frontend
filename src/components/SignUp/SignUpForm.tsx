@@ -138,7 +138,7 @@ export function SignUpForm({
             type="button"
             className="absolute right-3 top-9"
             onClick={() => setShowPassword((prev) => !prev)}
-            aria-label={showPassword ? 'Hide password' : 'Show password'}
+            aria-label={showPassword ? 'パスワードを隠す' : 'パスワードを表示'}
           >
             {showPassword ? (
               <EyeOff className="h-4 w-4" />
@@ -163,8 +163,8 @@ export function SignUpForm({
             onClick={() => setShowPasswordConfirmation((prev) => !prev)}
             aria-label={
               showPasswordConfirmation
-                ? 'Hide password confirmation'
-                : 'Show password confirmation'
+                ? 'パスワード確認を隠す'
+                : 'パスワード確認を表示'
             }
           >
             {showPasswordConfirmation ? (
@@ -182,7 +182,7 @@ export function SignUpForm({
           })}
           disabled={isSubmitting}
         >
-          {isSubmitting ? '登録中...' : '会員登録'}
+          {isSubmitting ? '登録中...' : '新規登録'}
         </Button>
       </div>
 

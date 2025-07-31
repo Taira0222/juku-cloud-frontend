@@ -23,7 +23,7 @@ export type SignUpErrorResponse = {
     uid: string;
     allow_password_change: boolean;
     name: string;
-    role: string;
+    role: string | null;
     school_stage?: string | null;
     grade?: number | null;
     graduated_university?: string | null;
