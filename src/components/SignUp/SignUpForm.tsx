@@ -11,6 +11,7 @@ import type {
   SignUpSuccessResponse,
 } from '@/types/signUp';
 import { api } from '@/lib/api';
+import { useWarningStore } from '@/stores/warningStore';
 
 export function SignUpForm({
   className,
@@ -27,10 +28,15 @@ export function SignUpForm({
     useState<boolean>(false); // 確認用パスワード表示/非表示
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const navigate = useNavigate();
+  const warningMessage = useWarningStore((state) => state.warningMessage);
+  const setClearWarningMessage = useWarningStore(
+    (state) => state.setClearWarningMessage
+  );
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
     setError(null);
+    setClearWarningMessage(); // 警告メッセージをクリア
 
     const requestData = {
       name,
@@ -45,7 +51,10 @@ export function SignUpForm({
 
     try {
       await api.post<SignUpSuccessResponse>('/auth', requestData);
-      navigate('/sign_up/confirmation_sent', { replace: true });
+      navigate('/sign_up/confirmation_sent', {
+        replace: true,
+        state: { from: '/sign_up' },
+      });
     } catch (err: unknown) {
       if (axios.isAxiosError<SignUpErrorResponse>(err)) {
         if (err.response) {
@@ -76,7 +85,11 @@ export function SignUpForm({
           名前とメールアドレスを入力してください
         </p>
       </div>
+
       {/* エラーメッセージの表示 */}
+      {warningMessage && (
+        <p className="text-red-500 text-center">{warningMessage}</p>
+      )}
       {error && (
         <div className="text-red-500 text-center text-sm">
           <ul>
