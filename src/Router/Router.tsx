@@ -6,6 +6,7 @@ import { SignIn } from '@/components/SignIn/SignIn';
 import { SignUp } from '@/components/SignUp/SignUp';
 import { ConfirmationSent } from '@/components/Confirm/ConfirmationSent';
 import { ConfirmedPage } from '@/components/Confirm/ConfirmedPage';
+import { NotFound } from '@/components/Error/NotFound';
 
 export const Router = () => {
   return (
@@ -18,6 +19,7 @@ export const Router = () => {
       <Route element={<ProtectedRoute />}>
         <Route path="/student_management" element={<StudentManagement />} />
       </Route>
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 };
