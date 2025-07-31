@@ -20,6 +20,7 @@ export function SignUpForm({
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [passwordConfirmation, setPasswordConfirmation] = useState<string>('');
+  const [schoolCode, setSchoolCode] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState<boolean>(false); // パスワード表示/非表示
   const [showPasswordConfirmation, setShowPasswordConfirmation] =
@@ -32,10 +33,11 @@ export function SignUpForm({
     setError(null);
 
     const requestData = {
+      name,
       email,
       password,
-      name,
       password_confirmation: passwordConfirmation,
+      school_code: schoolCode,
     };
 
     if (isSubmitting) return; // すでに送信中の場合は何もしない
@@ -48,7 +50,7 @@ export function SignUpForm({
       if (axios.isAxiosError<SignUpErrorResponse>(err)) {
         if (err.response) {
           setError(
-            err.response?.data?.errors?.full_messages?.join(', ') ||
+            err.response?.data?.errors?.full_messages?.join('\n') ||
               '新規登録に失敗しました。もう一度お試しください。'
           );
         } else {
@@ -75,8 +77,17 @@ export function SignUpForm({
         </p>
       </div>
       {/* エラーメッセージの表示 */}
-      {error && <p className="text-red-500 text-center">{error}</p>}
-
+      {error && (
+        <div className="text-red-500 text-center text-sm">
+          <ul>
+            {error.split('\n').map((message, index) => (
+              <li key={index} className="mb-1 last:mb-0">
+                {message}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
       <div className="grid gap-6">
         <div className="grid gap-3">
           <Label htmlFor="name">名前</Label>
@@ -84,6 +95,7 @@ export function SignUpForm({
             id="name"
             type="text"
             placeholder="山田 太郎"
+            value={name}
             onChange={(e) => setName(e.target.value)}
             required
           />
@@ -95,7 +107,20 @@ export function SignUpForm({
             id="email"
             type="email"
             placeholder="m@example.com"
+            value={email}
             onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </div>
+
+        <div className="grid gap-3">
+          <Label htmlFor="school_code">学校コード</Label>
+          <Input
+            id="school_code"
+            type="text"
+            placeholder="例: 123456"
+            value={schoolCode}
+            onChange={(e) => setSchoolCode(e.target.value)}
             required
           />
         </div>
@@ -105,6 +130,7 @@ export function SignUpForm({
           <Input
             id="password"
             type={showPassword ? 'text' : 'password'}
+            value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
@@ -127,6 +153,7 @@ export function SignUpForm({
           <Input
             id="password_confirmation"
             type={showPasswordConfirmation ? 'text' : 'password'}
+            value={passwordConfirmation}
             onChange={(e) => setPasswordConfirmation(e.target.value)}
             required
           />
