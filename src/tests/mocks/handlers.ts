@@ -129,7 +129,7 @@ export const handlers = [
             },
           },
           {
-            status: 422, // Unprocessable Entity の方が適切
+            status: 422, // devise token auth が返すステータスコード
           }
         );
       }

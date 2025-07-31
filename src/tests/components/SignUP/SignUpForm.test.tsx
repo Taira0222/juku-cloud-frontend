@@ -41,7 +41,7 @@ describe('SignUpForm component unit tests', () => {
         <SignUpForm />
       </MemoryRouter>
     );
-    // area-labelをgetByLabelTextで取得
+    // aria-labelをgetByLabelTextで取得
     const passwordInput = screen.getByLabelText('パスワード');
     const passwordConfirmationInput = screen.getByLabelText('パスワード確認');
     // パスワード表示/非表示のトグルボタンを取得
@@ -98,9 +98,10 @@ describe('SignUpForm component integration tests', () => {
     await user.type(passwordConfirmationInput, 'password');
     await user.type(schoolCodeInput, '123456');
 
+    // ボタンをクリックして送信
+    user.click(submitButton);
     // 送信中の状態確認
     await waitFor(() => {
-      user.click(submitButton);
       expect(screen.getByText('登録中...')).toBeInTheDocument();
     });
 
@@ -132,9 +133,10 @@ describe('SignUpForm component integration tests', () => {
     await user.type(passwordConfirmationInput, 'word');
     await user.type(schoolCodeInput, 'InvalidCode');
 
+    // ボタンをクリックして送信
+    user.click(submitButton);
     // 送信中の状態確認
     await waitFor(() => {
-      user.click(submitButton);
       expect(screen.getByText('登録中...')).toBeInTheDocument();
     });
 
