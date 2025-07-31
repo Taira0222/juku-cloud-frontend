@@ -35,9 +35,9 @@ export function SignUpForm({
     const requestData = {
       name,
       email,
-      school_code: schoolCode,
       password,
       password_confirmation: passwordConfirmation,
+      school_code: schoolCode,
     };
 
     if (isSubmitting) return; // すでに送信中の場合は何もしない
@@ -95,6 +95,7 @@ export function SignUpForm({
             id="name"
             type="text"
             placeholder="山田 太郎"
+            value={name}
             onChange={(e) => setName(e.target.value)}
             required
           />
@@ -106,6 +107,7 @@ export function SignUpForm({
             id="email"
             type="email"
             placeholder="m@example.com"
+            value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
@@ -117,6 +119,7 @@ export function SignUpForm({
             id="school_code"
             type="text"
             placeholder="例: 123456"
+            value={schoolCode}
             onChange={(e) => setSchoolCode(e.target.value)}
             required
           />
@@ -127,6 +130,7 @@ export function SignUpForm({
           <Input
             id="password"
             type={showPassword ? 'text' : 'password'}
+            value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
@@ -149,6 +153,7 @@ export function SignUpForm({
           <Input
             id="password_confirmation"
             type={showPasswordConfirmation ? 'text' : 'password'}
+            value={passwordConfirmation}
             onChange={(e) => setPasswordConfirmation(e.target.value)}
             required
           />
