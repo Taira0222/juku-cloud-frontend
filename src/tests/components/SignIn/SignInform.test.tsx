@@ -4,6 +4,7 @@ import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
 import { useAuthStore } from '@/stores/authStore';
 import { SignIn } from '@/components/SignIn/SignIn';
+import { act } from 'react';
 
 // テスト用のコンポーネント
 const StudentManagement = () => (
@@ -65,6 +66,14 @@ describe('SignIn form integration tests', () => {
     });
 
     // ページ遷移の確認
+    await waitFor(() => {
+      expect(screen.getByTestId('student-management')).toBeInTheDocument();
+    });
+
+    act(() => {
+      window.history.back();
+    });
+    // 戻るボタンを押してもstudent-management にとどまることを確認
     await waitFor(() => {
       expect(screen.getByTestId('student-management')).toBeInTheDocument();
     });

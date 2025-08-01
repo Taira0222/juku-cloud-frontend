@@ -7,15 +7,22 @@ import { SignUp } from '@/components/SignUp/SignUp';
 import { ConfirmationSent } from '@/components/Confirm/ConfirmationSent';
 import { ConfirmedPage } from '@/components/Confirm/ConfirmedPage';
 import { NotFound } from '@/components/Error/NotFound';
+import { AuthRoute } from './AuthRoute';
 
 export const Router = () => {
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/sign_up" element={<SignUp />} />
-      <Route path="/sign_up/confirmation_sent" element={<ConfirmationSent />} />
-      <Route path="/confirmed" element={<ConfirmedPage />} />
-      <Route path="/sign_in" element={<SignIn />} />
+      {/** ログイン前のページ */}
+      <Route element={<AuthRoute />}>
+        <Route path="/" element={<Home />} />
+        <Route path="/sign_up" element={<SignUp />} />
+        <Route
+          path="/sign_up/confirmation_sent"
+          element={<ConfirmationSent />}
+        />
+        <Route path="/confirmed" element={<ConfirmedPage />} />
+        <Route path="/sign_in" element={<SignIn />} />
+      </Route>
       {/** ログイン後のページ */}
       <Route element={<ProtectedRoute />}>
         <Route path="/student_management" element={<StudentManagement />} />
