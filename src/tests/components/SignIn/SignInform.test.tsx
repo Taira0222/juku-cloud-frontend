@@ -68,6 +68,13 @@ describe('SignIn form integration tests', () => {
     await waitFor(() => {
       expect(screen.getByTestId('student-management')).toBeInTheDocument();
     });
+
+    window.history.back();
+
+    // 戻るボタンを押してもstudent-management にとどまることを確認
+    await waitFor(() => {
+      expect(screen.getByTestId('student-management')).toBeInTheDocument();
+    });
   });
 
   test('shows error message when email or password is incorrect', async () => {
