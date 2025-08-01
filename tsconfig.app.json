@@ -30,5 +30,5 @@
     "forceConsistentCasingInFileNames": true
   },
   "types": ["vitest/globals"],
-  "include": ["src", "vitest-setup.ts"]
+  "include": ["src/**/*.ts", "src/**/*.tsx", "vitest-setup.ts"]
 }

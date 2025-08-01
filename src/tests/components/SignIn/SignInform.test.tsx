@@ -6,8 +6,8 @@ import { useAuthStore } from '@/stores/authStore';
 import { SignIn } from '@/components/SignIn/SignIn';
 
 // テスト用のコンポーネント
-const StudentManagement = () => (
-  <div data-testid="student-management">Student Management Page</div>
+const StudentsManagement = () => (
+  <div data-testid="students-management">Students Management Page</div>
 );
 
 beforeEach(() => {
@@ -38,7 +38,7 @@ describe('SignIn form integration tests', () => {
       <MemoryRouter initialEntries={['/sign_in']}>
         <Routes>
           <Route path="/sign_in" element={<SignIn />} />
-          <Route path="/student_management" element={<StudentManagement />} />
+          <Route path="/students_management" element={<StudentsManagement />} />
         </Routes>
       </MemoryRouter>
     );
@@ -66,14 +66,14 @@ describe('SignIn form integration tests', () => {
 
     // ページ遷移の確認
     await waitFor(() => {
-      expect(screen.getByTestId('student-management')).toBeInTheDocument();
+      expect(screen.getByTestId('students-management')).toBeInTheDocument();
     });
 
     window.history.back();
 
-    // 戻るボタンを押してもstudent-management にとどまることを確認
+    // 戻るボタンを押してもstudents-management にとどまることを確認
     await waitFor(() => {
-      expect(screen.getByTestId('student-management')).toBeInTheDocument();
+      expect(screen.getByTestId('students-management')).toBeInTheDocument();
     });
   });
 
