@@ -63,7 +63,6 @@ export function SignInForm({
         };
 
         setAuth(authHeader);
-        window.history.replaceState(null, '', '/student_management');
         navigate('/student_management', { replace: true });
       } else {
         throw new Error('認証ヘッダーが不足しています');
