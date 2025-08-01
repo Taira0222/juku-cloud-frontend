@@ -9,7 +9,7 @@ export const AuthRoute = () => {
 
   useEffect(() => {
     if (isUserAuthenticated) {
-      navigate('/student_management', { replace: true });
+      navigate('/students_management', { replace: true });
     }
   }, [isUserAuthenticated, navigate]);
 

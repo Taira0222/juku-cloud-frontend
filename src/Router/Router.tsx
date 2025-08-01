@@ -1,5 +1,5 @@
 import { Home } from '@/components/Home/Home';
-import { StudentManagement } from '@/components/Managements/StudentManagement';
+import { StudentsManagement } from '@/components/ManagementDashboard/StudentsManagement/StudentsManagement';
 import { Route, Routes } from 'react-router-dom';
 import { ProtectedRoute } from './ProtectedRoute';
 import { SignIn } from '@/components/SignIn/SignIn';
@@ -8,6 +8,10 @@ import { ConfirmationSent } from '@/components/Confirm/ConfirmationSent';
 import { ConfirmedPage } from '@/components/Confirm/ConfirmedPage';
 import { NotFound } from '@/components/Error/NotFound';
 import { AuthRoute } from './AuthRoute';
+import { ManagementDashboard } from '@/components/ManagementDashboard/ManagementDashboard';
+import { TeachersManagement } from '@/components/ManagementDashboard/TeachersManagement/TeachersManagement';
+import { SubjectManagement } from '@/components/ManagementDashboard/SubjectsManagement/SubjectsManagement';
+import { MaterialsManagement } from '@/components/ManagementDashboard/MaterialsManagement/MaterialsManagement';
 
 export const Router = () => {
   return (
@@ -25,7 +29,16 @@ export const Router = () => {
       </Route>
       {/** ログイン後のページ */}
       <Route element={<ProtectedRoute />}>
-        <Route path="/student_management" element={<StudentManagement />} />
+        {/** ここが管理者ダッシュボードのルート */}
+        <Route element={<ManagementDashboard />}>
+          <Route path="/students_management" element={<StudentsManagement />} />
+          <Route path="/teachers_management" element={<TeachersManagement />} />
+          <Route path="/subjects_management" element={<SubjectManagement />} />
+          <Route
+            path="/materials_management"
+            element={<MaterialsManagement />}
+          />
+        </Route>
       </Route>
       <Route path="*" element={<NotFound />} />
     </Routes>
