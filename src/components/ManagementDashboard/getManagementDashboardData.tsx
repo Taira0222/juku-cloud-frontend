@@ -5,7 +5,7 @@ import {
   IconUserStar,
 } from '@tabler/icons-react';
 
-type ManagementDashboardDataProps = {
+type GetManagementDashboardDataProps = {
   role: string | null;
   user: {
     name: string | null;
@@ -13,10 +13,10 @@ type ManagementDashboardDataProps = {
   };
 };
 
-export const ManagementDashboardData = ({
+export const getManagementDashboardData = ({
   role,
   user,
-}: ManagementDashboardDataProps) => {
+}: GetManagementDashboardDataProps) => {
   const navMain =
     role === 'admin'
       ? [

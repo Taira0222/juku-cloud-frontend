@@ -4,7 +4,7 @@ import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 import { useUserStore } from '@/stores/userStore';
 import { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
-import { ManagementDashboardData } from './ManagementDashboardData';
+import { getManagementDashboardData } from './getManagementDashboardData';
 
 export const ManagementDashboard = () => {
   const user = useUserStore((state) => state.user);
@@ -14,9 +14,9 @@ export const ManagementDashboard = () => {
     if (!user) {
       fetchUser();
     }
-  }, [user]);
+  }, [user, fetchUser]);
 
-  const data = ManagementDashboardData({
+  const data = getManagementDashboardData({
     role: user?.role ?? null,
     user: {
       name: user?.name ?? null,
