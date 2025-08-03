@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/sidebar';
 import { CloudCog } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import type { Icon, IconProps } from '@tabler/icons-react';
+import type { IconProps } from '@tabler/icons-react';
 
 type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
   data: {
@@ -24,9 +24,7 @@ type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
     navMain: {
       title: string;
       url: string;
-      icon: React.ForwardRefExoticComponent<
-        IconProps & React.RefAttributes<Icon>
-      >;
+      icon: React.ForwardRefExoticComponent<IconProps>;
     }[];
   };
 };

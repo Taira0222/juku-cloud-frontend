@@ -4,7 +4,7 @@ import axios, { type InternalAxiosRequestConfig } from 'axios';
 export const api = axios.create({
   // APIのベースURLを環境変数から取得
   baseURL: `${import.meta.env.VITE_API_BASE_URL}/api/v1`,
-  withCredentials: false, // Cookie 認証でない場合は false
+  withCredentials: false,
   headers: { 'Content-Type': 'application/json' },
 });
 

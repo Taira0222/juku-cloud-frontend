@@ -14,6 +14,14 @@ type UserState = {
   user: User | null;
   fetchUser: () => Promise<void>;
 };
+const setAuth = useAuthStore.getState().setAuth;
+
+// ヘッダー名の定数を定義
+const HEADER_ACCESS_TOKEN = 'access-token';
+const HEADER_CLIENT = 'client';
+const HEADER_UID = 'uid';
+const HEADER_TOKEN_TYPE = 'token-type';
+const HEADER_EXPIRY = 'expiry';
 
 export const useUserStore = create<UserState>((set) => ({
   user: null, // 初期値はnull
@@ -28,16 +36,14 @@ export const useUserStore = create<UserState>((set) => ({
           role: response.data.data.role,
         },
       });
-      // トークンローテーションのために認証情報を更新
-      const setAuth = useAuthStore.getState().setAuth;
-      if (response.headers['access-token']) {
+      if (response.headers[HEADER_ACCESS_TOKEN]) {
         // 認証情報を更新
         setAuth({
-          'access-token': response.headers['access-token'],
-          client: response.headers['client'],
-          uid: response.headers['uid'],
-          'token-type': response.headers['token-type'],
-          expiry: response.headers['expiry'],
+          [HEADER_ACCESS_TOKEN]: response.headers[HEADER_ACCESS_TOKEN],
+          [HEADER_CLIENT]: response.headers[HEADER_CLIENT],
+          [HEADER_UID]: response.headers[HEADER_UID],
+          [HEADER_TOKEN_TYPE]: response.headers[HEADER_TOKEN_TYPE],
+          [HEADER_EXPIRY]: response.headers[HEADER_EXPIRY],
         });
       }
     } catch (err: unknown) {
