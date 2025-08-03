@@ -103,5 +103,7 @@ describe('SignIn form integration tests', () => {
     expect(
       screen.getByText('ログインに失敗しました。もう一度お試しください。')
     ).toBeInTheDocument();
+    // パスワードが空であることを確認
+    expect(inputPasswordElement).toHaveValue('');
   });
 });

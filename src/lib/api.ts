@@ -4,6 +4,8 @@ import axios, { type InternalAxiosRequestConfig } from 'axios';
 export const api = axios.create({
   // APIのベースURLを環境変数から取得
   baseURL: `${import.meta.env.VITE_API_BASE_URL}/api/v1`,
+  withCredentials: false, // Cookie 認証でない場合は false
+  headers: { 'Content-Type': 'application/json' },
 });
 
 // ヘッダー名の定数を定義
@@ -16,8 +18,6 @@ const HEADER_EXPIRY = 'expiry';
 // リクエスト前に自動でヘッダーを付与
 api.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    // キャッシュによる一貫性の問題を解決するため、storeから直接取得するように変更
-    // これにより、最新の認証情報が常に使用されるようにする
     const auth = useAuthStore.getState().auth;
     if (auth) {
       config.headers[HEADER_ACCESS_TOKEN] = auth['access-token'];

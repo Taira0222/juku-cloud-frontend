@@ -1,9 +1,29 @@
 import { AppSidebar } from '@/components/DashBoardComponents/app-sidebar';
 import { SiteHeader } from '@/components/DashBoardComponents/site-header';
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
+import { useUserStore } from '@/stores/userStore';
+import { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
+import { ManagementDashboardData } from './ManagementDashboardData';
 
 export const ManagementDashboard = () => {
+  const user = useUserStore((state) => state.user);
+  const fetchUser = useUserStore((state) => state.fetchUser);
+
+  useEffect(() => {
+    if (!user) {
+      fetchUser();
+    }
+  }, [user]);
+
+  const data = ManagementDashboardData({
+    role: user?.role ?? null,
+    user: {
+      name: user?.name ?? null,
+      email: user?.email ?? null,
+    },
+  });
+
   return (
     <SidebarProvider
       style={
@@ -14,7 +34,7 @@ export const ManagementDashboard = () => {
       }
     >
       {/** ここがサイドバー部分 */}
-      <AppSidebar variant="inset" />
+      <AppSidebar variant="inset" data={data} />
       {/** ここがメイン部分 */}
       <SidebarInset>
         <SiteHeader />
