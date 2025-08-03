@@ -3,7 +3,7 @@ import type { AuthHeader } from '@/types/auth';
 import { persist } from 'zustand/middleware';
 
 type AuthState = {
-  auth: AuthHeader | null; // null または AuthHeader
+  auth: AuthHeader | null;
   setAuth: (auth: AuthHeader) => void;
   clearAuth: () => void;
   isAuthenticated: () => boolean;
@@ -12,9 +12,12 @@ type AuthState = {
 export const useAuthStore = create<AuthState>()(
   persist(
     (set, get) => ({
-      auth: null, // 初期値をnullに設定
+      auth: null,
       setAuth: (auth) => set({ auth }),
-      clearAuth: () => set({ auth: null }),
+      clearAuth: () => {
+        set({ auth: null });
+        localStorage.removeItem('auth-storage'); // ローカルストレージからも削除
+      },
       isAuthenticated: () => {
         const auth = get().auth;
         return (
@@ -26,7 +29,7 @@ export const useAuthStore = create<AuthState>()(
       },
     }),
     {
-      name: 'auth-storage', // localStorage key
+      name: 'auth-storage',
     }
   )
 );

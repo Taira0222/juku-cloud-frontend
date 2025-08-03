@@ -82,6 +82,7 @@ export function SignInForm({
       } else {
         setError('予期しないエラーが発生しました。');
       }
+      setPassword(''); // パスワードをクリア
     } finally {
       setIsSubmitting(false); // 送信中フラグを下ろす
     }
@@ -111,6 +112,7 @@ export function SignInForm({
             id="email"
             type="email"
             placeholder="m@example.com"
+            value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
@@ -129,6 +131,7 @@ export function SignInForm({
           <Input
             id="password"
             type="password"
+            value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
