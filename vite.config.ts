@@ -24,8 +24,9 @@ export default defineConfig({
       reporter: ['text', 'json', 'html'],
       include: ['src/**/*.{ts,tsx}'],
       exclude: [
-        'src/components/ui/**', // ← shadcn/ui のディレクトリを除外
-        'src/components/Error/**',
+        'src/components/**', // ← shadcn/ui のディレクトリを除外
+        'src/pages/error/**',
+        'src/pages/home/**',
         'src/tests/**',
         'src/types/**',
         'src/vite-env.d.ts',

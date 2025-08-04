@@ -1,17 +1,17 @@
-import { Home } from '@/components/Home/Home';
-import { StudentsManagement } from '@/components/ManagementDashboard/StudentsManagement/StudentsManagement';
+import { Home } from '@/pages/home/HomePage';
+import { StudentsPage } from '@/pages/students/StudentsPage';
 import { Route, Routes } from 'react-router-dom';
 import { ProtectedRoute } from './ProtectedRoute';
-import { SignIn } from '@/components/SignIn/SignIn';
-import { SignUp } from '@/components/SignUp/SignUp';
-import { ConfirmationSent } from '@/components/Confirm/ConfirmationSent';
-import { ConfirmedPage } from '@/components/Confirm/ConfirmedPage';
-import { NotFound } from '@/components/Error/NotFound';
+import { SignInPage } from '@/pages/auth/SignInPage';
+import { SignUpPage } from '@/pages/auth/SignUpPage';
+import { ConfirmationSent } from '@/pages/confirm/ConfirmationSentPage';
+import { ConfirmedPage } from '@/pages/confirm/ConfirmedPage';
+import { NotFound } from '@/pages/error/NotFoundPage';
 import { AuthRoute } from './AuthRoute';
-import { ManagementDashboard } from '@/components/ManagementDashboard/ManagementDashboard';
-import { TeachersManagement } from '@/components/ManagementDashboard/TeachersManagement/TeachersManagement';
-import { SubjectManagement } from '@/components/ManagementDashboard/SubjectsManagement/SubjectsManagement';
-import { MaterialsManagement } from '@/components/ManagementDashboard/MaterialsManagement/MaterialsManagement';
+import { ManagementDashboard } from '@/pages/managementDashboard/ManagementDashboard';
+import { TeachersPage } from '@/pages/teachers/TeachersPage';
+import { SubjectsPage } from '@/pages/subjects/SubjectsPage';
+import { LearningMaterialsPage } from '@/pages/learningMaterial/LearningMaterialsPage';
 
 export const Router = () => {
   return (
@@ -19,24 +19,24 @@ export const Router = () => {
       {/** ログイン前のページ */}
       <Route element={<AuthRoute />}>
         <Route path="/" element={<Home />} />
-        <Route path="/sign_up" element={<SignUp />} />
+        <Route path="/sign_up" element={<SignUpPage />} />
         <Route
           path="/sign_up/confirmation_sent"
           element={<ConfirmationSent />}
         />
         <Route path="/confirmed" element={<ConfirmedPage />} />
-        <Route path="/sign_in" element={<SignIn />} />
+        <Route path="/sign_in" element={<SignInPage />} />
       </Route>
       {/** ログイン後のページ */}
       <Route element={<ProtectedRoute />}>
         {/** ここが管理者ダッシュボードのルート */}
         <Route element={<ManagementDashboard />}>
-          <Route path="/students_management" element={<StudentsManagement />} />
-          <Route path="/teachers_management" element={<TeachersManagement />} />
-          <Route path="/subjects_management" element={<SubjectManagement />} />
+          <Route path="/students" element={<StudentsPage />} />
+          <Route path="/teachers" element={<TeachersPage />} />
+          <Route path="/subjects" element={<SubjectsPage />} />
           <Route
-            path="/materials_management"
-            element={<MaterialsManagement />}
+            path="/learning_materials"
+            element={<LearningMaterialsPage />}
           />
         </Route>
       </Route>
