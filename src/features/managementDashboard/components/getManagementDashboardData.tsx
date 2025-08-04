@@ -22,29 +22,29 @@ export const getManagementDashboardData = ({
       ? [
           {
             title: '生徒一覧',
-            url: '/students_management',
+            url: '/students',
             icon: IconUser,
           },
           {
             title: '講師一覧',
-            url: '/teachers_management',
+            url: '/teachers',
             icon: IconUserStar,
           },
           {
             title: '指導科目',
-            url: '/subjects_management',
+            url: '/subjects',
             icon: IconBook2,
           },
           {
             title: '使用教材',
-            url: '/materials_management',
+            url: '/learning_materials',
             icon: IconBooks,
           },
         ]
       : [
           {
             title: '生徒一覧',
-            url: '/students_management',
+            url: '/students',
             icon: IconUser,
           },
         ];

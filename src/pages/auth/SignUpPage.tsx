@@ -1,5 +1,5 @@
 import { CloudCog } from 'lucide-react';
-import { SignUpForm } from '../../features/auth/components/SignUpForm/SignUpForm';
+import { SignUpForm } from '@/features/auth/components/SignUpForm/SignUpForm';
 import {
   Card,
   CardContent,

@@ -1,5 +1,5 @@
-import { Separator } from '@/components/ui/separator';
-import { SidebarTrigger } from '@/components/ui/sidebar';
+import { Separator } from '@/components/ui/layout/Separator/separator';
+import { SidebarTrigger } from '@/components/ui/layout/Sidebar/sidebar';
 
 // 生徒の名前を表示する場所として残す
 export function SiteHeader() {
