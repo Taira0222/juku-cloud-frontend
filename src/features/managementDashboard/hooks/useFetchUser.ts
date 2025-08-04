@@ -20,7 +20,6 @@ export const useFetchUser = () => {
     const fetchUserData = async () => {
       try {
         const response = await fetchUser();
-        // response.data の構造に応じて修正
         if (response.data && response.data.data) {
           setUser({
             id: response.data.data.id,
@@ -45,6 +44,9 @@ export const useFetchUser = () => {
       }
     };
 
-    fetchUserData(); // 非同期関数を呼び出す
-  }, [setUser, setAuth, user, fetchUser]);
+    // 更新ボタンを押したときやwindow を閉じたときに再度ユーザー情報を取得
+    if (!user) {
+      fetchUserData();
+    }
+  }, [setUser, setAuth, user]);
 };
