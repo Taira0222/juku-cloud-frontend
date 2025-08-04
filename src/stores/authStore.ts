@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { AuthHeader } from '@/types/auth';
+import type { AuthHeader } from '@/features/auth/types/auth';
 import { persist } from 'zustand/middleware';
 
 type AuthState = {

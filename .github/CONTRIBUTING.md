@@ -9,6 +9,127 @@ GitHub Flow を用いて開発を進める
 5. 実装者が通常マージ(Merge Commit)
 6. 対応する Issue を Close、projects のカンバンを更新
 
+## コーディング規約（命名ルール）
+
+このプロジェクトでは、命名規則を統一してコードの可読性と保守性を高めることを目的としています。
+困ったら以下を参考にしてください。
+
+### 1. UpperCamelCase（PascalCase）
+
+**用途**
+
+- React コンポーネント名とそのファイル名
+- UI コンポーネントのディレクトリ名
+- TypeScript の type / interface 名
+
+**React コンポーネント(UI)**
+
+```bash
+# UI コンポーネント
+components/ui/Button/index.tsx
+features/students/components/StudentCard/index.tsx
+```
+
+**ページコンポーネント**
+
+```bash
+pages/students/StudentsPage.tsx
+pages/students/StudentDetailPage.tsx
+```
+
+```TypeScript
+// StudentsPage.tsx
+export default function StudentsPage() {
+  return <div>生徒一覧ページ</div>
+}
+```
+
+**TypeScript の type・interface**
+
+```TypeScript
+type Student = { id: string; name: string };
+interface ApiResponse {
+  data: Student[];
+}
+```
+
+### 2. camelCase
+
+**用途**
+
+- hooks（useXxx.ts）
+- API サービス（studentFetchApi.ts）
+- utils 関数
+- 機能単位ディレクトリ名（students, teachers など複数形）
+- 共通型のファイル名（common.ts, api.ts）
+
+**hooks**
+
+```bash
+features/students/hooks/useStudentDetail.ts
+```
+
+```typescript
+export const useStudentDetail = (id: string) => { ... }
+```
+
+**API サービス**
+
+```bash
+features/students/services/studentFetchApi.ts
+```
+
+```typescript
+export const fetchStudents = async () => { ... }
+export const createStudent = async (data: Student) => { ... }
+```
+
+**utils 関数**
+
+```bash
+lib/utils.ts
+```
+
+```typescript
+export const formatDate = (date: Date) =>
+  `${date.getFullYear()}/${date.getMonth() + 1}`;
+```
+
+**機能単位ディレクトリ（複数形）**
+
+```bash
+features/students/
+features/teachers/
+```
+
+**共通型ファイル**
+
+```bash
+types/common.ts
+types/api.ts
+```
+
+```typescript
+export type Pagination = { page: number; perPage: number };
+export type ApiError = { message: string; code: string };
+```
+
+### 3. CONSTANT_CASE
+
+**用途**
+
+- 定数（lib/constants.ts）
+- enum 相当の定数
+
+```bash
+lib/constants.ts
+```
+
+```typescript
+export const API_BASE_URL = 'https://example.com';
+export const HEADER_ACCESS_TOKEN = 'access-token';
+```
+
 ## Issues
 
 使用する issues テンプレートの設定ファイル
