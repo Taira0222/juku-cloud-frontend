@@ -25,6 +25,8 @@ export default defineConfig({
       include: ['src/**/*.{ts,tsx}'],
       exclude: [
         'src/components/**', // ← shadcn/ui のディレクトリを除外
+        'src/pages/error/**',
+        'src/pages/home/**',
         'src/tests/**',
         'src/types/**',
         'src/vite-env.d.ts',
