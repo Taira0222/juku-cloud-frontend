@@ -5,19 +5,14 @@ import {
   SidebarProvider,
 } from '@/components/ui/layout/Sidebar/sidebar';
 import { useUserStore } from '@/stores/userStore';
-import { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import { getManagementDashboardData } from '@/features/managementDashboard/components/getManagementDashboardData';
+import { useFetchUser } from '@/features/managementDashboard/hooks/useFetchUser';
 
 export const ManagementDashboard = () => {
   const user = useUserStore((state) => state.user);
-  const fetchUser = useUserStore((state) => state.fetchUser);
-
-  useEffect(() => {
-    if (!user) {
-      fetchUser();
-    }
-  }, [user, fetchUser]);
+  // ユーザーデータを取得するカスタムフック
+  useFetchUser();
 
   const data = getManagementDashboardData({
     role: user?.role ?? null,
