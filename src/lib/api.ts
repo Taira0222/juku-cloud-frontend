@@ -15,6 +15,9 @@ const HEADER_UID = 'uid';
 const HEADER_TOKEN_TYPE = 'token-type';
 const HEADER_EXPIRY = 'expiry';
 
+const { setAuth } = useAuthStore.getState();
+const { clearAuth } = useAuthStore.getState();
+
 // リクエスト前に自動でヘッダーを付与
 api.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
@@ -30,6 +33,31 @@ api.interceptors.request.use(
   },
   (error) => {
     // リクエストエラーが発生した場合はそのままエラーを返す
+    return Promise.reject(error);
+  }
+);
+
+// レスポンス後に自動でトークンを更新
+api.interceptors.response.use(
+  (response) => {
+    // レスポンスヘッダーに新しいトークンがある場合は更新
+    const headers = response.headers;
+    if (headers[HEADER_ACCESS_TOKEN]) {
+      setAuth({
+        [HEADER_ACCESS_TOKEN]: headers[HEADER_ACCESS_TOKEN],
+        [HEADER_CLIENT]: headers[HEADER_CLIENT],
+        [HEADER_UID]: headers[HEADER_UID],
+        [HEADER_TOKEN_TYPE]: headers[HEADER_TOKEN_TYPE],
+        [HEADER_EXPIRY]: headers[HEADER_EXPIRY],
+      });
+    }
+    return response;
+  },
+  (error) => {
+    // 401エラーの場合は認証情報をクリア
+    if (error.response?.status === 401) {
+      clearAuth();
+    }
     return Promise.reject(error);
   }
 );
