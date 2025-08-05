@@ -14,7 +14,3 @@ export type fetchTeachersResponse = {
     school_id: number | null;
   }[];
 };
-
-export type fetchTeachersErrorResponse = {
-  error: string;
-};
