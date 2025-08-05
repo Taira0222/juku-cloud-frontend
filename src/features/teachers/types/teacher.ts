@@ -14,3 +14,18 @@ export type fetchTeachersResponse = {
     school_id: number | null;
   }[];
 };
+
+export type fetchTeachersErrorResponse = {
+  error: string;
+};
+
+export const isFetchTeachersErrorResponse = (
+  data: unknown
+): data is fetchTeachersErrorResponse => {
+  return (
+    typeof data === 'object' &&
+    data !== null &&
+    'error' in data &&
+    typeof (data as fetchTeachersErrorResponse).error === 'string'
+  );
+};

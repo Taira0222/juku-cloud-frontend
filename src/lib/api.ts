@@ -15,9 +15,6 @@ const HEADER_UID = 'uid';
 const HEADER_TOKEN_TYPE = 'token-type';
 const HEADER_EXPIRY = 'expiry';
 
-const { setAuth } = useAuthStore.getState();
-const { clearAuth } = useAuthStore.getState();
-
 // リクエスト前に自動でヘッダーを付与
 api.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
@@ -41,6 +38,7 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => {
     // レスポンスヘッダーに新しいトークンがある場合は更新
+    const { setAuth } = useAuthStore.getState();
     const headers = response.headers;
     if (headers[HEADER_ACCESS_TOKEN]) {
       setAuth({
@@ -54,6 +52,7 @@ api.interceptors.response.use(
     return response;
   },
   (error) => {
+    const { clearAuth } = useAuthStore.getState();
     // 401エラーの場合は認証情報をクリア
     if (error.response?.status === 401) {
       clearAuth();
