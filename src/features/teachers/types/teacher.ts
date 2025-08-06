@@ -1,21 +1,33 @@
-export type fetchTeachersResponse = {
-  current_user: {
-    id: number;
-    name: string;
-    role: 'teacher' | 'admin';
-    email: string;
-    school_id: number | null;
-  };
-  teachers: {
-    id: number;
-    name: string;
-    email: string;
-    role: 'teacher' | 'admin';
-    school_id: number | null;
-  }[];
+type currentUser = {
+  id: number;
+  name: string;
+  role: 'teacher' | 'admin';
+  email: string;
+  school_id: number | null;
+  students: Students[];
 };
 
-export type fetchTeachersErrorResponse = {
+type teachers = {
+  id: number;
+  name: string;
+  email: string;
+  role: 'teacher' | 'admin';
+  school_id: number | null;
+  students: Students[];
+}[];
+
+type Students = {
+  id: number;
+  student_code: string;
+  name: string;
+};
+
+export type fetchTeachersResponse = {
+  current_user: currentUser;
+  teachers: teachers;
+};
+
+type fetchTeachersErrorResponse = {
   error: string;
 };
 
