@@ -15,6 +15,13 @@ export const TeachersPage = () => {
           <h2 className="text-xl font-semibold">現在のユーザー</h2>
           <p>名前: {currentUser.name}</p>
           <p>メール: {currentUser.email}</p>
+          <p>
+            {currentUser.students.map((student) => (
+              <span key={student.id}>
+                {student.student_code} - {student.name}
+              </span>
+            ))}
+          </p>
         </div>
       )}
       {teachers && teachers.length > 0 ? (
@@ -23,7 +30,12 @@ export const TeachersPage = () => {
           <ul className="list-disc pl-5">
             {teachers.map((teacher) => (
               <li key={teacher.id}>
-                {teacher.name} ({teacher.email})
+                {teacher.name} ({teacher.email})<br />
+                {teacher.students.map((student) => (
+                  <span key={student.id}>
+                    {student.student_code} - {student.name}
+                  </span>
+                ))}
               </li>
             ))}
           </ul>

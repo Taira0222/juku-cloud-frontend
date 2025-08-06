@@ -3,7 +3,7 @@ import { fetchTeachers } from '../services/teachersApi';
 import {
   isFetchTeachersErrorResponse,
   type fetchTeachersResponse,
-} from '../types/teacher';
+} from '../types/teachers';
 import { isAxiosError } from 'axios';
 
 export const useFetchTeachers = () => {
