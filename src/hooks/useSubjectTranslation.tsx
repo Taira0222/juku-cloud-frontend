@@ -1,4 +1,3 @@
-// hooks/useSubjectTranslation.ts
 import { Badge } from '@/components/ui/display/Badge/badge';
 import { SUBJECT_TRANSLATIONS } from '@/constants/subjectTranslations';
 
@@ -11,7 +10,7 @@ export const useSubjectTranslation = () => {
     return (
       <Badge
         variant="outline"
-        className={`text-muted-foreground px-1.5 mx-1 ${meta.color}`}
+        className={`text-muted-foreground px-1.5 mx-1 ${meta?.color ?? ''}`}
       >
         {Icon ? <Icon /> : <span>{translate(en)}</span>}
         {translate(en)}

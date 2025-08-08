@@ -114,10 +114,10 @@ export const createColumns = (
     header: '担当科目',
     cell: ({ row }) => {
       const { createIconTranslationBadge } = useSubjectTranslation();
-      const subjects = row.original.classSubject.map((cs) =>
-        createIconTranslationBadge(cs.name)
-      );
-      return <span>{subjects}</span>;
+      const subjects = row.original.classSubject.map((cs) => (
+        <span key={cs.id}>{createIconTranslationBadge(cs.name)}</span>
+      ));
+      return subjects;
     },
   },
 

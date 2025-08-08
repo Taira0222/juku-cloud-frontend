@@ -13,6 +13,7 @@ import { Badge } from '@/components/ui/display/Badge/badge';
 import { IconCircleCheckFilled, IconLoader } from '@tabler/icons-react';
 import { useSubjectTranslation } from '@/hooks/useSubjectTranslation';
 import { useDayOfWeekTranslation } from '@/hooks/useDayOfWeekTranslation';
+import { Fragment } from 'react/jsx-runtime';
 
 export const DetailDrawer = ({ item }: { item: teacherDetailDrawer }) => {
   const isMobile = useIsMobile();
@@ -66,9 +67,11 @@ export const DetailDrawer = ({ item }: { item: teacherDetailDrawer }) => {
           <div className="flex flex-col gap-2">
             <Label htmlFor="subjects">担当科目</Label>
             <div id="subjects" className="flex flex-wrap gap-2">
-              {item.classSubject.map((cs) =>
-                createIconTranslationBadge(cs.name)
-              )}
+              {item.classSubject.map((cs) => (
+                <Fragment key={cs.id}>
+                  {createIconTranslationBadge(cs.name)}
+                </Fragment>
+              ))}
             </div>
           </div>
           <div className="flex flex-col gap-2">
