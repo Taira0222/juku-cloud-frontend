@@ -4,7 +4,7 @@ type User = {
   uid: string;
   allow_password_change: boolean;
   name: string;
-  role: 'teacher' | 'admin';
+  role: string;
   school_stage: string | null;
   grade: number | null;
   graduated_university: string | null;
@@ -22,7 +22,7 @@ type Student = {
   status: string;
   joined_on: string;
   left_on: string | null;
-  school_stage: 'elementary_school' | 'junior_high_school' | 'high_school';
+  school_stage: string;
   grade: number;
   desired_school: string | null;
   created_at: string;

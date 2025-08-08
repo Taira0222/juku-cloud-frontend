@@ -1,0 +1,1225 @@
+[
+  {
+    "id": 3,
+    "name": "中村 太郎",
+    "role": "teacher",
+    "email": "teacher01@example.com",
+    "school_id": 1,
+    "employStatus": "inactive",
+    "last_sign_in_at": "2025-07-05T14:04:53Z",
+    "current_sign_in_at": null,
+    "created_at": "2025-01-01T12:00:00Z",
+    "available_days": [
+      {
+        "id": 2,
+        "name": "Tuesday"
+      }
+    ],
+    "classSubject": [
+      {
+        "id": 1,
+        "name": "English"
+      }
+    ],
+    "Students": [
+      {
+        "id": 3,
+        "student_code": "S0003",
+        "name": "渡辺 未来"
+      },
+      {
+        "id": 4,
+        "student_code": "S0004",
+        "name": "中島 花子"
+      },
+      {
+        "id": 5,
+        "student_code": "S0005",
+        "name": "鈴木 健"
+      },
+      {
+        "id": 6,
+        "student_code": "S0006",
+        "name": "山口 さくら"
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "name": "鈴木 光",
+    "role": "teacher",
+    "email": "teacher02@example.com",
+    "school_id": 1,
+    "employStatus": "active",
+    "last_sign_in_at": "2025-07-21T06:20:21Z",
+    "current_sign_in_at": null,
+    "created_at": "2025-01-02T12:00:00Z",
+    "available_days": [
+      {
+        "id": 6,
+        "name": "Saturday"
+      },
+      {
+        "id": 7,
+        "name": "Sunday"
+      },
+      {
+        "id": 5,
+        "name": "Friday"
+      }
+    ],
+    "classSubject": [
+      {
+        "id": 2,
+        "name": "Japanese"
+      },
+      {
+        "id": 4,
+        "name": "Science"
+      }
+    ],
+    "Students": [
+      {
+        "id": 7,
+        "student_code": "S0007",
+        "name": "林 花"
+      },
+      {
+        "id": 8,
+        "student_code": "S0008",
+        "name": "佐藤 颯"
+      },
+      {
+        "id": 9,
+        "student_code": "S0009",
+        "name": "吉田 海斗"
+      },
+      {
+        "id": 10,
+        "student_code": "S0010",
+        "name": "中島 悠"
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "name": "山口 颯",
+    "role": "teacher",
+    "email": "teacher03@example.com",
+    "school_id": 1,
+    "employStatus": "inactive",
+    "last_sign_in_at": "2025-07-08T16:28:36Z",
+    "current_sign_in_at": null,
+    "created_at": "2025-01-03T12:00:00Z",
+    "available_days": [
+      {
+        "id": 1,
+        "name": "Monday"
+      }
+    ],
+    "classSubject": [
+      {
+        "id": 1,
+        "name": "English"
+      },
+      {
+        "id": 3,
+        "name": "Mathematics"
+      }
+    ],
+    "Students": [
+      {
+        "id": 11,
+        "student_code": "S0011",
+        "name": "金子 大輔"
+      },
+      {
+        "id": 12,
+        "student_code": "S0012",
+        "name": "高橋 美咲"
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "name": "中村 葵",
+    "role": "teacher",
+    "email": "teacher04@example.com",
+    "school_id": 1,
+    "employStatus": "inactive",
+    "last_sign_in_at": "2025-06-14T03:31:28Z",
+    "current_sign_in_at": null,
+    "created_at": "2025-01-04T12:00:00Z",
+    "available_days": [
+      {
+        "id": 5,
+        "name": "Friday"
+      }
+    ],
+    "classSubject": [
+      {
+        "id": 5,
+        "name": "Social Studies"
+      },
+      {
+        "id": 3,
+        "name": "Mathematics"
+      }
+    ],
+    "Students": [
+      {
+        "id": 13,
+        "student_code": "S0013",
+        "name": "佐々木 海斗"
+      },
+      {
+        "id": 14,
+        "student_code": "S0014",
+        "name": "伊藤 花子"
+      },
+      {
+        "id": 15,
+        "student_code": "S0015",
+        "name": "松本 颯"
+      },
+      {
+        "id": 16,
+        "student_code": "S0016",
+        "name": "斎藤 健"
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "name": "山本 萌",
+    "role": "teacher",
+    "email": "teacher05@example.com",
+    "school_id": 1,
+    "employStatus": "inactive",
+    "last_sign_in_at": "2025-06-08T12:24:21Z",
+    "current_sign_in_at": null,
+    "created_at": "2025-01-05T12:00:00Z",
+    "available_days": [
+      {
+        "id": 6,
+        "name": "Saturday"
+      },
+      {
+        "id": 3,
+        "name": "Wednesday"
+      }
+    ],
+    "classSubject": [
+      {
+        "id": 3,
+        "name": "Mathematics"
+      }
+    ],
+    "Students": [
+      {
+        "id": 17,
+        "student_code": "S0017",
+        "name": "山口 蒼"
+      },
+      {
+        "id": 18,
+        "student_code": "S0018",
+        "name": "林 海斗"
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "name": "伊藤 涼",
+    "role": "teacher",
+    "email": "teacher06@example.com",
+    "school_id": 1,
+    "employStatus": "active",
+    "last_sign_in_at": "2025-07-17T21:23:39Z",
+    "current_sign_in_at": null,
+    "created_at": "2025-01-06T12:00:00Z",
+    "available_days": [
+      {
+        "id": 6,
+        "name": "Saturday"
+      },
+      {
+        "id": 2,
+        "name": "Tuesday"
+      },
+      {
+        "id": 7,
+        "name": "Sunday"
+      }
+    ],
+    "classSubject": [
+      {
+        "id": 4,
+        "name": "Science"
+      },
+      {
+        "id": 3,
+        "name": "Mathematics"
+      }
+    ],
+    "Students": [
+      {
+        "id": 19,
+        "student_code": "S0019",
+        "name": "松本 蒼"
+      },
+      {
+        "id": 20,
+        "student_code": "S0020",
+        "name": "山崎 太一"
+      },
+      {
+        "id": 21,
+        "student_code": "S0021",
+        "name": "田中 さくら"
+      },
+      {
+        "id": 22,
+        "student_code": "S0022",
+        "name": "高橋 花"
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "name": "林 健",
+    "role": "teacher",
+    "email": "teacher07@example.com",
+    "school_id": 1,
+    "employStatus": "active",
+    "last_sign_in_at": "2025-07-21T14:42:58Z",
+    "current_sign_in_at": null,
+    "created_at": "2025-01-07T12:00:00Z",
+    "available_days": [
+      {
+        "id": 6,
+        "name": "Saturday"
+      },
+      {
+        "id": 3,
+        "name": "Wednesday"
+      },
+      {
+        "id": 2,
+        "name": "Tuesday"
+      }
+    ],
+    "classSubject": [
+      {
+        "id": 4,
+        "name": "Science"
+      },
+      {
+        "id": 5,
+        "name": "Social Studies"
+      },
+      {
+        "id": 3,
+        "name": "Mathematics"
+      }
+    ],
+    "Students": [
+      {
+        "id": 23,
+        "student_code": "S0023",
+        "name": "加藤 大輔"
+      },
+      {
+        "id": 24,
+        "student_code": "S0024",
+        "name": "小林 さくら"
+      },
+      {
+        "id": 25,
+        "student_code": "S0025",
+        "name": "青木 光"
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "name": "中島 心",
+    "role": "teacher",
+    "email": "teacher08@example.com",
+    "school_id": 1,
+    "employStatus": "inactive",
+    "last_sign_in_at": "2025-07-28T13:09:20Z",
+    "current_sign_in_at": null,
+    "created_at": "2025-01-08T12:00:00Z",
+    "available_days": [
+      {
+        "id": 2,
+        "name": "Tuesday"
+      },
+      {
+        "id": 7,
+        "name": "Sunday"
+      }
+    ],
+    "classSubject": [
+      {
+        "id": 4,
+        "name": "Science"
+      },
+      {
+        "id": 1,
+        "name": "English"
+      },
+      {
+        "id": 5,
+        "name": "Social Studies"
+      }
+    ],
+    "Students": []
+  },
+  {
+    "id": 11,
+    "name": "吉田 花",
+    "role": "teacher",
+    "email": "teacher09@example.com",
+    "school_id": 1,
+    "employStatus": "inactive",
+    "last_sign_in_at": "2025-06-25T07:49:46Z",
+    "current_sign_in_at": null,
+    "created_at": "2025-01-09T12:00:00Z",
+    "available_days": [
+      {
+        "id": 1,
+        "name": "Monday"
+      },
+      {
+        "id": 4,
+        "name": "Thursday"
+      },
+      {
+        "id": 6,
+        "name": "Saturday"
+      }
+    ],
+    "classSubject": [
+      {
+        "id": 4,
+        "name": "Science"
+      },
+      {
+        "id": 3,
+        "name": "Mathematics"
+      },
+      {
+        "id": 5,
+        "name": "Social Studies"
+      }
+    ],
+    "Students": []
+  },
+  {
+    "id": 12,
+    "name": "村上 颯",
+    "role": "teacher",
+    "email": "teacher10@example.com",
+    "school_id": 1,
+    "employStatus": "inactive",
+    "last_sign_in_at": "2025-06-22T02:24:38Z",
+    "current_sign_in_at": null,
+    "created_at": "2025-01-10T12:00:00Z",
+    "available_days": [
+      {
+        "id": 3,
+        "name": "Wednesday"
+      },
+      {
+        "id": 1,
+        "name": "Monday"
+      },
+      {
+        "id": 7,
+        "name": "Sunday"
+      }
+    ],
+    "classSubject": [
+      {
+        "id": 2,
+        "name": "Japanese"
+      },
+      {
+        "id": 4,
+        "name": "Science"
+      }
+    ],
+    "Students": []
+  },
+  {
+    "id": 13,
+    "name": "長谷川 颯",
+    "role": "teacher",
+    "email": "teacher11@example.com",
+    "school_id": 1,
+    "employStatus": "active",
+    "last_sign_in_at": "2025-08-06T14:11:36Z",
+    "current_sign_in_at": null,
+    "created_at": "2025-01-11T12:00:00Z",
+    "available_days": [
+      {
+        "id": 1,
+        "name": "Monday"
+      },
+      {
+        "id": 6,
+        "name": "Saturday"
+      },
+      {
+        "id": 3,
+        "name": "Wednesday"
+      }
+    ],
+    "classSubject": [
+      {
+        "id": 5,
+        "name": "Social Studies"
+      },
+      {
+        "id": 2,
+        "name": "Japanese"
+      },
+      {
+        "id": 1,
+        "name": "English"
+      }
+    ],
+    "Students": [
+      {
+        "id": 26,
+        "student_code": "S0026",
+        "name": "吉田 光"
+      },
+      {
+        "id": 27,
+        "student_code": "S0027",
+        "name": "近藤 葵"
+      }
+    ]
+  },
+  {
+    "id": 14,
+    "name": "山崎 里奈",
+    "role": "teacher",
+    "email": "teacher12@example.com",
+    "school_id": 1,
+    "employStatus": "active",
+    "last_sign_in_at": "2025-08-01T18:18:21Z",
+    "current_sign_in_at": null,
+    "created_at": "2025-01-12T12:00:00Z",
+    "available_days": [
+      {
+        "id": 3,
+        "name": "Wednesday"
+      }
+    ],
+    "classSubject": [
+      {
+        "id": 2,
+        "name": "Japanese"
+      },
+      {
+        "id": 1,
+        "name": "English"
+      }
+    ],
+    "Students": [
+      {
+        "id": 28,
+        "student_code": "S0028",
+        "name": "新垣 健"
+      }
+    ]
+  },
+  {
+    "id": 15,
+    "name": "伊藤 颯",
+    "role": "teacher",
+    "email": "teacher13@example.com",
+    "school_id": 1,
+    "employStatus": "active",
+    "last_sign_in_at": "2025-07-24T16:21:54Z",
+    "current_sign_in_at": null,
+    "created_at": "2025-01-13T12:00:00Z",
+    "available_days": [
+      {
+        "id": 6,
+        "name": "Saturday"
+      }
+    ],
+    "classSubject": [
+      {
+        "id": 5,
+        "name": "Social Studies"
+      },
+      {
+        "id": 2,
+        "name": "Japanese"
+      }
+    ],
+    "Students": [
+      {
+        "id": 29,
+        "student_code": "S0029",
+        "name": "近藤 光希"
+      },
+      {
+        "id": 30,
+        "student_code": "S0030",
+        "name": "金子 隼"
+      }
+    ]
+  },
+  {
+    "id": 16,
+    "name": "佐々木 海斗",
+    "role": "teacher",
+    "email": "teacher14@example.com",
+    "school_id": 1,
+    "employStatus": "inactive",
+    "last_sign_in_at": "2025-07-23T03:49:09Z",
+    "current_sign_in_at": null,
+    "created_at": "2025-01-14T12:00:00Z",
+    "available_days": [
+      {
+        "id": 6,
+        "name": "Saturday"
+      },
+      {
+        "id": 7,
+        "name": "Sunday"
+      }
+    ],
+    "classSubject": [
+      {
+        "id": 4,
+        "name": "Science"
+      },
+      {
+        "id": 5,
+        "name": "Social Studies"
+      }
+    ],
+    "Students": []
+  },
+  {
+    "id": 17,
+    "name": "伊藤 悠",
+    "role": "teacher",
+    "email": "teacher15@example.com",
+    "school_id": 1,
+    "employStatus": "active",
+    "last_sign_in_at": "2025-06-22T13:01:21Z",
+    "current_sign_in_at": null,
+    "created_at": "2025-01-15T12:00:00Z",
+    "available_days": [
+      {
+        "id": 5,
+        "name": "Friday"
+      },
+      {
+        "id": 2,
+        "name": "Tuesday"
+      },
+      {
+        "id": 7,
+        "name": "Sunday"
+      }
+    ],
+    "classSubject": [
+      {
+        "id": 1,
+        "name": "English"
+      }
+    ],
+    "Students": []
+  },
+  {
+    "id": 18,
+    "name": "田中 さくら",
+    "role": "teacher",
+    "email": "teacher16@example.com",
+    "school_id": 1,
+    "employStatus": "active",
+    "last_sign_in_at": "2025-06-21T15:12:33Z",
+    "current_sign_in_at": null,
+    "created_at": "2025-01-16T12:00:00Z",
+    "available_days": [
+      {
+        "id": 7,
+        "name": "Sunday"
+      }
+    ],
+    "classSubject": [
+      {
+        "id": 1,
+        "name": "English"
+      },
+      {
+        "id": 2,
+        "name": "Japanese"
+      }
+    ],
+    "Students": [
+      {
+        "id": 31,
+        "student_code": "S0031",
+        "name": "岡田 悠真"
+      },
+      {
+        "id": 32,
+        "student_code": "S0032",
+        "name": "村上 直樹"
+      }
+    ]
+  },
+  {
+    "id": 19,
+    "name": "新垣 里奈",
+    "role": "teacher",
+    "email": "teacher17@example.com",
+    "school_id": 1,
+    "employStatus": "active",
+    "last_sign_in_at": "2025-06-25T20:18:22Z",
+    "current_sign_in_at": null,
+    "created_at": "2025-01-17T12:00:00Z",
+    "available_days": [
+      {
+        "id": 7,
+        "name": "Sunday"
+      },
+      {
+        "id": 4,
+        "name": "Thursday"
+      }
+    ],
+    "classSubject": [
+      {
+        "id": 1,
+        "name": "English"
+      }
+    ],
+    "Students": []
+  },
+  {
+    "id": 20,
+    "name": "森 隼",
+    "role": "teacher",
+    "email": "teacher18@example.com",
+    "school_id": 1,
+    "employStatus": "inactive",
+    "last_sign_in_at": "2025-07-12T23:38:47Z",
+    "current_sign_in_at": null,
+    "created_at": "2025-01-18T12:00:00Z",
+    "available_days": [
+      {
+        "id": 7,
+        "name": "Sunday"
+      },
+      {
+        "id": 6,
+        "name": "Saturday"
+      }
+    ],
+    "classSubject": [
+      {
+        "id": 1,
+        "name": "English"
+      }
+    ],
+    "Students": []
+  },
+  {
+    "id": 21,
+    "name": "山本 さくら",
+    "role": "teacher",
+    "email": "teacher19@example.com",
+    "school_id": 1,
+    "employStatus": "active",
+    "last_sign_in_at": "2025-07-23T09:15:20Z",
+    "current_sign_in_at": null,
+    "created_at": "2025-01-19T12:00:00Z",
+    "available_days": [
+      {
+        "id": 5,
+        "name": "Friday"
+      }
+    ],
+    "classSubject": [
+      {
+        "id": 2,
+        "name": "Japanese"
+      },
+      {
+        "id": 4,
+        "name": "Science"
+      }
+    ],
+    "Students": [
+      {
+        "id": 33,
+        "student_code": "S0033",
+        "name": "林 春菜"
+      }
+    ]
+  },
+  {
+    "id": 22,
+    "name": "前田 花",
+    "role": "teacher",
+    "email": "teacher20@example.com",
+    "school_id": 1,
+    "employStatus": "active",
+    "last_sign_in_at": "2025-07-08T04:13:04Z",
+    "current_sign_in_at": null,
+    "created_at": "2025-01-20T12:00:00Z",
+    "available_days": [
+      {
+        "id": 6,
+        "name": "Saturday"
+      }
+    ],
+    "classSubject": [
+      {
+        "id": 1,
+        "name": "English"
+      },
+      {
+        "id": 5,
+        "name": "Social Studies"
+      },
+      {
+        "id": 4,
+        "name": "Science"
+      }
+    ],
+    "Students": [
+      {
+        "id": 34,
+        "student_code": "S0034",
+        "name": "石川 里奈"
+      }
+    ]
+  },
+  {
+    "id": 23,
+    "name": "山下 心",
+    "role": "teacher",
+    "email": "teacher21@example.com",
+    "school_id": 1,
+    "employStatus": "active",
+    "last_sign_in_at": "2025-06-21T15:45:55Z",
+    "current_sign_in_at": null,
+    "created_at": "2025-01-21T12:00:00Z",
+    "available_days": [
+      {
+        "id": 4,
+        "name": "Thursday"
+      }
+    ],
+    "classSubject": [
+      {
+        "id": 4,
+        "name": "Science"
+      }
+    ],
+    "Students": [
+      {
+        "id": 35,
+        "student_code": "S0035",
+        "name": "藤田 真由"
+      },
+      {
+        "id": 36,
+        "student_code": "S0036",
+        "name": "中島 海斗"
+      }
+    ]
+  },
+  {
+    "id": 24,
+    "name": "岡田 直樹",
+    "role": "teacher",
+    "email": "teacher22@example.com",
+    "school_id": 1,
+    "employStatus": "active",
+    "last_sign_in_at": "2025-07-05T16:39:45Z",
+    "current_sign_in_at": null,
+    "created_at": "2025-01-22T12:00:00Z",
+    "available_days": [
+      {
+        "id": 2,
+        "name": "Tuesday"
+      },
+      {
+        "id": 1,
+        "name": "Monday"
+      }
+    ],
+    "classSubject": [
+      {
+        "id": 5,
+        "name": "Social Studies"
+      },
+      {
+        "id": 1,
+        "name": "English"
+      },
+      {
+        "id": 3,
+        "name": "Mathematics"
+      }
+    ],
+    "Students": [
+      {
+        "id": 37,
+        "student_code": "S0037",
+        "name": "田中 花子"
+      },
+      {
+        "id": 38,
+        "student_code": "S0038",
+        "name": "上原 里奈"
+      }
+    ]
+  },
+  {
+    "id": 25,
+    "name": "吉田 花子",
+    "role": "teacher",
+    "email": "teacher23@example.com",
+    "school_id": 1,
+    "employStatus": "active",
+    "last_sign_in_at": "2025-06-07T15:15:32Z",
+    "current_sign_in_at": null,
+    "created_at": "2025-01-23T12:00:00Z",
+    "available_days": [
+      {
+        "id": 1,
+        "name": "Monday"
+      }
+    ],
+    "classSubject": [
+      {
+        "id": 1,
+        "name": "English"
+      },
+      {
+        "id": 2,
+        "name": "Japanese"
+      },
+      {
+        "id": 4,
+        "name": "Science"
+      }
+    ],
+    "Students": []
+  },
+  {
+    "id": 26,
+    "name": "井上 未来",
+    "role": "teacher",
+    "email": "teacher24@example.com",
+    "school_id": 1,
+    "employStatus": "active",
+    "last_sign_in_at": "2025-07-21T21:35:24Z",
+    "current_sign_in_at": null,
+    "created_at": "2025-01-24T12:00:00Z",
+    "available_days": [
+      {
+        "id": 1,
+        "name": "Monday"
+      },
+      {
+        "id": 4,
+        "name": "Thursday"
+      },
+      {
+        "id": 5,
+        "name": "Friday"
+      }
+    ],
+    "classSubject": [
+      {
+        "id": 5,
+        "name": "Social Studies"
+      },
+      {
+        "id": 3,
+        "name": "Mathematics"
+      },
+      {
+        "id": 2,
+        "name": "Japanese"
+      }
+    ],
+    "Students": [
+      {
+        "id": 39,
+        "student_code": "S0039",
+        "name": "山崎 さくら"
+      }
+    ]
+  },
+  {
+    "id": 27,
+    "name": "小林 蒼",
+    "role": "teacher",
+    "email": "teacher25@example.com",
+    "school_id": 1,
+    "employStatus": "inactive",
+    "last_sign_in_at": "2025-06-08T23:17:35Z",
+    "current_sign_in_at": null,
+    "created_at": "2025-01-25T12:00:00Z",
+    "available_days": [
+      {
+        "id": 3,
+        "name": "Wednesday"
+      },
+      {
+        "id": 1,
+        "name": "Monday"
+      }
+    ],
+    "classSubject": [
+      {
+        "id": 4,
+        "name": "Science"
+      }
+    ],
+    "Students": [
+      {
+        "id": 40,
+        "student_code": "S0040",
+        "name": "新垣 結衣"
+      },
+      {
+        "id": 41,
+        "student_code": "S0041",
+        "name": "伊藤 光"
+      },
+      {
+        "id": 42,
+        "student_code": "S0042",
+        "name": "山口 大地"
+      },
+      {
+        "id": 43,
+        "student_code": "S0043",
+        "name": "木村 直樹"
+      }
+    ]
+  },
+  {
+    "id": 28,
+    "name": "伊藤 心",
+    "role": "teacher",
+    "email": "teacher26@example.com",
+    "school_id": 1,
+    "employStatus": "active",
+    "last_sign_in_at": "2025-07-31T08:06:11Z",
+    "current_sign_in_at": null,
+    "created_at": "2025-01-26T12:00:00Z",
+    "available_days": [
+      {
+        "id": 3,
+        "name": "Wednesday"
+      },
+      {
+        "id": 2,
+        "name": "Tuesday"
+      }
+    ],
+    "classSubject": [
+      {
+        "id": 5,
+        "name": "Social Studies"
+      },
+      {
+        "id": 3,
+        "name": "Mathematics"
+      }
+    ],
+    "Students": [
+      {
+        "id": 44,
+        "student_code": "S0044",
+        "name": "近藤 太郎"
+      },
+      {
+        "id": 45,
+        "student_code": "S0045",
+        "name": "青木 真由"
+      },
+      {
+        "id": 46,
+        "student_code": "S0046",
+        "name": "山本 心"
+      },
+      {
+        "id": 47,
+        "student_code": "S0047",
+        "name": "小林 大輔"
+      }
+    ]
+  },
+  {
+    "id": 29,
+    "name": "青木 直樹",
+    "role": "teacher",
+    "email": "teacher27@example.com",
+    "school_id": 1,
+    "employStatus": "inactive",
+    "last_sign_in_at": "2025-06-10T10:09:02Z",
+    "current_sign_in_at": null,
+    "created_at": "2025-01-27T12:00:00Z",
+    "available_days": [
+      {
+        "id": 5,
+        "name": "Friday"
+      },
+      {
+        "id": 2,
+        "name": "Tuesday"
+      }
+    ],
+    "classSubject": [
+      {
+        "id": 3,
+        "name": "Mathematics"
+      },
+      {
+        "id": 2,
+        "name": "Japanese"
+      },
+      {
+        "id": 5,
+        "name": "Social Studies"
+      }
+    ],
+    "Students": [
+      {
+        "id": 48,
+        "student_code": "S0048",
+        "name": "長谷川 里奈"
+      },
+      {
+        "id": 49,
+        "student_code": "S0049",
+        "name": "木村 心"
+      }
+    ]
+  },
+  {
+    "id": 30,
+    "name": "渡辺 菜々",
+    "role": "teacher",
+    "email": "teacher28@example.com",
+    "school_id": 1,
+    "employStatus": "inactive",
+    "last_sign_in_at": "2025-06-22T20:25:43Z",
+    "current_sign_in_at": null,
+    "created_at": "2025-01-28T12:00:00Z",
+    "available_days": [
+      {
+        "id": 1,
+        "name": "Monday"
+      },
+      {
+        "id": 7,
+        "name": "Sunday"
+      }
+    ],
+    "classSubject": [
+      {
+        "id": 2,
+        "name": "Japanese"
+      },
+      {
+        "id": 3,
+        "name": "Mathematics"
+      }
+    ],
+    "Students": [
+      {
+        "id": 50,
+        "student_code": "S0050",
+        "name": "前田 光"
+      }
+    ]
+  },
+  {
+    "id": 31,
+    "name": "青木 太郎",
+    "role": "teacher",
+    "email": "teacher29@example.com",
+    "school_id": 1,
+    "employStatus": "active",
+    "last_sign_in_at": "2025-06-14T22:33:27Z",
+    "current_sign_in_at": null,
+    "created_at": "2025-01-29T12:00:00Z",
+    "available_days": [
+      {
+        "id": 6,
+        "name": "Saturday"
+      }
+    ],
+    "classSubject": [
+      {
+        "id": 5,
+        "name": "Social Studies"
+      }
+    ],
+    "Students": []
+  },
+  {
+    "id": 32,
+    "name": "上原 光",
+    "role": "teacher",
+    "email": "teacher30@example.com",
+    "school_id": 1,
+    "employStatus": "active",
+    "last_sign_in_at": "2025-07-31T23:07:23Z",
+    "current_sign_in_at": null,
+    "created_at": "2025-01-30T12:00:00Z",
+    "available_days": [
+      {
+        "id": 2,
+        "name": "Tuesday"
+      },
+      {
+        "id": 1,
+        "name": "Monday"
+      }
+    ],
+    "classSubject": [
+      {
+        "id": 3,
+        "name": "Mathematics"
+      },
+      {
+        "id": 1,
+        "name": "English"
+      }
+    ],
+    "Students": [
+      {
+        "id": 51,
+        "student_code": "S0051",
+        "name": "山口 蒼"
+      },
+      {
+        "id": 52,
+        "student_code": "S0052",
+        "name": "井上 蒼"
+      }
+    ]
+  }
+]
