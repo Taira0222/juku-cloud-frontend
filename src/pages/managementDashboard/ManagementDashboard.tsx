@@ -35,7 +35,7 @@ export const ManagementDashboard = () => {
       <AppSidebar variant="inset" data={data} />
       {/** ここがメイン部分 */}
       <SidebarInset>
-        <SiteHeader />
+        <SiteHeader school={user?.school ?? null} />
         <div className="flex flex-1 flex-col">
           {/** ここがメインコンテンツ部分 */}
           <Outlet />

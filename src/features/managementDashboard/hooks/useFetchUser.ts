@@ -20,6 +20,7 @@ export const useFetchUser = () => {
             name: response.data.data.name,
             email: response.data.data.email,
             role: response.data.data.role,
+            school: response.data.data.school.name,
           });
         }
       } catch (err: unknown) {
