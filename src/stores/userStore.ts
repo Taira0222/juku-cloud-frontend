@@ -1,10 +1,11 @@
 import { create } from 'zustand';
 
 type User = {
-  id: string;
+  id: number;
   name: string;
   email: string;
   role: string;
+  school: string;
 };
 
 type UserState = {
