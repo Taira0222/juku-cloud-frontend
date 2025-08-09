@@ -1,8 +1,11 @@
 import { Separator } from '@/components/ui/layout/Separator/separator';
 import { SidebarTrigger } from '@/components/ui/layout/Sidebar/sidebar';
 
-// 生徒の名前を表示する場所として残す
-export const SiteHeader = ({ school }: { school: string | null }) => {
+type SiteHeaderProps = {
+  school: string | null;
+};
+
+export const SiteHeader = ({ school }: SiteHeaderProps) => {
   return (
     <header className="flex h-(--header-height) shrink-0 items-center gap-2 border-b transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-(--header-height)">
       <div className="flex w-full items-center gap-1 px-4 lg:gap-2 lg:px-6">
