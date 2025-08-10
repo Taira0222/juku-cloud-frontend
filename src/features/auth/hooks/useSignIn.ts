@@ -51,6 +51,10 @@ export const useSignIn = () => {
 
           setAuth(authHeader);
           return { ok: true as const };
+        } else {
+          // 認証ヘッダーが不足している場合のエラー処理
+          setError(['認証情報の取得に失敗しました。']);
+          return { ok: false as const };
         }
       } catch (err: unknown) {
         // エラーメッセージを配列として初期化
