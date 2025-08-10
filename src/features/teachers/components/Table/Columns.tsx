@@ -18,14 +18,15 @@ import type { ColumnDef } from '@tanstack/react-table';
 import { Badge } from '@/components/ui/display/Badge/badge';
 import { z } from 'zod';
 import { DetailDrawer } from './DetailDrawer';
-import type { teacherDetailDrawer } from '../../hooks/useFomatTeachersData';
+import type { teacherDetailDrawer } from '../../hooks/Table/useFomatTeachersData';
 import { useSubjectTranslation } from '@/hooks/useSubjectTranslation';
+import { useLastSignInStatus } from '@/hooks/useLastSignInStatus';
 
 export const schema = z.object({
   id: z.number(),
   name: z.string(),
   role: z.string(),
-  employStatus: z.string(),
+  employment_status: z.string(),
   classSubject: z.array(
     z.object({
       id: z.number(),
@@ -33,6 +34,7 @@ export const schema = z.object({
     })
   ),
   studentsCount: z.number(),
+  last_sign_in_at: z.string().nullable(),
 });
 
 // columns を関数として定義し、getDetailDrawerData を受け取る
@@ -95,17 +97,17 @@ export const createColumns = (
     ),
   },
   {
-    accessorKey: 'employStatus',
+    accessorKey: 'employment_status',
     header: '出勤状況',
     cell: ({ row }) => (
       <Badge variant="outline" className="text-muted-foreground px-1.5">
-        {/** Employ Status で分岐する */}
-        {row.original.employStatus === 'active' ? (
+        {/** Employment Status で分岐する */}
+        {row.original.employment_status === 'active' ? (
           <IconCircleCheckFilled className="fill-green-500 dark:fill-green-400" />
         ) : (
           <IconLoader />
         )}
-        {row.original.employStatus}
+        {row.original.employment_status}
       </Badge>
     ),
   },
@@ -120,7 +122,6 @@ export const createColumns = (
       return subjects;
     },
   },
-
   {
     accessorKey: 'studentsCount',
     header: '生徒数',
@@ -129,6 +130,21 @@ export const createColumns = (
         {row.original.studentsCount} 名
       </Badge>
     ),
+  },
+  {
+    accessorKey: 'last_sign_in_at',
+    header: '最終ログイン',
+    cell: ({ row }) => {
+      const { label, colorClass, Icon } = useLastSignInStatus(
+        row.original.last_sign_in_at
+      );
+      return (
+        <Badge variant="outline" className={`px-2 ${colorClass}`}>
+          <Icon />
+          {label}
+        </Badge>
+      );
+    },
   },
   {
     id: 'actions',
