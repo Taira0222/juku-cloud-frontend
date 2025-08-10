@@ -43,7 +43,7 @@ import type {
 } from '@tanstack/react-table';
 import { z } from 'zod';
 import { CSS } from '@dnd-kit/utilities';
-import { useId, useMemo, useState } from 'react';
+import { useEffect, useId, useMemo, useState } from 'react';
 
 import { Button } from '@/components/ui/form/Button/button';
 import {
@@ -71,7 +71,7 @@ import {
 import { Tabs, TabsContent } from '@/components/ui/navigation/Tabs/tabs';
 
 import { schema, createColumns } from './Columns';
-import type { teacherDetailDrawer } from '../../hooks/useFomatTeachersData';
+import type { teacherDetailDrawer } from '../../hooks/Table/useFomatTeachersData';
 
 function DraggableRow({ row }: { row: Row<z.infer<typeof schema>> }) {
   const { transform, transition, setNodeRef, isDragging } = useSortable({
@@ -107,6 +107,10 @@ export const DataTable = ({
   getDetailDrawerData: (id: number) => teacherDetailDrawer | undefined;
 }) => {
   const [data, setData] = useState(() => initialData);
+  // initialData が更新されたら同期
+  useEffect(() => {
+    setData(initialData);
+  }, [initialData]);
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -173,9 +177,10 @@ export const DataTable = ({
   const columnLabelMap: Record<string, string> = {
     name: '名前',
     role: '役割',
-    employStatus: '出勤状況',
+    employment_status: '出勤状況',
     classSubject: '担当科目',
     studentsCount: '生徒数',
+    last_sign_in_at: '最終ログイン',
   };
 
   return (
