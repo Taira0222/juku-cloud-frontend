@@ -2,16 +2,11 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/form/Button/button';
 import { Input } from '@/components/ui/form/Input/input';
 import { Label } from '@/components/ui/form/Label/label';
-import axios from 'axios';
 import { useState, type FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Eye, EyeOff } from 'lucide-react';
-import type {
-  SignUpErrorResponse,
-  SignUpSuccessResponse,
-} from '@/features/auth/types/signUp';
-import { api } from '@/lib/api';
 import { useWarningStore } from '@/stores/warningStore';
+import { useSignUp } from '../../hooks/useSignUp';
 
 export function SignUpForm({
   className,
@@ -22,22 +17,15 @@ export function SignUpForm({
   const [password, setPassword] = useState<string>('');
   const [passwordConfirmation, setPasswordConfirmation] = useState<string>('');
   const [schoolCode, setSchoolCode] = useState<string>('');
-  const [error, setError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState<boolean>(false); // パスワード表示/非表示
   const [showPasswordConfirmation, setShowPasswordConfirmation] =
     useState<boolean>(false); // 確認用パスワード表示/非表示
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const navigate = useNavigate();
   const warningMessage = useWarningStore((state) => state.warningMessage);
-  const setClearWarningMessage = useWarningStore(
-    (state) => state.setClearWarningMessage
-  );
+  const { isSubmitting, error, submit } = useSignUp();
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
-    setError(null);
-    setClearWarningMessage(); // 警告メッセージをクリア
-
     const requestData = {
       name,
       email,
@@ -45,31 +33,15 @@ export function SignUpForm({
       password_confirmation: passwordConfirmation,
       school_code: schoolCode,
     };
+    const result = await submit(requestData);
 
-    if (isSubmitting) return; // すでに送信中の場合は何もしない
-    setIsSubmitting(true); // 送信中フラグを立てる
-
-    try {
-      await api.post<SignUpSuccessResponse>('/auth', requestData);
+    if (result?.ok) {
       navigate('/sign_up/confirmation_sent', {
         replace: true,
         state: { from: '/sign_up' },
       });
-    } catch (err: unknown) {
-      if (axios.isAxiosError<SignUpErrorResponse>(err)) {
-        if (err.response) {
-          setError(
-            err.response?.data?.errors?.full_messages?.join('\n') ||
-              '新規登録に失敗しました。もう一度お試しください。'
-          );
-        } else {
-          setError('新規登録に失敗しました。もう一度お試しください。');
-        }
-      } else {
-        setError('予期しないエラーが発生しました。');
-      }
-    } finally {
-      setIsSubmitting(false); // 送信中フラグを下ろす
+    } else {
+      setPassword('');
     }
   };
 
@@ -93,7 +65,7 @@ export function SignUpForm({
       {error && (
         <div className="text-red-500 text-center text-sm">
           <ul>
-            {error.split('\n').map((message, index) => (
+            {error.map((message, index) => (
               <li key={index} className="mb-1 last:mb-0">
                 {message}
               </li>

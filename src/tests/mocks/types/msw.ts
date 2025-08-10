@@ -1,6 +1,6 @@
 import type {
-  LoginErrorResponse,
-  LoginSuccessResponse,
+  SignInErrorResponse,
+  SignInSuccessResponse,
 } from '@/features/auth/types/auth';
 import type {
   SignUpErrorResponse,
@@ -8,14 +8,16 @@ import type {
 } from '@/features/auth/types/signUp';
 
 // サインインの型定義
-export type LoginPathParams = Record<string, string | undefined>;
+export type SignInPathParams = Record<string, string | undefined>;
 
-export type LoginRequestBodyType = {
+export type SignInRequestBodyType = {
   email: string;
   password: string;
 };
 
-export type LoginResponseBodyType = LoginSuccessResponse | LoginErrorResponse;
+export type SignInResponseBodyType =
+  | SignInSuccessResponse
+  | SignInErrorResponse;
 
 // サインアップの型定義
 export type SignUpPathParams = Record<string, string | undefined>;

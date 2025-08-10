@@ -7,8 +7,8 @@ export type AuthHeader = {
   expiry: string;
 };
 
-// LoginSuccessResponseは、Railsでいうresponse.body の部分です。
-export type LoginSuccessResponse = {
+// SignInSuccessResponseは、Railsでいうresponse.body の部分です。
+export type SignInSuccessResponse = {
   data: {
     email: string;
     provider: string;
@@ -23,8 +23,8 @@ export type LoginSuccessResponse = {
   };
 };
 
-// LoginErrorResponseは、railsでいうresponse.body の部分です。
-export type LoginErrorResponse = {
+// SignInErrorResponseは、railsでいうresponse.body の部分です。
+export type SignInErrorResponse = {
   success: boolean;
-  errors: Array<string>;
+  errors: string[];
 };

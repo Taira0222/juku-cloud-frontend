@@ -2,17 +2,10 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/form/Button/button';
 import { Input } from '@/components/ui/form/Input/input';
 import { Label } from '@/components/ui/form/Label/label';
-import axios from 'axios';
 import { useState, type FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import type {
-  AuthHeader,
-  LoginErrorResponse,
-  LoginSuccessResponse,
-} from '@/features/auth/types/auth';
-import { useAuthStore } from '@/stores/authStore';
 import { useWarningStore } from '@/stores/warningStore';
-import { api } from '@/lib/api';
+import { useSignIn } from '../../hooks/useSignIn';
 
 export function SignInForm({
   className,
@@ -20,71 +13,19 @@ export function SignInForm({
 }: React.ComponentProps<'form'>) {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
-  const { setAuth } = useAuthStore();
   const warningMessage = useWarningStore((state) => state.warningMessage);
-  const setClearWarningMessage = useWarningStore(
-    (state) => state.setClearWarningMessage
-  );
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const { isSubmitting, error, submit } = useSignIn();
 
   const handleSubmit = async (event: FormEvent) => {
-    event.preventDefault(); // フォームのデフォルト動作を防ぐ
-    setError(null); // エラーをリセット
-    setClearWarningMessage(); // 警告メッセージをクリア
+    event.preventDefault();
 
-    if (isSubmitting) return; // すでに送信中の場合は何もしない
-    setIsSubmitting(true); // 送信中フラグを立てる
+    const result = await submit(email, password);
 
-    try {
-      const response = await api.post<LoginSuccessResponse>('/auth/sign_in', {
-        email,
-        password,
-      });
-
-      const headers = response.headers;
-
-      // 必要なプロパティが存在するかチェック
-      if (
-        headers['access-token'] &&
-        headers['client'] &&
-        headers['uid'] &&
-        headers['token-type'] &&
-        headers['expiry']
-      ) {
-        // AuthHeader型に必要なプロパティのみを抽出
-        const authHeader: AuthHeader = {
-          'access-token': headers['access-token'],
-          client: headers['client'],
-          uid: headers['uid'],
-          'token-type': headers['token-type'],
-          expiry: headers['expiry'],
-        };
-
-        setAuth(authHeader);
-        navigate('/students', { replace: true });
-      } else {
-        throw new Error('認証ヘッダーが不足しています');
-      }
-    } catch (err: unknown) {
-      if (axios.isAxiosError<LoginErrorResponse>(err)) {
-        if (err.response) {
-          setError(
-            err.response?.data?.errors?.length > 0
-              ? err.response.data.errors[0]
-              : 'ログインに失敗しました。もう一度お試しください。'
-          );
-        } else {
-          // レスポンスがない場合、一般的なエラーメッセージを設定
-          setError('ログインに失敗しました。もう一度お試しください。');
-        }
-      } else {
-        setError('予期しないエラーが発生しました。');
-      }
-      setPassword(''); // パスワードをクリア
-    } finally {
-      setIsSubmitting(false); // 送信中フラグを下ろす
+    if (result?.ok) {
+      navigate('/students', { replace: true });
+    } else {
+      setPassword('');
     }
   };
   return (
@@ -103,7 +44,17 @@ export function SignInForm({
       {warningMessage && (
         <p className="text-red-500 text-center">{warningMessage}</p>
       )}
-      {error && <p className="text-red-500 text-center">{error}</p>}
+      {error && (
+        <div className="text-red-500 text-center text-sm">
+          <ul>
+            {error.map((message, index) => (
+              <li key={index} className="mb-1 last:mb-0">
+                {message}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       <div className="grid gap-6">
         <div className="grid gap-3">

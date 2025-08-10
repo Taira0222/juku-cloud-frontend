@@ -1,3 +1,11 @@
+export type SignUpRequestData = {
+  name: string;
+  email: string;
+  password: string;
+  password_confirmation: string;
+  school_code: string;
+};
+
 export type SignUpSuccessResponse = {
   data: {
     id: number;
