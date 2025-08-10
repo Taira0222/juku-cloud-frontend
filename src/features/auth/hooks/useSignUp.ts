@@ -41,5 +41,5 @@ export const useSignUp = () => {
     [isSubmitting, setClearWarningMessage]
   );
 
-  return { error, isSubmitting, submit };
+  return { isSubmitting, error, submit };
 };
