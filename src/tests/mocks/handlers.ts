@@ -1,7 +1,7 @@
 import type {
-  LoginPathParams,
-  LoginRequestBodyType,
-  LoginResponseBodyType,
+  SignInPathParams,
+  SignInRequestBodyType,
+  SignInResponseBodyType,
   SignUpPathParams,
   SignUpRequestBodyType,
   SignUpResponseBodyType,
@@ -12,7 +12,7 @@ const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export const handlers = [
   // サインインのハンドラー
-  http.post<LoginPathParams, LoginRequestBodyType, LoginResponseBodyType>(
+  http.post<SignInPathParams, SignInRequestBodyType, SignInResponseBodyType>(
     `${VITE_API_BASE_URL}/api/v1/auth/sign_in`,
     async ({ request }) => {
       // リクエストボディからemailとpasswordを取得
