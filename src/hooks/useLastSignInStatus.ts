@@ -27,7 +27,6 @@ export const useLastSignInStatus = (
   const diffDays = Math.floor((now - last) / (1000 * 60 * 60 * 24));
 
   if (diffDays <= 0) {
-    // 同日でもOKにしたい場合は <= 1 に
     return {
       label: '24時間以内',
       colorClass: 'text-emerald-500',

@@ -30,11 +30,10 @@ const toTeacherRow = (teacher: fetchData): teacherDataTable => ({
   name: teacher.name,
   role: teacher.role,
   employment_status: teacher.employment_status,
-  classSubject:
-    teacher.class_subjects.map((cs) => ({
-      id: cs.id,
-      name: cs.name,
-    })) ?? [],
+  classSubject: teacher.class_subjects.map((cs) => ({
+    id: cs.id,
+    name: cs.name,
+  })),
   studentsCount: teacher.students.length,
   last_sign_in_at: teacher.last_sign_in_at,
 });
@@ -57,23 +56,20 @@ const toTeacherDetailDrawer = (teacher: fetchData): teacherDetailDrawer => ({
     school_stage: student.school_stage,
     grade: student.grade,
   })),
-  teaching_assignments:
-    teacher.teaching_assignments.map((ta) => ({
-      id: ta.id,
-      student_id: ta.student_id,
-      user_id: ta.user_id,
-      teaching_status: ta.teaching_status,
-    })) ?? [],
-  available_days:
-    teacher.available_days.map((day) => ({
-      id: day.id,
-      name: day.name,
-    })) ?? [],
-  class_subjects:
-    teacher.class_subjects.map((cs) => ({
-      id: cs.id,
-      name: cs.name,
-    })) ?? [],
+  teaching_assignments: teacher.teaching_assignments.map((ta) => ({
+    id: ta.id,
+    student_id: ta.student_id,
+    user_id: ta.user_id,
+    teaching_status: ta.teaching_status,
+  })),
+  available_days: teacher.available_days.map((day) => ({
+    id: day.id,
+    name: day.name,
+  })),
+  class_subjects: teacher.class_subjects.map((cs) => ({
+    id: cs.id,
+    name: cs.name,
+  })),
 });
 
 export const useFormatTeachersData = () => {
