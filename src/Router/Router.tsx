@@ -6,12 +6,13 @@ import { SignInPage } from '@/pages/auth/SignInPage';
 import { SignUpPage } from '@/pages/auth/SignUpPage';
 import { ConfirmationSent } from '@/pages/confirm/ConfirmationSentPage';
 import { ConfirmedPage } from '@/pages/confirm/ConfirmedPage';
-import { NotFound } from '@/pages/error/NotFoundPage';
+import { NotFoundPage } from '@/pages/error/NotFoundPage';
 import { AuthRoute } from './AuthRoute';
 import { ManagementDashboard } from '@/pages/managementDashboard/ManagementDashboard';
 import { TeachersPage } from '@/pages/teachers/TeachersPage';
 import { SubjectsPage } from '@/pages/subjects/SubjectsPage';
 import { LearningMaterialsPage } from '@/pages/learningMaterial/LearningMaterialsPage';
+import { ForbiddenPage } from '@/pages/error/ForbiddenPage';
 
 export const Router = () => {
   return (
@@ -29,18 +30,27 @@ export const Router = () => {
       </Route>
       {/** ログイン後のページ */}
       <Route element={<ProtectedRoute />}>
-        {/** ここが管理者ダッシュボードのルート */}
-        <Route element={<ManagementDashboard />}>
-          <Route path="/students" element={<StudentsPage />} />
-          <Route path="/teachers" element={<TeachersPage />} />
-          <Route path="/subjects" element={<SubjectsPage />} />
-          <Route
-            path="/learning_materials"
-            element={<LearningMaterialsPage />}
-          />
+        {/** admin, teacher 共通のページ */}
+        <Route element={<ProtectedRoute allowedRoles={['admin', 'teacher']} />}>
+          <Route element={<ManagementDashboard />}>
+            <Route path="/students" element={<StudentsPage />} />
+          </Route>
+        </Route>
+
+        {/** admin 専用のページ */}
+        <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
+          <Route element={<ManagementDashboard />}>
+            <Route path="/teachers" element={<TeachersPage />} />
+            <Route path="/subjects" element={<SubjectsPage />} />
+            <Route
+              path="/learning_materials"
+              element={<LearningMaterialsPage />}
+            />
+          </Route>
         </Route>
       </Route>
-      <Route path="*" element={<NotFound />} />
+      <Route path="/forbidden" element={<ForbiddenPage />} />
+      <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
 };

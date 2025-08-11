@@ -28,3 +28,10 @@ export type SignInErrorResponse = {
   success: boolean;
   errors: string[];
 };
+
+// SignIn の場合は401のエラー時にredirect は不要
+declare module 'axios' {
+  export interface AxiosRequestConfig {
+    suppressAuthRedirect?: boolean;
+  }
+}
