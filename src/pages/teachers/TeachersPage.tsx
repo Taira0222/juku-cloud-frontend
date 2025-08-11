@@ -1,3 +1,4 @@
+import SpinnerWithText from '@/components/common/status/Loading';
 import { DataTable } from '@/features/teachers/components/Table';
 import { useFetchTeachers } from '@/features/teachers/hooks/Table/useFetchTeachers';
 import { useFormatTeachersData } from '@/features/teachers/hooks/Table/useFomatTeachersData';
@@ -9,7 +10,9 @@ export const TeachersPage = () => {
   if (loading) {
     return (
       <div className="p-6">
-        <div className="flex items-center justify-center h-32">Loading...</div>
+        <SpinnerWithText className="flex items-center justify-center h-32">
+          Loading...
+        </SpinnerWithText>
       </div>
     );
   }

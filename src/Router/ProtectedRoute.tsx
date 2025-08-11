@@ -1,36 +1,33 @@
+import SpinnerWithText from '@/components/common/status/Loading';
+import { useFetchUser } from '@/features/managementDashboard/hooks/useFetchUser';
 import { useAuthStore } from '@/stores/authStore';
-import { useWarningStore } from '@/stores/warningStore';
-import { useEffect } from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { useUserStore } from '@/stores/userStore';
+import { Navigate, Outlet } from 'react-router-dom';
 
-export const ProtectedRoute = () => {
-  const auth = useAuthStore((state) => state.auth);
+type Role = 'admin' | 'teacher';
+
+type Props = {
+  allowedRoles?: Role[];
+};
+
+export const ProtectedRoute = ({ allowedRoles }: Props) => {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
-  const navigate = useNavigate();
-  const setWarningMessage = useWarningStore((state) => state.setWarningMessage);
-  const MILLISECONDS_IN_SECOND: number = 1000;
+  const user = useUserStore((state) => state.user);
+  // ManagementDashboard でやっていたユーザー情報取得をここに移動
+  useFetchUser();
 
-  useEffect(() => {
-    // 認証情報が不完全または存在しない場合はログインページへリダイレクト
-    if (!isAuthenticated()) {
-      setWarningMessage('認証情報が不完全です。ログインしてください。');
-      navigate('/sign_in');
+  // 認証・期限チェック
+  if (!isAuthenticated()) {
+    return <Navigate to="/sign_in" />;
+  }
+  if (allowedRoles) {
+    if (!user) {
+      return <SpinnerWithText>Loading ...</SpinnerWithText>;
     }
-
-    // expiry がnullの可能性があることを考慮
-    const expiryTimestamp = auth?.expiry ? Number(auth.expiry) : null;
-    // expiry が存在し、かつ現在の時刻よりも前の場合はログインページへリダイレクト
-    // NaNは期限切れとして扱う
-    if (
-      expiryTimestamp !== null &&
-      (Number.isNaN(expiryTimestamp) ||
-        expiryTimestamp * MILLISECONDS_IN_SECOND < Date.now())
-    ) {
-      setWarningMessage('セッションが期限切れです。再度ログインしてください。');
-      navigate('/sign_in');
+    if (!allowedRoles.includes(user.role as Role)) {
+      return <Navigate to="/forbidden" />;
     }
-  }, [auth, isAuthenticated, navigate, setWarningMessage]);
+  }
 
-  // 認証情報が完全な場合は子コンポーネントを表示
-  return isAuthenticated() ? <Outlet /> : null;
+  return <Outlet />;
 };

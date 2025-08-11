@@ -7,12 +7,9 @@ import {
 import { useUserStore } from '@/stores/userStore';
 import { Outlet } from 'react-router-dom';
 import { getManagementDashboardData } from '@/features/managementDashboard/components/getManagementDashboardData';
-import { useFetchUser } from '@/features/managementDashboard/hooks/useFetchUser';
 
 export const ManagementDashboard = () => {
   const user = useUserStore((state) => state.user);
-  // ユーザーデータを取得するカスタムフック
-  useFetchUser();
 
   const data = getManagementDashboardData({
     role: user?.role ?? null,

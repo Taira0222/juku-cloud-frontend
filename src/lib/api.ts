@@ -1,5 +1,10 @@
 import { useAuthStore } from '@/stores/authStore';
-import axios, { type InternalAxiosRequestConfig } from 'axios';
+import { useNavStore } from '@/stores/navStore';
+import { useWarningStore } from '@/stores/warningStore';
+import axios, {
+  type AxiosRequestConfig,
+  type InternalAxiosRequestConfig,
+} from 'axios';
 
 export const api = axios.create({
   // APIのベースURLを環境変数から取得
@@ -17,6 +22,8 @@ const HEADER_EXPIRY = 'expiry';
 
 // HTTPステータスコードの定数を定義
 const HTTP_STATUS_UNAUTHORIZED = 401;
+const HTTP_STATUS_FORBIDDEN = 403;
+const HTTP_STATUS_NOT_FOUND = 404;
 
 // Zustand の状態をモジュールレベルで取得
 const authStore = useAuthStore.getState();
@@ -62,10 +69,26 @@ api.interceptors.response.use(
   (error) => {
     // clearAuth は 更新関数なので最初のスナップショットを取得
     const { clearAuth } = authStore;
-    // 401エラーの場合は認証情報をクリア
-    if (error.response?.status === HTTP_STATUS_UNAUTHORIZED) {
+    const { setNextPath } = useNavStore.getState();
+    const { setWarningMessage } = useWarningStore.getState();
+    const status = error.response?.status;
+
+    const cfg = error?.config as AxiosRequestConfig | undefined;
+
+    if (status === HTTP_STATUS_UNAUTHORIZED) {
       clearAuth();
+      if (!cfg?.suppressAuthRedirect) {
+        setWarningMessage('認証情報が不完全です。ログインしてください。');
+        setNextPath('/sign_in', { replace: true });
+      }
     }
+    if (status === HTTP_STATUS_FORBIDDEN) {
+      setNextPath('/forbidden');
+    }
+    if (status === HTTP_STATUS_NOT_FOUND) {
+      setNextPath('/404');
+    }
+
     return Promise.reject(error);
   }
 );
