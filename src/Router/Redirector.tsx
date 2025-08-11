@@ -11,9 +11,9 @@ export const Redirector = () => {
   useEffect(() => {
     if (!nextPath) return;
     navigate(nextPath, { replace });
-    // NextPath リセット
+    //ナビゲーション実行後にnextPathをクリア
     clearNextPath();
-  }, [nextPath, replace, navigate]);
+  }, [nextPath, replace, navigate, clearNextPath]);
 
   return null;
 };

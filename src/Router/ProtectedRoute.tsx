@@ -1,3 +1,4 @@
+import SpinnerWithText from '@/components/common/status/Loading';
 import { useFetchUser } from '@/features/managementDashboard/hooks/useFetchUser';
 import { useAuthStore } from '@/stores/authStore';
 import { useUserStore } from '@/stores/userStore';
@@ -20,7 +21,9 @@ export const ProtectedRoute = ({ allowedRoles }: Props) => {
     return <Navigate to="/sign_in" />;
   }
   if (allowedRoles) {
-    if (!user) return null;
+    if (!user) {
+      return <SpinnerWithText>Loading ...</SpinnerWithText>;
+    }
     if (!allowedRoles.includes(user.role as Role)) {
       return <Navigate to="/forbidden" />;
     }
