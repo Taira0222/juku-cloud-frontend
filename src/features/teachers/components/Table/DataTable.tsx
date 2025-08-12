@@ -23,7 +23,6 @@ import {
   IconChevronsLeft,
   IconChevronsRight,
   IconLayoutColumns,
-  IconPlus,
 } from '@tabler/icons-react';
 import {
   flexRender,
@@ -72,6 +71,7 @@ import { Tabs, TabsContent } from '@/components/ui/navigation/Tabs/tabs';
 
 import { schema, createColumns } from './Columns';
 import type { teacherDetailDrawer } from '../../hooks/Table/useFomatTeachersData';
+import { CreateDialog } from './CreateDialog';
 
 function DraggableRow({ row }: { row: Row<z.infer<typeof schema>> }) {
   const { transform, transition, setNodeRef, isDragging } = useSortable({
@@ -244,10 +244,7 @@ export const DataTable = ({
                 })}
             </DropdownMenuContent>
           </DropdownMenu>
-          <Button variant="outline" size="sm">
-            <IconPlus />
-            <span className="hidden lg:inline">講師の追加</span>
-          </Button>
+          <CreateDialog />
         </div>
         {/** Outline タブの内容 */}
       </div>
@@ -384,21 +381,6 @@ export const DataTable = ({
             </div>
           </div>
         </div>
-      </TabsContent>
-      <TabsContent
-        value="past-performance"
-        className="flex flex-col px-4 lg:px-6"
-      >
-        <div className="aspect-video w-full flex-1 rounded-lg border border-dashed"></div>
-      </TabsContent>
-      <TabsContent value="key-personnel" className="flex flex-col px-4 lg:px-6">
-        <div className="aspect-video w-full flex-1 rounded-lg border border-dashed"></div>
-      </TabsContent>
-      <TabsContent
-        value="focus-documents"
-        className="flex flex-col px-4 lg:px-6"
-      >
-        <div className="aspect-video w-full flex-1 rounded-lg border border-dashed"></div>
       </TabsContent>
     </Tabs>
   );
