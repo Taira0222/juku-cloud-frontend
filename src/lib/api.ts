@@ -67,14 +67,27 @@ api.interceptors.response.use(
     return response;
   },
   (error) => {
+    // AxiosError 以外はそのまま投げる
+    if (!axios.isAxiosError(error)) {
+      // 想定外（コードバグなど）はそのまま投げる
+      return Promise.reject(error);
+    }
     // clearAuth は 更新関数なので最初のスナップショットを取得
     const { clearAuth } = authStore;
     const { setNextPath } = useNavStore.getState();
     const { setWarningMessage } = useWarningStore.getState();
     const status = error.response?.status;
-
     const cfg = error?.config as AxiosRequestConfig | undefined;
 
+    // ネットワーク/タイムアウト等（response が無い）
+    if (!status) {
+      setWarningMessage(
+        'ネットワークエラーが発生しました。しばらくしてから再度お試しください。'
+      );
+      return Promise.reject(error);
+    }
+
+    // ステータスによるエラー
     if (status === HTTP_STATUS_UNAUTHORIZED) {
       clearAuth();
       if (!cfg?.suppressAuthRedirect) {

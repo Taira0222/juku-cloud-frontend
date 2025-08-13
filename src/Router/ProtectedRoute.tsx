@@ -22,7 +22,11 @@ export const ProtectedRoute = ({ allowedRoles }: Props) => {
   }
   if (allowedRoles) {
     if (!user) {
-      return <SpinnerWithText>Loading ...</SpinnerWithText>;
+      return (
+        <div className="flex items-center justify-center min-h-screen">
+          <SpinnerWithText>Loading ...</SpinnerWithText>
+        </div>
+      );
     }
     if (!allowedRoles.includes(user.role as Role)) {
       return <Navigate to="/forbidden" />;
