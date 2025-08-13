@@ -81,6 +81,9 @@ api.interceptors.response.use(
 
     // ネットワーク/タイムアウト等（response が無い）
     if (!status) {
+      setWarningMessage(
+        'ネットワークエラーが発生しました。しばらくしてから再度お試しください。'
+      );
       return Promise.reject(error);
     }
 

@@ -45,7 +45,6 @@ export const CreateDialog = () => {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      // フォールバック: テキストを選択状態にしてユーザーに案内
       setCopied(false);
       setCopyError('コピーに失敗しました。');
     }
@@ -102,7 +101,7 @@ export const CreateDialog = () => {
               )}
               {copyError && <p className="text-xs text-red-500">{copyError}</p>}
               <p className="text-sm text-muted-foreground">
-                ※1講師あたり1つのリンクを送信するようにしてください。
+                ※同じリンク（トークン）を複数の講師に送らないでください。1人の講師につき1つのリンクを送信してください。
               </p>
             </div>
 
