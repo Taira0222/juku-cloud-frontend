@@ -19,6 +19,7 @@ import { useFetchInviteToken } from '../../hooks/Table/useFetchInviteToken';
 export const CreateDialog = () => {
   const [open, setOpen] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [copyError, setCopyError] = useState<string | null>(null);
   const { inviteToken, error, loading, refetch, reset } = useFetchInviteToken();
   const inviteUrl = inviteToken
     ? `${import.meta.env.VITE_FRONTEND_BASE_URL}/sign_up?token=${
@@ -28,21 +29,25 @@ export const CreateDialog = () => {
 
   useEffect(() => {
     if (open) {
-      refetch(); // 開いたら毎回取り直す
+      refetch();
+      setCopyError(null);
+      setCopied(false);
     } else {
-      reset(); // 閉じたら消す（漏れ防止）
+      reset();
     }
   }, [open, refetch, reset]);
 
   const copy = async () => {
+    if (!inviteUrl) return;
+    setCopyError(null);
     try {
       await navigator.clipboard.writeText(inviteUrl);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      alert(
-        'お使いの環境では自動コピーできません。URLを手動でコピーしてください。'
-      );
+      // フォールバック: テキストを選択状態にしてユーザーに案内
+      setCopied(false);
+      setCopyError('コピーに失敗しました。');
     }
   };
 
@@ -55,13 +60,18 @@ export const CreateDialog = () => {
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-lg">
-        {loading ? (
+        {/* API の読み込み中 */}
+        {loading && (
           <div className="flex items-center justify-center h-32">
             <SpinnerWithText>Loading...</SpinnerWithText>
           </div>
-        ) : error ? (
-          <div className="text-red-500">{error}</div>
-        ) : (
+        )}
+        {/* エラーメッセージの表示 */}
+        {!loading && error && (
+          <div className="text-sm text-red-500">{error}</div>
+        )}{' '}
+        {/* 正常時のレンダリング */}
+        {!loading && !error && (
           <>
             <DialogHeader>
               <DialogTitle>招待リンクを共有</DialogTitle>
@@ -73,16 +83,24 @@ export const CreateDialog = () => {
             <div className="space-y-3">
               <label className="text-sm text-muted-foreground">招待URL</label>
               <div className="flex gap-2">
-                <Input value={inviteUrl} readOnly className="font-mono" />
+                <Input
+                  value={inviteUrl}
+                  readOnly
+                  className="font-mono"
+                  onFocus={(e) => e.currentTarget.select()}
+                />
                 <Button variant="secondary" onClick={copy}>
                   {copied ? (
-                    <Check className="size-4" />
+                    <Check className="size-4 text-green-600" />
                   ) : (
                     <Copy className="size-4" />
                   )}
                 </Button>
               </div>
-
+              {copied && (
+                <p className="text-xs text-green-600">コピーしました。</p>
+              )}
+              {copyError && <p className="text-xs text-red-500">{copyError}</p>}
               <p className="text-sm text-muted-foreground">
                 ※1講師あたり1つのリンクを送信するようにしてください。
               </p>

@@ -1,6 +1,10 @@
 import { useCallback, useState } from 'react';
-import type { InviteTokenSuccessResponse } from '../../types/inviteToken';
+import type {
+  InviteTokenErrorResponse,
+  InviteTokenSuccessResponse,
+} from '../../types/inviteToken';
 import { inviteTokenApi } from '../../services/inviteTokenApi';
+import { isAxiosError } from 'axios';
 
 export const useFetchInviteToken = () => {
   const [inviteToken, setInviteToken] =
@@ -14,8 +18,16 @@ export const useFetchInviteToken = () => {
     try {
       const data = await inviteTokenApi();
       setInviteToken(data);
-    } catch {
-      setError('予期せぬエラーが発生しました。');
+    } catch (err) {
+      let errorMessage = '予期せぬエラーが発生しました。';
+      // 401,403,404 以外のエラーの場合
+      if (isAxiosError<InviteTokenErrorResponse>(err)) {
+        errorMessage =
+          err.response?.data.message ?? '予期せぬエラーが発生しました。';
+      } else if (err instanceof Error && err.message) {
+        errorMessage = err.message;
+      }
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
