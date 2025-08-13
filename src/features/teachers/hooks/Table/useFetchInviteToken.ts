@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import type { InviteTokenSuccessResponse } from '../../types/inviteToken';
 import { inviteTokenApi } from '../../services/inviteTokenApi';
 
@@ -25,11 +25,6 @@ export const useFetchInviteToken = () => {
     setInviteToken(null);
     setError(null);
   }, []);
-
-  // 初回 のデータ取得
-  useEffect(() => {
-    refetch();
-  }, [refetch]);
 
   return { inviteToken, error, loading, refetch, reset };
 };
