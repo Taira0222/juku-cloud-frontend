@@ -43,9 +43,11 @@ describe('SignUp integration tests', () => {
       expect(screen.getByText(`${SCHOOL_NAME}へようこそ`)).toBeInTheDocument();
     });
 
-    expect(seen).toHaveBeenCalled(); // 呼ばれたか？
-    expect(seen).toHaveBeenCalledWith('123456'); // 引数が正しいか？
-    expect(seen).toHaveBeenCalledTimes(1); // 回数が正しいか？
+    await waitFor(() => {
+      expect(seen).toHaveBeenCalled(); // 呼ばれたか？
+      expect(seen).toHaveBeenCalledWith('123456'); // 引数が正しいか？
+      expect(seen).toHaveBeenCalledTimes(1); // 回数が正しいか？
+    });
 
     const user = userEvent.setup();
 
