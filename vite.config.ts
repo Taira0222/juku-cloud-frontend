@@ -16,6 +16,9 @@ export default defineConfig({
     },
   },
   test: {
+    env: {
+      VITE_API_BASE_URL: 'http://api.example.com',
+    },
     globals: true,
     environment: 'happy-dom',
     setupFiles: ['./vitest-setup.ts'],

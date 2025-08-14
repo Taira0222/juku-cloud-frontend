@@ -22,9 +22,11 @@ describe('SignUp integration tests', () => {
     server.events.removeAllListeners('request:match');
 
     server.events.on('request:match', ({ request }) => {
-      // 例: "/api/v1/invites/123456" or "http://.../api/v1/invites/123456?x=y"
-      const m = request.url.match(/\/api\/v1\/invites\/([^/?#]+)/);
-      if (m) seen(m[1]); // m[1] が token
+      const { pathname } = new URL(request.url);
+      if (pathname.startsWith('/api/v1/invites/')) {
+        const token = pathname.split('/').pop();
+        seen(token);
+      }
     });
   });
 
