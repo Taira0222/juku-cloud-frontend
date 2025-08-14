@@ -5,6 +5,9 @@ import type {
   SignUpPathParams,
   SignUpRequestBodyType,
   SignUpResponseBodyType,
+  TokenConfirmPathParams,
+  TokenConfirmRequestBodyType,
+  TokenConfirmResponseBodyType,
 } from '@/tests/mocks/types/msw';
 import { http, HttpResponse } from 'msw';
 
@@ -73,8 +76,7 @@ export const handlers = [
     `${VITE_API_BASE_URL}/api/v1/auth`,
     async ({ request }) => {
       const body = await request.json();
-      const { email, password, password_confirmation, school_code, name } =
-        body;
+      const { email, password, password_confirmation, token, name } = body;
 
       // エラーを収集する配列
       const errors: { [key: string]: string[] } = {};
@@ -100,7 +102,7 @@ export const handlers = [
       }
 
       // 学校コードの有効性チェック
-      if (school_code !== '123456') {
+      if (token !== '123456') {
         errors.school_code = ['学校コードが無効です。'];
         fullMessages.push(errors.school_code[0]);
       }
@@ -158,4 +160,29 @@ export const handlers = [
       );
     }
   ),
+  http.get<
+    TokenConfirmPathParams,
+    TokenConfirmRequestBodyType,
+    TokenConfirmResponseBodyType
+  >(`${VITE_API_BASE_URL}/api/v1/invites/:token`, ({ params }) => {
+    try {
+      const token = params.token;
+      if (token !== '123456') {
+        return HttpResponse.json(
+          { message: 'この招待リンクは無効か期限切れです。' },
+          { status: 404 }
+        );
+      }
+
+      return HttpResponse.json(
+        { school_name: 'First_school' },
+        { status: 200 }
+      );
+    } catch {
+      return HttpResponse.json(
+        { message: '予期せぬエラーが発生しました。' },
+        { status: 500 }
+      );
+    }
+  }),
 ];

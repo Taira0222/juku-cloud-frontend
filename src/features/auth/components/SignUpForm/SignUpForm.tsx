@@ -2,21 +2,28 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/form/Button/button';
 import { Input } from '@/components/ui/form/Input/input';
 import { Label } from '@/components/ui/form/Label/label';
-import { useState, type FormEvent } from 'react';
+import { useState, type ComponentProps, type FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Eye, EyeOff } from 'lucide-react';
 import { useWarningStore } from '@/stores/warningStore';
 import { useSignUp } from '../../hooks/useSignUp';
+import type { TokenConfirmSuccessResponse } from '../../types/tokenConfirm';
+
+type SignUpFormProps = ComponentProps<'form'> & {
+  token: string | null;
+  data: TokenConfirmSuccessResponse | null;
+};
 
 export function SignUpForm({
   className,
+  token,
+  data,
   ...props
-}: React.ComponentProps<'form'>) {
+}: SignUpFormProps) {
   const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [passwordConfirmation, setPasswordConfirmation] = useState<string>('');
-  const [schoolCode, setSchoolCode] = useState<string>('');
   const [showPassword, setShowPassword] = useState<boolean>(false); // パスワード表示/非表示
   const [showPasswordConfirmation, setShowPasswordConfirmation] =
     useState<boolean>(false); // 確認用パスワード表示/非表示
@@ -31,7 +38,7 @@ export function SignUpForm({
       email,
       password,
       password_confirmation: passwordConfirmation,
-      school_code: schoolCode,
+      token: token,
     };
     const result = await submit(requestData);
 
@@ -53,6 +60,9 @@ export function SignUpForm({
     >
       <div className="flex flex-col items-center gap-2 text-center ">
         <h1 className="text-2xl font-bold">アカウントを新規作成</h1>
+        <h2 className="text-muted-foreground text-sm">
+          {data?.school_name}へようこそ
+        </h2>
         <p className="text-muted-foreground text-sm text-balance">
           名前とメールアドレスを入力してください
         </p>
@@ -94,18 +104,6 @@ export function SignUpForm({
             placeholder="m@example.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-
-        <div className="grid gap-3">
-          <Label htmlFor="school_code">学校コード</Label>
-          <Input
-            id="school_code"
-            type="text"
-            placeholder="例: 123456"
-            value={schoolCode}
-            onChange={(e) => setSchoolCode(e.target.value)}
             required
           />
         </div>
