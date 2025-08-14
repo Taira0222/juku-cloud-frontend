@@ -7,6 +7,7 @@ import { server } from '@/tests/mocks/server';
 
 // 学校名
 const SCHOOL_NAME = 'First_school';
+const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 // テスト用のコンポーネント
 const ConfirmationSent = () => (
@@ -21,9 +22,23 @@ describe('SignUp integration tests', () => {
     seen = vi.fn();
     server.events.removeAllListeners('request:match');
     server.events.on('request:match', ({ request }) => {
-      const { pathname } = new URL(request.url);
+      // 相対URLにも耐える
+      const toURL = (u: string) => {
+        try {
+          return new URL(u);
+        } catch {
+          return new URL(u, VITE_API_BASE_URL); // ベースを補う
+        }
+      };
+
+      const url = toURL(request.url);
+      const pathname = url.pathname;
+
+      // '/api/v1/invites/123456' だけでなく '/api/v1/invites/123456/' やクエリ付きにも対応
       if (pathname.startsWith('/api/v1/invites/')) {
-        const token = pathname.split('/').pop();
+        const clean = pathname.replace(/\/+$/, ''); // 末尾スラッシュ除去
+        const last = clean.split('/').pop() ?? '';
+        const token = last.split('?')[0]; // 念のためクエリ除去
         seen(token);
       }
     });
