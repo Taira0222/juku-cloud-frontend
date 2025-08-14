@@ -180,7 +180,7 @@ export const DataTable = ({
     employment_status: '出勤状況',
     classSubject: '担当科目',
     studentsCount: '生徒数',
-    last_sign_in_at: '最終ログイン',
+    current_sign_in_at: '直近ログイン',
   };
 
   return (

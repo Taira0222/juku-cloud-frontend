@@ -20,7 +20,7 @@ import { z } from 'zod';
 import { DetailDrawer } from './DetailDrawer';
 import type { teacherDetailDrawer } from '../../hooks/Table/useFomatTeachersData';
 import { useSubjectTranslation } from '@/hooks/useSubjectTranslation';
-import { useLastSignInStatus } from '@/hooks/useLastSignInStatus';
+import { useSignInStatus } from '@/hooks/useSignInStatus';
 
 export const schema = z.object({
   id: z.number(),
@@ -34,7 +34,7 @@ export const schema = z.object({
     })
   ),
   studentsCount: z.number(),
-  last_sign_in_at: z.string().nullable(),
+  current_sign_in_at: z.string().nullable(),
 });
 
 // columns を関数として定義し、getDetailDrawerData を受け取る
@@ -132,11 +132,11 @@ export const createColumns = (
     ),
   },
   {
-    accessorKey: 'last_sign_in_at',
-    header: '最終ログイン',
+    accessorKey: 'current_sign_in_at',
+    header: '直近ログイン',
     cell: ({ row }) => {
-      const { label, colorClass, Icon } = useLastSignInStatus(
-        row.original.last_sign_in_at
+      const { label, colorClass, Icon } = useSignInStatus(
+        row.original.current_sign_in_at
       );
       return (
         <Badge variant="outline" className={`px-2 ${colorClass}`}>

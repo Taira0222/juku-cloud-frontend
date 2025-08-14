@@ -12,22 +12,17 @@ import { Label } from '@/components/ui/form/Label/label';
 import type { teacherDetailDrawer } from '../../hooks/Table/useFomatTeachersData';
 import { useIsMobile } from '@/hooks/useMobile';
 import { Badge } from '@/components/ui/display/Badge/badge';
-import {
-  IconCircle,
-  IconCircleCheckFilled,
-  IconLoader,
-  IconX,
-} from '@tabler/icons-react';
+import { IconCircleCheckFilled, IconLoader, IconX } from '@tabler/icons-react';
 import { useSubjectTranslation } from '@/hooks/useSubjectTranslation';
 import { useDayOfWeekTranslation } from '@/hooks/useDayOfWeekTranslation';
 import { Fragment } from 'react/jsx-runtime';
-import { useLastSignInStatus } from '@/hooks/useLastSignInStatus';
+import { useSignInStatus } from '@/hooks/useSignInStatus';
 
 export const DetailDrawer = ({ item }: { item: teacherDetailDrawer }) => {
   const isMobile = useIsMobile();
   const { createIconTranslationBadge } = useSubjectTranslation();
   const { translate } = useDayOfWeekTranslation();
-  const { label, colorClass, Icon } = useLastSignInStatus(item.last_sign_in_at);
+  const { label, colorClass, Icon } = useSignInStatus(item.current_sign_in_at);
 
   return (
     <Drawer direction={isMobile ? 'bottom' : 'right'}>
@@ -138,29 +133,10 @@ export const DetailDrawer = ({ item }: { item: teacherDetailDrawer }) => {
             </p>
           </div>
           <div className="flex flex-col gap-2">
-            <Label htmlFor="lastLogin">最終ログイン</Label>
+            <Label htmlFor="lastLogin">直近ログイン</Label>
             <Badge variant="outline" className={`px-2 ${colorClass}`}>
               <Icon />
               {label}
-            </Badge>
-          </div>
-          <div className="flex flex-col gap-2">
-            <Label htmlFor="currentLogin">現在のログイン状況</Label>
-            <Badge
-              variant="outline"
-              className="text-muted-foreground px-1.5 gap-1"
-            >
-              {item.current_sign_in_at !== null ? (
-                <>
-                  <IconCircleCheckFilled className="h-4 w-4 fill-green-500 dark:fill-green-400" />
-                  <span>ログイン中</span>
-                </>
-              ) : (
-                <>
-                  <IconCircle className="h-4 w-4" />
-                  <span>未ログイン</span>
-                </>
-              )}
             </Badge>
           </div>
         </div>
