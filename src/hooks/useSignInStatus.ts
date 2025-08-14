@@ -44,7 +44,7 @@ export const useSignInStatus = (signInAt: string | null): StatusMeta => {
     };
   }
 
-  // 12時間より上で24時間以内なら時間単位で表示
+  // 12時間より上で24時間以内なら24時間以内で固定
   if (diffDays <= 0) {
     return {
       label: '24時間以内',
