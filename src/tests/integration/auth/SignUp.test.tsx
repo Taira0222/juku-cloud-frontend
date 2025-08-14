@@ -3,7 +3,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
 import { SignUpPage } from '@/pages/auth/SignUpPage';
-import { server } from '@/tests/mocks/server';
+import { server } from '@/tests/fixtures/server/server';
 
 // 学校名
 const SCHOOL_NAME = 'First_school';

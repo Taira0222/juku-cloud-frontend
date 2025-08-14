@@ -8,7 +8,7 @@ import type {
   TokenConfirmPathParams,
   TokenConfirmRequestBodyType,
   TokenConfirmResponseBodyType,
-} from '@/tests/mocks/types/msw';
+} from '@/tests/fixtures/server/types/msw';
 import { http, HttpResponse } from 'msw';
 
 const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
