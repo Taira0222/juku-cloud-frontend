@@ -12,13 +12,18 @@ export type teacherDataTable = {
     name: string;
   }[];
   studentsCount: number;
-  last_sign_in_at: string | null;
+  current_sign_in_at: string | null;
 };
 
 // 詳細情報を表示するためのデータ
 export type teacherDetailDrawer = Omit<
   currentUser,
-  'provider' | 'uid' | 'allow_password_change' | 'updated_at' | 'school_id'
+  | 'provider'
+  | 'uid'
+  | 'allow_password_change'
+  | 'updated_at'
+  | 'school_id'
+  | 'last_sign_in_at'
 >;
 
 // toTeacherRow や toTeacherDetailDrawer に渡すデータの型(currentUser や teachers)
@@ -35,7 +40,7 @@ const toTeacherRow = (teacher: fetchData): teacherDataTable => ({
     name: cs.name,
   })),
   studentsCount: teacher.students.length,
-  last_sign_in_at: teacher.last_sign_in_at,
+  current_sign_in_at: teacher.current_sign_in_at,
 });
 
 // 詳細情報用の値に成形する
@@ -46,7 +51,6 @@ const toTeacherDetailDrawer = (teacher: fetchData): teacherDetailDrawer => ({
   email: teacher.email,
   created_at: teacher.created_at,
   employment_status: teacher.employment_status,
-  last_sign_in_at: teacher.last_sign_in_at,
   current_sign_in_at: teacher.current_sign_in_at,
   students: teacher.students.map((student) => ({
     id: student.id,
