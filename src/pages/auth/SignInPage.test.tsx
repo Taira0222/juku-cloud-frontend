@@ -11,8 +11,6 @@ describe('SignIn component unit tests', () => {
       </MemoryRouter>
     );
 
-    // Juku Cloud が表示されていることを確認
-
     const title = screen.getByText('Juku Cloud');
     expect(title).toBeInTheDocument();
   });
