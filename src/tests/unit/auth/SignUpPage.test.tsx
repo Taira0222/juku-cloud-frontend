@@ -18,7 +18,7 @@ beforeEach(() => {
   vi.clearAllMocks();
 });
 
-// テスト用のコンポーネント
+//テスト用: NotFoundPageコンポーネントのダミー実装
 const NotFoundPage = () => <div data-testid="not-found">Not Found Page</div>;
 // 学校名
 const SCHOOL_NAME = 'First_school';
@@ -107,37 +107,6 @@ describe('SignUpForm component unit tests', () => {
     expect(passwordInput).toBeInTheDocument();
     expect(passwordConfirmationInput).toBeInTheDocument();
     expect(submitButton).toBeInTheDocument();
-  });
-
-  test('password visibility toggle works correctly', async () => {
-    // ユーザーイベントをセットアップ
-    const user = userEvent.setup();
-
-    // aria-labelをgetByLabelTextで取得
-    const passwordInput = screen.getByLabelText('パスワード');
-    const passwordConfirmationInput = screen.getByLabelText('パスワード確認');
-    // パスワード表示/非表示のトグルボタンを取得
-    const toggleButton = screen.getByLabelText('パスワードを表示');
-    const toggleConfirmationButton =
-      screen.getByLabelText('パスワード確認を表示');
-
-    // 初期状態ではパスワードは非表示
-    expect(passwordInput).toHaveAttribute('type', 'password');
-    expect(passwordConfirmationInput).toHaveAttribute('type', 'password');
-
-    // パスワード表示ボタンをクリック
-    // await でユーザーイベントを待つ
-    await user.click(toggleButton);
-    await user.click(toggleConfirmationButton);
-    expect(passwordInput).toHaveAttribute('type', 'text');
-    expect(passwordConfirmationInput).toHaveAttribute('type', 'text');
-
-    // 再度クリックして非表示に戻す
-    // await でユーザーイベントを待つ
-    await user.click(toggleButton);
-    await user.click(toggleConfirmationButton);
-    expect(passwordInput).toHaveAttribute('type', 'password');
-    expect(passwordConfirmationInput).toHaveAttribute('type', 'password');
   });
 
   test('password visibility toggle works correctly', async () => {

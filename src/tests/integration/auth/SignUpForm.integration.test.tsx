@@ -4,6 +4,7 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
 import { SignUpPage } from '@/pages/auth/SignUpPage';
 import { server } from '@/tests/mocks/server';
+import { afterEach } from 'node:test';
 
 // 学校名
 const SCHOOL_NAME = 'First_school';
@@ -13,6 +14,10 @@ const ConfirmationSent = () => (
   <div data-testid="confirmation-sent">Confirmation Sent Page</div>
 );
 const NotFoundPage = () => <div data-testid="not-found">Not Found Page</div>;
+
+afterEach(() => {
+  vi.clearAllMocks();
+});
 
 describe('SignUp integration tests', () => {
   // mswからschool_nameを取得
@@ -88,6 +93,11 @@ describe('SignUp integration tests', () => {
       expect(screen.getByText(`${SCHOOL_NAME}へようこそ`)).toBeInTheDocument();
     });
 
+    await waitFor(() => {
+      expect(seen).toHaveBeenCalled(); // 呼ばれたか？
+      expect(seen).toHaveBeenCalledWith('123456'); // 引数が正しいか？
+    });
+
     const user = userEvent.setup();
 
     const nameInput = screen.getByPlaceholderText('山田 太郎');
@@ -132,6 +142,11 @@ describe('SignUp integration tests', () => {
     // ページ遷移の確認
     await waitFor(() => {
       expect(screen.getByTestId('not-found')).toBeInTheDocument();
+    });
+
+    await waitFor(() => {
+      expect(seen).toHaveBeenCalled(); // 呼ばれたか？
+      expect(seen).toHaveBeenCalledWith('24680'); // 引数が正しいか？
     });
   });
 });
