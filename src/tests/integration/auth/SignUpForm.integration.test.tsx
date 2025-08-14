@@ -1,10 +1,9 @@
-import { describe, expect, test, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
 import { SignUpPage } from '@/pages/auth/SignUpPage';
 import { server } from '@/tests/mocks/server';
-import { afterEach } from 'node:test';
 
 // 学校名
 const SCHOOL_NAME = 'First_school';
@@ -15,19 +14,24 @@ const ConfirmationSent = () => (
 );
 const NotFoundPage = () => <div data-testid="not-found">Not Found Page</div>;
 
-afterEach(() => {
-  vi.clearAllMocks();
-});
-
 describe('SignUp integration tests', () => {
-  // mswからschool_nameを取得
-  const seen = vi.fn();
-  server.events.on('request:match', ({ request }) => {
-    const { pathname } = new URL(request.url);
-    if (pathname.startsWith('/api/v1/invites/')) {
-      const token = pathname.split('/').pop();
-      seen(token);
-    }
+  let seen: ReturnType<typeof vi.fn>;
+
+  beforeEach(() => {
+    seen = vi.fn();
+    server.events.removeAllListeners('request:match');
+    server.events.on('request:match', ({ request }) => {
+      const { pathname } = new URL(request.url);
+      if (pathname.startsWith('/api/v1/invites/')) {
+        const token = pathname.split('/').pop();
+        seen(token);
+      }
+    });
+  });
+
+  afterEach(() => {
+    vi.clearAllMocks();
+    server.events.removeAllListeners('request:match');
   });
 
   test('successfully signs up when all fields are valid', async () => {
