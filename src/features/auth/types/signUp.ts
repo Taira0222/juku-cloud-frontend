@@ -3,7 +3,7 @@ export type SignUpRequestData = {
   email: string;
   password: string;
   password_confirmation: string;
-  school_code: string;
+  token: string | null;
 };
 
 export type SignUpSuccessResponse = {

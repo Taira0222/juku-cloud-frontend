@@ -1,78 +1,43 @@
-import { describe, expect, test } from 'vitest';
+import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
-
-import { SignUpForm } from '@/features/auth/components/SignUpForm/SignUpForm';
 import userEvent from '@testing-library/user-event';
 import { SignUpPage } from '@/pages/auth/SignUpPage';
+import { server } from '@/tests/mocks/server';
+
+// 学校名
+const SCHOOL_NAME = 'First_school';
 
 // テスト用のコンポーネント
 const ConfirmationSent = () => (
   <div data-testid="confirmation-sent">Confirmation Sent Page</div>
 );
+const NotFoundPage = () => <div data-testid="not-found">Not Found Page</div>;
 
-describe('SignUpForm component unit tests', () => {
-  test('renders SignUpForm component with all form fields', () => {
-    render(
-      <MemoryRouter>
-        <SignUpForm />
-      </MemoryRouter>
-    );
-    const nameInput = screen.getByPlaceholderText('山田 太郎');
-    const emailInput = screen.getByPlaceholderText('m@example.com');
-    const passwordInput = screen.getByLabelText('パスワード');
-    const passwordConfirmationInput = screen.getByLabelText('パスワード確認');
-    const schoolCodeInput = screen.getByPlaceholderText('例: 123456');
-    const submitButton = screen.getByRole('button', { name: '新規登録' });
+describe('SignUp integration tests', () => {
+  let seen: ReturnType<typeof vi.fn>;
 
-    expect(nameInput).toBeInTheDocument();
-    expect(emailInput).toBeInTheDocument();
-    expect(passwordInput).toBeInTheDocument();
-    expect(passwordConfirmationInput).toBeInTheDocument();
-    expect(schoolCodeInput).toBeInTheDocument();
-    expect(submitButton).toBeInTheDocument();
+  beforeEach(() => {
+    seen = vi.fn();
+    server.events.removeAllListeners('request:match');
+
+    server.events.on('request:match', ({ request }) => {
+      const { pathname } = new URL(request.url);
+      if (pathname.startsWith('/api/v1/invites/')) {
+        const token = pathname.split('/').pop();
+        seen(token);
+      }
+    });
   });
 
-  test('password visibility toggle works correctly', async () => {
-    // ユーザーイベントをセットアップ
-    const user = userEvent.setup();
-    render(
-      <MemoryRouter>
-        <SignUpForm />
-      </MemoryRouter>
-    );
-    // aria-labelをgetByLabelTextで取得
-    const passwordInput = screen.getByLabelText('パスワード');
-    const passwordConfirmationInput = screen.getByLabelText('パスワード確認');
-    // パスワード表示/非表示のトグルボタンを取得
-    const toggleButton = screen.getByLabelText('パスワードを表示');
-    const toggleConfirmationButton =
-      screen.getByLabelText('パスワード確認を表示');
-
-    // 初期状態ではパスワードは非表示
-    expect(passwordInput).toHaveAttribute('type', 'password');
-    expect(passwordConfirmationInput).toHaveAttribute('type', 'password');
-
-    // パスワード表示ボタンをクリック
-    // await でユーザーイベントを待つ
-    await user.click(toggleButton);
-    await user.click(toggleConfirmationButton);
-    expect(passwordInput).toHaveAttribute('type', 'text');
-    expect(passwordConfirmationInput).toHaveAttribute('type', 'text');
-
-    // 再度クリックして非表示に戻す
-    // await でユーザーイベントを待つ
-    await user.click(toggleButton);
-    await user.click(toggleConfirmationButton);
-    expect(passwordInput).toHaveAttribute('type', 'password');
-    expect(passwordConfirmationInput).toHaveAttribute('type', 'password');
+  afterEach(() => {
+    vi.clearAllMocks();
+    server.events.removeAllListeners('request:match');
   });
-});
 
-describe('SignUpForm component integration tests', () => {
   test('successfully signs up when all fields are valid', async () => {
     render(
-      <MemoryRouter initialEntries={['/sign_up']}>
+      <MemoryRouter initialEntries={['/sign_up?token=123456']}>
         <Routes>
           <Route path="/sign_up" element={<SignUpPage />} />
           <Route
@@ -83,20 +48,29 @@ describe('SignUpForm component integration tests', () => {
       </MemoryRouter>
     );
 
+    await waitFor(() => {
+      expect(screen.getByText('Juku Cloud')).toBeInTheDocument();
+      expect(screen.getByText(`${SCHOOL_NAME}へようこそ`)).toBeInTheDocument();
+    });
+
+    await waitFor(() => {
+      expect(seen).toHaveBeenCalled(); // 呼ばれたか？
+      expect(seen).toHaveBeenCalledWith('123456'); // 引数が正しいか？
+      expect(seen).toHaveBeenCalledTimes(1); // 回数が正しいか？
+    });
+
     const user = userEvent.setup();
 
     const nameInput = screen.getByPlaceholderText('山田 太郎');
     const emailInput = screen.getByPlaceholderText('m@example.com');
     const passwordInput = screen.getByLabelText('パスワード');
     const passwordConfirmationInput = screen.getByLabelText('パスワード確認');
-    const schoolCodeInput = screen.getByPlaceholderText('例: 123456');
     const submitButton = screen.getByRole('button', { name: '新規登録' });
 
     await user.type(nameInput, '山田 太郎');
     await user.type(emailInput, 'm@example.com');
     await user.type(passwordInput, 'password');
     await user.type(passwordConfirmationInput, 'password');
-    await user.type(schoolCodeInput, '123456');
 
     // ボタンをクリックして送信
     user.click(submitButton);
@@ -113,10 +87,21 @@ describe('SignUpForm component integration tests', () => {
 
   test('shows error message when sign up fails', async () => {
     render(
-      <MemoryRouter>
-        <SignUpForm />
+      <MemoryRouter initialEntries={['/sign_up?token=123456']}>
+        <SignUpPage />
+        <ConfirmationSent />
       </MemoryRouter>
     );
+
+    await waitFor(() => {
+      expect(screen.getByText('Juku Cloud')).toBeInTheDocument();
+      expect(screen.getByText(`${SCHOOL_NAME}へようこそ`)).toBeInTheDocument();
+    });
+
+    await waitFor(() => {
+      expect(seen).toHaveBeenCalled(); // 呼ばれたか？
+      expect(seen).toHaveBeenCalledWith('123456'); // 引数が正しいか？
+    });
 
     const user = userEvent.setup();
 
@@ -124,14 +109,12 @@ describe('SignUpForm component integration tests', () => {
     const emailInput = screen.getByPlaceholderText('m@example.com');
     const passwordInput = screen.getByLabelText('パスワード');
     const passwordConfirmationInput = screen.getByLabelText('パスワード確認');
-    const schoolCodeInput = screen.getByPlaceholderText('例: 123456');
     const submitButton = screen.getByRole('button', { name: '新規登録' });
 
     await user.type(nameInput, '山田 太郎');
     await user.type(emailInput, 'duplicate@example.com');
     await user.type(passwordInput, 'pass');
     await user.type(passwordConfirmationInput, 'word');
-    await user.type(schoolCodeInput, 'InvalidCode');
 
     // ボタンをクリックして送信
     user.click(submitButton);
@@ -151,7 +134,24 @@ describe('SignUpForm component integration tests', () => {
       expect(
         screen.getByText('パスワードが一致しません。')
       ).toBeInTheDocument();
-      expect(screen.getByText('学校コードが無効です。')).toBeInTheDocument();
+    });
+  });
+
+  test('shows error message when wrong token', async () => {
+    render(
+      <MemoryRouter initialEntries={['/sign_up?token=24680']}>
+        <SignUpPage />
+        <NotFoundPage />
+      </MemoryRouter>
+    );
+    // ページ遷移の確認
+    await waitFor(() => {
+      expect(screen.getByTestId('not-found')).toBeInTheDocument();
+    });
+
+    await waitFor(() => {
+      expect(seen).toHaveBeenCalled(); // 呼ばれたか？
+      expect(seen).toHaveBeenCalledWith('24680'); // 引数が正しいか？
     });
   });
 });

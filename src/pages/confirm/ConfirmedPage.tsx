@@ -12,28 +12,21 @@ export const ConfirmedPage = () => {
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setCountdown((prev) => {
-        if (prev <= 1) {
-          if (success) {
-            navigate('/sign_in', { replace: true });
-          } else {
-            navigate('/sign_up', { replace: true });
-          }
-          return 0;
-        }
-        return prev - 1;
-      });
+      setCountdown((prev) => Math.max(prev - 1, 0));
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [navigate, success]);
+  }, []);
 
-  const handleManualNavigation = () => {
-    if (success) {
-      navigate('/sign_in', { replace: true });
-    } else {
-      navigate('/sign_up', { replace: true });
+  useEffect(() => {
+    if (countdown === 0) {
+      navigate(success ? '/sign_in' : '/sign_up', { replace: true });
     }
+  }, [countdown, navigate, success]);
+
+  // 手動遷移ハンドラー
+  const handleManualNavigation = () => {
+    navigate(success ? '/sign_in' : '/sign_up', { replace: true });
   };
 
   const handleNavigateToHome = () => {

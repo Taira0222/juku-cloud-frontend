@@ -26,22 +26,25 @@ export const ConfirmationSent = () => {
   useEffect(() => {
     if (location.state?.from !== '/sign_up') {
       // 直接アクセスされた場合はSignUpページにリダイレクト
-      navigate('/sign_up');
       setWarningMessage('会員登録が必要です。');
+      navigate('/sign_up');
       return;
     }
+  }, [location.state, navigate, setWarningMessage]);
+
+  useEffect(() => {
     const timer = setInterval(() => {
-      setCountdown((prev) => {
-        if (prev <= 1) {
-          navigate('/');
-          return 0;
-        }
-        return prev - 1;
-      });
+      setCountdown((prev) => Math.max(prev - 1, 0));
     }, 1000);
     // クリーンアップ関数でタイマーをクリア
     return () => clearInterval(timer);
-  }, [navigate, location, setWarningMessage]);
+  }, []);
+
+  useEffect(() => {
+    if (countdown === 0) {
+      navigate('/', { replace: true });
+    }
+  }, [countdown, navigate]);
 
   const handleBackToHome = () => {
     navigate('/');
