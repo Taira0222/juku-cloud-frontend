@@ -72,12 +72,6 @@ export function SignInForm({
         <div className="grid gap-3">
           <div className="flex items-center">
             <Label htmlFor="password">パスワード</Label>
-            {/* <a
-              href="#"
-              className="ml-auto text-sm underline-offset-4 hover:underline"
-            >
-              パスワードを忘れましたか？
-            </a> */}
           </div>
           <Input
             id="password"

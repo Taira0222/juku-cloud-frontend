@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, test } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
 import { useAuthStore } from '@/stores/authStore';
 import { SignInPage } from '@/pages/auth/SignInPage';
@@ -17,8 +17,10 @@ describe('SignIn form integration tests', () => {
   test('successfully signs in when email and password are correct', async () => {
     render(
       <MemoryRouter initialEntries={['/sign_in']}>
-        <SignInPage />
-        <StudentsPage />
+        <Routes>
+          <Route path="/sign_in" element={<SignInPage />} />
+          <Route path="/students" element={<StudentsPage />} />
+        </Routes>
       </MemoryRouter>
     );
 
@@ -29,9 +31,9 @@ describe('SignIn form integration tests', () => {
 
     await user.type(inputEmailElement, 'test@example.com');
     await user.type(inputPasswordElement, 'password123');
+    user.click(submitButton);
 
     await waitFor(() => {
-      user.click(submitButton);
       const isSubmittingText = screen.getByText('ログイン中...');
       expect(isSubmittingText).toBeInTheDocument();
     });
