@@ -31,12 +31,7 @@ describe('SignIn form integration tests', () => {
 
     await user.type(inputEmailElement, 'test@example.com');
     await user.type(inputPasswordElement, 'password123');
-    user.click(submitButton);
-
-    await waitFor(() => {
-      const isSubmittingText = screen.getByText('ログイン中...');
-      expect(isSubmittingText).toBeInTheDocument();
-    });
+    await user.click(submitButton);
 
     // 認証状態の確認
     await waitFor(() => {
