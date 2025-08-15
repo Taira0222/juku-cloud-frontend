@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/form/Button/button';
 import { Input } from '@/components/ui/form/Input/input';
 import { Label } from '@/components/ui/form/Label/label';
 import { useState, type FormEvent } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useWarningStore } from '@/stores/warningStore';
 import { useSignIn } from '../../hooks/useSignIn';
 
@@ -72,12 +72,6 @@ export function SignInForm({
         <div className="grid gap-3">
           <div className="flex items-center">
             <Label htmlFor="password">パスワード</Label>
-            <a
-              href="#"
-              className="ml-auto text-sm underline-offset-4 hover:underline"
-            >
-              パスワードを忘れましたか？
-            </a>
           </div>
           <Input
             id="password"
@@ -114,10 +108,7 @@ export function SignInForm({
       </div>
 
       <div className="text-center text-sm">
-        アカウントをお持ちではありませんか？{' '}
-        <Link to="/sign_up" className="underline underline-offset-4">
-          会員登録
-        </Link>
+        管理者から招待を受けてからご利用ください
       </div>
     </form>
   );

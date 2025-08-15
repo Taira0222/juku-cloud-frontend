@@ -5,5 +5,5 @@ export const tokenConfirmApi = async (token: string | null) => {
   const response = await api.get<TokenConfirmSuccessResponse>(
     `/invites/${token}`
   );
-  return response.data;
+  return response;
 };

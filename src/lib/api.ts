@@ -25,9 +25,6 @@ const HTTP_STATUS_UNAUTHORIZED = 401;
 const HTTP_STATUS_FORBIDDEN = 403;
 const HTTP_STATUS_NOT_FOUND = 404;
 
-// Zustand の状態をモジュールレベルで取得
-const authStore = useAuthStore.getState();
-
 // リクエスト前に自動でヘッダーを付与
 api.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
@@ -54,7 +51,7 @@ api.interceptors.response.use(
     // レスポンスヘッダーに新しいトークンがある場合は更新
     const headers = response.headers;
     // setAuth は 更新関数なので最初のスナップショットを取得
-    const { setAuth } = authStore;
+    const { setAuth } = useAuthStore.getState();
     if (headers[HEADER_ACCESS_TOKEN]) {
       setAuth({
         [HEADER_ACCESS_TOKEN]: headers[HEADER_ACCESS_TOKEN],
@@ -73,7 +70,7 @@ api.interceptors.response.use(
       return Promise.reject(error);
     }
     // clearAuth は 更新関数なので最初のスナップショットを取得
-    const { clearAuth } = authStore;
+    const { clearAuth } = useAuthStore.getState();
     const { setNextPath } = useNavStore.getState();
     const { setWarningMessage } = useWarningStore.getState();
     const status = error.response?.status;

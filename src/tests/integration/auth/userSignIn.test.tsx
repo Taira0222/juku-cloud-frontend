@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, test } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
-import { MemoryRouter, Routes, Route } from 'react-router-dom';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
 import { useAuthStore } from '@/stores/authStore';
 import { SignInPage } from '@/pages/auth/SignInPage';
@@ -76,7 +76,7 @@ describe('SignIn form integration tests', () => {
 
     // 認証状態の確認
     await waitFor(() => {
-      const auth = useAuthStore.getState().auth;
+      const { auth } = useAuthStore.getState();
       expect(auth).toEqual(null);
     });
 
