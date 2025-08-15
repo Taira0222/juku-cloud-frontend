@@ -17,11 +17,11 @@ export const useTokenConfirm = (token: string | null) => {
       try {
         setLoading(true);
         const response = await tokenConfirmApi(token);
-        setData(response);
+        setData(response.data);
       } catch (err) {
         let errorMessage = DEFAULT_ERROR_MESSAGE;
         if (isAxiosError<TokenConfirmErrorResponse>(err)) {
-          errorMessage = err.response?.data.message || DEFAULT_ERROR_MESSAGE;
+          errorMessage = err.response?.data?.message || DEFAULT_ERROR_MESSAGE;
         } else if (err instanceof Error && err.message) {
           errorMessage = err.message;
         }

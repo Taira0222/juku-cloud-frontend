@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, test } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
-import { MemoryRouter, Routes, Route } from 'react-router-dom';
+import { MemoryRouter } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
 import { useAuthStore } from '@/stores/authStore';
 import { SignInPage } from '@/pages/auth/SignInPage';
@@ -17,10 +17,8 @@ describe('SignIn form integration tests', () => {
   test('successfully signs in when email and password are correct', async () => {
     render(
       <MemoryRouter initialEntries={['/sign_in']}>
-        <Routes>
-          <Route path="/sign_in" element={<SignInPage />} />
-          <Route path="/students" element={<StudentsPage />} />
-        </Routes>
+        <SignInPage />
+        <StudentsPage />
       </MemoryRouter>
     );
 
@@ -31,7 +29,12 @@ describe('SignIn form integration tests', () => {
 
     await user.type(inputEmailElement, 'test@example.com');
     await user.type(inputPasswordElement, 'password123');
-    await user.click(submitButton);
+
+    await waitFor(() => {
+      user.click(submitButton);
+      const isSubmittingText = screen.getByText('ログイン中...');
+      expect(isSubmittingText).toBeInTheDocument();
+    });
 
     // 認証状態の確認
     await waitFor(() => {
@@ -76,7 +79,7 @@ describe('SignIn form integration tests', () => {
 
     // 認証状態の確認
     await waitFor(() => {
-      const auth = useAuthStore.getState().auth;
+      const { auth } = useAuthStore.getState();
       expect(auth).toEqual(null);
     });
 

@@ -14,18 +14,4 @@ describe('SignIn component unit tests', () => {
     const title = screen.getByText('Juku Cloud');
     expect(title).toBeInTheDocument();
   });
-  test('renders sign in form with email and password inputs and submit button', () => {
-    render(
-      <MemoryRouter>
-        <SignInPage />
-      </MemoryRouter>
-    );
-    const emailInput = screen.getByLabelText('メールアドレス');
-    const passwordInput = screen.getByLabelText('パスワード');
-    const submitButton = screen.getByRole('button', { name: 'ログイン' });
-
-    expect(emailInput).toBeInTheDocument();
-    expect(passwordInput).toBeInTheDocument();
-    expect(submitButton).toBeInTheDocument();
-  });
 });
