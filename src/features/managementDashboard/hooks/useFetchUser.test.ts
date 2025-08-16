@@ -28,7 +28,7 @@ describe('useFetchUser', () => {
     vi.clearAllMocks();
   });
 
-  test('call setAuth when it succeeds', async () => {
+  test('calls setUser when it succeeds', async () => {
     const mockResponse = {
       data: {
         success: true,
