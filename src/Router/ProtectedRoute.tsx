@@ -16,14 +16,20 @@ export const ProtectedRoute = ({ allowedRoles }: Props) => {
   const user = useUserStore((state) => state.user);
   const setWarningMessage = useWarningStore((state) => state.setWarningMessage);
   // ManagementDashboard でやっていたユーザー情報取得をここに移動
-  useFetchUser();
+  const { error } = useFetchUser();
 
-  // 認証・期限チェック
+  // 認証チェック
   if (!isAuthenticated()) {
     setWarningMessage('ログインが必要です');
     return <Navigate to="/sign_in" />;
   }
+  // エラーが出たら404に遷移させる。
+  if (error) {
+    return <Navigate to="/404" />;
+  }
+  // ロールチェック
   if (allowedRoles) {
+    // useFetchUser 読み込み中UI
     if (!user) {
       return (
         <div className="flex items-center justify-center min-h-screen">

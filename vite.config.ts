@@ -36,6 +36,7 @@ export default defineConfig({
         'src/main.tsx',
         'src/App.tsx',
         'src/**/*.test.{ts,tsx}',
+        'src/**/types',
       ],
     },
   },
