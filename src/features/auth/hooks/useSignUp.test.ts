@@ -15,7 +15,13 @@ describe('useSignUp', () => {
   const setClearWarningMessage = vi.fn();
 
   beforeEach(() => {
-    vi.mocked(useWarningStore).mockReturnValue(setClearWarningMessage);
+    vi.mocked(useWarningStore).mockImplementation((selector) =>
+      selector({
+        warningMessage: '',
+        setWarningMessage: vi.fn(),
+        setClearWarningMessage,
+      })
+    );
     vi.clearAllMocks();
   });
 
@@ -44,6 +50,7 @@ describe('useSignUp', () => {
     let res;
     await act(async () => {
       res = await result.current.submit(requestData);
+      expect(setClearWarningMessage).toHaveBeenCalled();
     });
 
     expect(res).toEqual({ ok: true });
@@ -79,6 +86,7 @@ describe('useSignUp', () => {
     let res;
     await act(async () => {
       res = await result.current.submit(requestData);
+      expect(setClearWarningMessage).toHaveBeenCalled();
     });
 
     expect(res).toEqual({ ok: false });
@@ -102,6 +110,7 @@ describe('useSignUp', () => {
     let res;
     await act(async () => {
       res = await result.current.submit(requestData);
+      expect(setClearWarningMessage).toHaveBeenCalled();
     });
 
     expect(res).toEqual({ ok: false });

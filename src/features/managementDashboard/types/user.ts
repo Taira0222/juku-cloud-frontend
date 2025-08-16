@@ -16,7 +16,12 @@ type data = {
   school: school;
 };
 
-export type fetchUserResponse = {
+export type fetchUserSuccessResponse = {
   success: boolean;
   data: data;
+};
+
+export type fetchUserErrorResponse = {
+  success: boolean;
+  errors: string[];
 };

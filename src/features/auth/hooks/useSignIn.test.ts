@@ -20,8 +20,21 @@ describe('useSignIn', () => {
   const setClearWarningMessage = vi.fn();
 
   beforeEach(() => {
-    vi.mocked(useAuthStore).mockReturnValue(setAuth);
-    vi.mocked(useWarningStore).mockReturnValue(setClearWarningMessage);
+    vi.mocked(useAuthStore).mockImplementation((selector) =>
+      selector({
+        auth: null,
+        setAuth,
+        clearAuth: vi.fn(),
+        isAuthenticated: vi.fn(),
+      })
+    );
+    vi.mocked(useWarningStore).mockImplementation((selector) =>
+      selector({
+        warningMessage: '',
+        setWarningMessage: vi.fn(),
+        setClearWarningMessage,
+      })
+    );
     vi.clearAllMocks();
   });
 
@@ -48,6 +61,7 @@ describe('useSignIn', () => {
     let res;
     await act(async () => {
       res = await result.current.submit('test@example.com', 'password123');
+      expect(setClearWarningMessage).toHaveBeenCalled();
     });
 
     expect(res).toEqual({ ok: true });
@@ -67,6 +81,7 @@ describe('useSignIn', () => {
     let res;
     await act(async () => {
       res = await result.current.submit('test@example.com', 'password123');
+      expect(setClearWarningMessage).toHaveBeenCalled();
     });
 
     expect(res).toEqual({ ok: false });
@@ -82,6 +97,7 @@ describe('useSignIn', () => {
     let res;
     await act(async () => {
       res = await result.current.submit('test@example.com', 'password123');
+      expect(setClearWarningMessage).toHaveBeenCalled();
     });
 
     expect(res).toEqual({ ok: false });
