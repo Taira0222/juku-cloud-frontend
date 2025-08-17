@@ -17,11 +17,13 @@ import { useSubjectTranslation } from '@/hooks/useSubjectTranslation';
 import { useDayOfWeekTranslation } from '@/hooks/useDayOfWeekTranslation';
 import { Fragment } from 'react/jsx-runtime';
 import { useSignInStatus } from '@/hooks/useSignInStatus';
+import { useSchoolStageTranslation } from '@/hooks/useSchoolStageTranslations';
 
 export const DetailDrawer = ({ item }: { item: teacherDetailDrawer }) => {
   const isMobile = useIsMobile();
   const { createIconTranslationBadge } = useSubjectTranslation();
-  const { translate } = useDayOfWeekTranslation();
+  const { translateDayOfWeek } = useDayOfWeekTranslation();
+  const { translateSchoolStage } = useSchoolStageTranslation();
   const { label, colorClass, Icon } = useSignInStatus(item.current_sign_in_at);
 
   return (
@@ -85,7 +87,9 @@ export const DetailDrawer = ({ item }: { item: teacherDetailDrawer }) => {
           <div className="flex flex-col gap-2">
             <Label htmlFor="availableDays">勤務可能日</Label>
             <p id="availableDays" className="text-muted-foreground">
-              {item.available_days.map((day) => translate(day.name)).join(', ')}
+              {item.available_days
+                .map((day) => translateDayOfWeek(day.name))
+                .join(', ')}
             </p>
           </div>
           <div className="flex flex-col gap-2">
@@ -94,6 +98,8 @@ export const DetailDrawer = ({ item }: { item: teacherDetailDrawer }) => {
               const assignment = item.teaching_assignments.find(
                 (ta) => ta.student_id === s.id
               );
+              const schoolStage = translateSchoolStage(s.school_stage);
+
               const statusLabel =
                 assignment?.teaching_status === true
                   ? '指導中'
@@ -112,7 +118,6 @@ export const DetailDrawer = ({ item }: { item: teacherDetailDrawer }) => {
                 );
               return (
                 <div key={s.id} className="flex gap-1">
-                  {s.name}
                   {statusLabel && (
                     <Badge
                       variant="outline"
@@ -122,6 +127,8 @@ export const DetailDrawer = ({ item }: { item: teacherDetailDrawer }) => {
                       {statusLabel}
                     </Badge>
                   )}
+                  {s.name}: {schoolStage}
+                  {s.grade}年生
                 </div>
               );
             })}

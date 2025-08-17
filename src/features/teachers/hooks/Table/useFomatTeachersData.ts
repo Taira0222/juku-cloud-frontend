@@ -30,7 +30,7 @@ export type teacherDetailDrawer = Omit<
 type fetchData = currentUser;
 
 // DataTable 用の値に成形する
-const toTeacherRow = (teacher: fetchData): teacherDataTable => ({
+export const toTeacherRow = (teacher: fetchData): teacherDataTable => ({
   id: teacher.id,
   name: teacher.name,
   role: teacher.role,
@@ -44,7 +44,9 @@ const toTeacherRow = (teacher: fetchData): teacherDataTable => ({
 });
 
 // 詳細情報用の値に成形する
-const toTeacherDetailDrawer = (teacher: fetchData): teacherDetailDrawer => ({
+export const toTeacherDetailDrawer = (
+  teacher: fetchData
+): teacherDetailDrawer => ({
   id: teacher.id,
   name: teacher.name,
   role: teacher.role,

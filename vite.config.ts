@@ -27,16 +27,22 @@ export default defineConfig({
       reporter: ['text', 'json', 'html'],
       include: ['src/**/*.{ts,tsx}'],
       exclude: [
-        'src/components/**', // ← shadcn/ui のディレクトリを除外
+        // shadcn/ui のコンポーネントは除外
+        'src/components/**',
+        // shadcn/ui から参照したコンポーネントは除く
+        'src/features/teachers/components/Table/Columns.tsx',
+        'src/features/teachers/components/Table/DataTable.tsx',
         'src/pages/error/**',
         'src/pages/home/**',
         'src/tests/**',
+        'src/**/*.test.{ts,tsx}',
         'src/types/**',
+        'src/**/types',
         'src/vite-env.d.ts',
         'src/main.tsx',
         'src/App.tsx',
-        'src/**/*.test.{ts,tsx}',
-        'src/**/types',
+        // 定数 src/constants/** を除外
+        'src/constants/**',
       ],
     },
   },

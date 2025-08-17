@@ -1,22 +1,4 @@
 import {
-  closestCenter,
-  DndContext,
-  KeyboardSensor,
-  MouseSensor,
-  TouchSensor,
-  useSensor,
-  useSensors,
-  type DragEndEvent,
-  type UniqueIdentifier,
-} from '@dnd-kit/core';
-import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
-import {
-  arrayMove,
-  SortableContext,
-  useSortable,
-  verticalListSortingStrategy,
-} from '@dnd-kit/sortable';
-import {
   IconChevronDown,
   IconChevronLeft,
   IconChevronRight,
@@ -36,14 +18,11 @@ import {
 } from '@tanstack/react-table';
 import type {
   ColumnFiltersState,
-  Row,
   SortingState,
   VisibilityState,
 } from '@tanstack/react-table';
 import { z } from 'zod';
-import { CSS } from '@dnd-kit/utilities';
-import { useEffect, useId, useMemo, useState } from 'react';
-
+import { useMemo, useState } from 'react';
 import { Button } from '@/components/ui/form/Button/button';
 import {
   DropdownMenu,
@@ -73,31 +52,6 @@ import { schema, createColumns } from './Columns';
 import type { teacherDetailDrawer } from '../../hooks/Table/useFomatTeachersData';
 import { CreateDialog } from './CreateDialog';
 
-function DraggableRow({ row }: { row: Row<z.infer<typeof schema>> }) {
-  const { transform, transition, setNodeRef, isDragging } = useSortable({
-    id: row.original.id,
-  });
-
-  return (
-    <TableRow
-      data-state={row.getIsSelected() && 'selected'}
-      data-dragging={isDragging}
-      ref={setNodeRef}
-      className="relative z-0 data-[dragging=true]:z-10 data-[dragging=true]:opacity-80"
-      style={{
-        transform: CSS.Transform.toString(transform),
-        transition: transition,
-      }}
-    >
-      {row.getVisibleCells().map((cell) => (
-        <TableCell key={cell.id}>
-          {flexRender(cell.column.columnDef.cell, cell.getContext())}
-        </TableCell>
-      ))}
-    </TableRow>
-  );
-}
-
 // props に getDetailDrawerData を追加
 export const DataTable = ({
   data: initialData,
@@ -106,11 +60,6 @@ export const DataTable = ({
   data: z.infer<typeof schema>[];
   getDetailDrawerData: (id: number) => teacherDetailDrawer | undefined;
 }) => {
-  const [data, setData] = useState(() => initialData);
-  // initialData が更新されたら同期
-  useEffect(() => {
-    setData(initialData);
-  }, [initialData]);
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -119,17 +68,6 @@ export const DataTable = ({
     pageIndex: 0,
     pageSize: 10,
   });
-  const sortableId = useId();
-  const sensors = useSensors(
-    useSensor(MouseSensor, {}),
-    useSensor(TouchSensor, {}),
-    useSensor(KeyboardSensor, {})
-  );
-
-  const dataIds = useMemo<UniqueIdentifier[]>(
-    () => data?.map(({ id }) => id) || [],
-    [data]
-  );
 
   // getDetailDrawerData をcreateColumnsに渡すためにuseMemoを使用
   const columns = useMemo(
@@ -138,7 +76,7 @@ export const DataTable = ({
   );
 
   const table = useReactTable({
-    data,
+    data: initialData,
     columns,
     state: {
       sorting,
@@ -161,17 +99,6 @@ export const DataTable = ({
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
   });
-
-  function handleDragEnd(event: DragEndEvent) {
-    const { active, over } = event;
-    if (active && over && active.id !== over.id) {
-      setData((data) => {
-        const oldIndex = dataIds.indexOf(active.id);
-        const newIndex = dataIds.indexOf(over.id);
-        return arrayMove(data, oldIndex, newIndex);
-      });
-    }
-  }
 
   // カラム表示のラベルを定義
   const columnLabelMap: Record<string, string> = {
@@ -203,7 +130,6 @@ export const DataTable = ({
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="outline">講師一覧</SelectItem>
-            <SelectItem value="past-performance">Coming Soon</SelectItem>
           </SelectContent>
         </Select>
 
@@ -246,63 +172,63 @@ export const DataTable = ({
           </DropdownMenu>
           <CreateDialog />
         </div>
-        {/** Outline タブの内容 */}
+        {/** タブの内容 */}
       </div>
       <TabsContent
         value="outline"
         className="relative flex flex-col gap-4 overflow-auto px-4 lg:px-6"
       >
         <div className="overflow-hidden rounded-lg border">
-          <DndContext
-            collisionDetection={closestCenter}
-            modifiers={[restrictToVerticalAxis]}
-            onDragEnd={handleDragEnd}
-            sensors={sensors}
-            id={sortableId}
-          >
-            <Table>
-              <TableHeader className="bg-muted sticky top-0 z-10">
-                {table.getHeaderGroups().map((headerGroup) => (
-                  <TableRow key={headerGroup.id}>
-                    {headerGroup.headers.map((header) => {
-                      return (
-                        <TableHead key={header.id} colSpan={header.colSpan}>
-                          {header.isPlaceholder
-                            ? null
-                            : flexRender(
-                                header.column.columnDef.header,
-                                header.getContext()
-                              )}
-                        </TableHead>
-                      );
-                    })}
-                  </TableRow>
-                ))}
-              </TableHeader>
-              <TableBody className="**:data-[slot=table-cell]:first:w-8">
-                {table.getRowModel().rows?.length ? (
-                  <SortableContext
-                    items={dataIds}
-                    strategy={verticalListSortingStrategy}
+          <Table>
+            <TableHeader className="bg-muted sticky top-0 z-10">
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => {
+                    return (
+                      <TableHead key={header.id} colSpan={header.colSpan}>
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                      </TableHead>
+                    );
+                  })}
+                </TableRow>
+              ))}
+            </TableHeader>
+            <TableBody>
+              {table.getRowModel().rows?.length ? (
+                table.getRowModel().rows.map((row) => (
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && 'selected'}
                   >
-                    {table.getRowModel().rows.map((row) => (
-                      <DraggableRow key={row.id} row={row} />
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
                     ))}
-                  </SortableContext>
-                ) : (
-                  <TableRow>
-                    <TableCell
-                      colSpan={columns.length}
-                      className="h-24 text-center"
-                    >
-                      No results.
-                    </TableCell>
                   </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </DndContext>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={columns.length}
+                    className="h-24 text-center"
+                  >
+                    No results.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
         </div>
+
         {/** ページネーションと選択状態の表示 */}
         <div className="flex items-center justify-between px-4">
           <div className="text-muted-foreground hidden flex-1 text-sm lg:flex">
