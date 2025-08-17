@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react';
-import { fetchTeachers } from '../../services/teachersApi';
+import { fetchTeachers } from '@/features/teachers/services/teachersApi';
 import {
-  isFetchTeachersErrorResponse,
   type currentUser,
-  type fetchTeachersSuccessResponse,
+  type fetchTeachersErrorResponse,
   type teachers,
-} from '../../types/teachers';
+} from '@/features/teachers/types/teachers';
 import { isAxiosError } from 'axios';
 
 export const useFetchTeachers = () => {
@@ -14,24 +13,24 @@ export const useFetchTeachers = () => {
   );
   const [teachersData, setTeachersData] = useState<teachers | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true); // ローディング状態を追加
+  const [loading, setLoading] = useState<boolean>(true); // ローディング状態を追加
+  const DEFAULT_ERROR_MESSAGE = '予期せぬエラーが発生しました。';
 
   useEffect(() => {
     const fetchTeachersData = async () => {
       try {
         setLoading(true);
-        const data: fetchTeachersSuccessResponse = await fetchTeachers();
-        setCurrentUserData(data.current_user);
-        setTeachersData(data.teachers);
-      } catch (error: unknown) {
-        if (isAxiosError(error)) {
-          const responseData = error.response?.data;
-          if (isFetchTeachersErrorResponse(responseData)) {
-            setError(responseData.error);
-          } else {
-            setError('予期しないエラーが発生しました。');
-          }
+        const response = await fetchTeachers();
+        setCurrentUserData(response.data.current_user);
+        setTeachersData(response.data.teachers);
+      } catch (err) {
+        let errorMessage = DEFAULT_ERROR_MESSAGE;
+        if (isAxiosError<fetchTeachersErrorResponse>(err)) {
+          errorMessage = err.response?.data?.error || DEFAULT_ERROR_MESSAGE;
+        } else if (err instanceof Error && err.message) {
+          errorMessage = err.message;
         }
+        setError(errorMessage);
       } finally {
         setLoading(false);
       }

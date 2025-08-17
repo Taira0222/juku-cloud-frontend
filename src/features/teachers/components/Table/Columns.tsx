@@ -162,7 +162,6 @@ export const createColumns = (
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-32">
           <DropdownMenuItem>編集</DropdownMenuItem>
-          <DropdownMenuItem>コピーを作成</DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem variant="destructive">削除</DropdownMenuItem>
         </DropdownMenuContent>

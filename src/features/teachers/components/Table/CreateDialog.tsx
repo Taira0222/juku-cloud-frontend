@@ -14,7 +14,8 @@ import SpinnerWithText from '@/components/common/status/Loading';
 import { IconPlus } from '@tabler/icons-react';
 import { Check, Copy } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { useFetchInviteToken } from '../../hooks/Table/useFetchInviteToken';
+import { useFetchInviteToken } from '@/features/teachers/hooks/Table/useFetchInviteToken';
+import { Label } from '@/components/ui/form/Label/label';
 
 export const CreateDialog = () => {
   const [open, setOpen] = useState(false);
@@ -59,6 +60,22 @@ export const CreateDialog = () => {
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-lg">
+        <DialogHeader>
+          <DialogTitle>
+            {loading && '読み込み中'}
+            {!loading && error && 'エラー'}
+            {!loading && !error && '招待リンクを共有'}
+          </DialogTitle>
+          <DialogDescription>
+            {loading && 'データを読み込んでいます…'}
+            {!loading &&
+              error &&
+              'エラーが発生しました。内容を確認してください。'}
+            {!loading &&
+              !error &&
+              'このURLを講師に送って登録してもらってください。リンクの有効期限は7日間、1回のみ有効です'}
+          </DialogDescription>
+        </DialogHeader>
         {/* API の読み込み中 */}
         {loading && (
           <div className="flex items-center justify-center h-32">
@@ -72,23 +89,18 @@ export const CreateDialog = () => {
         {/* 正常時のレンダリング */}
         {!loading && !error && (
           <>
-            <DialogHeader>
-              <DialogTitle>招待リンクを共有</DialogTitle>
-              <DialogDescription>
-                このURLを講師に送って登録してもらってください。リンクの有効期限は7日間、1回のみ有効です
-              </DialogDescription>
-            </DialogHeader>
-
             <div className="space-y-3">
-              <label className="text-sm text-muted-foreground">招待URL</label>
+              <Label htmlFor="inviteUrl">招待URL</Label>
               <div className="flex gap-2">
                 <Input
+                  // test で input を探すために(htmlFor と id が同じ必要あり)
+                  id="inviteUrl"
                   value={inviteUrl}
                   readOnly
                   className="font-mono"
                   onFocus={(e) => e.currentTarget.select()}
                 />
-                <Button variant="secondary" onClick={copy}>
+                <Button variant="secondary" aria-label="コピー" onClick={copy}>
                   {copied ? (
                     <Check className="size-4 text-green-600" />
                   ) : (
@@ -106,7 +118,11 @@ export const CreateDialog = () => {
             </div>
 
             <DialogFooter className="justify-between">
-              <Button variant="outline" onClick={() => setOpen(false)}>
+              <Button
+                variant="outline"
+                aria-label="閉じる"
+                onClick={() => setOpen(false)}
+              >
                 閉じる
               </Button>
             </DialogFooter>

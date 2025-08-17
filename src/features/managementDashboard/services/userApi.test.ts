@@ -5,6 +5,7 @@ import type {
   fetchUserSuccessResponse,
 } from '../types/user';
 import type { AxiosError, AxiosResponse } from 'axios';
+import { fetchUser } from './userApi';
 
 vi.mock('@/lib/api', () => ({
   api: {
@@ -43,7 +44,7 @@ describe('User API', () => {
 
     vi.mocked(api.get).mockResolvedValue(mockResponse);
 
-    const result = await api.get('/auth/validate_token');
+    const result = await fetchUser();
     expect(result.data.success).toEqual(mockResponse.data.success);
     expect(result.data).toEqual(mockResponse.data);
   });
@@ -62,7 +63,7 @@ describe('User API', () => {
 
     vi.mocked(api.get).mockRejectedValue(mockErrorResponse);
 
-    await expect(api.get('/auth/validate_token')).rejects.toMatchObject({
+    await expect(fetchUser()).rejects.toMatchObject({
       response: { data: { success: false, errors: ['token_invalid'] } },
     });
   });

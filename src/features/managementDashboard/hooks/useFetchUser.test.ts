@@ -9,22 +9,10 @@ import type { fetchUserErrorResponse } from '../types/user';
 vi.mock('../services/userApi', () => ({
   fetchUser: vi.fn(),
 }));
-vi.mock('@/stores/userStore', () => ({
-  useUserStore: vi.fn(),
-}));
 
 describe('useFetchUser', () => {
-  const setUser = vi.fn();
-  const clearUser = vi.fn();
-
   beforeEach(() => {
-    vi.mocked(useUserStore).mockImplementation((selector) =>
-      selector({
-        user: null, // ← user が null なので fetchUser を呼ぶ
-        setUser,
-        clearUser,
-      })
-    );
+    useUserStore.getState().clearUser();
     vi.clearAllMocks();
   });
 
@@ -52,20 +40,28 @@ describe('useFetchUser', () => {
 
     vi.mocked(fetchUser).mockResolvedValueOnce(mockResponse);
 
+    // spy として値を追跡
+    const setUserSpy = vi.spyOn(useUserStore.getState(), 'setUser');
+    const clearUserSpy = vi.spyOn(useUserStore.getState(), 'clearUser');
+
     renderHook(() => useFetchUser());
 
     await waitFor(() => {
       expect(fetchUser).toHaveBeenCalled();
     });
 
-    expect(setUser).toHaveBeenCalledWith({
+    // 呼び出しを検証
+    expect(setUserSpy).toHaveBeenCalledTimes(1);
+    expect(clearUserSpy).not.toHaveBeenCalled();
+
+    // 状態の最終値で検証（こっちの方が本質）
+    expect(useUserStore.getState().user).toEqual({
       id: 1,
       name: 'John Doe',
       email: 'john.doe@example.com',
       role: 'admin',
       school: 'Example High School',
     });
-    expect(clearUser).not.toHaveBeenCalled();
   });
 
   test('calls clearUser when it fails', async () => {
@@ -82,14 +78,13 @@ describe('useFetchUser', () => {
     > as AxiosError<fetchUserErrorResponse>;
 
     vi.mocked(fetchUser).mockRejectedValueOnce(axiosLikeError);
+    const clearUserSpy = vi.spyOn(useUserStore.getState(), 'clearUser');
 
     const { result } = renderHook(() => useFetchUser());
 
     await waitFor(() => {
       expect(fetchUser).toHaveBeenCalled();
-    });
-    await waitFor(() => {
-      expect(clearUser).toHaveBeenCalled();
+      expect(clearUserSpy).toHaveBeenCalled();
       expect(result.current.error).toEqual(['User not found']);
     });
   });
@@ -97,13 +92,12 @@ describe('useFetchUser', () => {
   test('sets error message when API call fails', async () => {
     vi.mocked(fetchUser).mockRejectedValueOnce(new Error('Network Error'));
 
+    const clearUserSpy = vi.spyOn(useUserStore.getState(), 'clearUser');
     const { result } = renderHook(() => useFetchUser());
 
     await waitFor(() => {
       expect(fetchUser).toHaveBeenCalled();
-    });
-    await waitFor(() => {
-      expect(clearUser).toHaveBeenCalled();
+      expect(clearUserSpy).toHaveBeenCalled();
       expect(result.current.error).toEqual(['Network Error']);
     });
   });

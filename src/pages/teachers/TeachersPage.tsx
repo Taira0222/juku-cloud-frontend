@@ -1,5 +1,5 @@
 import SpinnerWithText from '@/components/common/status/Loading';
-import { DataTable } from '@/features/teachers/components/Table';
+import { DataTable } from '@/features/teachers/components/Table/DataTable';
 import { useFetchTeachers } from '@/features/teachers/hooks/Table/useFetchTeachers';
 import { useFormatTeachersData } from '@/features/teachers/hooks/Table/useFomatTeachersData';
 
