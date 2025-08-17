@@ -19,7 +19,7 @@ vi.mock('@/hooks/useDayOfWeekTranslation', () => ({
 
 vi.mock('@/hooks/useSchoolStageTranslations', () => ({
   useSchoolStageTranslation: () => ({
-    translateSchoolStage: (stage: string) => <span>{stage}</span>,
+    translateSchoolStage: (stage: string) => stage,
   }),
 }));
 

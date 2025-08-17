@@ -9,6 +9,8 @@ vi.mock('./useFetchTeachers', () => ({
   useFetchTeachers: vi.fn(),
 }));
 
+const NON_EXISTENT_ID = 999;
+
 const mockedUseFetchTeachers = vi.mocked(useFetchTeachers);
 
 describe('useFormatTeachersData', () => {
@@ -93,7 +95,7 @@ describe('useFormatTeachersData', () => {
       ],
     });
     // 存在しない ID は undefined
-    expect(getDetailDrawerData(999)).toBeUndefined();
+    expect(getDetailDrawerData(NON_EXISTENT_ID)).toBeUndefined();
   });
 
   test('should exclude null elements in teachersData (via filter(Boolean))', () => {
