@@ -5,7 +5,7 @@ import { useUserStore } from '@/stores/userStore';
 import { useWarningStore } from '@/stores/warningStore';
 import { Navigate, Outlet } from 'react-router-dom';
 
-type Role = 'admin' | 'teacher';
+export type Role = 'admin' | 'teacher';
 
 type Props = {
   allowedRoles?: Role[];
