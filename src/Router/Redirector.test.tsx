@@ -14,20 +14,20 @@ const DummyLayout = () => (
 );
 
 describe('Redirector', () => {
-  render(
-    <MemoryRouter initialEntries={['/students']}>
-      <Routes>
-        <Route element={<DummyLayout />}>
-          <Route path="/sign_in" element={<SignInPage />} />
-          <Route path="/students" element={<StudentsPage />} />
-        </Route>
-      </Routes>
-    </MemoryRouter>
-  );
-  test('should redirect to the next path', async () => {
+  test('should redirect to the next path', () => {
+    render(
+      <MemoryRouter initialEntries={['/students']}>
+        <Routes>
+          <Route element={<DummyLayout />}>
+            <Route path="/sign_in" element={<SignInPage />} />
+            <Route path="/students" element={<StudentsPage />} />
+          </Route>
+        </Routes>
+      </MemoryRouter>
+    );
     const clearNextPathSpy = vi.spyOn(useNavStore.getState(), 'clearNextPath');
 
-    await act(async () => {
+    act(() => {
       useNavStore.setState({ nextPath: '/sign_in', replace: true });
     });
 

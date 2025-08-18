@@ -79,7 +79,7 @@ describe('ProtectedRoute', () => {
     });
     genericRender(renderData);
 
-    // user が null の場合は Outlet をレンダリングしない
+    // user が null の場合は 他のページへリダイレクトしない
     if (testInfo.role === null) {
       expect(screen.getByText('Loading ...')).toBeInTheDocument();
       return;
