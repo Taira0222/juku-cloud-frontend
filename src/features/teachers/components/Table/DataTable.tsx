@@ -170,6 +170,7 @@ export const DataTable = ({
                 })}
             </DropdownMenuContent>
           </DropdownMenu>
+          {/** 講師を追加するボタン */}
           <CreateDialog />
         </div>
         {/** タブの内容 */}
