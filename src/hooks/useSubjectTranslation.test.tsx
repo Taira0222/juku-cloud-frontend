@@ -25,26 +25,18 @@ describe('useSubjectTranslation', () => {
     });
   });
 
-  test('should return english without translation for unknown subject', () => {
-    const UNKNOWN_SUBJECT_TRANSLATION = {
-      physical_education: {
-        name: '体育',
-        icon: null,
-        color: 'bg-blue-100',
-      },
-    };
-    Object.keys(UNKNOWN_SUBJECT_TRANSLATION).forEach((en) => {
-      const { label, color, Icon } = resolveSubjectMeta(en);
-      expect(label).toBe(en);
-      expect(color).toBe('');
-      expect(Icon).toBeNull();
+  test('should return English without translation for unknown subject', () => {
+    const unknownSubject = 'unknown subject';
 
-      const { result } = renderHook(() => useSubjectTranslation());
-      const element = result.current.createIconTranslationBadge(en);
+    const { label, color, Icon } = resolveSubjectMeta(unknownSubject);
+    expect(label).toBe(unknownSubject);
+    expect(color).toBe('');
+    expect(Icon).toBeNull();
 
-      render(element);
+    const { result } = renderHook(() => useSubjectTranslation());
+    const element = result.current.createIconTranslationBadge(unknownSubject);
+    render(element);
 
-      expect(screen.getByText(en)).toBeInTheDocument();
-    });
+    expect(screen.getByText(unknownSubject)).toBeInTheDocument();
   });
 });

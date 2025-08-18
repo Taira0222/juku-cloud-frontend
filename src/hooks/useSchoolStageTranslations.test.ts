@@ -14,7 +14,7 @@ describe('useSchoolStageTranslation', () => {
     );
   });
 
-  test('should return english without translation for unknown stages', () => {
+  test('should return English without translation for unknown stages', () => {
     const { result } = renderHook(() => useSchoolStageTranslation());
     const unknownStage = 'unknown';
     const emptyStage = '';

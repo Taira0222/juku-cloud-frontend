@@ -12,7 +12,7 @@ describe('useDayOfWeekTranslation', () => {
     });
   });
 
-  test('should return english without translation for unknown days', () => {
+  test('should return English without translation for unknown days', () => {
     const { result } = renderHook(() => useDayOfWeekTranslation());
     const unknownDay = 'unknown';
     const emptyDay = '';
