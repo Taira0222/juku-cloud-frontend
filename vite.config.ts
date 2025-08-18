@@ -32,6 +32,7 @@ export default defineConfig({
         // shadcn/ui から参照したコンポーネントは除く
         'src/features/teachers/components/Table/Columns.tsx',
         'src/features/teachers/components/Table/DataTable.tsx',
+        'src/hooks/useMobile.ts',
         'src/pages/error/**',
         'src/pages/home/**',
         'src/tests/**',

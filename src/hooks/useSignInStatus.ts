@@ -57,7 +57,7 @@ export const useSignInStatus = (signInAt: string | null): StatusMeta => {
       colorClass: 'text-yellow-500',
       Icon: IconCircleFilled,
     };
-  } else if (diffDays <= 30) {
+  } else if (diffDays <= 31) {
     return {
       label: `${diffDays}日前`,
       colorClass: 'text-orange-500',
