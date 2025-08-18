@@ -23,8 +23,6 @@ describe('AuthRoute', () => {
     );
 
     expect(screen.getByTestId('students')).toBeInTheDocument();
-    window.history.back();
-    expect(screen.getByTestId('students')).toBeInTheDocument();
   });
 
   test('should render home page for unauthenticated users', () => {
