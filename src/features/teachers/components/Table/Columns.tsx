@@ -1,15 +1,6 @@
-import { Button } from '@/components/ui/form/Button/button';
 import { Checkbox } from '@/components/ui/form/CheckBox/checkbox';
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/navigation/DropdownMenu/dropdown-menu';
-import {
   IconCircleCheckFilled,
-  IconDotsVertical,
   IconLoader,
   IconShieldStar,
   IconUsers,
@@ -21,6 +12,7 @@ import { DetailDrawer } from './DetailDrawer';
 import type { teacherDetailDrawer } from '../../hooks/Table/useFomatTeachersData';
 import { useSubjectTranslation } from '@/hooks/useSubjectTranslation';
 import { useSignInStatus } from '@/hooks/useSignInStatus';
+import { RawActions } from './RawActions';
 
 export const schema = z.object({
   id: z.number(),
@@ -148,24 +140,12 @@ export const createColumns = (
   },
   {
     id: 'actions',
-    cell: () => (
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            variant="ghost"
-            className="data-[state=open]:bg-muted text-muted-foreground flex size-8"
-            size="icon"
-          >
-            <IconDotsVertical />
-            <span className="sr-only">Open menu</span>
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-32">
-          <DropdownMenuItem>編集</DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem variant="destructive">削除</DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+    cell: ({ row }) => (
+      <RawActions
+        teacherId={row.original.id}
+        teacherName={row.original.name}
+        teacherRole={row.original.role}
+      />
     ),
   },
 ];
