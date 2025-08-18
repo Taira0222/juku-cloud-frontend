@@ -33,8 +33,10 @@ export default defineConfig({
         'src/features/teachers/components/Table/Columns.tsx',
         'src/features/teachers/components/Table/DataTable.tsx',
         'src/hooks/useMobile.ts',
+        // その他テスト不要なファイルを除外
         'src/pages/error/**',
         'src/pages/home/**',
+        'src/Router/Router.tsx',
         'src/tests/**',
         'src/**/*.test.{ts,tsx}',
         'src/types/**',
