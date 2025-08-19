@@ -9,7 +9,7 @@ import {
   DrawerClose,
 } from '@/components/ui/layout/Drawer/drawer';
 import { Label } from '@/components/ui/form/Label/label';
-import type { teacherDetailDrawer } from '../../hooks/Table/useFomatTeachersData';
+
 import { useIsMobile } from '@/hooks/useMobile';
 import { Badge } from '@/components/ui/display/Badge/badge';
 import { IconCircleCheckFilled, IconLoader, IconX } from '@tabler/icons-react';
@@ -18,6 +18,7 @@ import { useDayOfWeekTranslation } from '@/hooks/useDayOfWeekTranslation';
 import { Fragment } from 'react/jsx-runtime';
 import { useSignInStatus } from '@/hooks/useSignInStatus';
 import { useSchoolStageTranslation } from '@/hooks/useSchoolStageTranslations';
+import type { teacherDetailDrawer } from '../../types/teachers';
 
 export const DetailDrawer = ({ item }: { item: teacherDetailDrawer }) => {
   const isMobile = useIsMobile();

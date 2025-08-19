@@ -54,3 +54,34 @@ export type fetchTeachersSuccessResponse = {
 export type fetchTeachersErrorResponse = {
   error: string;
 };
+
+// teacher 削除のためのデータ型
+
+export type teacherDeleteErrorResponse = {
+  error: string;
+};
+
+// 詳細情報を表示するためのデータ
+export type teacherDetailDrawer = Omit<
+  currentUser,
+  | 'provider'
+  | 'uid'
+  | 'allow_password_change'
+  | 'updated_at'
+  | 'school_id'
+  | 'last_sign_in_at'
+>;
+
+// teachersStore の型
+export type teacherDataTable = {
+  id: number;
+  name: string;
+  role: string;
+  employment_status: string;
+  classSubject: {
+    id: number;
+    name: string;
+  }[];
+  studentsCount: number;
+  current_sign_in_at: string | null;
+};

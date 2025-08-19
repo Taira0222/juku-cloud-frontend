@@ -9,10 +9,11 @@ import type { ColumnDef } from '@tanstack/react-table';
 import { Badge } from '@/components/ui/display/Badge/badge';
 import { z } from 'zod';
 import { DetailDrawer } from './DetailDrawer';
-import type { teacherDetailDrawer } from '../../hooks/Table/useFomatTeachersData';
+
 import { useSubjectTranslation } from '@/hooks/useSubjectTranslation';
 import { useSignInStatus } from '@/hooks/useSignInStatus';
 import { RawActions } from './RawActions';
+import type { teacherDetailDrawer } from '../../types/teachers';
 
 export const schema = z.object({
   id: z.number(),
@@ -31,7 +32,8 @@ export const schema = z.object({
 
 // columns を関数として定義し、getDetailDrawerData を受け取る
 export const createColumns = (
-  getDetailDrawerData: (id: number) => teacherDetailDrawer | undefined
+  getDetailDrawerData: (id: number) => teacherDetailDrawer | undefined,
+  refetch: () => Promise<void>
 ): ColumnDef<z.infer<typeof schema>>[] => [
   {
     id: 'select',
@@ -145,6 +147,7 @@ export const createColumns = (
         teacherId={row.original.id}
         teacherName={row.original.name}
         teacherRole={row.original.role}
+        refetch={refetch}
       />
     ),
   },

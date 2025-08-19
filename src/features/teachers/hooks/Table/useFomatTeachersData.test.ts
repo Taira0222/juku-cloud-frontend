@@ -1,34 +1,17 @@
-import { beforeEach, describe, expect, test, vi } from 'vitest';
-import { useFetchTeachers } from './useFetchTeachers';
+import { describe, expect, test } from 'vitest';
 import type { currentUser } from '../../types/teachers';
 import { useFormatTeachersData } from './useFomatTeachersData';
 import { renderHook } from '@testing-library/react';
 import { currentUserResponse, teacher1 } from '../../fixtures/teachers';
 
-vi.mock('./useFetchTeachers', () => ({
-  useFetchTeachers: vi.fn(),
-}));
-
 const NON_EXISTENT_ID = 999;
 
-const mockedUseFetchTeachers = vi.mocked(useFetchTeachers);
-
 describe('useFormatTeachersData', () => {
-  beforeEach(() => {
-    vi.clearAllMocks();
-  });
-
   test('formats teachers data correctly', () => {
     const teachersResponse = [teacher1] as unknown as currentUser[];
-
-    mockedUseFetchTeachers.mockReturnValue({
-      currentUserData: currentUserResponse,
-      teachersData: teachersResponse,
-      error: null,
-      loading: false,
-    });
-
-    const { result } = renderHook(() => useFormatTeachersData());
+    const { result } = renderHook(() =>
+      useFormatTeachersData(currentUserResponse, teachersResponse)
+    );
     const { dataTable, getDetailDrawerData } = result.current;
 
     // 並びと整形結果（DataTable用）を検証
@@ -101,14 +84,9 @@ describe('useFormatTeachersData', () => {
   test('should exclude null elements in teachersData (via filter(Boolean))', () => {
     const teachersResponse = [teacher1, null] as unknown as currentUser[];
 
-    mockedUseFetchTeachers.mockReturnValue({
-      currentUserData: currentUserResponse,
-      teachersData: teachersResponse,
-      error: null,
-      loading: false,
-    });
-
-    const { result } = renderHook(() => useFormatTeachersData());
+    const { result } = renderHook(() =>
+      useFormatTeachersData(currentUserResponse, teachersResponse)
+    );
     const { dataTable } = result.current;
 
     // currentUser + teacher1 のみ（null は除外）
@@ -117,14 +95,10 @@ describe('useFormatTeachersData', () => {
 
   test('should return only teachers when currentUser is missing', () => {
     const teachersResponse = [teacher1] as unknown as currentUser[];
-    mockedUseFetchTeachers.mockReturnValue({
-      currentUserData: null,
-      teachersData: teachersResponse,
-      error: null,
-      loading: false,
-    });
 
-    const { result } = renderHook(() => useFormatTeachersData());
+    const { result } = renderHook(() =>
+      useFormatTeachersData(null, teachersResponse)
+    );
     const { dataTable, getDetailDrawerData } = result.current;
 
     expect(dataTable).toHaveLength(1);
@@ -147,14 +121,7 @@ describe('useFormatTeachersData', () => {
   });
 
   test('should return an empty array and undefined for lookups when both currentUser and teachersData are missing', () => {
-    mockedUseFetchTeachers.mockReturnValue({
-      currentUserData: null,
-      teachersData: null,
-      error: null,
-      loading: false,
-    });
-
-    const { result } = renderHook(() => useFormatTeachersData());
+    const { result } = renderHook(() => useFormatTeachersData(null, null));
     const { dataTable, getDetailDrawerData } = result.current;
 
     expect(dataTable).toEqual([]);

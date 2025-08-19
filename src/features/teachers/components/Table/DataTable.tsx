@@ -49,16 +49,19 @@ import {
 import { Tabs, TabsContent } from '@/components/ui/navigation/Tabs/tabs';
 
 import { schema, createColumns } from './Columns';
-import type { teacherDetailDrawer } from '../../hooks/Table/useFomatTeachersData';
+
 import { CreateDialog } from './CreateDialog';
+import type { teacherDetailDrawer } from '../../types/teachers';
 
 // props に getDetailDrawerData を追加
 export const DataTable = ({
   data: initialData,
   getDetailDrawerData,
+  refetch,
 }: {
   data: z.infer<typeof schema>[];
   getDetailDrawerData: (id: number) => teacherDetailDrawer | undefined;
+  refetch: () => Promise<void>;
 }) => {
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -71,8 +74,8 @@ export const DataTable = ({
 
   // getDetailDrawerData をcreateColumnsに渡すためにuseMemoを使用
   const columns = useMemo(
-    () => createColumns(getDetailDrawerData),
-    [getDetailDrawerData]
+    () => createColumns(getDetailDrawerData, refetch),
+    [getDetailDrawerData, refetch]
   );
 
   const table = useReactTable({

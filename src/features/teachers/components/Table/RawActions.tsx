@@ -14,9 +14,15 @@ type Props = {
   teacherId: number;
   teacherName: string;
   teacherRole: string;
+  refetch: () => Promise<void>;
 };
 
-export const RawActions = ({ teacherId, teacherName, teacherRole }: Props) => {
+export const RawActions = ({
+  teacherId,
+  teacherName,
+  teacherRole,
+  refetch,
+}: Props) => {
   const [open, setOpen] = useState(false);
   return (
     <>
@@ -54,7 +60,7 @@ export const RawActions = ({ teacherId, teacherName, teacherRole }: Props) => {
         onOpenChange={setOpen}
         teacherId={teacherId}
         teacherName={teacherName}
-        teacherRole={teacherRole}
+        refetch={refetch}
       />
     </>
   );
