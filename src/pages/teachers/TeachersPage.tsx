@@ -4,8 +4,12 @@ import { useFetchTeachers } from '@/features/teachers/hooks/Table/useFetchTeache
 import { useFormatTeachersData } from '@/features/teachers/hooks/Table/useFomatTeachersData';
 
 export const TeachersPage = () => {
-  const { loading, error } = useFetchTeachers();
-  const { dataTable, getDetailDrawerData } = useFormatTeachersData();
+  const { loading, error, refetch, currentUserData, teachersData } =
+    useFetchTeachers();
+  const { dataTable, getDetailDrawerData } = useFormatTeachersData(
+    currentUserData,
+    teachersData
+  );
 
   if (loading) {
     return (
@@ -20,7 +24,11 @@ export const TeachersPage = () => {
   return (
     <div className="p-6">
       {error && <div className="text-red-500 mb-4">{error}</div>}
-      <DataTable data={dataTable} getDetailDrawerData={getDetailDrawerData} />
+      <DataTable
+        data={dataTable}
+        getDetailDrawerData={getDetailDrawerData}
+        refetch={refetch}
+      />
     </div>
   );
 };

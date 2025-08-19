@@ -1,30 +1,8 @@
-import type { currentUser } from '../../types/teachers';
-import { useFetchTeachers } from './useFetchTeachers';
-
-// DataTable に表示するデータ
-export type teacherDataTable = {
-  id: number;
-  name: string;
-  role: string;
-  employment_status: string;
-  classSubject: {
-    id: number;
-    name: string;
-  }[];
-  studentsCount: number;
-  current_sign_in_at: string | null;
-};
-
-// 詳細情報を表示するためのデータ
-export type teacherDetailDrawer = Omit<
+import type {
   currentUser,
-  | 'provider'
-  | 'uid'
-  | 'allow_password_change'
-  | 'updated_at'
-  | 'school_id'
-  | 'last_sign_in_at'
->;
+  teacherDataTable,
+  teacherDetailDrawer,
+} from '../../types/teachers';
 
 // toTeacherRow や toTeacherDetailDrawer に渡すデータの型(currentUser や teachers)
 type fetchData = currentUser;
@@ -78,9 +56,11 @@ export const toTeacherDetailDrawer = (
   })),
 });
 
-export const useFormatTeachersData = () => {
-  const { currentUserData, teachersData } = useFetchTeachers();
-
+// パラメータとして currentUserData と teachersData を受け取るように変更
+export const useFormatTeachersData = (
+  currentUserData?: currentUser | null,
+  teachersData?: currentUser[] | null
+) => {
   // teachersData に null 要素が混ざる可能性もケアして filter(Boolean)
   const teacherRows = (teachersData ?? []).filter(Boolean).map(toTeacherRow);
   const detailRows = (teachersData ?? [])

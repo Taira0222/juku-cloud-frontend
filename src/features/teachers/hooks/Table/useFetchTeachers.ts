@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { fetchTeachers } from '@/features/teachers/services/teachersApi';
 import {
   type currentUser,
@@ -16,28 +16,34 @@ export const useFetchTeachers = () => {
   const [loading, setLoading] = useState<boolean>(true); // ローディング状態を追加
   const DEFAULT_ERROR_MESSAGE = '予期せぬエラーが発生しました。';
 
-  useEffect(() => {
-    const fetchTeachersData = async () => {
-      try {
-        setLoading(true);
-        const response = await fetchTeachers();
-        setCurrentUserData(response.data.current_user);
-        setTeachersData(response.data.teachers);
-      } catch (err) {
-        let errorMessage = DEFAULT_ERROR_MESSAGE;
-        if (isAxiosError<fetchTeachersErrorResponse>(err)) {
-          errorMessage = err.response?.data?.error || DEFAULT_ERROR_MESSAGE;
-        } else if (err instanceof Error && err.message) {
-          errorMessage = err.message;
-        }
-        setError(errorMessage);
-      } finally {
-        setLoading(false);
+  const fetchTeachersData = useCallback(async () => {
+    try {
+      setLoading(true);
+      const response = await fetchTeachers();
+      setCurrentUserData(response.data.current_user);
+      setTeachersData(response.data.teachers);
+    } catch (err) {
+      let errorMessage = DEFAULT_ERROR_MESSAGE;
+      if (isAxiosError<fetchTeachersErrorResponse>(err)) {
+        errorMessage = err.response?.data?.error || DEFAULT_ERROR_MESSAGE;
+      } else if (err instanceof Error && err.message) {
+        errorMessage = err.message;
       }
-    };
-
-    fetchTeachersData();
+      setError(errorMessage);
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
-  return { currentUserData, teachersData, error, loading };
+  useEffect(() => {
+    fetchTeachersData();
+  }, [fetchTeachersData]);
+
+  return {
+    currentUserData,
+    teachersData,
+    error,
+    loading,
+    refetch: fetchTeachersData,
+  };
 };
