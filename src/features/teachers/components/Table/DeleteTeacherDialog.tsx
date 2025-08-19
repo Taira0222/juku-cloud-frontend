@@ -45,11 +45,15 @@ export const DeleteTeacherDialog = ({
     if (result.ok) {
       onOpenChange(false); // Dialog を閉じる
       setConfirmText(''); // 入力フィールドをクリア
-      toast.success('講師を削除しました。');
+      toast.success('講師を削除しました。', {
+        className: 'bg-green-100 text-green-800 border border-green-300',
+      });
       await refetch(); // データを再取得して最新の状態に更新
     } else {
       // 削除失敗時の処理
-      toast.error('講師の削除に失敗しました。');
+      toast.error('講師の削除に失敗しました。', {
+        className: 'bg-red-100 text-red-800 border border-red-300',
+      });
     }
   };
 
@@ -60,8 +64,7 @@ export const DeleteTeacherDialog = ({
           <DialogHeader>
             <DialogTitle>
               {loading && '読み込み中'}
-              {!loading && error && 'エラー'}
-              {!loading && !error && '講師を削除しますか？'}
+              {!loading && '講師を削除しますか？'}
             </DialogTitle>
 
             <div className="text-muted-foreground leading-7">
@@ -92,14 +95,12 @@ export const DeleteTeacherDialog = ({
               <SpinnerWithText>Loading...</SpinnerWithText>
             </div>
           )}
-          {/* エラーメッセージの表示 */}
-          {!loading && error && (
-            <div className="text-sm text-red-500">{error}</div>
-          )}{' '}
           {/* 正常時のレンダリング */}
-          {!loading && !error && (
+          {!loading && (
             <>
               {warning && <div className="text-sm text-red-500">{warning}</div>}
+              {error && <div className="text-sm text-red-500">{error}</div>}
+
               <section className="space-y-2">
                 <Label htmlFor="confirmTeacherName">確認入力</Label>
                 <Input

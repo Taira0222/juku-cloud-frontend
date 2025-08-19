@@ -22,7 +22,7 @@ export const useTeacherDelete = () => {
         errorMessage = err.message;
       }
       setError(errorMessage);
-      return { ok: false as const, error: errorMessage };
+      return { ok: false as const };
     } finally {
       setLoading(false);
     }
