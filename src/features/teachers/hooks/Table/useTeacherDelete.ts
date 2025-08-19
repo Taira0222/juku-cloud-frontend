@@ -3,10 +3,11 @@ import { deleteTeacherApi } from '../../services/deleteTeacherApi';
 import { isAxiosError } from 'axios';
 import type { teacherDeleteErrorResponse } from '../../types/teachers';
 
+const DEFAULT_ERROR_MESSAGE = '予期せぬエラーが発生しました。';
+
 export const useTeacherDelete = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const DEFAULT_ERROR_MESSAGE = '予期せぬエラーが発生しました。';
 
   const deleteTeacher = useCallback(async (teacherId: number) => {
     setLoading(true);

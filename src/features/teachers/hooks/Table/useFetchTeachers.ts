@@ -7,6 +7,8 @@ import {
 } from '@/features/teachers/types/teachers';
 import { isAxiosError } from 'axios';
 
+const DEFAULT_ERROR_MESSAGE = '予期せぬエラーが発生しました。';
+
 export const useFetchTeachers = () => {
   const [currentUserData, setCurrentUserData] = useState<currentUser | null>(
     null
@@ -14,8 +16,6 @@ export const useFetchTeachers = () => {
   const [teachersData, setTeachersData] = useState<teachers | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true); // ローディング状態を追加
-  const DEFAULT_ERROR_MESSAGE = '予期せぬエラーが発生しました。';
-
   const fetchTeachersData = useCallback(async () => {
     try {
       setLoading(true);

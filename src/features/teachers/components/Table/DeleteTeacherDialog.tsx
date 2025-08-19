@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/navigation/Dialog/dialog';
 import { Input } from '@/components/ui/form/Input/input';
 import { Label } from '@/components/ui/form/Label/label';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTeacherDelete } from '../../hooks/Table/useTeacherDelete';
 import { toast } from 'sonner';
 import SpinnerWithText from '@/components/common/status/Loading';
@@ -34,12 +34,23 @@ export const DeleteTeacherDialog = ({
   const [warning, setWarning] = useState<string | null>(null);
   const { error, loading, deleteTeacher } = useTeacherDelete();
 
+  // 開くたびに入力とエラーを初期化
+  useEffect(() => {
+    if (open) {
+      setConfirmText('');
+      setWarning(null);
+    }
+  }, [open]);
+
   const onClickDelete = async () => {
     // 文字が一致しているか確認
     if (confirmText !== teacherName) {
       setWarning('名前が一致しません。');
       return;
     }
+
+    setConfirmText('');
+    setWarning(null);
 
     const result = await deleteTeacher(teacherId);
     if (result.ok) {
