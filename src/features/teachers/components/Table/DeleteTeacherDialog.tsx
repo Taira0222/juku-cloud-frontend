@@ -55,7 +55,6 @@ export const DeleteTeacherDialog = ({
     const result = await deleteTeacher(teacherId);
     if (result.ok) {
       onOpenChange(false); // Dialog を閉じる
-      setConfirmText(''); // 入力フィールドをクリア
       toast.success('講師を削除しました。', {
         className: 'bg-green-100 text-green-800 border border-green-300',
       });
