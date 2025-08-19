@@ -7,7 +7,7 @@ function App() {
   return (
     <>
       <Redirector />
-      <Toaster position="top-right" />
+      <Toaster richColors position="top-right" />
       <Router />
     </>
   );

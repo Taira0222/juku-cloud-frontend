@@ -55,15 +55,11 @@ export const DeleteTeacherDialog = ({
     const result = await deleteTeacher(teacherId);
     if (result.ok) {
       onOpenChange(false); // Dialog を閉じる
-      toast.success('講師を削除しました。', {
-        className: 'bg-green-100 text-green-800 border border-green-300',
-      });
+      toast.success('講師を削除しました。');
       await refetch(); // データを再取得して最新の状態に更新
     } else {
       // 削除失敗時の処理
-      toast.error('講師の削除に失敗しました。', {
-        className: 'bg-red-100 text-red-800 border border-red-300',
-      });
+      toast.error('講師の削除に失敗しました。');
     }
   };
 
