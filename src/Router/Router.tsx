@@ -13,6 +13,7 @@ import { TeachersPage } from '@/pages/teachers/TeachersPage';
 import { SubjectsPage } from '@/pages/subjects/SubjectsPage';
 import { LearningMaterialsPage } from '@/pages/learningMaterial/LearningMaterialsPage';
 import { ForbiddenPage } from '@/pages/error/ForbiddenPage';
+import { RoleRoute } from './RoleRoute';
 
 export const Router = () => {
   return (
@@ -31,14 +32,14 @@ export const Router = () => {
       {/** ログイン後のページ */}
       <Route element={<ProtectedRoute />}>
         {/** admin, teacher 共通のページ */}
-        <Route element={<ProtectedRoute allowedRoles={['admin', 'teacher']} />}>
+        <Route element={<RoleRoute allowedRoles={['admin', 'teacher']} />}>
           <Route element={<ManagementDashboard />}>
             <Route path="/students" element={<StudentsPage />} />
           </Route>
         </Route>
 
         {/** admin 専用のページ */}
-        <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
+        <Route element={<RoleRoute allowedRoles={['admin']} />}>
           <Route element={<ManagementDashboard />}>
             <Route path="/teachers" element={<TeachersPage />} />
             <Route path="/subjects" element={<SubjectsPage />} />
