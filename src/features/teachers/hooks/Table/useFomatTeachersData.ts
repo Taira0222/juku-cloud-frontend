@@ -1,8 +1,10 @@
+import { useEffect } from 'react';
 import type {
   currentUser,
   teacherDataTable,
   teacherDetailDrawer,
 } from '../../types/teachers';
+import { useTeachersStore } from '@/stores/teachersStore';
 
 // toTeacherRow や toTeacherDetailDrawer に渡すデータの型(currentUser や teachers)
 type fetchData = currentUser;
@@ -58,9 +60,11 @@ export const toTeacherDetailDrawer = (
 
 // パラメータとして currentUserData と teachersData を受け取るように変更
 export const useFormatTeachersData = (
-  currentUserData?: currentUser | null,
-  teachersData?: currentUser[] | null
+  currentUserData: currentUser | null,
+  teachersData: currentUser[] | null
 ) => {
+  const setDataTable = useTeachersStore((state) => state.setDataTable);
+  const setDetailDrawer = useTeachersStore((state) => state.setDetailDrawer);
   // teachersData に null 要素が混ざる可能性もケアして filter(Boolean)
   const teacherRows = (teachersData ?? []).filter(Boolean).map(toTeacherRow);
   const detailRows = (teachersData ?? [])
@@ -76,10 +80,8 @@ export const useFormatTeachersData = (
     ? [toTeacherDetailDrawer(currentUserData), ...detailRows]
     : detailRows;
 
-  // ID でdetailDrawer のデータを検索する関数を追加
-  const getDetailDrawerData = (id: number): teacherDetailDrawer | undefined => {
-    return detailDrawer.find((item) => item.id === id);
-  };
-
-  return { dataTable, getDetailDrawerData };
+  useEffect(() => {
+    setDataTable(dataTable);
+    setDetailDrawer(detailDrawer);
+  }, [dataTable, detailDrawer, setDataTable, setDetailDrawer]);
 };

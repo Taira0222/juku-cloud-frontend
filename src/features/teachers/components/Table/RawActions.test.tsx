@@ -1,14 +1,13 @@
 import { render, screen } from '@testing-library/react';
-import { expect, vi } from 'vitest';
+import { beforeEach, expect, vi } from 'vitest';
 import { describe, test } from 'vitest';
 import { RawActions } from './RawActions';
 import userEvent from '@testing-library/user-event';
+import { useTeachersStore } from '@/stores/teachersStore';
+import { teacher1 } from '../../fixtures/teachers';
 
 type Props = {
   teacherId: number;
-  teacherName: string;
-  teacherRole: string;
-  refetch: () => Promise<void>;
 };
 
 describe('RawActions', () => {
@@ -16,16 +15,26 @@ describe('RawActions', () => {
     return render(<RawActions {...props} />);
   };
 
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
   test('renders correctly', async () => {
     const user = userEvent.setup();
+    const getTeacherDataMock = vi.spyOn(
+      useTeachersStore.getState(),
+      'getTeacherData'
+    );
+    useTeachersStore.setState({
+      detailDrawer: [teacher1],
+    });
     const mockProps: Props = {
-      teacherId: 1,
-      teacherName: 'John Doe',
-      teacherRole: 'teacher',
-      refetch: vi.fn(),
+      teacherId: 2,
     };
 
     renderComponent(mockProps);
+
+    expect(getTeacherDataMock).toHaveBeenCalledWith(mockProps.teacherId);
 
     // 3点メニューをクリック
     const menuButton = screen.getByRole('button', { name: /open menu/i });
@@ -39,18 +48,26 @@ describe('RawActions', () => {
     // ダイアログが開いていることを確認
     const dialog = screen.getByRole('dialog');
     expect(dialog).toBeInTheDocument();
-    expect(dialog).toHaveTextContent('John Doe');
+    expect(dialog).toHaveTextContent(teacher1.name);
   });
   test('does not show delete option for admin role', async () => {
+    const getTeacherDataMock = vi.spyOn(
+      useTeachersStore.getState(),
+      'getTeacherData'
+    );
+    teacher1.role = 'admin'; // admin roleを設定
+    useTeachersStore.setState({
+      detailDrawer: [teacher1],
+    });
+
     const user = userEvent.setup();
     const mockProps: Props = {
-      teacherId: 1,
-      teacherName: 'Jane Doe',
-      teacherRole: 'admin',
-      refetch: vi.fn(),
+      teacherId: 2,
     };
 
     renderComponent(mockProps);
+
+    expect(getTeacherDataMock).toHaveBeenCalledWith(mockProps.teacherId);
 
     // 3点メニューをクリック
     const menuButton = screen.getByRole('button', { name: /open menu/i });

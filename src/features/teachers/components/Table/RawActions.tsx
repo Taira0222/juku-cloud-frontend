@@ -9,21 +9,16 @@ import {
 import { IconDotsVertical } from '@tabler/icons-react';
 import { useState } from 'react';
 import { DeleteTeacherDialog } from './DeleteTeacherDialog';
+import { useTeachersStore } from '@/stores/teachersStore';
 
 type Props = {
   teacherId: number;
-  teacherName: string;
-  teacherRole: string;
-  refetch: () => Promise<void>;
 };
 
-export const RawActions = ({
-  teacherId,
-  teacherName,
-  teacherRole,
-  refetch,
-}: Props) => {
+export const RawActions = ({ teacherId }: Props) => {
   const [open, setOpen] = useState(false);
+  const getTeacherData = useTeachersStore((state) => state.getTeacherData);
+  const teacher = getTeacherData(teacherId);
   return (
     <>
       <DropdownMenu>
@@ -39,7 +34,7 @@ export const RawActions = ({
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-32">
           <DropdownMenuItem>編集</DropdownMenuItem>
-          {teacherRole !== 'admin' && (
+          {teacher?.role !== 'admin' && (
             <>
               <DropdownMenuSeparator />
               <DropdownMenuItem
@@ -59,8 +54,6 @@ export const RawActions = ({
         open={open}
         onOpenChange={setOpen}
         teacherId={teacherId}
-        teacherName={teacherName}
-        refetch={refetch}
       />
     </>
   );

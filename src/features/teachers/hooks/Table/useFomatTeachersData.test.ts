@@ -1,19 +1,34 @@
-import { describe, expect, test } from 'vitest';
+import { beforeEach, describe, expect, test, vi } from 'vitest';
 import type { currentUser } from '../../types/teachers';
 import { useFormatTeachersData } from './useFomatTeachersData';
 import { renderHook } from '@testing-library/react';
 import { currentUserResponse, teacher1 } from '../../fixtures/teachers';
-
-const NON_EXISTENT_ID = 999;
+import { useTeachersStore } from '@/stores/teachersStore';
 
 describe('useFormatTeachersData', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    useTeachersStore.setState({
+      dataTable: [],
+      detailDrawer: [],
+    });
+  });
+
+  const setDataTableSpy = vi.spyOn(useTeachersStore.getState(), 'setDataTable');
+  const setDetailDrawerSpy = vi.spyOn(
+    useTeachersStore.getState(),
+    'setDetailDrawer'
+  );
+
   test('formats teachers data correctly', () => {
+    // Zustand の関数をスパイして呼び出しを監視
+
     const teachersResponse = [teacher1] as unknown as currentUser[];
-    const { result } = renderHook(() =>
+    renderHook(() =>
       useFormatTeachersData(currentUserResponse, teachersResponse)
     );
-    const { dataTable, getDetailDrawerData } = result.current;
 
+    const { dataTable, detailDrawer } = useTeachersStore.getState();
     // 並びと整形結果（DataTable用）を検証
     expect(dataTable).toHaveLength(2);
 
@@ -46,7 +61,7 @@ describe('useFormatTeachersData', () => {
     });
 
     // 詳細データ検索の検証（teacher1）
-    const detail2 = getDetailDrawerData(2)!;
+    const detail2 = detailDrawer.find((detail) => detail.id === 2);
     expect(detail2).toEqual({
       id: 2,
       name: 'Jane Smith',
@@ -77,17 +92,18 @@ describe('useFormatTeachersData', () => {
         { id: 3, name: 'Science' },
       ],
     });
-    // 存在しない ID は undefined
-    expect(getDetailDrawerData(NON_EXISTENT_ID)).toBeUndefined();
+
+    expect(setDataTableSpy).toHaveBeenCalled();
+    expect(setDetailDrawerSpy).toHaveBeenCalled();
   });
 
   test('should exclude null elements in teachersData (via filter(Boolean))', () => {
     const teachersResponse = [teacher1, null] as unknown as currentUser[];
 
-    const { result } = renderHook(() =>
+    renderHook(() =>
       useFormatTeachersData(currentUserResponse, teachersResponse)
     );
-    const { dataTable } = result.current;
+    const { dataTable } = useTeachersStore.getState();
 
     // currentUser + teacher1 のみ（null は除外）
     expect(dataTable.map((r) => r.id)).toEqual([1, 2]);
@@ -96,10 +112,8 @@ describe('useFormatTeachersData', () => {
   test('should return only teachers when currentUser is missing', () => {
     const teachersResponse = [teacher1] as unknown as currentUser[];
 
-    const { result } = renderHook(() =>
-      useFormatTeachersData(null, teachersResponse)
-    );
-    const { dataTable, getDetailDrawerData } = result.current;
+    renderHook(() => useFormatTeachersData(null, teachersResponse));
+    const { dataTable, detailDrawer } = useTeachersStore.getState();
 
     expect(dataTable).toHaveLength(1);
     expect(dataTable[0]).toEqual({
@@ -115,16 +129,20 @@ describe('useFormatTeachersData', () => {
       current_sign_in_at: '2024-01-01T12:00:00Z',
     });
 
-    // 詳細検索も teacher1 のみ
-    expect(getDetailDrawerData(2)?.email).toBe('jane.smith@example.com');
-    expect(getDetailDrawerData(1)).toBeUndefined();
+    // currentUser はidが1, teacher はidが2
+    const currentUser = detailDrawer.find((detail) => detail.id === 1);
+    const teacher = detailDrawer.find((detail) => detail.id === 2);
+
+    expect(currentUser).toBeUndefined();
+    expect(teacher?.email).toBe('jane.smith@example.com');
   });
 
   test('should return an empty array and undefined for lookups when both currentUser and teachersData are missing', () => {
-    const { result } = renderHook(() => useFormatTeachersData(null, null));
-    const { dataTable, getDetailDrawerData } = result.current;
+    renderHook(() => useFormatTeachersData(null, null));
+    const { dataTable, detailDrawer } = useTeachersStore.getState();
 
     expect(dataTable).toEqual([]);
-    expect(getDetailDrawerData(1)).toBeUndefined();
+    const currentUser = detailDrawer.find((detail) => detail.id === 1);
+    expect(currentUser).toBeUndefined();
   });
 });

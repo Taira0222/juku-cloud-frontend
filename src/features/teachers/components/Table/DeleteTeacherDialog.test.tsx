@@ -4,13 +4,13 @@ import { DeleteTeacherDialog } from './DeleteTeacherDialog';
 import { useTeacherDelete } from '../../hooks/Table/useTeacherDelete';
 import userEvent from '@testing-library/user-event';
 import { Toaster } from '@/components/ui/feedback/Sonner/sonner';
+import { useTeachersStore } from '@/stores/teachersStore';
+import { teacher1 } from '../../fixtures/teachers';
 
 type Props = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   teacherId: number;
-  teacherName: string;
-  refetch: () => Promise<void>;
 };
 
 vi.mock('../../hooks/Table/useTeacherDelete', () => ({
@@ -29,50 +29,66 @@ describe('DeleteTeacherDialog', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.spyOn(useTeachersStore.getState(), 'deleteTeacherLocal');
+    vi.spyOn(useTeachersStore.getState(), 'getTeacherData');
+    useTeachersStore.setState({
+      detailDrawer: [teacher1],
+    });
   });
 
   test('renders correctly', async () => {
+    const deleteTeacherLocalMock = vi.spyOn(
+      useTeachersStore.getState(),
+      'deleteTeacherLocal'
+    );
+    const getTeacherDataMock = vi.spyOn(
+      useTeachersStore.getState(),
+      'getTeacherData'
+    );
     const user = userEvent.setup();
+
     vi.mocked(useTeacherDelete).mockReturnValue({
       error: null,
       loading: false,
       deleteTeacher: vi.fn().mockResolvedValue({ ok: true }),
     });
 
+    useTeachersStore.setState({
+      detailDrawer: [teacher1],
+    });
+
     const mockProps: Props = {
-      // 開いた状態からテスト開始する
+      // teacher1 のid は2
       open: true,
       onOpenChange: vi.fn(),
-      teacherId: 1,
-      teacherName: 'John Doe',
-      refetch: vi.fn(),
+      teacherId: 2,
     };
 
     mockRender(mockProps);
 
+    expect(getTeacherDataMock).toHaveBeenCalledWith(mockProps.teacherId);
     expect(screen.getByText('この操作は取り消せません。')).toBeInTheDocument();
     expect(
-      screen.getByText(
-        `削除する場合は「${mockProps.teacherName}」と入力してください`
-      )
+      screen.getByText(`削除する場合は「${teacher1.name}」と入力してください`)
     ).toBeInTheDocument();
 
     const inputTeacherName = screen.getByLabelText('確認入力');
     const deleteButton = screen.getByRole('button', {
-      name: `講師「${mockProps.teacherName}」を削除する`,
+      name: `講師「${teacher1.name}」を削除する`,
     });
 
     // 講師の名前を入力し削除
-    await user.type(inputTeacherName, 'John Doe');
+    await user.type(inputTeacherName, teacher1.name);
     await user.click(deleteButton);
 
     expect(mockProps.onOpenChange).toHaveBeenCalledWith(false);
-    expect(mockProps.refetch).toHaveBeenCalled();
     expect(screen.getByText('講師を削除しました。')).toBeInTheDocument();
+    expect(deleteTeacherLocalMock).toHaveBeenCalledWith(mockProps.teacherId);
   });
 
   test('handles error state', async () => {
     const user = userEvent.setup();
+
     vi.mocked(useTeacherDelete).mockReturnValue({
       error: '予期せぬエラーが発生しました。',
       loading: false,
@@ -82,23 +98,20 @@ describe('DeleteTeacherDialog', () => {
     const mockProps: Props = {
       open: true,
       onOpenChange: vi.fn(),
-      teacherId: 1,
-      teacherName: 'John Doe',
-      refetch: vi.fn(),
+      teacherId: 2,
     };
 
     mockRender(mockProps);
 
     const inputTeacherName = screen.getByLabelText('確認入力');
     const deleteButton = screen.getByRole('button', {
-      name: `講師「${mockProps.teacherName}」を削除する`,
+      name: `講師「${teacher1.name}」を削除する`,
     });
 
     // 講師の名前を入力し削除
-    await user.type(inputTeacherName, 'John Doe');
+    await user.type(inputTeacherName, teacher1.name);
     await user.click(deleteButton);
 
-    expect(mockProps.refetch).not.toHaveBeenCalled();
     expect(mockProps.onOpenChange).not.toHaveBeenCalled();
     // error の表示
     expect(
@@ -117,9 +130,7 @@ describe('DeleteTeacherDialog', () => {
     const mockProps: Props = {
       open: true,
       onOpenChange: vi.fn(),
-      teacherId: 1,
-      teacherName: 'John Doe',
-      refetch: vi.fn(),
+      teacherId: 2,
     };
 
     mockRender(mockProps);
@@ -134,7 +145,7 @@ describe('DeleteTeacherDialog', () => {
     // 削除ボタンが存在しないことを確認
     expect(
       screen.queryByRole('button', {
-        name: `講師「${mockProps.teacherName}」を削除する`,
+        name: `講師「${teacher1.name}」を削除する`,
       })
     ).not.toBeInTheDocument();
   });
@@ -150,23 +161,20 @@ describe('DeleteTeacherDialog', () => {
     const mockProps: Props = {
       open: true,
       onOpenChange: vi.fn(),
-      teacherId: 1,
-      teacherName: 'John Doe',
-      refetch: vi.fn(),
+      teacherId: 2,
     };
 
     mockRender(mockProps);
 
     const inputTeacherName = screen.getByLabelText('確認入力');
     const deleteButton = screen.getByRole('button', {
-      name: `講師「${mockProps.teacherName}」を削除する`,
+      name: `講師「${teacher1.name}」を削除する`,
     });
 
     // 講師の名前を入力し削除
     await user.type(inputTeacherName, 'another name');
     await user.click(deleteButton);
 
-    expect(mockProps.refetch).not.toHaveBeenCalled();
     expect(mockProps.onOpenChange).not.toHaveBeenCalled();
     expect(screen.getByText('名前が一致しません。')).toBeInTheDocument();
   });
