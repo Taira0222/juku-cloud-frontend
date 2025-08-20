@@ -83,5 +83,5 @@ export const useFormatTeachersData = (
   useEffect(() => {
     setDataTable(dataTable);
     setDetailDrawer(detailDrawer);
-  }, [dataTable, detailDrawer]);
+  }, [dataTable, detailDrawer, setDataTable, setDetailDrawer]);
 };
