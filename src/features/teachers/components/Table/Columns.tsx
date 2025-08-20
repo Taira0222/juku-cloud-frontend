@@ -31,115 +31,119 @@ export const schema = z.object({
 });
 
 // columns を関数として定義し、getDetailDrawerData を受け取る
-export const createColumns = (): ColumnDef<z.infer<typeof schema>>[] => [
-  {
-    id: 'select',
-    header: ({ table }) => (
-      <div className="flex items-center justify-center px-4">
-        <Checkbox
-          checked={
-            table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && 'indeterminate')
-          }
-          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-          aria-label="Select all"
-        />
-      </div>
-    ),
-    cell: ({ row }) => (
-      <div className="flex items-center justify-center">
-        <Checkbox
-          checked={row.getIsSelected()}
-          onCheckedChange={(value) => row.toggleSelected(!!value)}
-          aria-label="Select row"
-        />
-      </div>
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
-    accessorKey: 'name',
-    header: '名前',
-    cell: ({ row }) => {
-      const getTeacherData = useTeachersStore((state) => state.getTeacherData);
-      const detailData = getTeacherData(row.original.id);
-      return detailData ? (
-        <DetailDrawer item={detailData} />
-      ) : (
-        <span>{row.original.name}</span>
-      );
+export const createColumns = (): ColumnDef<z.infer<typeof schema>>[] => {
+  const getTeacherData = useTeachersStore((state) => state.getTeacherData);
+  return [
+    {
+      id: 'select',
+      header: ({ table }) => (
+        <div className="flex items-center justify-center px-4">
+          <Checkbox
+            checked={
+              table.getIsAllPageRowsSelected() ||
+              (table.getIsSomePageRowsSelected() && 'indeterminate')
+            }
+            onCheckedChange={(value) =>
+              table.toggleAllPageRowsSelected(!!value)
+            }
+            aria-label="Select all"
+          />
+        </div>
+      ),
+      cell: ({ row }) => (
+        <div className="flex items-center justify-center">
+          <Checkbox
+            checked={row.getIsSelected()}
+            onCheckedChange={(value) => row.toggleSelected(!!value)}
+            aria-label="Select row"
+          />
+        </div>
+      ),
+      enableSorting: false,
+      enableHiding: false,
     },
-    enableHiding: false,
-  },
-  {
-    accessorKey: 'role',
-    header: '役割',
-    cell: ({ row }) => (
-      <div className="w-32">
-        <Badge variant="outline" className="text-muted-foreground px-1.5">
-          {row.original.role === 'admin' ? (
-            <IconShieldStar className="fill-blue-500" />
-          ) : (
-            <IconUsers className="fill-green-600" />
-          )}
-          {row.original.role}
-        </Badge>
-      </div>
-    ),
-  },
-  {
-    accessorKey: 'employment_status',
-    header: '出勤状況',
-    cell: ({ row }) => (
-      <Badge variant="outline" className="text-muted-foreground px-1.5">
-        {/** Employment Status で分岐する */}
-        {row.original.employment_status === 'active' ? (
-          <IconCircleCheckFilled className="fill-green-500 dark:fill-green-400" />
+    {
+      accessorKey: 'name',
+      header: '名前',
+      cell: ({ row }) => {
+        const detailData = getTeacherData(row.original.id);
+        return detailData ? (
+          <DetailDrawer item={detailData} />
         ) : (
-          <IconLoader />
-        )}
-        {row.original.employment_status}
-      </Badge>
-    ),
-  },
-  {
-    accessorKey: 'classSubject',
-    header: '担当科目',
-    cell: ({ row }) => {
-      const { createIconTranslationBadge } = useSubjectTranslation();
-      const subjects = row.original.classSubject.map((cs) => (
-        <span key={cs.id}>{createIconTranslationBadge(cs.name)}</span>
-      ));
-      return subjects;
+          <span>{row.original.name}</span>
+        );
+      },
+      enableHiding: false,
     },
-  },
-  {
-    accessorKey: 'studentsCount',
-    header: '生徒数',
-    cell: ({ row }) => (
-      <Badge variant="outline" className="px-2">
-        {row.original.studentsCount} 名
-      </Badge>
-    ),
-  },
-  {
-    accessorKey: 'current_sign_in_at',
-    header: '直近ログイン',
-    cell: ({ row }) => {
-      const { label, colorClass, Icon } = useSignInStatus(
-        row.original.current_sign_in_at
-      );
-      return (
-        <Badge variant="outline" className={`px-2 ${colorClass}`}>
-          <Icon />
-          {label}
+    {
+      accessorKey: 'role',
+      header: '役割',
+      cell: ({ row }) => (
+        <div className="w-32">
+          <Badge variant="outline" className="text-muted-foreground px-1.5">
+            {row.original.role === 'admin' ? (
+              <IconShieldStar className="fill-blue-500" />
+            ) : (
+              <IconUsers className="fill-green-600" />
+            )}
+            {row.original.role}
+          </Badge>
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'employment_status',
+      header: '出勤状況',
+      cell: ({ row }) => (
+        <Badge variant="outline" className="text-muted-foreground px-1.5">
+          {/** Employment Status で分岐する */}
+          {row.original.employment_status === 'active' ? (
+            <IconCircleCheckFilled className="fill-green-500 dark:fill-green-400" />
+          ) : (
+            <IconLoader />
+          )}
+          {row.original.employment_status}
         </Badge>
-      );
+      ),
     },
-  },
-  {
-    id: 'actions',
-    cell: ({ row }) => <RawActions teacherId={row.original.id} />,
-  },
-];
+    {
+      accessorKey: 'classSubject',
+      header: '担当科目',
+      cell: ({ row }) => {
+        const { createIconTranslationBadge } = useSubjectTranslation();
+        const subjects = row.original.classSubject.map((cs) => (
+          <span key={cs.id}>{createIconTranslationBadge(cs.name)}</span>
+        ));
+        return subjects;
+      },
+    },
+    {
+      accessorKey: 'studentsCount',
+      header: '生徒数',
+      cell: ({ row }) => (
+        <Badge variant="outline" className="px-2">
+          {row.original.studentsCount} 名
+        </Badge>
+      ),
+    },
+    {
+      accessorKey: 'current_sign_in_at',
+      header: '直近ログイン',
+      cell: ({ row }) => {
+        const { label, colorClass, Icon } = useSignInStatus(
+          row.original.current_sign_in_at
+        );
+        return (
+          <Badge variant="outline" className={`px-2 ${colorClass}`}>
+            <Icon />
+            {label}
+          </Badge>
+        );
+      },
+    },
+    {
+      id: 'actions',
+      cell: ({ row }) => <RawActions teacherId={row.original.id} />,
+    },
+  ];
+};

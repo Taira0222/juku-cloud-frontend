@@ -83,7 +83,9 @@ export const DeleteTeacherDialog = ({
             </div>
 
             <DialogDescription asChild>
-              {!loading && !error && (
+              {loading ? (
+                <span className="sr-only">削除確認ダイアログの読み込み中</span>
+              ) : (
                 <div className="rounded-md border border-red-200 bg-red-50 p-3 text-sm text-red-700">
                   <ul className="list-disc bg-red-50 pl-5 mt-2 space-y-1 text-left">
                     <li>この操作は取り消せません。</li>
@@ -113,7 +115,7 @@ export const DeleteTeacherDialog = ({
                 <Label htmlFor="confirmTeacherName">確認入力</Label>
                 <Input
                   id="confirmTeacherName"
-                  placeholder={teacher?.name || '講師名を入力'}
+                  placeholder={teacher?.name}
                   value={confirmText}
                   onChange={(e) => setConfirmText(e.currentTarget.value)}
                 />
