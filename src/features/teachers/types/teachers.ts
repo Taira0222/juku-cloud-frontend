@@ -44,11 +44,11 @@ export type currentUser = {
   available_days: AvailableDays[] | [];
 };
 
-export type teachers = currentUser[] | [];
+export type teachers = currentUser[] | null;
 
 export type fetchTeachersSuccessResponse = {
   current_user: currentUser | null;
-  teachers: teachers | null;
+  teachers: teachers;
 };
 
 export type fetchTeachersErrorResponse = {

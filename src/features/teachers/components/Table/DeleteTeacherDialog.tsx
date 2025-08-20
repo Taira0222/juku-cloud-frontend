@@ -14,25 +14,27 @@ import { useTeacherDelete } from '../../hooks/Table/useTeacherDelete';
 import { toast } from 'sonner';
 import SpinnerWithText from '@/components/common/status/Loading';
 import { cn } from '@/lib/utils';
+import { useTeachersStore } from '@/stores/teachersStore';
 
 type Props = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   teacherId: number;
-  teacherName: string;
-  refetch: () => Promise<void>;
 };
 
 export const DeleteTeacherDialog = ({
   open,
   onOpenChange,
   teacherId,
-  teacherName,
-  refetch,
 }: Props) => {
   const [confirmText, setConfirmText] = useState('');
   const [warning, setWarning] = useState<string | null>(null);
   const { error, loading, deleteTeacher } = useTeacherDelete();
+  const deleteTeacherLocal = useTeachersStore(
+    (state) => state.deleteTeacherLocal
+  );
+  const getTeacherData = useTeachersStore((state) => state.getTeacherData);
+  const teacher = getTeacherData(teacherId);
 
   // 開くたびに入力とエラーを初期化
   useEffect(() => {
@@ -44,7 +46,7 @@ export const DeleteTeacherDialog = ({
 
   const onClickDelete = async () => {
     // 文字が一致しているか確認
-    if (confirmText !== teacherName) {
+    if (confirmText !== teacher?.name) {
       setWarning('名前が一致しません。');
       return;
     }
@@ -56,7 +58,7 @@ export const DeleteTeacherDialog = ({
     if (result.ok) {
       onOpenChange(false); // Dialog を閉じる
       toast.success('講師を削除しました。');
-      await refetch(); // データを再取得して最新の状態に更新
+      deleteTeacherLocal(teacherId); // teachersStore からteacher を削除して更新
     } else {
       // 削除失敗時の処理
       toast.error('講師の削除に失敗しました。');
@@ -75,7 +77,7 @@ export const DeleteTeacherDialog = ({
 
             <div className="text-muted-foreground leading-7">
               <span>
-                講師 <span className="font-semibold">「{teacherName}」</span>{' '}
+                講師 <span className="font-semibold">「{teacher?.name}」</span>{' '}
                 を削除します。
               </span>
             </div>
@@ -89,7 +91,7 @@ export const DeleteTeacherDialog = ({
                       削除後は講師のデータは完全に失われますのでご注意ください
                     </li>
                     <li>担当割当などの関連は解除されます</li>
-                    <li>削除する場合は「{teacherName}」と入力してください</li>
+                    <li>削除する場合は「{teacher?.name}」と入力してください</li>
                   </ul>
                 </div>
               )}
@@ -111,7 +113,7 @@ export const DeleteTeacherDialog = ({
                 <Label htmlFor="confirmTeacherName">確認入力</Label>
                 <Input
                   id="confirmTeacherName"
-                  placeholder={teacherName}
+                  placeholder={teacher?.name || '講師名を入力'}
                   value={confirmText}
                   onChange={(e) => setConfirmText(e.currentTarget.value)}
                 />
@@ -128,7 +130,7 @@ export const DeleteTeacherDialog = ({
                 <Button
                   variant="destructive"
                   onClick={onClickDelete}
-                  aria-label={`講師「${teacherName}」を削除する`}
+                  aria-label={`講師「${teacher?.name || ''}」を削除する`}
                   disabled={loading}
                   className={cn({ 'opacity-50': loading })}
                 >

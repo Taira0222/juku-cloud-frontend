@@ -1,8 +1,5 @@
-import {
-  toTeacherDetailDrawer,
-  type teacherDetailDrawer,
-} from '../hooks/Table/useFomatTeachersData';
-import type { currentUser } from '../types/teachers';
+import { toTeacherDetailDrawer } from '../hooks/Table/useFomatTeachersData';
+import type { currentUser, teacherDetailDrawer } from '../types/teachers';
 
 // useFormatTeachersData.test のデータ
 export const currentUserResponse = {

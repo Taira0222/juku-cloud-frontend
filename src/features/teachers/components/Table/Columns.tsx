@@ -13,7 +13,7 @@ import { DetailDrawer } from './DetailDrawer';
 import { useSubjectTranslation } from '@/hooks/useSubjectTranslation';
 import { useSignInStatus } from '@/hooks/useSignInStatus';
 import { RawActions } from './RawActions';
-import type { teacherDetailDrawer } from '../../types/teachers';
+import { useTeachersStore } from '@/stores/teachersStore';
 
 export const schema = z.object({
   id: z.number(),
@@ -31,10 +31,7 @@ export const schema = z.object({
 });
 
 // columns を関数として定義し、getDetailDrawerData を受け取る
-export const createColumns = (
-  getDetailDrawerData: (id: number) => teacherDetailDrawer | undefined,
-  refetch: () => Promise<void>
-): ColumnDef<z.infer<typeof schema>>[] => [
+export const createColumns = (): ColumnDef<z.infer<typeof schema>>[] => [
   {
     id: 'select',
     header: ({ table }) => (
@@ -65,7 +62,8 @@ export const createColumns = (
     accessorKey: 'name',
     header: '名前',
     cell: ({ row }) => {
-      const detailData = getDetailDrawerData(row.original.id);
+      const getTeacherData = useTeachersStore((state) => state.getTeacherData);
+      const detailData = getTeacherData(row.original.id);
       return detailData ? (
         <DetailDrawer item={detailData} />
       ) : (
@@ -142,13 +140,6 @@ export const createColumns = (
   },
   {
     id: 'actions',
-    cell: ({ row }) => (
-      <RawActions
-        teacherId={row.original.id}
-        teacherName={row.original.name}
-        teacherRole={row.original.role}
-        refetch={refetch}
-      />
-    ),
+    cell: ({ row }) => <RawActions teacherId={row.original.id} />,
   },
 ];

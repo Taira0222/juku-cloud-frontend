@@ -47,22 +47,16 @@ import {
   TableRow,
 } from '@/components/ui/display/Table/table';
 import { Tabs, TabsContent } from '@/components/ui/navigation/Tabs/tabs';
-
 import { schema, createColumns } from './Columns';
-
 import { CreateDialog } from './CreateDialog';
-import type { teacherDetailDrawer } from '../../types/teachers';
+import { useTeachersStore } from '@/stores/teachersStore';
 
 // props に getDetailDrawerData を追加
-export const DataTable = ({
-  data: initialData,
-  getDetailDrawerData,
-  refetch,
-}: {
-  data: z.infer<typeof schema>[];
-  getDetailDrawerData: (id: number) => teacherDetailDrawer | undefined;
-  refetch: () => Promise<void>;
-}) => {
+export const DataTable = () => {
+  // Zustand ストアから状態を取得
+  const dataTable: z.infer<typeof schema>[] = useTeachersStore(
+    (state) => state.dataTable
+  );
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -73,13 +67,10 @@ export const DataTable = ({
   });
 
   // getDetailDrawerData をcreateColumnsに渡すためにuseMemoを使用
-  const columns = useMemo(
-    () => createColumns(getDetailDrawerData, refetch),
-    [getDetailDrawerData, refetch]
-  );
+  const columns = useMemo(() => createColumns(), []);
 
   const table = useReactTable({
-    data: initialData,
+    data: dataTable,
     columns,
     state: {
       sorting,

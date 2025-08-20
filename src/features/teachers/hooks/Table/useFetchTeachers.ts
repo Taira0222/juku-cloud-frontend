@@ -13,7 +13,7 @@ export const useFetchTeachers = () => {
   const [currentUserData, setCurrentUserData] = useState<currentUser | null>(
     null
   );
-  const [teachersData, setTeachersData] = useState<teachers | null>(null);
+  const [teachersData, setTeachersData] = useState<teachers>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true); // ローディング状態を追加
   const fetchTeachersData = useCallback(async () => {
