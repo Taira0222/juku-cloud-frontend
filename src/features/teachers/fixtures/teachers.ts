@@ -1,4 +1,4 @@
-import { toTeacherDetailDrawer } from '../hooks/Table/useFomatTeachersData';
+import { toTeacherDetailDrawer } from '../hooks/useFomatTeachersData';
 import type { currentUser, teacherDetailDrawer } from '../types/teachers';
 
 // useFormatTeachersData.test のデータ
@@ -18,14 +18,6 @@ export const currentUserResponse = {
       status: 'active',
       school_stage: 'high school',
       grade: 3,
-    },
-  ],
-  teaching_assignments: [
-    {
-      id: 1,
-      student_id: 1,
-      user_id: 1,
-      teaching_status: true,
     },
   ],
   available_days: [
@@ -55,14 +47,6 @@ export const teacher1 = {
       status: 'active',
       school_stage: 'junior high school',
       grade: 2,
-    },
-  ],
-  teaching_assignments: [
-    {
-      id: 2,
-      student_id: 3,
-      user_id: 2,
-      teaching_status: false,
     },
   ],
   available_days: [

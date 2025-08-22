@@ -3,7 +3,7 @@ import type { AxiosError, AxiosResponse } from 'axios';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import type { teacherDeleteErrorResponse } from '../../types/teachers';
 import { deleteTeacherApi } from '../../services/deleteTeacherApi';
-import { useTeacherDelete } from './useTeacherDelete';
+import { useTeacherDelete } from '../../hooks/useTeacherDelete';
 
 type DeleteTeacherResult = {
   ok: boolean;

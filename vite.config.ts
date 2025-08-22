@@ -30,8 +30,8 @@ export default defineConfig({
         // shadcn/ui のコンポーネントは除外
         'src/components/**',
         // shadcn/ui から参照したコンポーネントは除く
-        'src/features/teachers/components/Table/Columns.tsx',
-        'src/features/teachers/components/Table/DataTable.tsx',
+        'src/features/teachers/components/table/Columns.tsx',
+        'src/features/teachers/components/table/DataTable.tsx',
         'src/hooks/useMobile.ts',
         // その他テスト不要なファイルを除外
         'src/pages/error/**',
@@ -44,8 +44,9 @@ export default defineConfig({
         'src/vite-env.d.ts',
         'src/main.tsx',
         'src/App.tsx',
-        // 定数 src/constants/** を除外
+        // 定数 src/constants/** , src/**/constants/**
         'src/constants/**',
+        'src/**/constants/**',
       ],
     },
   },

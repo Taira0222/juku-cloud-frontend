@@ -1,10 +1,11 @@
 import { useEffect } from 'react';
+
+import { useTeachersStore } from '@/stores/teachersStore';
 import type {
   currentUser,
   teacherDataTable,
   teacherDetailDrawer,
-} from '../../types/teachers';
-import { useTeachersStore } from '@/stores/teachersStore';
+} from '../types/teachers';
 
 // toTeacherRow や toTeacherDetailDrawer に渡すデータの型(currentUser や teachers)
 type fetchData = currentUser;
@@ -15,7 +16,7 @@ export const toTeacherRow = (teacher: fetchData): teacherDataTable => ({
   name: teacher.name,
   role: teacher.role,
   employment_status: teacher.employment_status,
-  classSubject: teacher.class_subjects.map((cs) => ({
+  class_subjects: teacher.class_subjects.map((cs) => ({
     id: cs.id,
     name: cs.name,
   })),
@@ -42,12 +43,6 @@ export const toTeacherDetailDrawer = (
     school_stage: student.school_stage,
     grade: student.grade,
   })),
-  teaching_assignments: teacher.teaching_assignments.map((ta) => ({
-    id: ta.id,
-    student_id: ta.student_id,
-    user_id: ta.user_id,
-    teaching_status: ta.teaching_status,
-  })),
   available_days: teacher.available_days.map((day) => ({
     id: day.id,
     name: day.name,
@@ -61,27 +56,38 @@ export const toTeacherDetailDrawer = (
 // パラメータとして currentUserData と teachersData を受け取るように変更
 export const useFormatTeachersData = (
   currentUserData: currentUser | null,
-  teachersData: currentUser[] | null
+  teachersData: currentUser[] | null,
+  enabled: boolean // useFetchTeacher が完了してから処理を始める
 ) => {
-  const setDataTable = useTeachersStore((state) => state.setDataTable);
-  const setDetailDrawer = useTeachersStore((state) => state.setDetailDrawer);
-  // teachersData に null 要素が混ざる可能性もケアして filter(Boolean)
-  const teacherRows = (teachersData ?? []).filter(Boolean).map(toTeacherRow);
-  const detailRows = (teachersData ?? [])
-    .filter(Boolean)
-    .map(toTeacherDetailDrawer);
-
-  // currentUserData がある時だけ先頭に追加
-  const dataTable = currentUserData
-    ? [toTeacherRow(currentUserData), ...teacherRows]
-    : teacherRows;
-
-  const detailDrawer = currentUserData
-    ? [toTeacherDetailDrawer(currentUserData), ...detailRows]
-    : detailRows;
+  const setDataTable = useTeachersStore((s) => s.setDataTable);
+  const setDetailDrawer = useTeachersStore((s) => s.setDetailDrawer);
 
   useEffect(() => {
+    if (!enabled || (!teachersData && !currentUserData)) return;
+
+    const teacherRows = (teachersData ?? []).filter(Boolean).map(toTeacherRow);
+    const detailRows = (teachersData ?? [])
+      .filter(Boolean)
+      .map(toTeacherDetailDrawer);
+
+    const dataTable = currentUserData
+      ? [toTeacherRow(currentUserData), ...teacherRows]
+      : teacherRows;
+
+    const detailDrawer = currentUserData
+      ? [toTeacherDetailDrawer(currentUserData), ...detailRows]
+      : detailRows;
+
+    // 既に入ってるストアの ID とまったく同じなら上書きしない
+    const prev = useTeachersStore.getState().detailDrawer;
+    const same =
+      prev.length === detailDrawer.length &&
+      // すべての教師のIDが一致するかチェック(返却値はboolean)
+      prev.every((teacher, i) => teacher.id === detailDrawer[i].id);
+
+    if (same) return;
+
     setDataTable(dataTable);
     setDetailDrawer(detailDrawer);
-  }, [dataTable, detailDrawer, setDataTable, setDetailDrawer]);
+  }, [enabled, currentUserData, teachersData, setDataTable, setDetailDrawer]);
 };

@@ -1,11 +1,13 @@
 import { beforeEach, expect, test, vi } from 'vitest';
 import { describe } from 'vitest';
-import { useFetchInviteToken } from '../../hooks/Table/useFetchInviteToken';
-import { render, screen } from '@testing-library/react';
-import { CreateDialog } from './CreateDialog';
-import userEvent from '@testing-library/user-event';
 
-vi.mock('@/features/teachers/hooks/Table/useFetchInviteToken', () => ({
+import { render, screen } from '@testing-library/react';
+
+import userEvent from '@testing-library/user-event';
+import { useFetchInviteToken } from '../../hooks/useFetchInviteToken';
+import { CreateDialog } from '../../components/dialogs/CreateDialog';
+
+vi.mock('@/features/teachers/hooks/useFetchInviteToken', () => ({
   useFetchInviteToken: vi.fn(),
 }));
 

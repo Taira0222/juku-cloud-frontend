@@ -22,7 +22,7 @@ import type {
   VisibilityState,
 } from '@tanstack/react-table';
 import { z } from 'zod';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { Button } from '@/components/ui/form/Button/button';
 import {
   DropdownMenu,
@@ -48,7 +48,7 @@ import {
 } from '@/components/ui/display/Table/table';
 import { Tabs, TabsContent } from '@/components/ui/navigation/Tabs/tabs';
 import { schema, createColumns } from './Columns';
-import { CreateDialog } from './CreateDialog';
+import { CreateDialog } from '../dialogs/CreateDialog';
 import { useTeachersStore } from '@/stores/teachersStore';
 
 // props に getDetailDrawerData を追加
@@ -66,8 +66,7 @@ export const DataTable = () => {
     pageSize: 10,
   });
 
-  // getDetailDrawerData をcreateColumnsに渡すためにuseMemoを使用
-  const columns = useMemo(() => createColumns(), []);
+  const columns = createColumns();
 
   const table = useReactTable({
     data: dataTable,
@@ -99,7 +98,7 @@ export const DataTable = () => {
     name: '名前',
     role: '役割',
     employment_status: '出勤状況',
-    classSubject: '担当科目',
+    class_subjects: '担当科目',
     studentsCount: '生徒数',
     current_sign_in_at: '直近ログイン',
   };

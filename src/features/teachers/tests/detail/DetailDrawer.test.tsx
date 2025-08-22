@@ -1,13 +1,20 @@
 import { useIsMobile } from '@/hooks/useMobile';
 import { render, screen, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
-import { DetailDrawer } from './DetailDrawer';
+
 import { getDetailDrawerDataMock } from '../../fixtures/teachers';
 import userEvent from '@testing-library/user-event';
+import { DetailDrawer } from '../../components/detail/DetailDrawer';
 
 vi.mock('@/hooks/useSubjectTranslation', () => ({
   useSubjectTranslation: () => ({
     createIconTranslationBadge: (subject: string) => <span>{subject}</span>,
+  }),
+}));
+
+vi.mock('@/hooks/useEmploymentStatusTranslation', () => ({
+  useEmploymentStatusTranslation: () => ({
+    createEmploymentStatusBadge: (status: string) => <span>{status}</span>,
   }),
 }));
 

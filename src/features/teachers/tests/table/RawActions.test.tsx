@@ -1,10 +1,11 @@
 import { render, screen } from '@testing-library/react';
 import { beforeEach, expect, vi } from 'vitest';
 import { describe, test } from 'vitest';
-import { RawActions } from './RawActions';
+import { RawActions } from '../../components/table/RawActions';
 import userEvent from '@testing-library/user-event';
 import { useTeachersStore } from '@/stores/teachersStore';
 import { teacher1 } from '../../fixtures/teachers';
+import { MemoryRouter } from 'react-router-dom';
 
 type Props = {
   teacherId: number;
@@ -12,7 +13,11 @@ type Props = {
 
 describe('RawActions', () => {
   const renderComponent = (props: Props) => {
-    return render(<RawActions {...props} />);
+    return render(
+      <MemoryRouter>
+        <RawActions {...props} />
+      </MemoryRouter>
+    );
   };
 
   beforeEach(() => {

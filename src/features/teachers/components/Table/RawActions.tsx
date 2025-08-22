@@ -8,8 +8,9 @@ import {
 } from '@/components/ui/navigation/DropdownMenu/dropdown-menu';
 import { IconDotsVertical } from '@tabler/icons-react';
 import { useState } from 'react';
-import { DeleteTeacherDialog } from './DeleteTeacherDialog';
+import { DeleteTeacherDialog } from '../dialogs/DeleteTeacherDialog';
 import { useTeachersStore } from '@/stores/teachersStore';
+import { Link, useLocation } from 'react-router-dom';
 
 type Props = {
   teacherId: number;
@@ -19,6 +20,7 @@ export const RawActions = ({ teacherId }: Props) => {
   const [open, setOpen] = useState(false);
   const getTeacherData = useTeachersStore((state) => state.getTeacherData);
   const teacher = getTeacherData(teacherId);
+  const location = useLocation();
   return (
     <>
       <DropdownMenu>
@@ -33,7 +35,14 @@ export const RawActions = ({ teacherId }: Props) => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-32">
-          <DropdownMenuItem>編集</DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link
+              to={`/teachers/${teacherId}/edit`}
+              state={{ background: location }}
+            >
+              編集
+            </Link>
+          </DropdownMenuItem>
           {teacher?.role !== 'admin' && (
             <>
               <DropdownMenuSeparator />

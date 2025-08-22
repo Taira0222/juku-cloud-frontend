@@ -14,11 +14,6 @@ type SubjectTranslation = {
 };
 
 export const SUBJECT_TRANSLATIONS: Record<string, SubjectTranslation> = {
-  mathematics: {
-    name: '数学',
-    icon: IconMathSymbols,
-    color: 'bg-blue-100',
-  },
   english: {
     name: '英語',
     icon: IconAlphabetLatin,
@@ -28,6 +23,11 @@ export const SUBJECT_TRANSLATIONS: Record<string, SubjectTranslation> = {
     name: '国語',
     icon: IconBook,
     color: 'bg-red-100',
+  },
+  mathematics: {
+    name: '数学',
+    icon: IconMathSymbols,
+    color: 'bg-blue-100',
   },
   science: {
     name: '理科',

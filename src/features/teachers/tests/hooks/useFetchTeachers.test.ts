@@ -2,7 +2,7 @@ import { renderHook, waitFor } from '@testing-library/react';
 import type { AxiosError, AxiosResponse } from 'axios';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { fetchTeachers } from '../../services/teachersApi';
-import { useFetchTeachers } from './useFetchTeachers';
+import { useFetchTeachers } from '../../hooks/useFetchTeachers';
 import type { fetchTeachersErrorResponse } from '../../types/teachers';
 
 vi.mock('@/features/teachers/services/teachersApi');

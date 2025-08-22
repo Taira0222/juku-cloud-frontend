@@ -10,7 +10,7 @@ import {
 import { Input } from '@/components/ui/form/Input/input';
 import { Label } from '@/components/ui/form/Label/label';
 import { useEffect, useState } from 'react';
-import { useTeacherDelete } from '../../hooks/Table/useTeacherDelete';
+import { useTeacherDelete } from '../../hooks/useTeacherDelete';
 import { toast } from 'sonner';
 import SpinnerWithText from '@/components/common/status/Loading';
 import { cn } from '@/lib/utils';
