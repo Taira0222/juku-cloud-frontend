@@ -156,22 +156,6 @@ export const EditTeacherDialog = () => {
       detailDrawer,
     });
 
-  // API には名前やステータスはそのまま渡し、関連するエンティティはIDの配列で渡す
-  // これにより、API 側でのデータ処理が簡潔かつ効率的になる
-  const submitData = {
-    name: formData.name,
-    employment_status: formData.employment_status,
-    subject_ids: formatSubjectsData()
-      .filter((subject) => subject.id !== undefined)
-      .map((subject) => subject.id),
-    available_day_ids: formatDaysData()
-      .filter((day) => day.id !== undefined)
-      .map((day) => day.id),
-    student_ids: formatStudentsData()
-      .filter((student) => student.id !== undefined)
-      .map((student) => student.id),
-  };
-
   const { error, loading, updatedId, updateTeacher } = useTeacherUpdate();
 
   // エラーハンドリングによる画面遷移
@@ -218,10 +202,26 @@ export const EditTeacherDialog = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    // フォームデータをAPIに送信する形式に整形する
+    // パフォーマンス的に、handleSubmitが呼び出された際にのみこの処理が実行されるようにする
+    const submitData = {
+      name: formData.name,
+      employment_status: formData.employment_status,
+      subject_ids: formatSubjectsData()
+        .filter((subject) => subject.id !== undefined)
+        .map((subject) => subject.id),
+      available_day_ids: formatDaysData()
+        .filter((day) => day.id !== undefined)
+        .map((day) => day.id),
+      student_ids: formatStudentsData()
+        .filter((student) => student.id !== undefined)
+        .map((student) => student.id),
+    };
+
     const result = await updateTeacher(teacherId, submitData);
 
-    if (result.ok && updatedId !== null) {
-      updateTeacherLocal(updatedId, {
+    if (result.ok) {
+      updateTeacherLocal(updatedId !== null ? updatedId : teacherId, {
         name: formData.name,
         employment_status: formData.employment_status,
         subjects: formatSubjectsData(),

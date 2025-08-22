@@ -36,8 +36,8 @@ export const useFormatEditData = ({ formData, detailDrawer }: Props) => {
     const filteredSubjects = SUBJECTS.filter((subject) =>
       formData.subjects.includes(subject.name)
     );
-    return filteredSubjects.map((subject, index) => ({
-      id: subject.id ?? index,
+    return filteredSubjects.map((subject) => ({
+      id: subject.id,
       name: subject.name,
     }));
   };
@@ -46,8 +46,8 @@ export const useFormatEditData = ({ formData, detailDrawer }: Props) => {
     const filteredDays = AVAILABLE_DAYS.filter((day) =>
       formData.available_days.includes(day.name)
     );
-    return filteredDays.map((day, index) => ({
-      id: day.id ?? index,
+    return filteredDays.map((day) => ({
+      id: day.id,
       name: day.name,
     }));
   };
