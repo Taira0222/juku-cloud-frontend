@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import type { currentUser } from '../../types/teachers';
-import { useFormatTeachersData } from './useFomatTeachersData';
+import { useFormatTeachersData } from '../../hooks/useFomatTeachersData';
 import { renderHook } from '@testing-library/react';
 import { currentUserResponse, teacher1 } from '../../fixtures/teachers';
 import { useTeachersStore } from '@/stores/teachersStore';
@@ -21,11 +21,10 @@ describe('useFormatTeachersData', () => {
   );
 
   test('formats teachers data correctly', () => {
-    // Zustand の関数をスパイして呼び出しを監視
-
     const teachersResponse = [teacher1] as unknown as currentUser[];
+    const loading = false;
     renderHook(() =>
-      useFormatTeachersData(currentUserResponse, teachersResponse)
+      useFormatTeachersData(currentUserResponse, teachersResponse, !loading)
     );
 
     const { dataTable, detailDrawer } = useTeachersStore.getState();
@@ -38,7 +37,7 @@ describe('useFormatTeachersData', () => {
       name: 'John Doe',
       role: 'admin',
       employment_status: 'active',
-      classSubject: [
+      class_subjects: [
         { id: 1, name: 'Math' },
         { id: 2, name: 'English' },
       ],
@@ -52,7 +51,7 @@ describe('useFormatTeachersData', () => {
       name: 'Jane Smith',
       role: 'teacher',
       employment_status: 'active',
-      classSubject: [
+      class_subjects: [
         { id: 2, name: 'English' },
         { id: 3, name: 'Science' },
       ],
@@ -80,9 +79,6 @@ describe('useFormatTeachersData', () => {
           grade: 2,
         },
       ],
-      teaching_assignments: [
-        { id: 2, student_id: 3, user_id: 2, teaching_status: false },
-      ],
       available_days: [
         { id: 2, name: 'Tuesday' },
         { id: 4, name: 'Thursday' },
@@ -99,9 +95,9 @@ describe('useFormatTeachersData', () => {
 
   test('should exclude null elements in teachersData (via filter(Boolean))', () => {
     const teachersResponse = [teacher1, null] as unknown as currentUser[];
-
+    const loading = false;
     renderHook(() =>
-      useFormatTeachersData(currentUserResponse, teachersResponse)
+      useFormatTeachersData(currentUserResponse, teachersResponse, !loading)
     );
     const { dataTable } = useTeachersStore.getState();
 
@@ -111,8 +107,9 @@ describe('useFormatTeachersData', () => {
 
   test('should return only teachers when currentUser is missing', () => {
     const teachersResponse = [teacher1] as unknown as currentUser[];
+    const loading = false;
 
-    renderHook(() => useFormatTeachersData(null, teachersResponse));
+    renderHook(() => useFormatTeachersData(null, teachersResponse, !loading));
     const { dataTable, detailDrawer } = useTeachersStore.getState();
 
     expect(dataTable).toHaveLength(1);
@@ -121,7 +118,7 @@ describe('useFormatTeachersData', () => {
       name: 'Jane Smith',
       role: 'teacher',
       employment_status: 'active',
-      classSubject: [
+      class_subjects: [
         { id: 2, name: 'English' },
         { id: 3, name: 'Science' },
       ],
@@ -138,11 +135,51 @@ describe('useFormatTeachersData', () => {
   });
 
   test('should return an empty array and undefined for lookups when both currentUser and teachersData are missing', () => {
-    renderHook(() => useFormatTeachersData(null, null));
+    const loading = false;
+    renderHook(() => useFormatTeachersData(null, null, !loading));
     const { dataTable, detailDrawer } = useTeachersStore.getState();
 
     expect(dataTable).toEqual([]);
     const currentUser = detailDrawer.find((detail) => detail.id === 1);
     expect(currentUser).toBeUndefined();
+  });
+
+  test('does not update store when loading is true', () => {
+    const teachersResponse = [teacher1] as unknown as currentUser[];
+    const loading = true;
+    renderHook(() =>
+      useFormatTeachersData(currentUserResponse, teachersResponse, !loading)
+    );
+    const { dataTable, detailDrawer } = useTeachersStore.getState();
+
+    // Expect no data to be set when loading is true
+    expect(dataTable).toEqual([]);
+    expect(detailDrawer).toEqual([]);
+    expect(setDataTableSpy).not.toHaveBeenCalled();
+    expect(setDetailDrawerSpy).not.toHaveBeenCalled();
+  });
+
+  test('does not update store when prev is equal to same', () => {
+    const teachersResponse = [teacher1] as unknown as currentUser[];
+    const loading = false;
+
+    // First render to set the initial state
+    renderHook(() =>
+      useFormatTeachersData(currentUserResponse, teachersResponse, !loading)
+    );
+    const initialDataTable = useTeachersStore.getState().dataTable;
+    const initialDetailDrawer = useTeachersStore.getState().detailDrawer;
+
+    // Render again with the same data to test if the store updates
+    renderHook(() =>
+      useFormatTeachersData(currentUserResponse, teachersResponse, !loading)
+    );
+    const { dataTable, detailDrawer } = useTeachersStore.getState();
+
+    // Expect the store not to update if the data is the same
+    expect(dataTable).toBe(initialDataTable);
+    expect(detailDrawer).toBe(initialDetailDrawer);
+    expect(setDataTableSpy).toHaveBeenCalledTimes(1);
+    expect(setDetailDrawerSpy).toHaveBeenCalledTimes(1);
   });
 });

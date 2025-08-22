@@ -1,6 +1,7 @@
 import { useFetchUser } from '@/features/managementDashboard/hooks/useFetchUser';
 import { useAuthStore } from '@/stores/authStore';
 import { useWarningStore } from '@/stores/warningStore';
+import { useEffect } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 
 export const ProtectedRoute = () => {
@@ -8,10 +9,16 @@ export const ProtectedRoute = () => {
   const setWarningMessage = useWarningStore((state) => state.setWarningMessage);
   // ユーザー情報取得
   const { error } = useFetchUser();
+  const authenticated = isAuthenticated();
 
   // 認証チェック
-  if (!isAuthenticated()) {
-    setWarningMessage('ログインが必要です');
+  useEffect(() => {
+    if (!authenticated) {
+      setWarningMessage('ログインが必要です');
+    }
+  }, [authenticated, setWarningMessage]);
+
+  if (!authenticated) {
     return <Navigate to="/sign_in" />;
   }
   // エラーが出たら404に遷移させる。

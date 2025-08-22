@@ -12,17 +12,19 @@ import { Label } from '@/components/ui/form/Label/label';
 
 import { useIsMobile } from '@/hooks/useMobile';
 import { Badge } from '@/components/ui/display/Badge/badge';
-import { IconCircleCheckFilled, IconLoader, IconX } from '@tabler/icons-react';
+import { IconX } from '@tabler/icons-react';
 import { useSubjectTranslation } from '@/hooks/useSubjectTranslation';
 import { useDayOfWeekTranslation } from '@/hooks/useDayOfWeekTranslation';
 import { Fragment } from 'react/jsx-runtime';
 import { useSignInStatus } from '@/hooks/useSignInStatus';
 import { useSchoolStageTranslation } from '@/hooks/useSchoolStageTranslations';
 import type { teacherDetailDrawer } from '../../types/teachers';
+import { useEmploymentStatusTranslation } from '@/hooks/useEmploymentStatusTranslation';
 
 export const DetailDrawer = ({ item }: { item: teacherDetailDrawer }) => {
   const isMobile = useIsMobile();
   const { createIconTranslationBadge } = useSubjectTranslation();
+  const { createEmploymentStatusBadge } = useEmploymentStatusTranslation();
   const { translateDayOfWeek } = useDayOfWeekTranslation();
   const { translateSchoolStage } = useSchoolStageTranslation();
   const { label, colorClass, Icon } = useSignInStatus(item.current_sign_in_at);
@@ -63,18 +65,9 @@ export const DetailDrawer = ({ item }: { item: teacherDetailDrawer }) => {
           </div>
           <div className="flex flex-col gap-2">
             <Label htmlFor="employStatus">出勤状況</Label>
-            <Badge
-              variant="outline"
-              className="text-muted-foreground px-1.5 gap-1"
-            >
-              {item.employment_status === 'active' ? (
-                <IconCircleCheckFilled className="h-4 w-4 fill-green-500 dark:fill-green-400" />
-              ) : (
-                <IconLoader className="h-4 w-4" />
-              )}
-              {item.employment_status}
-            </Badge>
+            {createEmploymentStatusBadge(item.employment_status)}
           </div>
+
           <div className="flex flex-col gap-2">
             <Label htmlFor="subjects">担当科目</Label>
             <div id="subjects" className="flex flex-wrap gap-2">
@@ -96,38 +89,9 @@ export const DetailDrawer = ({ item }: { item: teacherDetailDrawer }) => {
           <div className="flex flex-col gap-2">
             <Label htmlFor="studentList">担当生徒</Label>
             {item.students.map((s) => {
-              const assignment = item.teaching_assignments.find(
-                (ta) => ta.student_id === s.id
-              );
               const schoolStage = translateSchoolStage(s.school_stage);
-
-              const statusLabel =
-                assignment?.teaching_status === true
-                  ? '指導中'
-                  : assignment?.teaching_status === false
-                  ? '指導停止'
-                  : '';
-              const statusColor =
-                assignment?.teaching_status === true
-                  ? 'text-green-500'
-                  : 'text-red-500';
-              const statusIcon =
-                assignment?.teaching_status === true ? (
-                  <IconCircleCheckFilled className={`h-4 w-4 ${statusColor}`} />
-                ) : (
-                  <IconLoader className={`h-4 w-4 ${statusColor}`} />
-                );
               return (
                 <div key={s.id} className="flex gap-1">
-                  {statusLabel && (
-                    <Badge
-                      variant="outline"
-                      className="text-muted-foreground px-1.5 gap-1"
-                    >
-                      {statusIcon}
-                      {statusLabel}
-                    </Badge>
-                  )}
                   {s.name}: {schoolStage}
                   {s.grade}年生
                 </div>

@@ -2,8 +2,9 @@ import { renderHook, waitFor } from '@testing-library/react';
 import type { AxiosError, AxiosResponse } from 'axios';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { inviteTokenApi } from '../../services/inviteTokenApi';
-import { useFetchInviteToken } from './useFetchInviteToken';
+
 import type { InviteTokenErrorResponse } from '../../types/inviteToken';
+import { useFetchInviteToken } from '../../hooks/useFetchInviteToken';
 
 vi.mock('@/features/teachers/services/inviteTokenApi');
 

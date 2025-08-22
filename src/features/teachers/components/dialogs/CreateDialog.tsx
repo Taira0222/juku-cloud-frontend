@@ -14,8 +14,9 @@ import SpinnerWithText from '@/components/common/status/Loading';
 import { IconPlus } from '@tabler/icons-react';
 import { Check, Copy } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { useFetchInviteToken } from '@/features/teachers/hooks/Table/useFetchInviteToken';
+
 import { Label } from '@/components/ui/form/Label/label';
+import { useFetchInviteToken } from '../../hooks/useFetchInviteToken';
 
 export const CreateDialog = () => {
   const [open, setOpen] = useState(false);

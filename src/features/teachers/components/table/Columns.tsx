@@ -1,26 +1,23 @@
 import { Checkbox } from '@/components/ui/form/CheckBox/checkbox';
-import {
-  IconCircleCheckFilled,
-  IconLoader,
-  IconShieldStar,
-  IconUsers,
-} from '@tabler/icons-react';
+import { IconShieldStar, IconUsers } from '@tabler/icons-react';
 import type { ColumnDef } from '@tanstack/react-table';
 import { Badge } from '@/components/ui/display/Badge/badge';
 import { z } from 'zod';
-import { DetailDrawer } from './DetailDrawer';
 
 import { useSubjectTranslation } from '@/hooks/useSubjectTranslation';
 import { useSignInStatus } from '@/hooks/useSignInStatus';
-import { RawActions } from './RawActions';
+
 import { useTeachersStore } from '@/stores/teachersStore';
+import { useEmploymentStatusTranslation } from '@/hooks/useEmploymentStatusTranslation';
+import { DetailDrawer } from '../detail/DetailDrawer';
+import { RawActions } from './RawActions';
 
 export const schema = z.object({
   id: z.number(),
   name: z.string(),
   role: z.string(),
   employment_status: z.string(),
-  classSubject: z.array(
+  class_subjects: z.array(
     z.object({
       id: z.number(),
       name: z.string(),
@@ -94,24 +91,19 @@ export const createColumns = (): ColumnDef<z.infer<typeof schema>>[] => {
     {
       accessorKey: 'employment_status',
       header: '出勤状況',
-      cell: ({ row }) => (
-        <Badge variant="outline" className="text-muted-foreground px-1.5">
-          {/** Employment Status で分岐する */}
-          {row.original.employment_status === 'active' ? (
-            <IconCircleCheckFilled className="fill-green-500 dark:fill-green-400" />
-          ) : (
-            <IconLoader />
-          )}
-          {row.original.employment_status}
-        </Badge>
-      ),
+      cell: ({ row }) => {
+        const { createEmploymentStatusBadge } =
+          useEmploymentStatusTranslation();
+        return createEmploymentStatusBadge(row.original.employment_status);
+      },
     },
+
     {
-      accessorKey: 'classSubject',
+      accessorKey: 'class_subjects',
       header: '担当科目',
       cell: ({ row }) => {
         const { createIconTranslationBadge } = useSubjectTranslation();
-        const subjects = row.original.classSubject.map((cs) => (
+        const subjects = row.original.class_subjects.map((cs) => (
           <span key={cs.id}>{createIconTranslationBadge(cs.name)}</span>
         ));
         return subjects;

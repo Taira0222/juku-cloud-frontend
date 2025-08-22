@@ -1,11 +1,13 @@
 import SpinnerWithText from '@/components/common/status/Loading';
-import { DataTable } from '@/features/teachers/components/Table/DataTable';
-import { useFetchTeachers } from '@/features/teachers/hooks/Table/useFetchTeachers';
-import { useFormatTeachersData } from '@/features/teachers/hooks/Table/useFomatTeachersData';
+import { DataTable } from '@/features/teachers/components/table/DataTable';
+
+import { useFetchTeachers } from '@/features/teachers/hooks/useFetchTeachers';
+import { useFormatTeachersData } from '@/features/teachers/hooks/useFomatTeachersData';
 
 export const TeachersPage = () => {
   const { loading, error, currentUserData, teachersData } = useFetchTeachers();
-  useFormatTeachersData(currentUserData, teachersData);
+  // loadingがfalse になったら useFormatTeachersData を作成
+  useFormatTeachersData(currentUserData, teachersData, !loading);
 
   if (loading) {
     return (

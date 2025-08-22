@@ -1,6 +1,6 @@
 import { api } from '@/lib/api';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
-import { deleteTeacherApi } from './deleteTeacherApi';
+import { deleteTeacherApi } from '../../services/deleteTeacherApi';
 
 vi.mock('@/lib/api', () => ({
   api: {
