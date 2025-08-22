@@ -57,6 +57,8 @@ export type updateTeacherData = {
     grade: number;
   }[];
 };
+// toggleInArray を使用するkey の型
+type ToggleableKeys = 'subjects' | 'available_days';
 
 // 文字列を正規化して学年ステージの値に変換する関数
 // STAGE_OPTIONS[number] はSTAGE_OPTIONS のすべての要素の型のユニオンを表す
@@ -180,19 +182,19 @@ export const EditTeacherDialog = () => {
     setFormData((prev) => ({ ...prev, employment_status: value }));
   };
 
-  // FormDataの配列フィールドに対するトグル操作
-  // 既に値があれば削除、なければ追加
-  const toggleInArray = <T,>(key: keyof typeof formData, value: T) => {
-    setFormData((prev) => {
-      // prev にはformDataが入っているので、keyが'subjects'の場合はformData['subjects']として扱う
-      const arr = new Set(prev[key] as T[]);
-      if (arr.has(value)) {
-        arr.delete(value);
-      } else {
-        arr.add(value);
-      }
-      return { ...prev, [key]: Array.from(arr) };
-    });
+  // 配列のトグル操作ユーティリティ関数
+  const toggleValue = <T,>(list: T[], v: T) => {
+    const arr = new Set(list);
+    if (arr.has(v)) {
+      arr.delete(v);
+    } else {
+      arr.add(v);
+    }
+    return Array.from(arr);
+  };
+
+  const toggleInArray = (key: ToggleableKeys, value: string) => {
+    setFormData((prev) => ({ ...prev, [key]: toggleValue(prev[key], value) }));
   };
 
   const handleClose = () => {
@@ -221,7 +223,7 @@ export const EditTeacherDialog = () => {
     const result = await updateTeacher(teacherId, submitData);
 
     if (result.ok) {
-      updateTeacherLocal(updatedId !== null ? updatedId : teacherId, {
+      updateTeacherLocal(updatedId ?? teacherId, {
         name: formData.name,
         employment_status: formData.employment_status,
         subjects: formatSubjectsData(),

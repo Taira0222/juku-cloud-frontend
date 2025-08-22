@@ -65,19 +65,22 @@ export const useFormatEditData = ({ formData, detailDrawer }: Props) => {
     }
 
     // ユーザーが選んだIDの順に安全に整形して返す
-    return formData.student_ids
-      .map((id) => {
-        const s = studentById.get(id);
-        return {
-          id,
-          student_code: s?.student_code ?? 'Unknown',
-          name: s?.name ?? 'Unknown',
-          status: s?.status ?? 'Unknown',
-          school_stage: s?.school_stage ?? 'Unknown',
-          grade: Number(s?.grade ?? 0),
-        };
-      })
-      .filter(Boolean);
+    return (
+      formData.student_ids
+        // detailDrawerに存在する学生IDのみをフィルタリング
+        .filter((id) => studentById.has(id))
+        .map((id) => {
+          const s = studentById.get(id);
+          return {
+            id,
+            student_code: s?.student_code ?? 'Unknown',
+            name: s?.name ?? 'Unknown',
+            status: s?.status ?? 'Unknown',
+            school_stage: s?.school_stage ?? 'Unknown',
+            grade: Number(s?.grade ?? 0),
+          };
+        })
+    );
   };
 
   return { formatSubjectsData, formatDaysData, formatStudentsData };
