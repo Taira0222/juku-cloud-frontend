@@ -41,7 +41,6 @@ export const TeacherStudentsSelector = ({
   stageLabel,
   parseLevel,
 }: TeacherStudentsSelectorProps) => {
-  // フィルター処理: 選択されたレベルに基づいて生徒リストを絞り込む
   const filtered = useMemo(() => {
     if (level === 'all') return allStudents;
     // level はselector から選択された値で、例えば 'elementary-1' のような形式

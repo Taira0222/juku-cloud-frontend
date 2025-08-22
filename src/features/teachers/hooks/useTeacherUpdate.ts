@@ -11,18 +11,15 @@ const DEFAULT_ERROR_MESSAGE = '予期せぬエラーが発生しました。';
 export const useTeacherUpdate = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const [updatedId, setUpdatedId] = useState<number | null>(null);
 
   const updateTeacher = useCallback(
     async (teacherId: number, formData: updateTeacherRequest) => {
       setLoading(true);
       setError(null);
-      setUpdatedId(null);
       try {
         const response = await updateTeacherApi(teacherId, formData);
         const responseTeacherId = response.data.teacher_id;
-        setUpdatedId(responseTeacherId);
-        return { ok: true };
+        return { ok: true, updatedId: responseTeacherId };
       } catch (err) {
         let errorMessage = DEFAULT_ERROR_MESSAGE;
         if (isAxiosError<updateTeacherErrorResponse>(err)) {
@@ -39,5 +36,5 @@ export const useTeacherUpdate = () => {
     []
   );
 
-  return { error, loading, updatedId, updateTeacher };
+  return { error, loading, updateTeacher };
 };

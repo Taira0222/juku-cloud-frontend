@@ -78,7 +78,7 @@ export const useFormatTeachersData = (
       ? [toTeacherDetailDrawer(currentUserData), ...detailRows]
       : detailRows;
 
-    // 既に入ってるストアの詳細情報の教師IDリストと新しい詳細情報の教師IDリストがまったく同じなら上書きしない
+    //既存ストアと新規データの教師IDが同一の場合は更新をスキップ
     const prev = useTeachersStore.getState().detailDrawer;
     const prevIds = prev.map((t) => t.id).sort();
     const newIds = detailDrawer.map((t) => t.id).sort();

@@ -115,7 +115,7 @@ export const EditTeacherDialog = () => {
       detailDrawer,
     });
 
-  const { error, loading, updatedId, updateTeacher } = useTeacherUpdate();
+  const { error, loading, updateTeacher } = useTeacherUpdate();
 
   // エラーハンドリングによる画面遷移
   if (state?.background === undefined) {
@@ -161,7 +161,6 @@ export const EditTeacherDialog = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // フォームデータをAPIに送信する形式に整形する
     // パフォーマンス的に、handleSubmitが呼び出された際にのみこの処理が実行されるようにする
     const submitData = {
       name: formData.name,
@@ -180,6 +179,7 @@ export const EditTeacherDialog = () => {
     const result = await updateTeacher(teacherId, submitData);
 
     if (result.ok) {
+      const updatedId = result.updatedId;
       if (updatedId == null) {
         toast.error('APIレスポンスに更新IDが含まれていません。');
         return;
