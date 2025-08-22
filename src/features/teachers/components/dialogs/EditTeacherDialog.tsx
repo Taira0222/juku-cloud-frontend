@@ -37,12 +37,6 @@ import { useTeacherUpdate } from '../../hooks/useTeacherUpdate';
 import { toast } from 'sonner';
 import SpinnerWithText from '@/components/common/status/Loading';
 
-type STAGE_OPTIONS = [
-  { value: 'elementary'; label: '小学校' },
-  { value: 'junior_high'; label: '中学校' },
-  { value: 'high_school'; label: '高校' }
-];
-
 export type updateTeacherData = {
   name: string;
   employment_status: string;
@@ -66,7 +60,9 @@ export type updateTeacherData = {
 
 // 文字列を正規化して学年ステージの値に変換する関数
 // STAGE_OPTIONS[number] はSTAGE_OPTIONS のすべての要素の型のユニオンを表す
-const normalizeStage = (raw: string): STAGE_OPTIONS[number]['value'] | null => {
+const normalizeStage = (
+  raw: string
+): 'elementary' | 'junior_high' | 'high_school' | null => {
   const v = raw.toLowerCase();
   if (v.includes('elementary') || v.includes('小')) return 'elementary';
   if (v.includes('junior') || v.includes('中')) return 'junior_high';
@@ -176,7 +172,7 @@ export const EditTeacherDialog = () => {
       .map((student) => student.id),
   };
 
-  const { error, loading, updateTeacher } = useTeacherUpdate();
+  const { error, loading, updatedId, updateTeacher } = useTeacherUpdate();
 
   // エラーハンドリングによる画面遷移
   if (state?.background === undefined) {
@@ -223,10 +219,9 @@ export const EditTeacherDialog = () => {
     e.preventDefault();
 
     const result = await updateTeacher(teacherId, submitData);
-    const updatedTeacherId = result.teacherId;
 
-    if (result.ok && updatedTeacherId) {
-      updateTeacherLocal(updatedTeacherId, {
+    if (result.ok && updatedId !== null) {
+      updateTeacherLocal(updatedId, {
         name: formData.name,
         employment_status: formData.employment_status,
         subjects: formatSubjectsData(),

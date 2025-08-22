@@ -9,15 +9,16 @@ export const ProtectedRoute = () => {
   const setWarningMessage = useWarningStore((state) => state.setWarningMessage);
   // ユーザー情報取得
   const { error } = useFetchUser();
+  const authenticated = isAuthenticated();
 
   // 認証チェック
   useEffect(() => {
-    if (!isAuthenticated()) {
+    if (!authenticated) {
       setWarningMessage('ログインが必要です');
     }
-  }, [isAuthenticated, setWarningMessage]);
+  }, [authenticated, setWarningMessage]);
 
-  if (!isAuthenticated()) {
+  if (!authenticated) {
     return <Navigate to="/sign_in" />;
   }
   // エラーが出たら404に遷移させる。

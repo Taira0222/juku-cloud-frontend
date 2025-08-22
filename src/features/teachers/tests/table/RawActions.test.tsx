@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { beforeEach, expect, vi } from 'vitest';
 import { describe, test } from 'vitest';
-import { RawActions } from '../../components/table/RawActions';
+import { RawActions } from '@/features/teachers/components/table/RawActions';
 import userEvent from '@testing-library/user-event';
 import { useTeachersStore } from '@/stores/teachersStore';
 import { teacher1 } from '../../fixtures/teachers';

@@ -74,8 +74,7 @@ export const useFormatEditData = ({ formData, detailDrawer }: Props) => {
           name: s?.name ?? 'Unknown',
           status: s?.status ?? 'Unknown',
           school_stage: s?.school_stage ?? 'Unknown',
-          grade:
-            typeof s?.grade === 'number' ? s!.grade : Number(s?.grade ?? 0),
+          grade: Number(s?.grade ?? 0),
         };
       })
       .filter(Boolean);
