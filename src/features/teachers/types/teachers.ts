@@ -90,3 +90,25 @@ export type updateTeacherSuccessResponse = {
 export type updateTeacherErrorResponse = {
   error: string;
 };
+
+// updateTeacherApi に送信するデータの型
+export type updateTeacherData = {
+  name: string;
+  employment_status: string;
+  subjects: {
+    id: number;
+    name: string;
+  }[];
+  available_days: {
+    id: number;
+    name: string;
+  }[];
+  students: {
+    id: number;
+    student_code: string;
+    name: string;
+    status: string;
+    school_stage: string;
+    grade: number;
+  }[];
+};

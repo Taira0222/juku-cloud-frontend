@@ -1,7 +1,7 @@
-import type { updateTeacherData } from '@/features/teachers/components/dialogs/EditTeacherDialog';
 import type {
   teacherDataTable,
   teacherDetailDrawer,
+  updateTeacherData,
 } from '@/features/teachers/types/teachers';
 import { create } from 'zustand';
 
@@ -41,10 +41,8 @@ export const useTeachersStore = create<Teachers>((set, get) => ({
               ...teacher, // 既存の教師データを保持しつつ、更新されたフィールドのみ上書き
               name: updatedData.name,
               employment_status: updatedData.employment_status,
-              class_subjects: updatedData.subjects || [],
-              studentsCount: updatedData.students
-                ? updatedData.students.length
-                : 0,
+              class_subjects: updatedData.subjects ?? [],
+              studentsCount: updatedData.students?.length ?? 0,
             }
           : teacher
       ),
@@ -54,9 +52,9 @@ export const useTeachersStore = create<Teachers>((set, get) => ({
               ...teacher,
               name: updatedData.name,
               employment_status: updatedData.employment_status,
-              students: updatedData.students || [],
-              available_days: updatedData.available_days || [],
-              class_subjects: updatedData.subjects || [],
+              students: updatedData.students ?? [],
+              available_days: updatedData.available_days ?? [],
+              class_subjects: updatedData.subjects ?? [],
             }
           : teacher
       ),

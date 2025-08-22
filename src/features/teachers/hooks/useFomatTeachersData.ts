@@ -78,12 +78,13 @@ export const useFormatTeachersData = (
       ? [toTeacherDetailDrawer(currentUserData), ...detailRows]
       : detailRows;
 
-    // 既に入ってるストアの ID とまったく同じなら上書きしない
+    // 既に入ってるストアの詳細情報の教師IDリストと新しい詳細情報の教師IDリストがまったく同じなら上書きしない
     const prev = useTeachersStore.getState().detailDrawer;
+    const prevIds = prev.map((t) => t.id).sort();
+    const newIds = detailDrawer.map((t) => t.id).sort();
     const same =
-      prev.length === detailDrawer.length &&
-      // すべての教師のIDが一致するかチェック(返却値はboolean)
-      prev.every((teacher, i) => teacher.id === detailDrawer[i].id);
+      prevIds.length === newIds.length &&
+      prevIds.every((id, i) => id === newIds[i]);
 
     if (same) return;
 

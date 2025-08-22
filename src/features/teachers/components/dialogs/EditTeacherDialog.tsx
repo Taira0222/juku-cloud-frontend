@@ -36,27 +36,9 @@ import { useFormatEditData } from '../../hooks/useFormatEditData';
 import { useTeacherUpdate } from '../../hooks/useTeacherUpdate';
 import { toast } from 'sonner';
 import SpinnerWithText from '@/components/common/status/Loading';
+import { LEVEL_OPTIONS } from '../../constants/teachers';
+import { stageLabel } from '../../utils/teachers';
 
-export type updateTeacherData = {
-  name: string;
-  employment_status: string;
-  subjects: {
-    id: number;
-    name: string;
-  }[];
-  available_days: {
-    id: number;
-    name: string;
-  }[];
-  students: {
-    id: number;
-    student_code: string;
-    name: string;
-    status: string;
-    school_stage: string;
-    grade: number;
-  }[];
-};
 // toggleInArray を使用するkey の型
 type ToggleableKeys = 'subjects' | 'available_days';
 
@@ -72,35 +54,10 @@ const normalizeStage = (
   return null;
 };
 
-// 小1〜高3の候補
-const LEVEL_OPTIONS = [
-  ...Array.from({ length: 6 }, (_, i) => ({
-    value: `elementary-${i + 1}`,
-    label: `小学${i + 1}年`,
-  })),
-  ...Array.from({ length: 3 }, (_, i) => ({
-    value: `junior_high-${i + 1}`,
-    label: `中学${i + 1}年`,
-  })),
-  ...Array.from({ length: 3 }, (_, i) => ({
-    value: `high_school-${i + 1}`,
-    label: `高校${i + 1}年`,
-  })),
-] as const;
-
 // 'elementary-3' なら { stage:'elementary', grade:3 } を返す
 const parseLevel = (v: string) => {
   const [stage, g] = v.split('-');
   return { stage, grade: Number(g) };
-};
-
-const stageLabel = (normalized: string) => {
-  const map: Record<string, string> = {
-    elementary: '小',
-    junior_high: '中',
-    high_school: '高',
-  };
-  return map[normalized] ?? normalized;
 };
 
 export const EditTeacherDialog = () => {
@@ -223,7 +180,11 @@ export const EditTeacherDialog = () => {
     const result = await updateTeacher(teacherId, submitData);
 
     if (result.ok) {
-      updateTeacherLocal(updatedId ?? teacherId, {
+      if (updatedId == null) {
+        toast.error('APIレスポンスに更新IDが含まれていません。');
+        return;
+      }
+      updateTeacherLocal(updatedId, {
         name: formData.name,
         employment_status: formData.employment_status,
         subjects: formatSubjectsData(),

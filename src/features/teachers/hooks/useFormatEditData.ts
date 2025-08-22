@@ -58,29 +58,28 @@ export const useFormatEditData = ({ formData, detailDrawer }: Props) => {
       number,
       (typeof detailDrawer)[number]['students'][number]
     >();
-    for (const t of detailDrawer) {
-      for (const s of t.students) {
-        studentById.set(s.id, s); // 同じidがあれば上書き
+    for (const teacher of detailDrawer) {
+      for (const student of teacher.students) {
+        studentById.set(student.id, student); // 同じidがあれば上書き
       }
     }
 
     // ユーザーが選んだIDの順に安全に整形して返す
-    return (
-      formData.student_ids
-        // detailDrawerに存在する学生IDのみをフィルタリング
-        .filter((id) => studentById.has(id))
-        .map((id) => {
-          const s = studentById.get(id);
-          return {
-            id,
-            student_code: s?.student_code ?? 'Unknown',
-            name: s?.name ?? 'Unknown',
-            status: s?.status ?? 'Unknown',
-            school_stage: s?.school_stage ?? 'Unknown',
-            grade: Number(s?.grade ?? 0),
-          };
-        })
-    );
+    return formData.student_ids.flatMap((id) => {
+      const s = studentById.get(id);
+      return s
+        ? [
+            {
+              id,
+              student_code: s.student_code,
+              name: s.name,
+              status: s.status,
+              school_stage: s.school_stage,
+              grade: Number(s.grade),
+            },
+          ]
+        : [];
+    });
   };
 
   return { formatSubjectsData, formatDaysData, formatStudentsData };

@@ -20,3 +20,19 @@ export const AVAILABLE_DAYS: readonly MasterItem[] = [
   { id: 6, name: 'friday' },
   { id: 7, name: 'saturday' },
 ] as const;
+
+// 小1〜高3の作成
+export const LEVEL_OPTIONS = [
+  ...Array.from({ length: 6 }, (_, i) => ({
+    value: `elementary-${i + 1}`,
+    label: `小学${i + 1}年`,
+  })),
+  ...Array.from({ length: 3 }, (_, i) => ({
+    value: `junior_high-${i + 1}`,
+    label: `中学${i + 1}年`,
+  })),
+  ...Array.from({ length: 3 }, (_, i) => ({
+    value: `high_school-${i + 1}`,
+    label: `高校${i + 1}年`,
+  })),
+] as const;
