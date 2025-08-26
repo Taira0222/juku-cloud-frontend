@@ -291,24 +291,18 @@ export const EditTeacherDialog = () => {
                           <Badge
                             key={v}
                             variant="secondary"
-                            className={`px-0 py-0 ${color}`}
-                            asChild
+                            className={`cursor-pointer text-muted-foreground inline-flex items-center gap-1 ${color}`}
+                            onClick={() => toggleInArray('subjects', v)}
+                            aria-label={`${label} を削除`}
                           >
-                            <button
-                              type="button"
-                              className="cursor-pointer text-muted-foreground px-1.5 py-1 mx-1 inline-flex items-center gap-1 rounded"
-                              onClick={() => toggleInArray('subjects', v)}
-                              aria-label={`${label} を削除`}
-                            >
-                              {Icon && (
-                                <Icon
-                                  aria-hidden="true"
-                                  className="inline-block"
-                                />
-                              )}
-                              <span>{label}</span>
-                              <span aria-hidden="true">✕</span>{' '}
-                            </button>
+                            {Icon && (
+                              <Icon
+                                aria-hidden="true"
+                                className="inline-block"
+                              />
+                            )}
+                            <span>{label}</span>
+                            <span aria-hidden="true">✕</span>{' '}
                           </Badge>
                         );
                       })}

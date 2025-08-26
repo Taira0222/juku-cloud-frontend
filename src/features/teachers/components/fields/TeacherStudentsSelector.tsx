@@ -144,15 +144,10 @@ export const TeacherStudentsSelector = ({
                 key={sid}
                 variant="secondary"
                 className="cursor-pointer"
-                asChild
+                onClick={() => toggleId(sid)}
               >
-                <button
-                  onClick={() => toggleId(sid)}
-                  className="flex items-center gap-1"
-                >
-                  <span>{label}</span>
-                  <span aria-hidden="true">✕</span>
-                </button>
+                <span>{label}</span>
+                <span aria-hidden="true">✕</span>
               </Badge>
             );
           })}

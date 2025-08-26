@@ -1,4 +1,3 @@
-import { renderHook } from '@testing-library/react';
 import { describe, expect, test } from 'vitest';
 import { normalizeStage, parseLevel, stageLabel } from '../../utils/teachers';
 
@@ -6,17 +5,17 @@ describe('stageLabel', () => {
   test('should return correct stage label', () => {
     const mockProps = 'elementary';
 
-    const { result } = renderHook(() => stageLabel(mockProps));
+    const result = stageLabel(mockProps);
 
-    expect(result.current).toEqual('小');
+    expect(result).toEqual('小');
   });
 
   test('should return empty string for unknown stage', () => {
     const mockProps = 'unknown';
 
-    const { result } = renderHook(() => stageLabel(mockProps));
+    const result = stageLabel(mockProps);
 
-    expect(result.current).toEqual('');
+    expect(result).toEqual('');
   });
 });
 
@@ -27,20 +26,20 @@ describe('normalizeStage', () => {
 
     // 英語で受けとった場合はそのまま返す
     stages.forEach((stage, index) => {
-      const { result } = renderHook(() => normalizeStage(stage));
-      expect(result.current).toEqual(stages[index]);
+      const result = normalizeStage(stage);
+      expect(result).toEqual(stages[index]);
     });
 
     // 日本語の略称を受け取った場合は対応する英語のステージを返す
     expected.forEach((exp, index) => {
-      const { result } = renderHook(() => normalizeStage(exp));
-      expect(result.current).toEqual(stages[index]);
+      const result = normalizeStage(exp);
+      expect(result).toEqual(stages[index]);
     });
   });
 
   test('should return null for completely unknown strings', () => {
-    const { result } = renderHook(() => normalizeStage('completelyUnknown'));
-    expect(result.current).toBeNull();
+    const result = normalizeStage('completelyUnknown');
+    expect(result).toBeNull();
   });
 });
 
@@ -54,8 +53,8 @@ describe('parseLevel', () => {
     ];
 
     levels.forEach((level, index) => {
-      const { result } = renderHook(() => parseLevel(level));
-      expect(result.current).toEqual(expected[index]);
+      const result = parseLevel(level);
+      expect(result).toEqual(expected[index]);
     });
   });
 });

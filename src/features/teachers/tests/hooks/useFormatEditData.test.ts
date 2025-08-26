@@ -1,7 +1,14 @@
 import { describe, expect, test } from 'vitest';
-import { detailDrawer, formatEditMock } from '../fixtures/teachers';
+import {
+  detailDrawer,
+  formatEditMock,
+  student1,
+  student3,
+  SUBJECTS_MOCK,
+} from '../fixtures/teachers';
 import { renderHook } from '@testing-library/react';
 import { useFormatEditData } from '../../hooks/useFormatEditData';
+import { AVAILABLE_DAYS } from '../../constants/teachers';
 
 describe('useFormatEditData', () => {
   test('should format data correctly', () => {
@@ -20,45 +27,10 @@ describe('useFormatEditData', () => {
     const { formatSubjectsData, formatDaysData, formatStudentsData } =
       result.current;
 
-    expect(formatSubjectsData()).toEqual([
-      {
-        id: 3,
-        name: 'mathematics',
-      },
-      {
-        id: 4,
-        name: 'science',
-      },
-    ]);
-    expect(formatDaysData()).toEqual([
-      {
-        id: 2,
-        name: 'monday',
-      },
-      {
-        id: 4,
-        name: 'wednesday',
-      },
-    ]);
-    // fixtures の値を返す
-    expect(formatStudentsData()).toEqual([
-      {
-        id: 1,
-        student_code: 'S1234',
-        name: 'Student One',
-        status: 'active',
-        school_stage: 'high_school',
-        grade: 3,
-      },
-      {
-        id: 3,
-        student_code: 'S4597',
-        name: 'Student two',
-        status: 'active',
-        school_stage: 'junior_high_school',
-        grade: 2,
-      },
-    ]);
+    expect(formatSubjectsData()).toEqual([SUBJECTS_MOCK[2], SUBJECTS_MOCK[3]]);
+    expect(formatDaysData()).toEqual([AVAILABLE_DAYS[1], AVAILABLE_DAYS[3]]);
+
+    expect(formatStudentsData()).toEqual([student1, student3]);
   });
 
   test('should return empty arrays when no matches found', () => {

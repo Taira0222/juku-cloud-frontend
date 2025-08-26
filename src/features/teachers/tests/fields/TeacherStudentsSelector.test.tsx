@@ -65,7 +65,7 @@ describe('TeacherStudentsSelector', () => {
     // 中学2年を選択
     await user.click(juniorHigh2Option);
 
-    // セレクターが更新されていることを確認
+    // セレクトボックスが更新されていることを確認
     const trigger = screen.getByRole('combobox', { name: /担当生徒/ });
     expect(within(trigger).getByText('中学2年')).toBeInTheDocument();
     expect(student1CheckBox).not.toBeInTheDocument();
