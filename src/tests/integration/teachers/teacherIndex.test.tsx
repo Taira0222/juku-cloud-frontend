@@ -32,7 +32,7 @@ describe('Teacher Index Integration Tests', () => {
     expect(teacher1).toBeInTheDocument();
   });
 
-  test('render error message if api returns 500', async () => {
+  test('should render error message if api returns 500', async () => {
     server.use(
       http.get(`${VITE_API_BASE_URL}/api/v1/teachers`, async () => {
         return HttpResponse.json(
