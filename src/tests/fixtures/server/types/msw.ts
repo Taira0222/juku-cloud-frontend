@@ -10,6 +10,14 @@ import type {
   TokenConfirmErrorResponse,
   TokenConfirmSuccessResponse,
 } from '@/features/auth/types/tokenConfirm';
+import type {
+  InviteTokenErrorResponse,
+  InviteTokenSuccessResponse,
+} from '@/features/teachers/types/inviteToken';
+import type {
+  fetchTeachersErrorResponse,
+  fetchTeachersSuccessResponse,
+} from '@/features/teachers/types/teachers';
 
 // サインインの型定義
 export type SignInPathParams = Record<string, string | undefined>;
@@ -37,6 +45,18 @@ export type SignUpRequestBodyType = {
 export type SignUpResponseBodyType =
   | SignUpSuccessResponse
   | SignUpErrorResponse;
+
+// 講師一覧の型定義
+
+export type TeacherFetchResponseBodyType =
+  | fetchTeachersSuccessResponse
+  | fetchTeachersErrorResponse;
+
+// 講師作成トークンの型定義
+
+export type InviteTokenCreateResponseBodyType =
+  | InviteTokenSuccessResponse
+  | InviteTokenErrorResponse;
 
 // トークン確認の型定義
 export type TokenConfirmPathParams = {

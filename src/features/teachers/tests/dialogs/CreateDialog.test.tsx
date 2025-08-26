@@ -11,7 +11,7 @@ vi.mock('@/features/teachers/hooks/useFetchInviteToken', () => ({
   useFetchInviteToken: vi.fn(),
 }));
 
-const API_URL = import.meta.env.VITE_FRONTEND_BASE_URL;
+const FRONTEND_BASE_URL = import.meta.env.VITE_FRONTEND_BASE_URL;
 
 describe('CreateDialog', () => {
   beforeEach(() => {
@@ -22,7 +22,7 @@ describe('CreateDialog', () => {
     const refetch = vi.fn();
     const reset = vi.fn();
     const user = userEvent.setup({ writeToClipboard: true });
-    const mockInviteUrl = `${API_URL}/sign_up?token=valid_token`;
+    const mockInviteUrl = `${FRONTEND_BASE_URL}/sign_up?token=valid_token`;
 
     // すでに存在するobject をモック化するためのメソッド
     const writeTextSpy = vi
