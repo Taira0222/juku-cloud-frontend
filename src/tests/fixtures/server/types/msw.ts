@@ -17,10 +17,10 @@ import type {
 import type {
   fetchTeachersErrorResponse,
   fetchTeachersSuccessResponse,
+  teacherDeleteErrorResponse,
 } from '@/features/teachers/types/teachers';
 
 // サインインの型定義
-export type SignInPathParams = Record<string, string | undefined>;
 
 export type SignInRequestBodyType = {
   email: string;
@@ -32,7 +32,6 @@ export type SignInResponseBodyType =
   | SignInErrorResponse;
 
 // サインアップの型定義
-export type SignUpPathParams = Record<string, string | undefined>;
 
 export type SignUpRequestBodyType = {
   name: string;
@@ -62,9 +61,14 @@ export type InviteTokenCreateResponseBodyType =
 export type TokenConfirmPathParams = {
   token: string;
 };
-// リクエストボディは今回不要
-export type TokenConfirmRequestBodyType = undefined;
 
 export type TokenConfirmResponseBodyType =
   | TokenConfirmSuccessResponse
   | TokenConfirmErrorResponse;
+
+// 講師削除の型定義
+export type TeacherDeletePathParams = {
+  id: string;
+};
+
+export type TeacherDeleteResponseBodyType = teacherDeleteErrorResponse;

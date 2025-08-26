@@ -1,6 +1,10 @@
 import { describe, expect, test } from 'vitest';
 import { TeacherStudentsSelector } from '../../components/fields/TeacherStudentsSelector';
-import { student1, student2, student3 } from '../fixtures/teachers';
+import {
+  student1,
+  student2,
+  student3,
+} from '../../../../tests/fixtures/teachers/teachers';
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useState } from 'react';

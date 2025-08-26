@@ -1,18 +1,17 @@
 import {
   currentUserResponse,
-  teachersData,
-} from '@/features/teachers/tests/fixtures/teachers';
+  teachers,
+} from '@/tests/fixtures/teachers/teachers';
 import type {
   InviteTokenCreateResponseBodyType,
-  SignInPathParams,
   SignInRequestBodyType,
   SignInResponseBodyType,
-  SignUpPathParams,
   SignUpRequestBodyType,
   SignUpResponseBodyType,
+  TeacherDeletePathParams,
+  TeacherDeleteResponseBodyType,
   TeacherFetchResponseBodyType,
   TokenConfirmPathParams,
-  TokenConfirmRequestBodyType,
   TokenConfirmResponseBodyType,
 } from '@/tests/fixtures/server/types/msw';
 import { http, HttpResponse } from 'msw';
@@ -21,7 +20,7 @@ const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export const handlers = [
   // サインインのハンドラー
-  http.post<SignInPathParams, SignInRequestBodyType, SignInResponseBodyType>(
+  http.post<never, SignInRequestBodyType, SignInResponseBodyType>(
     `${VITE_API_BASE_URL}/api/v1/auth/sign_in`,
     async ({ request }) => {
       // リクエストボディからemailとpasswordを取得
@@ -78,7 +77,7 @@ export const handlers = [
     }
   ),
   // サインアップのハンドラー
-  http.post<SignUpPathParams, SignUpRequestBodyType, SignUpResponseBodyType>(
+  http.post<never, SignUpRequestBodyType, SignUpResponseBodyType>(
     `${VITE_API_BASE_URL}/api/v1/auth`,
     async ({ request }) => {
       const body = await request.json();
@@ -174,7 +173,7 @@ export const handlers = [
         return HttpResponse.json(
           {
             current_user: currentUserResponse,
-            teachers: teachersData,
+            teachers: teachers,
           },
           {
             status: 200,
@@ -212,29 +211,61 @@ export const handlers = [
   ),
 
   // 確認メールのトークン確認のハンドラー
-  http.get<
-    TokenConfirmPathParams,
-    TokenConfirmRequestBodyType,
-    TokenConfirmResponseBodyType
-  >(`${VITE_API_BASE_URL}/api/v1/invites/:token`, async ({ params }) => {
-    try {
-      const token = params.token;
-      if (token !== '123456') {
+  http.get<TokenConfirmPathParams, never, TokenConfirmResponseBodyType>(
+    `${VITE_API_BASE_URL}/api/v1/invites/:token`,
+    async ({ params }) => {
+      try {
+        const token = params.token;
+        if (token !== '123456') {
+          return HttpResponse.json(
+            { message: 'この招待リンクは無効か期限切れです。' },
+            { status: 404 }
+          );
+        }
+
         return HttpResponse.json(
-          { message: 'この招待リンクは無効か期限切れです。' },
-          { status: 404 }
+          { school_name: 'First_school' },
+          { status: 200 }
+        );
+      } catch {
+        return HttpResponse.json(
+          { message: '予期せぬエラーが発生しました。' },
+          { status: 500 }
         );
       }
-
-      return HttpResponse.json(
-        { school_name: 'First_school' },
-        { status: 200 }
-      );
-    } catch {
-      return HttpResponse.json(
-        { message: '予期せぬエラーが発生しました。' },
-        { status: 500 }
-      );
     }
-  }),
+  ),
+
+  // 講師削除のハンドラー
+  http.delete<TeacherDeletePathParams, never, TeacherDeleteResponseBodyType>(
+    `${VITE_API_BASE_URL}/api/v1/teachers/:id`,
+    async ({ params }) => {
+      const { id } = params;
+      try {
+        // 成功時にはstatus のみ返却する
+        if (id === '2') {
+          return new HttpResponse(null, { status: 204 });
+        }
+      } catch {
+        // idが1の時はadminのため削除できない
+        if (id === '1') {
+          return HttpResponse.json(
+            { error: '管理者は削除できません。' },
+            { status: 403 }
+          );
+          // フロントに削除ボタンはあるけど、db 側でユーザーが見つからない想定
+        } else if (id !== '2') {
+          return HttpResponse.json(
+            { error: 'ユーザーが見つかりませんでした。' },
+            { status: 404 }
+          );
+        } else {
+          return HttpResponse.json(
+            { error: '予期せぬエラーが発生しました。' },
+            { status: 500 }
+          );
+        }
+      }
+    }
+  ),
 ];

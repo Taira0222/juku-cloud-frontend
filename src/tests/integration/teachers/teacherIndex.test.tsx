@@ -27,9 +27,11 @@ describe('Teacher Index Integration Tests', () => {
 
     const admin = screen.getByText('John Doe');
     const teacher1 = screen.getByText('Jane Smith');
+    const teacher2 = screen.getByText('Alice Johnson');
 
     expect(admin).toBeInTheDocument();
     expect(teacher1).toBeInTheDocument();
+    expect(teacher2).toBeInTheDocument();
   });
 
   test('should render error message if api returns 500', async () => {

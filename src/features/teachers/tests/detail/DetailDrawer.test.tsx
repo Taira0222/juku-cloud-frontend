@@ -4,7 +4,7 @@ import { beforeEach, describe, expect, test, vi } from 'vitest';
 
 import userEvent from '@testing-library/user-event';
 import { DetailDrawer } from '../../components/detail/DetailDrawer';
-import { getDetailDrawerDataMock } from '../fixtures/teachers';
+import { getDetailDrawerDataMock } from '../../../../tests/fixtures/teachers/teachers';
 
 vi.mock('@/hooks/useSubjectTranslation', () => ({
   useSubjectTranslation: () => ({

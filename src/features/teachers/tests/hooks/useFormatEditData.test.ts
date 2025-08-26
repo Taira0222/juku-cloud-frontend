@@ -5,7 +5,7 @@ import {
   student1,
   student3,
   SUBJECTS_MOCK,
-} from '../fixtures/teachers';
+} from '../../../../tests/fixtures/teachers/teachers';
 import { renderHook } from '@testing-library/react';
 import { useFormatEditData } from '../../hooks/useFormatEditData';
 import { AVAILABLE_DAYS } from '../../constants/teachers';
