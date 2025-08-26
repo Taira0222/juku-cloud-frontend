@@ -88,7 +88,7 @@ export type updateTeacherSuccessResponse = {
 
 // updateTeacherApi のエラー時のレスポンスのデータの型
 export type updateTeacherErrorResponse = {
-  error: string;
+  errors: string[];
 };
 
 // updateTeacherApi に送信するデータの型

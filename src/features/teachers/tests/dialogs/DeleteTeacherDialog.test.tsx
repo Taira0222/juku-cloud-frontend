@@ -5,8 +5,9 @@ import { useTeacherDelete } from '../../hooks/useTeacherDelete';
 import userEvent from '@testing-library/user-event';
 import { Toaster } from '@/components/ui/feedback/Sonner/sonner';
 import { useTeachersStore } from '@/stores/teachersStore';
-import { teacher1 } from '../../fixtures/teachers';
+
 import { DeleteTeacherDialog } from '../../components/dialogs/DeleteTeacherDialog';
+import { teacher1 } from '../fixtures/teachers';
 
 type Props = {
   open: boolean;

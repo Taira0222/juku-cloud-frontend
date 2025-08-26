@@ -19,16 +19,17 @@ export const useTeacherUpdate = () => {
       try {
         const response = await updateTeacherApi(teacherId, formData);
         const responseTeacherId = response.data.teacher_id;
-        return { ok: true, updatedId: responseTeacherId };
+        return { ok: true as const, updatedId: responseTeacherId };
       } catch (err) {
         let errorMessage = DEFAULT_ERROR_MESSAGE;
         if (isAxiosError<updateTeacherErrorResponse>(err)) {
-          errorMessage = err.response?.data.error ?? DEFAULT_ERROR_MESSAGE;
+          errorMessage =
+            err.response?.data.errors.join(', ') ?? DEFAULT_ERROR_MESSAGE;
         } else if (err instanceof Error && err.message) {
           errorMessage = err.message;
         }
         setError(errorMessage);
-        return { ok: false };
+        return { ok: false as const };
       } finally {
         setLoading(false);
       }

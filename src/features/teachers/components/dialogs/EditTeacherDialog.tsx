@@ -36,29 +36,9 @@ import { useFormatEditData } from '../../hooks/useFormatEditData';
 import { useTeacherUpdate } from '../../hooks/useTeacherUpdate';
 import { toast } from 'sonner';
 import SpinnerWithText from '@/components/common/status/Loading';
-import { LEVEL_OPTIONS } from '../../constants/teachers';
-import { stageLabel } from '../../utils/teachers';
 
 // toggleInArray を使用するkey の型
 type ToggleableKeys = 'subjects' | 'available_days';
-
-// 文字列を正規化して学年ステージの値に変換する関数
-// STAGE_OPTIONS[number] はSTAGE_OPTIONS のすべての要素の型のユニオンを表す
-const normalizeStage = (
-  raw: string
-): 'elementary' | 'junior_high' | 'high_school' | null => {
-  const v = raw.toLowerCase();
-  if (v.includes('elementary') || v.includes('小')) return 'elementary';
-  if (v.includes('junior') || v.includes('中')) return 'junior_high';
-  if (v.includes('high') || v.includes('高')) return 'high_school';
-  return null;
-};
-
-// 'elementary-3' なら { stage:'elementary', grade:3 } を返す
-const parseLevel = (v: string) => {
-  const [stage, g] = v.split('-');
-  return { stage, grade: Number(g) };
-};
 
 export const EditTeacherDialog = () => {
   const navigate = useNavigate();
@@ -107,7 +87,7 @@ export const EditTeacherDialog = () => {
     available_days: initialAvailableDays,
     student_ids: initialStudentsIds,
   });
-  const [level, setLevel] = useState<'all' | string>('all');
+
   // teacherStore 更新用の成型済みデータを取得
   const { formatSubjectsData, formatDaysData, formatStudentsData } =
     useFormatEditData({
@@ -260,7 +240,7 @@ export const EditTeacherDialog = () => {
                       {Object.entries(EMPLOYMENT_STATUS_TRANSLATIONS).map(
                         ([key, { name }]) => (
                           <SelectItem key={key} value={key}>
-                            {name}（{key}）
+                            {name}({key})
                           </SelectItem>
                         )
                       )}
@@ -271,48 +251,68 @@ export const EditTeacherDialog = () => {
                 {/* 担当科目：複数チェック */}
                 <div className="space-y-2">
                   <Label>担当科目（複数可）</Label>
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className="grid grid-cols-2 gap-3 py-2">
                     {/** 複数選択可能な担当科目のチェックボックス */}
                     {Object.entries(SUBJECT_TRANSLATIONS).map(
-                      ([key, { name }]) => (
-                        <label key={key} className="flex items-center gap-2">
-                          <Checkbox
-                            checked={formData.subjects.includes(key)}
-                            onCheckedChange={() =>
-                              toggleInArray('subjects', key)
-                            }
-                            aria-label={name}
-                          />
-                          <span>{name}</span>
-                        </label>
-                      )
+                      ([key, { name }]) => {
+                        const checkboxId = `subject-checkbox-${key}`;
+                        return (
+                          <div key={key} className="flex items-center gap-2 ">
+                            <Checkbox
+                              id={checkboxId}
+                              checked={formData.subjects.includes(key)}
+                              onCheckedChange={() =>
+                                toggleInArray('subjects', key)
+                              }
+                            />
+                            <Label
+                              htmlFor={checkboxId}
+                              className="font-normal text-base"
+                            >
+                              {name}
+                            </Label>
+                          </div>
+                        );
+                      }
                     )}
                   </div>
                   {/** 選択された担当科目を表示するバッジ */}
                   {formData.subjects.length > 0 && (
-                    <div className="flex flex-wrap gap-2 pt-1">
+                    <section
+                      aria-label="選択中の担当科目"
+                      className="flex flex-wrap gap-2 pt-1"
+                    >
                       {formData.subjects.map((v) => {
                         const label = SUBJECT_TRANSLATIONS[v]?.name ?? v;
                         const Icon = SUBJECT_TRANSLATIONS[v]?.icon;
                         const color = SUBJECT_TRANSLATIONS[v]?.color ?? 'gray';
+
                         return (
                           <Badge
                             key={v}
                             variant="secondary"
-                            className={`cursor-pointer text-muted-foreground px-1.5 mx-1 ${color}`}
-                            onClick={() => toggleInArray('subjects', v)}
+                            className={`px-0 py-0 ${color}`}
+                            asChild
                           >
-                            {Icon && (
-                              <Icon
-                                aria-hidden="true"
-                                className="mr-1 inline-block"
-                              />
-                            )}
-                            {label} ✕
+                            <button
+                              type="button"
+                              className="cursor-pointer text-muted-foreground px-1.5 py-1 mx-1 inline-flex items-center gap-1 rounded"
+                              onClick={() => toggleInArray('subjects', v)}
+                              aria-label={`${label} を削除`}
+                            >
+                              {Icon && (
+                                <Icon
+                                  aria-hidden="true"
+                                  className="inline-block"
+                                />
+                              )}
+                              <span>{label}</span>
+                              <span aria-hidden="true">✕</span>{' '}
+                            </button>
                           </Badge>
                         );
                       })}
-                    </div>
+                    </section>
                   )}
                 </div>
 
@@ -321,18 +321,27 @@ export const EditTeacherDialog = () => {
                   <Label>担当可能曜日（複数可）</Label>
                   <div className="grid grid-cols-2 gap-2">
                     {Object.entries(DAY_OF_WEEK_TRANSLATIONS).map(
-                      ([key, name]) => (
-                        <label key={key} className="flex items-center gap-2">
-                          <Checkbox
-                            checked={formData.available_days.includes(key)}
-                            onCheckedChange={() =>
-                              toggleInArray('available_days', key)
-                            }
-                            aria-label={name}
-                          />
-                          <span>{name}</span>
-                        </label>
-                      )
+                      ([key, name]) => {
+                        const checkboxId = `day-checkbox-${key}`;
+                        return (
+                          <div key={key} className="flex items-center gap-2">
+                            <Checkbox
+                              id={checkboxId}
+                              checked={formData.available_days.includes(key)}
+                              onCheckedChange={() =>
+                                toggleInArray('available_days', key)
+                              }
+                              aria-label={name}
+                            />
+                            <Label
+                              htmlFor={checkboxId}
+                              className="font-normal text-base"
+                            >
+                              {name}
+                            </Label>
+                          </div>
+                        );
+                      }
                     )}
                   </div>
                 </div>
@@ -341,15 +350,9 @@ export const EditTeacherDialog = () => {
                 <TeacherStudentsSelector
                   allStudents={students}
                   selectedIds={formData.student_ids}
-                  level={level}
-                  onChangeLevel={(v) => setLevel(v)}
                   onChangeSelected={(ids) =>
                     setFormData((prev) => ({ ...prev, student_ids: ids }))
                   }
-                  levelOptions={[...LEVEL_OPTIONS]}
-                  normalizeStage={normalizeStage}
-                  stageLabel={stageLabel}
-                  parseLevel={parseLevel}
                 />
               </div>
 

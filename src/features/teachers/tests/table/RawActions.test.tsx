@@ -4,8 +4,8 @@ import { describe, test } from 'vitest';
 import { RawActions } from '@/features/teachers/components/table/RawActions';
 import userEvent from '@testing-library/user-event';
 import { useTeachersStore } from '@/stores/teachersStore';
-import { teacher1 } from '../../fixtures/teachers';
 import { MemoryRouter } from 'react-router-dom';
+import { teacher1 } from '../fixtures/teachers';
 
 type Props = {
   teacherId: number;

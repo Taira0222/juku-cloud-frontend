@@ -2,9 +2,9 @@ import { useIsMobile } from '@/hooks/useMobile';
 import { render, screen, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 
-import { getDetailDrawerDataMock } from '../../fixtures/teachers';
 import userEvent from '@testing-library/user-event';
 import { DetailDrawer } from '../../components/detail/DetailDrawer';
+import { getDetailDrawerDataMock } from '../fixtures/teachers';
 
 vi.mock('@/hooks/useSubjectTranslation', () => ({
   useSubjectTranslation: () => ({
@@ -65,8 +65,8 @@ describe('DetailDrawer', () => {
       expect(screen.getByText('講師の詳細情報')).toBeInTheDocument();
       expect(screen.getByText('admin')).toBeInTheDocument();
       expect(screen.getByText('active')).toBeInTheDocument();
-      expect(screen.getByText('Math')).toBeInTheDocument();
-      expect(screen.getByText('English')).toBeInTheDocument();
+      expect(screen.getByText('mathematics')).toBeInTheDocument();
+      expect(screen.getByText('english')).toBeInTheDocument();
       expect(screen.getByText(expectedDays)).toBeInTheDocument();
       expect(screen.getByText('john.doe@example.com')).toBeInTheDocument();
       expect(screen.getByText('Online Icon')).toBeInTheDocument();
@@ -92,8 +92,8 @@ describe('DetailDrawer', () => {
       expect(screen.getByText('講師の詳細情報')).toBeInTheDocument();
       expect(screen.getByText('admin')).toBeInTheDocument();
       expect(screen.getByText('active')).toBeInTheDocument();
-      expect(screen.getByText('Math')).toBeInTheDocument();
-      expect(screen.getByText('English')).toBeInTheDocument();
+      expect(screen.getByText('mathematics')).toBeInTheDocument();
+      expect(screen.getByText('english')).toBeInTheDocument();
       expect(screen.getByText(expectedDays)).toBeInTheDocument();
       expect(screen.getByText('john.doe@example.com')).toBeInTheDocument();
       expect(screen.getByText('Online Icon')).toBeInTheDocument();
@@ -119,8 +119,8 @@ describe('DetailDrawer', () => {
       expect(screen.getByText('講師の詳細情報')).toBeInTheDocument();
       expect(screen.getByText('teacher')).toBeInTheDocument();
       expect(screen.getByText('active')).toBeInTheDocument();
-      expect(screen.getByText('Science')).toBeInTheDocument();
-      expect(screen.getByText('English')).toBeInTheDocument();
+      expect(screen.getByText('science')).toBeInTheDocument();
+      expect(screen.getByText('english')).toBeInTheDocument();
       expect(screen.getByText(expectedDays)).toBeInTheDocument();
       expect(screen.getByText('jane.smith@example.com')).toBeInTheDocument();
       expect(screen.getByText('Online Icon')).toBeInTheDocument();
