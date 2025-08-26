@@ -88,7 +88,7 @@ export const teacher1 = {
   ],
 };
 
-const teachersData = [teacher1 as unknown as currentUser];
+export const teachersData = [teacher1 as unknown as currentUser];
 
 const detailRowsMap = teachersData.map(toTeacherDetailDrawer);
 

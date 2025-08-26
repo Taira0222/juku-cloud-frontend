@@ -1,10 +1,16 @@
+import {
+  currentUserResponse,
+  teachersData,
+} from '@/features/teachers/tests/fixtures/teachers';
 import type {
+  InviteTokenCreateResponseBodyType,
   SignInPathParams,
   SignInRequestBodyType,
   SignInResponseBodyType,
   SignUpPathParams,
   SignUpRequestBodyType,
   SignUpResponseBodyType,
+  TeacherFetchResponseBodyType,
   TokenConfirmPathParams,
   TokenConfirmRequestBodyType,
   TokenConfirmResponseBodyType,
@@ -160,11 +166,57 @@ export const handlers = [
       );
     }
   ),
+  // 講師一覧のハンドラー
+  http.get<never, never, TeacherFetchResponseBodyType>(
+    `${VITE_API_BASE_URL}/api/v1/teachers`,
+    async () => {
+      try {
+        return HttpResponse.json(
+          {
+            current_user: currentUserResponse,
+            teachers: teachersData,
+          },
+          {
+            status: 200,
+          }
+        );
+      } catch {
+        return HttpResponse.json(
+          { error: '予期せぬエラーが発生しました。' },
+          { status: 500 }
+        );
+      }
+    }
+  ),
+
+  // 講師作成用のトークン作成用のハンドラー
+  http.post<never, never, InviteTokenCreateResponseBodyType>(
+    `${VITE_API_BASE_URL}/api/v1/invites`,
+    async () => {
+      try {
+        return HttpResponse.json(
+          {
+            token: '123456',
+          },
+          {
+            status: 200,
+          }
+        );
+      } catch {
+        return HttpResponse.json(
+          { message: 'トークン作成に失敗しました' },
+          { status: 422 }
+        );
+      }
+    }
+  ),
+
+  // 確認メールのトークン確認のハンドラー
   http.get<
     TokenConfirmPathParams,
     TokenConfirmRequestBodyType,
     TokenConfirmResponseBodyType
-  >(`${VITE_API_BASE_URL}/api/v1/invites/:token`, ({ params }) => {
+  >(`${VITE_API_BASE_URL}/api/v1/invites/:token`, async ({ params }) => {
     try {
       const token = params.token;
       if (token !== '123456') {
