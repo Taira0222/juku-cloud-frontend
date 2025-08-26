@@ -1,4 +1,4 @@
-import { renderHook, waitFor } from '@testing-library/react';
+import { renderHook } from '@testing-library/react';
 import { describe, expect, test } from 'vitest';
 import { normalizeStage, parseLevel, stageLabel } from '../../utils/teachers';
 
@@ -20,23 +20,21 @@ describe('stageLabel', () => {
   });
 });
 
-describe('normalizeStage', async () => {
+describe('normalizeStage', () => {
   test('should normalize stage strings correctly', () => {
-    const stages = ['elementary', 'juniorHigh', 'highSchool', 'unknown'];
-    const expected = ['小', '中', '高', ''];
+    const stages = ['elementary', 'junior_high', 'high_school'];
+    const expected = ['小', '中', '高'];
 
-    stages.forEach(async (stage, index) => {
+    // 英語で受けとった場合はそのまま返す
+    stages.forEach((stage, index) => {
       const { result } = renderHook(() => normalizeStage(stage));
-      await waitFor(() => {
-        expect(result.current).toEqual(stage[index]);
-      });
+      expect(result.current).toEqual(stages[index]);
     });
 
-    expected.forEach(async (exp, index) => {
+    // 日本語の略称を受け取った場合は対応する英語のステージを返す
+    expected.forEach((exp, index) => {
       const { result } = renderHook(() => normalizeStage(exp));
-      await waitFor(() => {
-        expect(result.current).toEqual(stages[index]);
-      });
+      expect(result.current).toEqual(stages[index]);
     });
   });
 
@@ -55,11 +53,9 @@ describe('parseLevel', () => {
       { stage: 'high_school', grade: 1 },
     ];
 
-    levels.forEach(async (level, index) => {
+    levels.forEach((level, index) => {
       const { result } = renderHook(() => parseLevel(level));
-      await waitFor(() => {
-        expect(result.current).toEqual(expected[index]);
-      });
+      expect(result.current).toEqual(expected[index]);
     });
   });
 });
