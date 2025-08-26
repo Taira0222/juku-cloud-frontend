@@ -15,7 +15,7 @@ const routeWithRender = () => {
   );
 };
 
-const API_URL = import.meta.env.VITE_FRONTEND_BASE_URL;
+const FRONTEND_BASE_URL = import.meta.env.VITE_FRONTEND_BASE_URL;
 const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 describe('Teacher create integration tests', () => {
@@ -25,8 +25,8 @@ describe('Teacher create integration tests', () => {
 
   test('create invite link successfully', async () => {
     const user = userEvent.setup({ writeToClipboard: true });
-    const mockInviteUrl = `${API_URL}/sign_up?token=123456`;
-    // すでに存在するobject をモック化するためのメソッド
+    const mockInviteUrl = `${FRONTEND_BASE_URL}/sign_up?token=123456`;
+
     const writeTextSpy = vi
       .spyOn(navigator.clipboard, 'writeText')
       .mockResolvedValue(undefined);
@@ -68,7 +68,7 @@ describe('Teacher create integration tests', () => {
 
   test('create invite link failure', async () => {
     const user = userEvent.setup({ writeToClipboard: true });
-    // token が空文字の場合
+
     server.use(
       http.post(`${VITE_API_BASE_URL}/api/v1/invites`, async () => {
         return HttpResponse.json(
