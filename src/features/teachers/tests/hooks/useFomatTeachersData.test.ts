@@ -2,8 +2,9 @@ import { beforeEach, describe, expect, test, vi } from 'vitest';
 import type { currentUser } from '../../types/teachers';
 import { useFormatTeachersData } from '../../hooks/useFomatTeachersData';
 import { renderHook } from '@testing-library/react';
-import { currentUserResponse, teacher1 } from '../../fixtures/teachers';
+
 import { useTeachersStore } from '@/stores/teachersStore';
+import { currentUserResponse, teacher1 } from '../fixtures/teachers';
 
 describe('useFormatTeachersData', () => {
   beforeEach(() => {
@@ -38,10 +39,10 @@ describe('useFormatTeachersData', () => {
       role: 'admin',
       employment_status: 'active',
       class_subjects: [
-        { id: 1, name: 'Math' },
-        { id: 2, name: 'English' },
+        { id: 1, name: 'english' },
+        { id: 3, name: 'mathematics' },
       ],
-      studentsCount: 1,
+      studentsCount: 2,
       current_sign_in_at: '2023-01-01T12:00:00Z',
     });
 
@@ -52,8 +53,8 @@ describe('useFormatTeachersData', () => {
       role: 'teacher',
       employment_status: 'active',
       class_subjects: [
-        { id: 2, name: 'English' },
-        { id: 3, name: 'Science' },
+        { id: 1, name: 'english' },
+        { id: 4, name: 'science' },
       ],
       studentsCount: 1,
       current_sign_in_at: '2024-01-01T12:00:00Z',
@@ -75,17 +76,17 @@ describe('useFormatTeachersData', () => {
           student_code: 'S4597',
           name: 'Student two',
           status: 'active',
-          school_stage: 'junior high school',
+          school_stage: 'junior_high_school',
           grade: 2,
         },
       ],
       available_days: [
-        { id: 2, name: 'Tuesday' },
-        { id: 4, name: 'Thursday' },
+        { id: 3, name: 'tuesday' },
+        { id: 5, name: 'thursday' },
       ],
       class_subjects: [
-        { id: 2, name: 'English' },
-        { id: 3, name: 'Science' },
+        { id: 1, name: 'english' },
+        { id: 4, name: 'science' },
       ],
     });
 
@@ -119,8 +120,8 @@ describe('useFormatTeachersData', () => {
       role: 'teacher',
       employment_status: 'active',
       class_subjects: [
-        { id: 2, name: 'English' },
-        { id: 3, name: 'Science' },
+        { id: 1, name: 'english' },
+        { id: 4, name: 'science' },
       ],
       studentsCount: 1,
       current_sign_in_at: '2024-01-01T12:00:00Z',

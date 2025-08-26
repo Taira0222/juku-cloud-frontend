@@ -13,3 +13,19 @@ afterEach(() => {
 afterAll(() => {
   server.close();
 });
+
+const noop = () => {};
+
+// ブラウザにあるが、happydom にはないhasPointerCapture, setPointerCapture, releasePointerCaptureのダミーを作成
+// hasPointerCapture は boolean の返り値が必要なのでfalse にする
+if (!HTMLElement.prototype.hasPointerCapture) {
+  HTMLElement.prototype.hasPointerCapture = () => false;
+}
+
+if (!HTMLElement.prototype.setPointerCapture) {
+  HTMLElement.prototype.setPointerCapture = noop;
+}
+
+if (!HTMLElement.prototype.releasePointerCapture) {
+  HTMLElement.prototype.releasePointerCapture = noop;
+}
