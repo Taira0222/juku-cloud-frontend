@@ -44,7 +44,7 @@ describe('Teacher Delete Integration Tests', () => {
       (button) => button.id === 'teacher-actions-2'
     );
     // undefined でないことを確認し、!で非nullアサーション
-    expect(teacher1MenuButton).toBeDefined();
+    expect(teacher1MenuButton).not.toBeUndefined();
     await user.click(teacher1MenuButton!);
 
     expect(screen.getByText('削除')).toBeInTheDocument();
@@ -82,7 +82,7 @@ describe('Teacher Delete Integration Tests', () => {
       (button) => button.id === 'teacher-actions-1'
     );
     // undefined でないことを確認し、!で非nullアサーション
-    expect(adminMenuButton).toBeDefined();
+    expect(adminMenuButton).not.toBeUndefined();
     await user.click(adminMenuButton!);
 
     await waitFor(() => {
@@ -121,7 +121,7 @@ describe('Teacher Delete Integration Tests', () => {
       http.delete(`${VITE_API_BASE_URL}/api/v1/teachers/:id`, async () => {
         return HttpResponse.json(
           { error: '予期せぬエラーが発生しました。' },
-          { status: 5000 }
+          { status: 500 }
         );
       })
     );
@@ -139,7 +139,7 @@ describe('Teacher Delete Integration Tests', () => {
       (button) => button.id === 'teacher-actions-2'
     );
     // undefined でないことを確認し、!で非nullアサーション
-    expect(teacher1MenuButton).toBeDefined();
+    expect(teacher1MenuButton).not.toBeUndefined();
     await user.click(teacher1MenuButton!);
 
     expect(screen.getByText('削除')).toBeInTheDocument();

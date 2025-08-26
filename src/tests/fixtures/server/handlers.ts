@@ -1,5 +1,6 @@
 import {
   currentUserResponse,
+  teacher1,
   teachers,
 } from '@/tests/fixtures/teachers/teachers';
 import type {
@@ -17,6 +18,7 @@ import type {
 import { http, HttpResponse } from 'msw';
 
 const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const ADMIN_ID = '1';
 
 export const handlers = [
   // サインインのハンドラー
@@ -241,20 +243,21 @@ export const handlers = [
     `${VITE_API_BASE_URL}/api/v1/teachers/:id`,
     async ({ params }) => {
       const { id } = params;
+      const teacher1Id = teacher1.id.toString();
       try {
         // 成功時にはstatus のみ返却する
-        if (id === '2') {
+        if (id === teacher1Id) {
           return new HttpResponse(null, { status: 204 });
         }
       } catch {
         // idが1の時はadminのため削除できない
-        if (id === '1') {
+        if (id === ADMIN_ID) {
           return HttpResponse.json(
             { error: '管理者は削除できません。' },
             { status: 403 }
           );
           // フロントに削除ボタンはあるけど、db 側でユーザーが見つからない想定
-        } else if (id !== '2') {
+        } else if (id !== teacher1Id) {
           return HttpResponse.json(
             { error: 'ユーザーが見つかりませんでした。' },
             { status: 404 }
