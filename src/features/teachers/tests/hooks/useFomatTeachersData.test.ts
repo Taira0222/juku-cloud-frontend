@@ -4,7 +4,10 @@ import { useFormatTeachersData } from '../../hooks/useFomatTeachersData';
 import { renderHook } from '@testing-library/react';
 
 import { useTeachersStore } from '@/stores/teachersStore';
-import { currentUserResponse, teacher1 } from '../fixtures/teachers';
+import {
+  currentUserResponse,
+  teacher1,
+} from '../../../../tests/fixtures/teachers/teachers';
 
 describe('useFormatTeachersData', () => {
   beforeEach(() => {

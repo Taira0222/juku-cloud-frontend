@@ -7,7 +7,7 @@ import { Toaster } from '@/components/ui/feedback/Sonner/sonner';
 import { useTeachersStore } from '@/stores/teachersStore';
 
 import { DeleteTeacherDialog } from '../../components/dialogs/DeleteTeacherDialog';
-import { teacher1 } from '../fixtures/teachers';
+import { teacher1 } from '../../../../tests/fixtures/teachers/teachers';
 
 type Props = {
   open: boolean;

@@ -9,7 +9,7 @@ import {
   student1,
   student2,
   SUBJECTS_MOCK,
-} from '../fixtures/teachers';
+} from '../../../../tests/fixtures/teachers/teachers';
 import userEvent from '@testing-library/user-event';
 import { useTeacherUpdate } from '../../hooks/useTeacherUpdate';
 import { Toaster } from '@/components/ui/feedback/Sonner/sonner';

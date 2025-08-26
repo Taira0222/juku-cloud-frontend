@@ -29,6 +29,7 @@ export const RawActions = ({ teacherId }: Props) => {
             variant="ghost"
             className="data-[state=open]:bg-muted text-muted-foreground flex size-8"
             size="icon"
+            id={`teacher-actions-${teacherId}`}
           >
             <IconDotsVertical />
             <span className="sr-only">Open menu</span>

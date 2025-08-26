@@ -1,5 +1,8 @@
-import { toTeacherDetailDrawer } from '../../hooks/useFomatTeachersData';
-import type { currentUser, teacherDetailDrawer } from '../../types/teachers';
+import { toTeacherDetailDrawer } from '../../../features/teachers/hooks/useFomatTeachersData';
+import type {
+  currentUser,
+  teacherDetailDrawer,
+} from '../../../features/teachers/types/teachers';
 
 export const student1 = {
   id: 1,
@@ -86,9 +89,31 @@ export const teacher1 = {
     SUBJECTS_MOCK[0], // English
     SUBJECTS_MOCK[3], // Science
   ],
-};
+} as unknown as currentUser;
 
-export const teachersData = [teacher1 as unknown as currentUser];
+export const teacher2 = {
+  id: 3,
+  name: 'Alice Johnson',
+  role: 'teacher',
+  email: 'alice.johnson@example.com',
+  created_at: '2024-01-01T12:00:00Z',
+  employment_status: 'active',
+  current_sign_in_at: '2024-01-01T12:00:00Z',
+  students: [student3],
+  available_days: [
+    AVAILABLE_DAYS_MOCK[2], // Tuesday
+    AVAILABLE_DAYS_MOCK[4], // Thursday
+  ],
+  class_subjects: [
+    SUBJECTS_MOCK[0], // English
+    SUBJECTS_MOCK[3], // Science
+  ],
+} as unknown as currentUser;
+
+// msw の handlers で使用する講師一覧のモックデータ
+export const teachers = [teacher1, teacher2];
+
+export const teachersData = [teacher1];
 
 const detailRowsMap = teachersData.map(toTeacherDetailDrawer);
 

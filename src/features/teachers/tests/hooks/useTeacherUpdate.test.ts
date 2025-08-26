@@ -7,7 +7,7 @@ import type {
 import type { AxiosError, AxiosResponse } from 'axios';
 import { renderHook, waitFor } from '@testing-library/react';
 import { useTeacherUpdate } from '../../hooks/useTeacherUpdate';
-import { requestUpdateMockData } from '../fixtures/teachers';
+import { requestUpdateMockData } from '../../../../tests/fixtures/teachers/teachers';
 
 vi.mock('@/features/teachers/services/updateTeacherApi');
 

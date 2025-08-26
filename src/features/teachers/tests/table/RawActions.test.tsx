@@ -5,7 +5,7 @@ import { RawActions } from '@/features/teachers/components/table/RawActions';
 import userEvent from '@testing-library/user-event';
 import { useTeachersStore } from '@/stores/teachersStore';
 import { MemoryRouter } from 'react-router-dom';
-import { teacher1 } from '../fixtures/teachers';
+import { teacher1 } from '../../../../tests/fixtures/teachers/teachers';
 
 type Props = {
   teacherId: number;
