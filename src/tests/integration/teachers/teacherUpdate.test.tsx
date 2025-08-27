@@ -20,7 +20,21 @@ const routeWithRender = () => {
   );
 };
 
+const getMenuButtonById = (id: string) => {
+  const allMenuButtons = screen.getAllByRole('button', {
+    name: /open menu/i,
+  });
+  const menuButton = allMenuButtons.find(
+    (button) => button.id === `teacher-actions-${id}`
+  );
+  if (!menuButton) {
+    throw new Error(`Menu button not found for teacher ${id}`);
+  }
+  return menuButton;
+};
+
 const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const ADMIN_ID = '1';
 
 describe('Teacher Update Integration Tests', () => {
   test('updates a teacher', async () => {
@@ -32,15 +46,8 @@ describe('Teacher Update Integration Tests', () => {
       expect(screen.getByText('講師一覧')).toBeInTheDocument();
     });
 
-    const allMenuButtons = screen.getAllByRole('button', {
-      name: /open menu/i,
-    });
-    const adminMenuButton = allMenuButtons.find(
-      (button) => button.id === 'teacher-actions-1'
-    );
-    // undefined でないことを確認し、!で非nullアサーション
-    expect(adminMenuButton).not.toBeUndefined();
-    await user.click(adminMenuButton!);
+    const adminMenuButton = getMenuButtonById(ADMIN_ID);
+    await user.click(adminMenuButton);
 
     // 編集をクリック
     const editMenuButton = screen.getByRole('menuitem', { name: '編集' });
@@ -103,15 +110,8 @@ describe('Teacher Update Integration Tests', () => {
       expect(screen.getByText('講師一覧')).toBeInTheDocument();
     });
 
-    const allMenuButtons = screen.getAllByRole('button', {
-      name: /open menu/i,
-    });
-    const adminMenuButton = allMenuButtons.find(
-      (button) => button.id === 'teacher-actions-1'
-    );
-    // undefined でないことを確認し、!で非nullアサーション
-    expect(adminMenuButton).not.toBeUndefined();
-    await user.click(adminMenuButton!);
+    const adminMenuButton = getMenuButtonById(ADMIN_ID);
+    await user.click(adminMenuButton);
 
     // 編集をクリック
     const editMenuButton = screen.getByRole('menuitem', { name: '編集' });

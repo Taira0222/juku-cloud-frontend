@@ -23,7 +23,23 @@ const routeWithRender = () => {
   );
 };
 
+const getMenuButtonById = (id: string) => {
+  const allMenuButtons = screen.getAllByRole('button', {
+    name: /open menu/i,
+  });
+  const menuButton = allMenuButtons.find(
+    (button) => button.id === `teacher-actions-${id}`
+  );
+  if (!menuButton) {
+    throw new Error(`Menu button not found for teacher ${id}`);
+  }
+  return menuButton;
+};
+
 const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const ADMIN_ID = '1';
+const TEACHER1_ID = '2';
+const UNKNOWN_ID = '3';
 
 describe('Teacher Delete Integration Tests', () => {
   test('deletes a teacher', async () => {
@@ -37,15 +53,8 @@ describe('Teacher Delete Integration Tests', () => {
 
     const teacher1Name = screen.getByText('Jane Smith');
 
-    const allMenuButtons = screen.getAllByRole('button', {
-      name: /open menu/i,
-    });
-    const teacher1MenuButton = allMenuButtons.find(
-      (button) => button.id === 'teacher-actions-2'
-    );
-    // undefined でないことを確認し、!で非nullアサーション
-    expect(teacher1MenuButton).not.toBeUndefined();
-    await user.click(teacher1MenuButton!);
+    const teacher1MenuButton = getMenuButtonById(TEACHER1_ID);
+    await user.click(teacher1MenuButton);
 
     expect(screen.getByText('削除')).toBeInTheDocument();
     // 削除ボタンをクリック
@@ -75,15 +84,8 @@ describe('Teacher Delete Integration Tests', () => {
       expect(screen.getByText('講師一覧')).toBeInTheDocument();
     });
 
-    const allMenuButtons = screen.getAllByRole('button', {
-      name: /open menu/i,
-    });
-    const adminMenuButton = allMenuButtons.find(
-      (button) => button.id === 'teacher-actions-1'
-    );
-    // undefined でないことを確認し、!で非nullアサーション
-    expect(adminMenuButton).not.toBeUndefined();
-    await user.click(adminMenuButton!);
+    const adminMenuButton = getMenuButtonById(ADMIN_ID);
+    await user.click(adminMenuButton);
 
     await waitFor(() => {
       expect(screen.getByText('アクセス権限がありません')).toBeInTheDocument();
@@ -99,16 +101,8 @@ describe('Teacher Delete Integration Tests', () => {
       expect(screen.getByText('講師一覧')).toBeInTheDocument();
     });
 
-    const allMenuButtons = screen.getAllByRole('button', {
-      name: /open menu/i,
-    });
-    // teacher2 をdb で保存されていないuser として扱う
-    const unknownMenuButton = allMenuButtons.find(
-      (button) => button.id === 'teacher-actions-3'
-    );
-    // undefined でないことを確認し、!で非nullアサーション
-    expect(unknownMenuButton).toBeDefined();
-    await user.click(unknownMenuButton!);
+    const unknownMenuButton = getMenuButtonById(UNKNOWN_ID);
+    await user.click(unknownMenuButton);
 
     await waitFor(() => {
       expect(screen.getByText('ページが見つかりません')).toBeInTheDocument();
@@ -132,15 +126,8 @@ describe('Teacher Delete Integration Tests', () => {
       expect(screen.getByText('講師一覧')).toBeInTheDocument();
     });
 
-    const allMenuButtons = screen.getAllByRole('button', {
-      name: /open menu/i,
-    });
-    const teacher1MenuButton = allMenuButtons.find(
-      (button) => button.id === 'teacher-actions-2'
-    );
-    // undefined でないことを確認し、!で非nullアサーション
-    expect(teacher1MenuButton).not.toBeUndefined();
-    await user.click(teacher1MenuButton!);
+    const teacher1MenuButton = getMenuButtonById(TEACHER1_ID);
+    await user.click(teacher1MenuButton);
 
     expect(screen.getByText('削除')).toBeInTheDocument();
     // 削除ボタンをクリック

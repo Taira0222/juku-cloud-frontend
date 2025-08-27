@@ -281,24 +281,14 @@ export const handlers = [
     TeacherUpdateResponseBodyType
   >(`${VITE_API_BASE_URL}/api/v1/teachers/:id`, async ({ params }) => {
     const { id } = params;
-    try {
-      return HttpResponse.json(
-        {
-          teacher_id: Number(id),
-        },
-        {
-          status: 200,
-        }
-      );
-    } catch {
-      return HttpResponse.json(
-        {
-          errors: ['予期せぬエラーが発生しました。'],
-        },
-        {
-          status: 500,
-        }
-      );
-    }
+
+    return HttpResponse.json(
+      {
+        teacher_id: Number(id),
+      },
+      {
+        status: 200,
+      }
+    );
   }),
 ];
