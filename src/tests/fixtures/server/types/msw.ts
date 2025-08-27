@@ -18,6 +18,9 @@ import type {
   fetchTeachersErrorResponse,
   fetchTeachersSuccessResponse,
   teacherDeleteErrorResponse,
+  updateTeacherErrorResponse,
+  updateTeacherRequest,
+  updateTeacherSuccessResponse,
 } from '@/features/teachers/types/teachers';
 
 // サインインの型定義
@@ -70,5 +73,15 @@ export type TokenConfirmResponseBodyType =
 export type TeacherDeletePathParams = {
   id: string;
 };
-
 export type TeacherDeleteResponseBodyType = teacherDeleteErrorResponse;
+
+// 講師更新の型定義
+export type TeacherUpdatePathParams = {
+  id: string;
+};
+
+export type TeacherUpdateRequestBodyType = updateTeacherRequest;
+
+export type TeacherUpdateResponseBodyType =
+  | updateTeacherSuccessResponse
+  | updateTeacherErrorResponse;

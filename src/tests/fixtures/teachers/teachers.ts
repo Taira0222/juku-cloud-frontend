@@ -25,7 +25,7 @@ export const student2 = {
 export const student3 = {
   id: 3,
   student_code: 'S4597',
-  name: 'Student two',
+  name: 'Student Three',
   status: 'active',
   school_stage: 'junior_high_school',
   grade: 2,

@@ -91,7 +91,7 @@ export type updateTeacherErrorResponse = {
   errors: string[];
 };
 
-// updateTeacherApi に送信するデータの型
+// updateTeacherLocal(teachersStore) に送信するデータの型
 export type updateTeacherData = {
   name: string;
   employment_status: string;
