@@ -2,7 +2,7 @@
 import { afterEach, describe, expect, test, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
-import { ConfirmationCard } from '@/features/confirm/components/ConfirmationCard/ConfirmationCard';
+import { ConfirmationCard } from '../components/ConfirmationCard';
 
 describe('ConfirmationCard component', () => {
   // モック関数の定義

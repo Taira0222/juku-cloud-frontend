@@ -2,11 +2,12 @@ import { renderHook, waitFor } from '@testing-library/react';
 import type { AxiosError, AxiosResponse } from 'axios';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { useUserStore } from '@/stores/userStore';
-import { fetchUser } from '../services/userApi';
-import { useFetchUser } from './useFetchUser';
-import type { fetchUserErrorResponse } from '../types/user';
 
-vi.mock('../services/userApi', () => ({
+import type { fetchUserErrorResponse } from '../../types/user';
+import { fetchUser } from '@/api/userApi';
+import { useFetchUser } from '@/queries/useFetchUser';
+
+vi.mock('@/api/userApi', () => ({
   fetchUser: vi.fn(),
 }));
 

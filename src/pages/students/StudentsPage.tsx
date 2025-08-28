@@ -1,4 +1,4 @@
-import { useFetchStudents } from '@/features/students/hooks/useFetchStudents';
+import { useFetchStudents } from '@/features/students/queries/useFetchStudents';
 
 export const StudentsPage = () => {
   const { students, error } = useFetchStudents();

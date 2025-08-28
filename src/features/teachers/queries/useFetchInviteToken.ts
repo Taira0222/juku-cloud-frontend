@@ -3,7 +3,7 @@ import type {
   InviteTokenErrorResponse,
   InviteTokenSuccessResponse,
 } from '@/features/teachers/types/inviteToken';
-import { inviteTokenApi } from '@/features/teachers/services/inviteTokenApi';
+import { inviteTokenApi } from '@/features/teachers/api/inviteTokenApi';
 import { isAxiosError } from 'axios';
 
 export const useFetchInviteToken = () => {

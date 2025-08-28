@@ -1,15 +1,15 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
-import { updateTeacherApi } from '../../services/updateTeacherApi';
+import { updateTeacherApi } from '../../api/updateTeacherApi';
 import type {
   updateTeacherErrorResponse,
   updateTeacherSuccessResponse,
 } from '../../types/teachers';
 import type { AxiosError, AxiosResponse } from 'axios';
 import { renderHook, waitFor } from '@testing-library/react';
-import { useTeacherUpdate } from '../../hooks/useTeacherUpdate';
+import { useTeacherUpdate } from '../../mutations/useTeacherUpdate';
 import { requestUpdateMockData } from '../../../../tests/fixtures/teachers/teachers';
 
-vi.mock('@/features/teachers/services/updateTeacherApi');
+vi.mock('@/features/teachers/api/updateTeacherApi');
 
 describe('useTeacherUpdate', () => {
   beforeEach(() => {

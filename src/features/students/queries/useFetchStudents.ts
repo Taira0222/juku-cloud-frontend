@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { fetchStudents } from '../services/studentsApi';
+import { fetchStudents } from '../api/studentsApi';
 import {
   isFetchStudentsErrorResponse,
   type fetchStudentsResponse,

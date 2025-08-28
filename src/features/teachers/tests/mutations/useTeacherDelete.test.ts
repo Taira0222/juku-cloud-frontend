@@ -2,14 +2,14 @@ import { renderHook, waitFor } from '@testing-library/react';
 import type { AxiosError, AxiosResponse } from 'axios';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import type { teacherDeleteErrorResponse } from '../../types/teachers';
-import { deleteTeacherApi } from '../../services/deleteTeacherApi';
-import { useTeacherDelete } from '../../hooks/useTeacherDelete';
+import { deleteTeacherApi } from '../../api/deleteTeacherApi';
+import { useTeacherDelete } from '../../mutations/useTeacherDelete';
 
 type DeleteTeacherResult = {
   ok: boolean;
 };
 
-vi.mock('@/features/teachers/services/deleteTeacherApi');
+vi.mock('@/features/teachers/api/deleteTeacherApi');
 const MOCK_ID = 1;
 
 describe('useTeacherDelete', () => {

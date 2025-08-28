@@ -32,7 +32,7 @@ import { DAY_OF_WEEK_TRANSLATIONS } from '@/constants/dayOfWeekTranslations';
 import { useIsMobile } from '@/hooks/useMobile';
 import { cn } from '@/lib/utils';
 import { useFormatEditData } from '../../hooks/useFormatEditData';
-import { useTeacherUpdate } from '../../hooks/useTeacherUpdate';
+import { useTeacherUpdate } from '../../mutations/useTeacherUpdate';
 import { toast } from 'sonner';
 import SpinnerWithText from '@/components/common/status/Loading';
 

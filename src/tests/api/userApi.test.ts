@@ -1,11 +1,11 @@
 import { api } from '@/lib/api';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
+import type { AxiosError, AxiosResponse } from 'axios';
 import type {
   fetchUserErrorResponse,
   fetchUserSuccessResponse,
-} from '../types/user';
-import type { AxiosError, AxiosResponse } from 'axios';
-import { fetchUser } from './userApi';
+} from '@/types/user';
+import { fetchUser } from '@/api/userApi';
 
 vi.mock('@/lib/api', () => ({
   api: {

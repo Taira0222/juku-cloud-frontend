@@ -16,7 +16,7 @@ import { Check, Copy } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 import { Label } from '@/components/ui/form/Label/label';
-import { useFetchInviteToken } from '../../hooks/useFetchInviteToken';
+import { useFetchInviteToken } from '../../queries/useFetchInviteToken';
 
 export const CreateDialog = () => {
   const [open, setOpen] = useState(false);

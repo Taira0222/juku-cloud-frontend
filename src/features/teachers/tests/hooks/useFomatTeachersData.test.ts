@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import type { currentUser } from '../../types/teachers';
-import { useFormatTeachersData } from '../../hooks/useFomatTeachersData';
+import { useFormatTeachersData } from '../../hooks/useFormatTeachersData';
 import { renderHook } from '@testing-library/react';
 
 import { useTeachersStore } from '@/stores/teachersStore';
@@ -76,7 +76,6 @@ describe('useFormatTeachersData', () => {
       students: [
         {
           id: 3,
-          student_code: 'S4597',
           name: 'Student Three',
           status: 'active',
           school_stage: 'junior_high_school',

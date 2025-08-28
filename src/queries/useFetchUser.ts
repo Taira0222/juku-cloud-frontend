@@ -1,8 +1,9 @@
 import { useUserStore } from '@/stores/userStore';
 import { useCallback, useEffect, useState } from 'react';
-import { fetchUser } from '../services/userApi';
+
 import { isAxiosError } from 'axios';
-import type { fetchUserErrorResponse } from '../types/user';
+import { fetchUser } from '@/api/userApi';
+import type { fetchUserErrorResponse } from '@/types/user';
 
 export const useFetchUser = () => {
   const setUser = useUserStore((state) => state.setUser);

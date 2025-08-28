@@ -1,8 +1,8 @@
 import SpinnerWithText from '@/components/common/status/Loading';
 import { DataTable } from '@/features/teachers/components/table/DataTable';
 
-import { useFetchTeachers } from '@/features/teachers/hooks/useFetchTeachers';
-import { useFormatTeachersData } from '@/features/teachers/hooks/useFomatTeachersData';
+import { useFetchTeachers } from '@/features/teachers/queries/useFetchTeachers';
+import { useFormatTeachersData } from '@/features/teachers/hooks/useFormatTeachersData';
 
 export const TeachersPage = () => {
   const { loading, error, currentUserData, teachersData } = useFetchTeachers();

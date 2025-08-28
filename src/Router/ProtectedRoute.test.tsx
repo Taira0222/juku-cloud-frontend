@@ -1,4 +1,3 @@
-import { useFetchUser } from '@/features/managementDashboard/hooks/useFetchUser';
 import { describe, expect, test, vi } from 'vitest';
 import { ProtectedRoute } from './ProtectedRoute';
 import { render, screen } from '@testing-library/react';
@@ -6,6 +5,7 @@ import { MemoryRouter, Outlet, Route, Routes } from 'react-router-dom';
 import { useAuthStore } from '@/stores/authStore';
 import { useWarningStore } from '@/stores/warningStore';
 import type { ReactElement } from 'react';
+import { useFetchUser } from '@/queries/useFetchUser';
 
 type MockRenderData = {
   initialEntries: string[];
@@ -22,7 +22,7 @@ type MockTestInfo = {
   error: string[] | null;
 };
 
-vi.mock('@/features/managementDashboard/hooks/useFetchUser', () => ({
+vi.mock('@/queries/useFetchUser', () => ({
   useFetchUser: vi.fn(),
 }));
 

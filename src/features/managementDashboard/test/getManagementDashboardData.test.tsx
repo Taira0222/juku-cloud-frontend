@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { getManagementDashboardData } from './getManagementDashboardData';
+import { getManagementDashboardData } from '../components/getManagementDashboardData';
 
 describe('getManagementDashboardData', () => {
   test('navMain has 4 items for admin', () => {
