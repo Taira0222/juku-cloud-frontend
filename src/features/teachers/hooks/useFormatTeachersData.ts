@@ -37,7 +37,6 @@ export const toTeacherDetailDrawer = (
   current_sign_in_at: teacher.current_sign_in_at,
   students: teacher.students.map((student) => ({
     id: student.id,
-    student_code: student.student_code,
     name: student.name,
     status: student.status,
     school_stage: student.school_stage,

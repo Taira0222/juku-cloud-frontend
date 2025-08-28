@@ -76,7 +76,6 @@ describe('useFormatTeachersData', () => {
       students: [
         {
           id: 3,
-          student_code: 'S4597',
           name: 'Student Three',
           status: 'active',
           school_stage: 'junior_high_school',

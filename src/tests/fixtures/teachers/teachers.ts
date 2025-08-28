@@ -6,7 +6,6 @@ import type {
 
 export const student1 = {
   id: 1,
-  student_code: 'S1234',
   name: 'Student One',
   status: 'active',
   school_stage: 'high_school',
@@ -15,7 +14,6 @@ export const student1 = {
 
 export const student2 = {
   id: 2,
-  student_code: 'S1235',
   name: 'Student Two',
   status: 'active',
   school_stage: 'junior_high_school',
@@ -24,7 +22,6 @@ export const student2 = {
 
 export const student3 = {
   id: 3,
-  student_code: 'S4597',
   name: 'Student Three',
   status: 'active',
   school_stage: 'junior_high_school',

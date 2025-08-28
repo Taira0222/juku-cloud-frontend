@@ -1,6 +1,5 @@
 export type Students = {
   id: number;
-  student_code: string;
   name: string;
   status: string;
   school_stage: string;
