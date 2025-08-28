@@ -78,7 +78,6 @@ export type updateTeacherRequest = {
   employment_status: string;
   subject_ids: number[];
   available_day_ids: number[];
-  student_ids: number[];
 };
 
 // updateTeacherApi の成功時のレスポンスのデータの型
@@ -102,13 +101,5 @@ export type updateTeacherData = {
   available_days: {
     id: number;
     name: string;
-  }[];
-  students: {
-    id: number;
-    student_code: string;
-    name: string;
-    status: string;
-    school_stage: string;
-    grade: number;
   }[];
 };

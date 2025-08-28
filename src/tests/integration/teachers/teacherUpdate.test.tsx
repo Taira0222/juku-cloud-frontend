@@ -57,30 +57,24 @@ describe('Teacher Update Integration Tests', () => {
     const section = screen.getByLabelText('選択中の担当科目');
     const englishBadge = within(section).getByText('英語');
     const mondayCheckbox = screen.getByRole('checkbox', { name: '月曜日' });
-    const student3Checkbox = screen.getByRole('checkbox', {
-      name: new RegExp('Student Three'),
-    });
     const updateButton = screen.getByRole('button', { name: '更新' });
 
     // 変更前の情報を確認
     expect(nameInput).toHaveValue('John Doe');
     expect(englishBadge).toBeInTheDocument();
     expect(mondayCheckbox).toBeChecked();
-    expect(student3Checkbox).not.toBeChecked();
 
     // 変更を加える
     await user.clear(nameInput);
     await user.type(nameInput, 'New Name');
     await user.click(englishBadge);
     await user.click(mondayCheckbox);
-    await user.click(student3Checkbox);
 
     // 更新ボタンの前にクリックが反映されているか確認
     await waitFor(() => {
       expect(nameInput).toHaveValue('New Name');
       expect(englishBadge).not.toBeInTheDocument();
       expect(mondayCheckbox).not.toBeChecked();
-      expect(student3Checkbox).toBeChecked();
     });
 
     await user.click(updateButton);

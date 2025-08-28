@@ -1,4 +1,4 @@
-type User = {
+type Teacher = {
   id: number;
   provider: string;
   uid: string;
@@ -27,7 +27,7 @@ type Student = {
   desired_school: string | null;
   created_at: string;
   updated_at: string;
-  users: User[];
+  teachers: Teacher[];
 };
 
 export type fetchStudentsResponse = Student[];
