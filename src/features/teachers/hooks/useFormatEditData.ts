@@ -1,5 +1,4 @@
 import { AVAILABLE_DAYS, SUBJECTS } from '../constants/teachers';
-import type { teacherDetailDrawer } from '../types/teachers';
 
 type Props = {
   formData: {
@@ -7,9 +6,7 @@ type Props = {
     employment_status: string;
     subjects: string[];
     available_days: string[];
-    student_ids: number[];
   };
-  detailDrawer: teacherDetailDrawer[];
 };
 
 type formatSubjects = {
@@ -22,16 +19,7 @@ type formatDays = {
   name: string;
 }[];
 
-type formatStudents = {
-  id: number;
-  student_code: string;
-  name: string;
-  status: string;
-  school_stage: string;
-  grade: number;
-}[];
-
-export const useFormatEditData = ({ formData, detailDrawer }: Props) => {
+export const useFormatEditData = ({ formData }: Props) => {
   const formatSubjectsData = (): formatSubjects => {
     const filteredSubjects = SUBJECTS.filter((subject) =>
       formData.subjects.includes(subject.name)
@@ -52,35 +40,5 @@ export const useFormatEditData = ({ formData, detailDrawer }: Props) => {
     }));
   };
 
-  const formatStudentsData = (): formatStudents => {
-    // 1) id→student の辞書を作って重複排除
-    const studentById = new Map<
-      number,
-      (typeof detailDrawer)[number]['students'][number]
-    >();
-    for (const teacher of detailDrawer) {
-      for (const student of teacher.students) {
-        studentById.set(student.id, student); // 同じidがあれば上書き
-      }
-    }
-
-    // ユーザーが選んだIDの順に安全に整形して返す
-    return formData.student_ids.flatMap((id) => {
-      const s = studentById.get(id);
-      return s
-        ? [
-            {
-              id,
-              student_code: s.student_code,
-              name: s.name,
-              status: s.status,
-              school_stage: s.school_stage,
-              grade: Number(s.grade),
-            },
-          ]
-        : [];
-    });
-  };
-
-  return { formatSubjectsData, formatDaysData, formatStudentsData };
+  return { formatSubjectsData, formatDaysData };
 };

@@ -6,8 +6,6 @@ import { useTeachersStore } from '@/stores/teachersStore';
 import {
   AVAILABLE_DAYS_MOCK,
   detailDrawer,
-  student1,
-  student2,
   SUBJECTS_MOCK,
 } from '../../../../tests/fixtures/teachers/teachers';
 import userEvent from '@testing-library/user-event';
@@ -122,7 +120,6 @@ describe('EditTeacherDialog', () => {
           AVAILABLE_DAYS_MOCK[3].id, // Wednesday
           AVAILABLE_DAYS_MOCK[5].id, // Friday
         ],
-        student_ids: [student1.id, student2.id],
       });
 
       // updateTeacherLocal はローカルの状態管理用の関数なので、表示用のデータ構造で呼び出される
@@ -136,7 +133,6 @@ describe('EditTeacherDialog', () => {
           AVAILABLE_DAYS_MOCK[3], // Wednesday
           AVAILABLE_DAYS_MOCK[5], // Friday
         ],
-        students: [student1, student2],
       });
       expect(screen.getByText('更新に成功しました')).toBeInTheDocument();
     });

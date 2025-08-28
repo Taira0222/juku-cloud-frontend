@@ -16,7 +16,7 @@ import {
   useParams,
 } from 'react-router-dom';
 import { useTeachersStore } from '@/stores/teachersStore';
-import { useMemo, useState, type ChangeEvent, type FormEvent } from 'react';
+import { useState, type ChangeEvent, type FormEvent } from 'react';
 import {
   Select,
   SelectContent,
@@ -31,7 +31,6 @@ import { Badge } from '@/components/ui/display/Badge/badge';
 import { DAY_OF_WEEK_TRANSLATIONS } from '@/constants/dayOfWeekTranslations';
 import { useIsMobile } from '@/hooks/useMobile';
 import { cn } from '@/lib/utils';
-import { TeacherStudentsSelector } from '../fields/TeacherStudentsSelector';
 import { useFormatEditData } from '../../hooks/useFormatEditData';
 import { useTeacherUpdate } from '../../hooks/useTeacherUpdate';
 import { toast } from 'sonner';
@@ -54,30 +53,11 @@ export const EditTeacherDialog = () => {
   const teacherId = id ? parseInt(id, 10) : 0;
   const teacher = detailDrawer.find((t) => t.id === teacherId);
 
-  const students = useMemo(() => {
-    // id と studentを所有したmap (例 {10, { id: 10, name: '山田', school_stage: '小学校', grade: 3 }}) が入る
-    const m = new Map<
-      number,
-      (typeof detailDrawer)[number]['students'][number]
-    >();
-    detailDrawer.forEach((teacher) => {
-      teacher.students.forEach((student) => {
-        m.set(student.id, student);
-      });
-    });
-    // Mapから配列に変換して返す
-    return Array.from(m.values());
-  }, [detailDrawer]);
-
   // 講師の初期値
   const initialName = teacher?.name || '';
   const initialEmploymentStatus = teacher?.employment_status || '';
   const initialSubjects = teacher?.class_subjects.map((s) => s.name) || [];
   const initialAvailableDays = teacher?.available_days.map((d) => d.name) || [];
-  // 重複のない生徒IDの配列
-  const initialStudentsIds = Array.from(
-    new Set(teacher?.students.map((s) => s.id) || [])
-  );
 
   // フォームの状態管理
   const [formData, setFormData] = useState({
@@ -85,15 +65,12 @@ export const EditTeacherDialog = () => {
     employment_status: initialEmploymentStatus,
     subjects: initialSubjects,
     available_days: initialAvailableDays,
-    student_ids: initialStudentsIds,
   });
 
   // teacherStore 更新用の成型済みデータを取得
-  const { formatSubjectsData, formatDaysData, formatStudentsData } =
-    useFormatEditData({
-      formData,
-      detailDrawer,
-    });
+  const { formatSubjectsData, formatDaysData } = useFormatEditData({
+    formData,
+  });
 
   const { error, loading, updateTeacher } = useTeacherUpdate();
 
@@ -151,9 +128,6 @@ export const EditTeacherDialog = () => {
       available_day_ids: formatDaysData()
         .filter((day) => day.id !== undefined)
         .map((day) => day.id),
-      student_ids: formatStudentsData()
-        .filter((student) => student.id !== undefined)
-        .map((student) => student.id),
     };
 
     const result = await updateTeacher(teacherId, submitData);
@@ -169,7 +143,6 @@ export const EditTeacherDialog = () => {
         employment_status: formData.employment_status,
         subjects: formatSubjectsData(),
         available_days: formatDaysData(),
-        students: formatStudentsData(),
       });
 
       toast.success('更新に成功しました');
@@ -339,15 +312,6 @@ export const EditTeacherDialog = () => {
                     )}
                   </div>
                 </div>
-
-                {/* 担当生徒 */}
-                <TeacherStudentsSelector
-                  allStudents={students}
-                  selectedIds={formData.student_ids}
-                  onChangeSelected={(ids) =>
-                    setFormData((prev) => ({ ...prev, student_ids: ids }))
-                  }
-                />
               </div>
 
               <DialogFooter className="mt-6 gap-2 sm:justify-between">

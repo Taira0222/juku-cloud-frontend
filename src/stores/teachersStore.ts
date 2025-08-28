@@ -42,7 +42,6 @@ export const useTeachersStore = create<Teachers>((set, get) => ({
               name: updatedData.name,
               employment_status: updatedData.employment_status,
               class_subjects: updatedData.subjects ?? [],
-              studentsCount: updatedData.students?.length ?? 0,
             }
           : teacher
       ),
@@ -52,7 +51,6 @@ export const useTeachersStore = create<Teachers>((set, get) => ({
               ...teacher,
               name: updatedData.name,
               employment_status: updatedData.employment_status,
-              students: updatedData.students ?? [],
               available_days: updatedData.available_days ?? [],
               class_subjects: updatedData.subjects ?? [],
             }

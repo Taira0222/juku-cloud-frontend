@@ -13,16 +13,16 @@ export const StudentsPage = () => {
       {students && (
         <ul>
           {students.map((student) => (
-            <li key={student.id}>
+            <li key={`student-${student.id}`}>
               {student.student_code}
               {student.name}
               {student.school_stage}
               {student.grade}
               {student.status}
-              {student.users.map((user) => (
-                <div key={user.id}>
-                  <p>ユーザー名: {user.name}</p>
-                  <p>メール: {user.email}</p>
+              {student.teachers.map((teacher) => (
+                <div key={`teacher-${teacher.id}`}>
+                  <p>教師名: {teacher.name}</p>
+                  <p>メール: {teacher.email}</p>
                 </div>
               ))}
             </li>
