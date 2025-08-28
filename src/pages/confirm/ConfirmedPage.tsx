@@ -1,6 +1,6 @@
+import { ConfirmationCard } from '@/features/confirm/components/ConfirmationCard';
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { ConfirmationCard } from '@/features/confirm/components/ConfirmationCard/ConfirmationCard';
 
 export const ConfirmedPage = () => {
   const [params] = useSearchParams();

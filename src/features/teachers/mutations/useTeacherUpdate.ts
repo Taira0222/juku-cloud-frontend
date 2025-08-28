@@ -4,7 +4,7 @@ import type {
   updateTeacherErrorResponse,
   updateTeacherRequest,
 } from '../types/teachers';
-import { updateTeacherApi } from '../services/updateTeacherApi';
+import { updateTeacherApi } from '../api/updateTeacherApi';
 
 const DEFAULT_ERROR_MESSAGE = '予期せぬエラーが発生しました。';
 

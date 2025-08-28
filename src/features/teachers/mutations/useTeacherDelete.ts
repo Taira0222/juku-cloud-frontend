@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 import { isAxiosError } from 'axios';
-import { deleteTeacherApi } from '../services/deleteTeacherApi';
+import { deleteTeacherApi } from '../api/deleteTeacherApi';
 import type { teacherDeleteErrorResponse } from '../types/teachers';
 
 const DEFAULT_ERROR_MESSAGE = '予期せぬエラーが発生しました。';

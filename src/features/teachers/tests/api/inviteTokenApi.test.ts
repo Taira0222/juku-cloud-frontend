@@ -1,6 +1,6 @@
 import { api } from '@/lib/api';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
-import { inviteTokenApi } from '../../services/inviteTokenApi';
+import { inviteTokenApi } from '../../api/inviteTokenApi';
 
 vi.mock('@/lib/api', () => ({
   api: {

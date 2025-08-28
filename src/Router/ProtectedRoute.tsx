@@ -1,4 +1,4 @@
-import { useFetchUser } from '@/features/managementDashboard/hooks/useFetchUser';
+import { useFetchUser } from '@/queries/useFetchUser';
 import { useAuthStore } from '@/stores/authStore';
 import { useWarningStore } from '@/stores/warningStore';
 import { useEffect } from 'react';

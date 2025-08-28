@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import type { currentUser } from '../../types/teachers';
-import { useFormatTeachersData } from '../../hooks/useFomatTeachersData';
+import { useFormatTeachersData } from '../../hooks/useFormatTeachersData';
 import { renderHook } from '@testing-library/react';
 
 import { useTeachersStore } from '@/stores/teachersStore';

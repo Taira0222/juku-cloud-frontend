@@ -1,12 +1,12 @@
 import { renderHook, waitFor } from '@testing-library/react';
 import type { AxiosError, AxiosResponse } from 'axios';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
-import { inviteTokenApi } from '../../services/inviteTokenApi';
+import { inviteTokenApi } from '../../api/inviteTokenApi';
 
 import type { InviteTokenErrorResponse } from '../../types/inviteToken';
-import { useFetchInviteToken } from '../../hooks/useFetchInviteToken';
+import { useFetchInviteToken } from '../../queries/useFetchInviteToken';
 
-vi.mock('@/features/teachers/services/inviteTokenApi');
+vi.mock('@/features/teachers/api/inviteTokenApi');
 
 describe('useFetchInviteToken', () => {
   beforeEach(() => {

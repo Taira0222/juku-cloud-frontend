@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 
-import { useTeacherDelete } from '../../hooks/useTeacherDelete';
+import { useTeacherDelete } from '../../mutations/useTeacherDelete';
 import userEvent from '@testing-library/user-event';
 import { Toaster } from '@/components/ui/feedback/Sonner/sonner';
 import { useTeachersStore } from '@/stores/teachersStore';
@@ -15,7 +15,7 @@ type Props = {
   teacherId: number;
 };
 
-vi.mock('../../hooks/useTeacherDelete', () => ({
+vi.mock('../../mutations/useTeacherDelete', () => ({
   useTeacherDelete: vi.fn(),
 }));
 

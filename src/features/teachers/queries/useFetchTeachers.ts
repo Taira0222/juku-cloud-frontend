@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { fetchTeachers } from '@/features/teachers/services/teachersApi';
+import { fetchTeachers } from '@/features/teachers/api/teachersApi';
 import {
   type currentUser,
   type fetchTeachersErrorResponse,

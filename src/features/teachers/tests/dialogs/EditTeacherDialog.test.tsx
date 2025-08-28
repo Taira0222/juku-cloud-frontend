@@ -9,13 +9,13 @@ import {
   SUBJECTS_MOCK,
 } from '../../../../tests/fixtures/teachers/teachers';
 import userEvent from '@testing-library/user-event';
-import { useTeacherUpdate } from '../../hooks/useTeacherUpdate';
+import { useTeacherUpdate } from '../../mutations/useTeacherUpdate';
 import { Toaster } from '@/components/ui/feedback/Sonner/sonner';
 
 const ForbiddenPage = () => <div data-testid="forbidden">Forbidden</div>;
 const TeachersPage = () => <div data-testid="teachers-page">Teachers Page</div>;
 
-vi.mock('../../hooks/useTeacherUpdate', () => {
+vi.mock('../../mutations/useTeacherUpdate', () => {
   return {
     useTeacherUpdate: vi.fn(),
   };

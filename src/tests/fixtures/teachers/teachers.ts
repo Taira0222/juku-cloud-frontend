@@ -1,4 +1,4 @@
-import { toTeacherDetailDrawer } from '../../../features/teachers/hooks/useFomatTeachersData';
+import { toTeacherDetailDrawer } from '../../../features/teachers/hooks/useFormatTeachersData';
 import type {
   currentUser,
   teacherDetailDrawer,
