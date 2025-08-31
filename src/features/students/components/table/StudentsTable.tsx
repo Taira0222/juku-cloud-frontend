@@ -65,11 +65,12 @@ export const StudentsTable = () => {
   const { data } = useStudentsQuery(filters);
 
   const columns = StudentsColumns();
-  const pageCount =
-    data?.meta?.total_pages ??
-    (data?.meta?.total_count
-      ? Math.ceil(data.meta.total_count / (filters.perPage ?? 10))
-      : 1);
+  let pageCount = 1;
+  if (data?.meta?.total_pages != null) {
+    pageCount = data.meta.total_pages;
+  } else if (data?.meta?.total_count != null) {
+    pageCount = Math.ceil(data.meta.total_count / (filters.perPage ?? 10));
+  }
 
   const table = useReactTable({
     data: data?.students ?? [],

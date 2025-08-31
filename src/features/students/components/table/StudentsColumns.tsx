@@ -5,10 +5,10 @@ import { useSubjectTranslation } from '@/hooks/useSubjectTranslation';
 import { StudentsRawActions } from './StudentsRawActions';
 import type { studentSchema } from '../../types/students';
 import { Link } from 'react-router-dom';
-import { useFormatGrade } from '@/hooks/useFormatGrade';
+import { formatGrade } from '@/utils/formatGrade';
 import { useStatusTranslation } from '@/hooks/useStatusTranslation';
-import { useDayOfWeekTranslation } from '@/hooks/useDayOfWeekTranslation';
-import { useIsoToDate } from '@/hooks/useIsoToDate';
+import { useDayOfWeekTranslation } from '@/utils/formatDayOfWeek';
+import { formatIsoToDate } from '@/utils/formatIsoToDate';
 
 // columns を関数として定義し、getDetailDrawerData を受け取る
 export const StudentsColumns = (): ColumnDef<
@@ -57,11 +57,11 @@ export const StudentsColumns = (): ColumnDef<
       accessorKey: 'grade',
       header: '学年',
       cell: ({ row }) => {
-        const formatGrade = useFormatGrade(
+        const formattedGrade = formatGrade(
           row.original.school_stage,
           row.original.grade
         );
-        return <div>{formatGrade}</div>;
+        return <div>{formattedGrade}</div>;
       },
     },
     {
@@ -102,7 +102,7 @@ export const StudentsColumns = (): ColumnDef<
       accessorKey: 'joined_on',
       header: '入塾日',
       cell: ({ row }) => {
-        const joinedOn = useIsoToDate(row.original.joined_on);
+        const joinedOn = formatIsoToDate(row.original.joined_on);
         return <div className="text-muted-foreground">{joinedOn}</div>;
       },
     },

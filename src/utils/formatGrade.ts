@@ -1,6 +1,6 @@
-import { useSchoolStageTranslation } from './useSchoolStageTranslations';
+import { useSchoolStageTranslation } from '../hooks/useSchoolStageTranslations';
 
-export const useFormatGrade = (school_stage: string, grade: number) => {
+export const formatGrade = (school_stage: string, grade: number) => {
   const { translateSchoolStage } = useSchoolStageTranslation();
 
   const formattedStage = translateSchoolStage(school_stage);

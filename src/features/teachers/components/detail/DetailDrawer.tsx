@@ -14,18 +14,19 @@ import { useIsMobile } from '@/hooks/useMobile';
 import { Badge } from '@/components/ui/display/Badge/badge';
 import { IconX } from '@tabler/icons-react';
 import { useSubjectTranslation } from '@/hooks/useSubjectTranslation';
-import { useDayOfWeekTranslation } from '@/hooks/useDayOfWeekTranslation';
+
 import { Fragment } from 'react/jsx-runtime';
 import { useSignInStatus } from '@/hooks/useSignInStatus';
 import { useSchoolStageTranslation } from '@/hooks/useSchoolStageTranslations';
 import type { teacherDetailDrawer } from '../../types/teachers';
-import { useEmploymentStatusTranslation } from '@/hooks/useEmploymentStatusTranslation';
+
+import { formatDayOfWeek } from '@/utils/formatDayOfWeek';
+import { useStatusTranslation } from '@/hooks/useStatusTranslation';
 
 export const DetailDrawer = ({ item }: { item: teacherDetailDrawer }) => {
   const isMobile = useIsMobile();
   const { createIconTranslationBadge } = useSubjectTranslation();
-  const { createEmploymentStatusBadge } = useEmploymentStatusTranslation();
-  const { translateDayOfWeek } = useDayOfWeekTranslation();
+  const { createStatusBadge } = useStatusTranslation();
   const { translateSchoolStage } = useSchoolStageTranslation();
   const { label, colorClass, Icon } = useSignInStatus(item.current_sign_in_at);
 
@@ -65,7 +66,7 @@ export const DetailDrawer = ({ item }: { item: teacherDetailDrawer }) => {
           </div>
           <div className="flex flex-col gap-2">
             <Label htmlFor="employStatus">出勤状況</Label>
-            {createEmploymentStatusBadge(item.employment_status)}
+            {createStatusBadge(item.employment_status, item.role)}
           </div>
 
           <div className="flex flex-col gap-2">
@@ -82,7 +83,7 @@ export const DetailDrawer = ({ item }: { item: teacherDetailDrawer }) => {
             <Label htmlFor="availableDays">勤務可能日</Label>
             <p id="availableDays" className="text-muted-foreground">
               {item.available_days
-                .map((day) => translateDayOfWeek(day.name))
+                .map((day) => formatDayOfWeek(day.name))
                 .join(', ')}
             </p>
           </div>

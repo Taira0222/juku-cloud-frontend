@@ -12,16 +12,8 @@ vi.mock('@/hooks/useSubjectTranslation', () => ({
   }),
 }));
 
-vi.mock('@/hooks/useEmploymentStatusTranslation', () => ({
-  useEmploymentStatusTranslation: () => ({
-    createEmploymentStatusBadge: (status: string) => <span>{status}</span>,
-  }),
-}));
-
-vi.mock('@/hooks/useDayOfWeekTranslation', () => ({
-  useDayOfWeekTranslation: () => ({
-    translateDayOfWeek: (day: string) => day,
-  }),
+vi.mock('@/utils/formatDayOfWeek', () => ({
+  formatDayOfWeek: (day: string) => day,
 }));
 
 vi.mock('@/hooks/useSchoolStageTranslations', () => ({
@@ -64,7 +56,7 @@ describe('DetailDrawer', () => {
     await waitFor(() => {
       expect(screen.getByText('講師の詳細情報')).toBeInTheDocument();
       expect(screen.getByText('admin')).toBeInTheDocument();
-      expect(screen.getByText('active')).toBeInTheDocument();
+      expect(screen.getByText('在籍')).toBeInTheDocument();
       expect(screen.getByText('mathematics')).toBeInTheDocument();
       expect(screen.getByText('english')).toBeInTheDocument();
       expect(screen.getByText(expectedDays)).toBeInTheDocument();
@@ -91,7 +83,7 @@ describe('DetailDrawer', () => {
     await waitFor(() => {
       expect(screen.getByText('講師の詳細情報')).toBeInTheDocument();
       expect(screen.getByText('admin')).toBeInTheDocument();
-      expect(screen.getByText('active')).toBeInTheDocument();
+      expect(screen.getByText('在籍')).toBeInTheDocument();
       expect(screen.getByText('mathematics')).toBeInTheDocument();
       expect(screen.getByText('english')).toBeInTheDocument();
       expect(screen.getByText(expectedDays)).toBeInTheDocument();
@@ -118,7 +110,7 @@ describe('DetailDrawer', () => {
     await waitFor(() => {
       expect(screen.getByText('講師の詳細情報')).toBeInTheDocument();
       expect(screen.getByText('teacher')).toBeInTheDocument();
-      expect(screen.getByText('active')).toBeInTheDocument();
+      expect(screen.getByText('在籍')).toBeInTheDocument();
       expect(screen.getByText('science')).toBeInTheDocument();
       expect(screen.getByText('english')).toBeInTheDocument();
       expect(screen.getByText(expectedDays)).toBeInTheDocument();
