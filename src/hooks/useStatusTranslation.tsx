@@ -2,7 +2,7 @@ import { Badge } from '@/components/ui/display/Badge/badge';
 import { STUDENT_STATUS_TRANSLATIONS } from '@/constants/studentStatusTranslations';
 import { EMPLOYMENT_STATUS_TRANSLATIONS } from '@/constants/teacherEmploymentStatusTranslation';
 
-const resolveStatusMeta = (en: string, role: string) => {
+export const resolveStatusMeta = (en: string, role: string) => {
   const translations =
     role === 'student'
       ? STUDENT_STATUS_TRANSLATIONS
