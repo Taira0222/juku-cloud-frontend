@@ -1,7 +1,7 @@
 import { api } from '@/lib/api';
-import type { fetchStudentsResponse } from '../types/students';
+import type { StudentListFilters } from '../key';
 
-export const fetchStudents = async (): Promise<fetchStudentsResponse> => {
-  const response = await api.get<fetchStudentsResponse>('/students');
+export const fetchStudents = async (filters: StudentListFilters) => {
+  const response = await api.get('/students', { params: filters });
   return response.data;
 };

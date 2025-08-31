@@ -1,8 +1,9 @@
 import { describe, expect, test } from 'vitest';
-import { useSignInStatus } from './useSignInStatus';
+import { useSignInStatus } from '../useSignInStatus';
 import { renderHook } from '@testing-library/react';
-import { mockData } from './fixtures/signInStatus';
+
 import { IconCircle } from '@tabler/icons-react';
+import { mockData } from './fixtures/signInStatus';
 
 describe('useSignInStatus', () => {
   test('should return correct status for various sign-in times', () => {

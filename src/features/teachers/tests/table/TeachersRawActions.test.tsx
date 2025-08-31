@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { beforeEach, expect, vi } from 'vitest';
 import { describe, test } from 'vitest';
-import { RawActions } from '@/features/teachers/components/table/RawActions';
+import { TeacherRawActions } from '@/features/teachers/components/table/TeachesrRawActions';
 import userEvent from '@testing-library/user-event';
 import { useTeachersStore } from '@/stores/teachersStore';
 import { MemoryRouter } from 'react-router-dom';
@@ -15,7 +15,7 @@ describe('RawActions', () => {
   const renderComponent = (props: Props) => {
     return render(
       <MemoryRouter>
-        <RawActions {...props} />
+        <TeacherRawActions {...props} />
       </MemoryRouter>
     );
   };

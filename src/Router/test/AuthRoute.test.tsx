@@ -2,7 +2,7 @@ import { useAuthStore } from '@/stores/authStore';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { describe, expect, test, vi } from 'vitest';
-import { AuthRoute } from './AuthRoute';
+import { AuthRoute } from '../AuthRoute';
 
 const Home = () => <div data-testid="home">Home Page</div>;
 const StudentsPage = () => <div data-testid="students">Students Page</div>;

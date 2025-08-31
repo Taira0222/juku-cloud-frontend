@@ -1,8 +1,7 @@
 import SpinnerWithText from '@/components/common/status/Loading';
-import { DataTable } from '@/features/teachers/components/table/DataTable';
-
 import { useFetchTeachers } from '@/features/teachers/queries/useFetchTeachers';
 import { useFormatTeachersData } from '@/features/teachers/hooks/useFormatTeachersData';
+import { TeacherTable } from '@/features/teachers/components/table/TeachersTable';
 
 export const TeachersPage = () => {
   const { loading, error, currentUserData, teachersData } = useFetchTeachers();
@@ -22,7 +21,7 @@ export const TeachersPage = () => {
   return (
     <div className="p-6">
       {error && <div className="text-red-500 mb-4">{error}</div>}
-      <DataTable />
+      <TeacherTable />
     </div>
   );
 };

@@ -1,35 +1,37 @@
 import { IconUser, IconUserStar } from '@tabler/icons-react';
 
-type GetManagementDashboardDataProps = {
+type GetStudentDashboardDataProps = {
   role: string | null;
   user: {
     name: string | null;
     email: string | null;
   };
+  id?: string;
 };
 
-export const getManagementDashboardData = ({
+export const getStudentDashboardData = ({
   role,
   user,
-}: GetManagementDashboardDataProps) => {
+  id,
+}: GetStudentDashboardDataProps) => {
   const navMain =
     role === 'admin'
       ? [
           {
-            title: '生徒一覧',
-            url: '/students',
+            title: 'ダッシュボード',
+            url: `/dashboard/${id}`,
             icon: IconUser,
           },
           {
-            title: '講師一覧',
+            title: '特性管理',
             url: '/teachers',
             icon: IconUserStar,
           },
         ]
       : [
           {
-            title: '生徒一覧',
-            url: '/students',
+            title: 'ダッシュボード',
+            url: `/dashboard/${id}`,
             icon: IconUser,
           },
         ];

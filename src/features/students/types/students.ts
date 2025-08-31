@@ -1,48 +1,72 @@
-type Teacher = {
-  id: number;
-  provider: string;
-  uid: string;
-  allow_password_change: boolean;
-  name: string;
-  role: string;
-  school_stage: string | null;
-  grade: number | null;
-  graduated_university: string | null;
-  email: string;
-  created_at: string;
-  updated_at: string;
-  school_id: number;
-};
+import { z } from 'zod';
 
-type Student = {
-  id: number;
-  school_id: number;
-  student_code: string;
-  name: string;
-  status: string;
-  joined_on: string;
-  left_on: string | null;
-  school_stage: string;
-  grade: number;
-  desired_school: string | null;
-  created_at: string;
-  updated_at: string;
-  teachers: Teacher[];
-};
+const subjectEnum = z.enum([
+  'english',
+  'japanese',
+  'mathematics',
+  'science',
+  'social_studies',
+]);
 
-export type fetchStudentsResponse = Student[];
+const availableDaysEnum = z.enum([
+  'sunday',
+  'monday',
+  'tuesday',
+  'wednesday',
+  'thursday',
+  'friday',
+  'saturday',
+]);
 
-type fetchStudentsErrorResponse = {
-  error: string;
-};
+const roleEnum = z.enum(['admin', 'teacher']);
 
-export const isFetchStudentsErrorResponse = (
-  data: unknown
-): data is fetchStudentsErrorResponse => {
-  return (
-    typeof data === 'object' &&
-    data !== null &&
-    'error' in data &&
-    typeof (data as fetchStudentsErrorResponse).error === 'string'
-  );
-};
+// 共通の型
+const classSubjectsSchema = z.object({
+  id: z.number(),
+  name: subjectEnum,
+});
+
+const availableDaysSchema = z.object({
+  id: z.number(),
+  name: availableDaysEnum,
+});
+
+// Teacher
+const teacherSchema = z.object({
+  id: z.number(),
+  name: z.string().max(50),
+  role: roleEnum,
+  teachable_subjects: z.array(classSubjectsSchema), // = Teachable_subjects
+  workable_days: z.array(availableDaysSchema), // = workable_days
+});
+
+// Student
+export const studentSchema = z.object({
+  id: z.number(),
+  name: z.string().max(50),
+  status: z.string(),
+  school_stage: z.string(),
+  grade: z.number(),
+  desired_school: z.string().nullable(),
+  joined_on: z.string(), // ISO 8601 date string
+  class_subjects: z.array(classSubjectsSchema),
+  available_days: z.array(availableDaysSchema),
+  teachers: z.array(teacherSchema),
+});
+
+export const metaSchema = z.object({
+  total_pages: z.number(),
+  total_count: z.number(),
+  current_page: z.number(),
+  per_page: z.number(),
+});
+
+// レスポンス全体
+export const fetchStudentsSuccessResponseSchema = z.object({
+  students: z.array(studentSchema),
+  meta: metaSchema,
+});
+
+export const fetchStudentsErrorResponseSchema = z.object({
+  error: z.string(),
+});
