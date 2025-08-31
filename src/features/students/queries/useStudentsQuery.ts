@@ -9,5 +9,4 @@ export const useStudentsQuery = (filters: StudentListFilters) =>
     queryKey: studentKeys.list(filters),
     queryFn: () => fetchStudents(filters),
     placeholderData: keepPreviousData,
-    refetchOnWindowFocus: 'always',
   });

@@ -17,17 +17,16 @@ import { useSubjectTranslation } from '@/hooks/useSubjectTranslation';
 
 import { Fragment } from 'react/jsx-runtime';
 import { useSignInStatus } from '@/hooks/useSignInStatus';
-import { useSchoolStageTranslation } from '@/hooks/useSchoolStageTranslations';
 import type { teacherDetailDrawer } from '../../types/teachers';
 
 import { formatDayOfWeek } from '@/utils/formatDayOfWeek';
 import { useStatusTranslation } from '@/hooks/useStatusTranslation';
+import { formatSchoolStage } from '@/utils/formatSchoolStage';
 
 export const DetailDrawer = ({ item }: { item: teacherDetailDrawer }) => {
   const isMobile = useIsMobile();
   const { createIconTranslationBadge } = useSubjectTranslation();
   const { createStatusBadge } = useStatusTranslation();
-  const { translateSchoolStage } = useSchoolStageTranslation();
   const { label, colorClass, Icon } = useSignInStatus(item.current_sign_in_at);
 
   return (
@@ -90,7 +89,7 @@ export const DetailDrawer = ({ item }: { item: teacherDetailDrawer }) => {
           <div className="flex flex-col gap-2">
             <Label htmlFor="studentList">担当生徒</Label>
             {item.students.map((s) => {
-              const schoolStage = translateSchoolStage(s.school_stage);
+              const schoolStage = formatSchoolStage(s.school_stage);
               return (
                 <div key={s.id} className="flex gap-1">
                   {s.name}: {schoolStage}

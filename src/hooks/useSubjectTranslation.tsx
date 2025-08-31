@@ -1,7 +1,7 @@
 import { Badge } from '@/components/ui/display/Badge/badge';
 import { SUBJECT_TRANSLATIONS } from '@/constants/subjectTranslations';
 
-export const resolveSubjectMeta = (en: string) => {
+const resolveSubjectMeta = (en: string) => {
   const meta = SUBJECT_TRANSLATIONS[en];
   return {
     label: meta?.name ?? en,

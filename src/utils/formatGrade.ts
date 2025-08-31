@@ -1,8 +1,6 @@
-import { useSchoolStageTranslation } from '../hooks/useSchoolStageTranslations';
+import { formatSchoolStage } from '@/utils/formatSchoolStage';
 
 export const formatGrade = (school_stage: string, grade: number) => {
-  const { translateSchoolStage } = useSchoolStageTranslation();
-
-  const formattedStage = translateSchoolStage(school_stage);
+  const formattedStage = formatSchoolStage(school_stage);
   return `${formattedStage} ${grade}年`;
 };

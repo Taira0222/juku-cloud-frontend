@@ -7,7 +7,7 @@ import type { studentSchema } from '../../types/students';
 import { Link } from 'react-router-dom';
 import { formatGrade } from '@/utils/formatGrade';
 import { useStatusTranslation } from '@/hooks/useStatusTranslation';
-import { useDayOfWeekTranslation } from '@/utils/formatDayOfWeek';
+import { formatDayOfWeek } from '@/utils/formatDayOfWeek';
 import { formatIsoToDate } from '@/utils/formatIsoToDate';
 
 // columns を関数として定義し、getDetailDrawerData を受け取る
@@ -88,11 +88,10 @@ export const StudentsColumns = (): ColumnDef<
       accessorKey: 'available_days',
       header: '授業曜日',
       cell: ({ row }) => {
-        const { translateDayOfWeek } = useDayOfWeekTranslation();
         return (
           <div className="text-muted-foreground">
             {row.original.available_days
-              .map((day) => translateDayOfWeek(day.name))
+              .map((day) => formatDayOfWeek(day.name))
               .join(', ')}
           </div>
         );
