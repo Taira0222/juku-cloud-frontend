@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
 import { renderHook } from '@testing-library/react';
-import { useSchoolStageTranslation } from './useSchoolStageTranslations';
+import { useSchoolStageTranslation } from '../useSchoolStageTranslations';
 import { SCHOOL_STAGE_TRANSLATIONS } from '@/constants/schoolStageTranslations';
 
 describe('useSchoolStageTranslation', () => {

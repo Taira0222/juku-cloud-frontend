@@ -1,13 +1,13 @@
 import { RoleRoute } from './RoleRoute';
 import { ManagementDashboard } from '@/pages/managementDashboard/ManagementDashboard';
 import { TeachersPage } from '@/pages/teachers/TeachersPage';
-import { SubjectsPage } from '@/pages/subjects/SubjectsPage';
-import { LearningMaterialsPage } from '@/pages/learningMaterial/LearningMaterialsPage';
 import { StudentsPage } from '@/pages/students/StudentsPage';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import { EditTeacherDialog } from '@/features/teachers/components/dialogs/EditTeacherDialog';
 import { ForbiddenPage } from '@/pages/error/ForbiddenPage';
 import { NotFoundPage } from '@/pages/error/NotFoundPage';
+import { StudentDashboard } from '@/pages/studentDashboard/StudentDashboard';
+import { DashboardPage } from '@/pages/dashboard/DashboardPage';
 
 export const ProtectedArea = () => {
   const location = useLocation();
@@ -23,6 +23,10 @@ export const ProtectedArea = () => {
           <Route element={<ManagementDashboard />}>
             <Route path="/students" element={<StudentsPage />} />
           </Route>
+          {/** 生徒ごとのページ */}
+          <Route element={<StudentDashboard />}>
+            <Route path="/dashboard/:id" element={<DashboardPage />} />
+          </Route>
         </Route>
 
         {/** admin 専用 */}
@@ -31,11 +35,6 @@ export const ProtectedArea = () => {
             <Route path="/teachers" element={<TeachersPage />} />
             {/* 直アクセス時に表示されるフルページ版の編集 エラーハンドリングを行う */}
             <Route path="/teachers/:id/edit" element={<EditTeacherDialog />} />
-            <Route path="/subjects" element={<SubjectsPage />} />
-            <Route
-              path="/learning_materials"
-              element={<LearningMaterialsPage />}
-            />
           </Route>
         </Route>
         {/** エラー表示画面 */}

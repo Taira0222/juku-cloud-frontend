@@ -16,7 +16,7 @@ type Props = {
   teacherId: number;
 };
 
-export const RawActions = ({ teacherId }: Props) => {
+export const TeacherRawActions = ({ teacherId }: Props) => {
   const [open, setOpen] = useState(false);
   const getTeacherData = useTeachersStore((state) => state.getTeacherData);
   const teacher = getTeacherData(teacherId);

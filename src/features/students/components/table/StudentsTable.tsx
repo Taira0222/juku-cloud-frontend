@@ -5,6 +5,7 @@ import {
   IconChevronsLeft,
   IconChevronsRight,
   IconLayoutColumns,
+  IconPlus,
 } from '@tabler/icons-react';
 import {
   flexRender,
@@ -21,7 +22,6 @@ import type {
   SortingState,
   VisibilityState,
 } from '@tanstack/react-table';
-import { z } from 'zod';
 import { useState } from 'react';
 import { Button } from '@/components/ui/form/Button/button';
 import {
@@ -47,16 +47,11 @@ import {
   TableRow,
 } from '@/components/ui/display/Table/table';
 import { Tabs, TabsContent } from '@/components/ui/navigation/Tabs/tabs';
-import { schema, createColumns } from './Columns';
-import { CreateDialog } from '../dialogs/CreateDialog';
-import { useTeachersStore } from '@/stores/teachersStore';
+import { StudentsColumns } from './StudentsColumns';
+import { useStudentsStore } from '@/stores/studentsStore';
+import { useStudentsQuery } from '../../queries/useStudentsQuery';
 
-// props に getDetailDrawerData を追加
-export const DataTable = () => {
-  // Zustand ストアから状態を取得
-  const dataTable: z.infer<typeof schema>[] = useTeachersStore(
-    (state) => state.dataTable
-  );
+export const StudentsTable = () => {
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -65,11 +60,19 @@ export const DataTable = () => {
     pageIndex: 0,
     pageSize: 10,
   });
+  const filters = useStudentsStore((state) => state.filters);
+  const setFilters = useStudentsStore((state) => state.setFilters);
+  const { data } = useStudentsQuery(filters);
 
-  const columns = createColumns();
+  const columns = StudentsColumns();
+  const pageCount =
+    data?.meta?.total_pages ??
+    (data?.meta?.total_count
+      ? Math.ceil(data.meta.total_count / (filters.perPage ?? 10))
+      : 1);
 
   const table = useReactTable({
-    data: dataTable,
+    data: data?.students ?? [],
     columns,
     state: {
       sorting,
@@ -80,11 +83,22 @@ export const DataTable = () => {
     },
     getRowId: (row) => row.id.toString(),
     enableRowSelection: true,
+    manualPagination: true,
+    pageCount,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
-    onPaginationChange: setPagination,
+    onPaginationChange: (updater) => {
+      const next =
+        typeof updater === 'function' ? updater(pagination) : updater;
+      setPagination(next); // ローカル state 更新
+      setFilters({
+        ...filters,
+        page: next.pageIndex + 1,
+        perPage: next.pageSize,
+      });
+    },
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -96,11 +110,11 @@ export const DataTable = () => {
   // カラム表示のラベルを定義
   const columnLabelMap: Record<string, string> = {
     name: '名前',
-    role: '役割',
-    employment_status: '出勤状況',
-    class_subjects: '担当科目',
-    studentsCount: '生徒数',
-    current_sign_in_at: '直近ログイン',
+    grade: '学年',
+    status: '通塾状況',
+    class_subjects: '受講科目',
+    available_days: '授業曜日',
+    joined_on: '入塾日',
   };
 
   return (
@@ -122,7 +136,7 @@ export const DataTable = () => {
             <SelectValue placeholder="Select a view" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="outline">講師一覧</SelectItem>
+            <SelectItem value="outline">生徒一覧</SelectItem>
           </SelectContent>
         </Select>
 
@@ -163,8 +177,11 @@ export const DataTable = () => {
                 })}
             </DropdownMenuContent>
           </DropdownMenu>
-          {/** 講師を追加するボタン */}
-          <CreateDialog />
+          {/** 生徒を追加するボタン */}
+          <Button variant="outline" size="sm">
+            <IconPlus />
+            <span className="hidden lg:inline">生徒を追加する</span>
+          </Button>
         </div>
         {/** タブの内容 */}
       </div>
@@ -246,7 +263,7 @@ export const DataTable = () => {
                   />
                 </SelectTrigger>
                 <SelectContent side="top">
-                  {[10, 20, 30, 40, 50].map((pageSize) => (
+                  {[10, 20].map((pageSize) => (
                     <SelectItem key={pageSize} value={`${pageSize}`}>
                       {pageSize}
                     </SelectItem>

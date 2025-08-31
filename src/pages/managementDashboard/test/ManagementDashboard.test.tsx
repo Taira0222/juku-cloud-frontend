@@ -1,7 +1,7 @@
 import { describe, expect, test, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import { ManagementDashboard } from './ManagementDashboard';
+import { ManagementDashboard } from '../ManagementDashboard';
 import { getManagementDashboardData } from '@/features/managementDashboard/components/getManagementDashboardData';
 import {
   IconBook2,

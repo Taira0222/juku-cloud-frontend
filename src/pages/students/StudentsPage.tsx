@@ -1,34 +1,25 @@
-import { useFetchStudents } from '@/features/students/queries/useFetchStudents';
+import SpinnerWithText from '@/components/common/status/Loading';
+import { StudentsTable } from '@/features/students/components/table/StudentsTable';
+import { useStudentsQuery } from '@/features/students/queries/useStudentsQuery';
+import { useStudentsStore } from '@/stores/studentsStore';
 
 export const StudentsPage = () => {
-  const { students, error } = useFetchStudents();
+  const filters = useStudentsStore((state) => state.filters);
+  const { error, isPending } = useStudentsQuery(filters);
 
+  if (isPending) {
+    return (
+      <div className="p-6">
+        <SpinnerWithText className="flex items-center justify-center h-32">
+          Loading...
+        </SpinnerWithText>
+      </div>
+    );
+  }
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">学生管理</h1>
-      <p className="text-muted-foreground mb-6">
-        学生の情報を管理するためのセクションです。
-      </p>
-      {error && <p className="text-red-500">{error}</p>}
-      {students && (
-        <ul>
-          {students.map((student) => (
-            <li key={`student-${student.id}`}>
-              {student.student_code}
-              {student.name}
-              {student.school_stage}
-              {student.grade}
-              {student.status}
-              {student.teachers.map((teacher) => (
-                <div key={`teacher-${teacher.id}`}>
-                  <p>教師名: {teacher.name}</p>
-                  <p>メール: {teacher.email}</p>
-                </div>
-              ))}
-            </li>
-          ))}
-        </ul>
-      )}
+      {error && <div className="text-red-500 mb-4">{error.message}</div>}
+      <StudentsTable />
     </div>
   );
 };

@@ -3,14 +3,12 @@ import { IconShieldStar, IconUsers } from '@tabler/icons-react';
 import type { ColumnDef } from '@tanstack/react-table';
 import { Badge } from '@/components/ui/display/Badge/badge';
 import { z } from 'zod';
-
 import { useSubjectTranslation } from '@/hooks/useSubjectTranslation';
 import { useSignInStatus } from '@/hooks/useSignInStatus';
-
 import { useTeachersStore } from '@/stores/teachersStore';
-import { useEmploymentStatusTranslation } from '@/hooks/useEmploymentStatusTranslation';
 import { DetailDrawer } from '../detail/DetailDrawer';
-import { RawActions } from './RawActions';
+import { TeacherRawActions } from './TeachesrRawActions';
+import { useStatusTranslation } from '@/hooks/useStatusTranslation';
 
 export const schema = z.object({
   id: z.number(),
@@ -28,7 +26,7 @@ export const schema = z.object({
 });
 
 // columns を関数として定義し、getDetailDrawerData を受け取る
-export const createColumns = (): ColumnDef<z.infer<typeof schema>>[] => {
+export const TeacherColumns = (): ColumnDef<z.infer<typeof schema>>[] => {
   const getTeacherData = useTeachersStore((state) => state.getTeacherData);
   return [
     {
@@ -92,9 +90,11 @@ export const createColumns = (): ColumnDef<z.infer<typeof schema>>[] => {
       accessorKey: 'employment_status',
       header: '出勤状況',
       cell: ({ row }) => {
-        const { createEmploymentStatusBadge } =
-          useEmploymentStatusTranslation();
-        return createEmploymentStatusBadge(row.original.employment_status);
+        const { createStatusBadge } = useStatusTranslation();
+        return createStatusBadge(
+          row.original.employment_status,
+          row.original.role
+        );
       },
     },
 
@@ -135,7 +135,7 @@ export const createColumns = (): ColumnDef<z.infer<typeof schema>>[] => {
     },
     {
       id: 'actions',
-      cell: ({ row }) => <RawActions teacherId={row.original.id} />,
+      cell: ({ row }) => <TeacherRawActions teacherId={row.original.id} />,
     },
   ];
 };

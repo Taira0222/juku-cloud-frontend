@@ -3,7 +3,7 @@ import { render, renderHook, screen } from '@testing-library/react';
 import {
   resolveSubjectMeta,
   useSubjectTranslation,
-} from './useSubjectTranslation';
+} from '../useSubjectTranslation';
 import { SUBJECT_TRANSLATIONS } from '@/constants/subjectTranslations';
 
 describe('useSubjectTranslation', () => {

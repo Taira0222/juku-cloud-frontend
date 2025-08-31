@@ -3,7 +3,7 @@ import { render, renderHook, screen } from '@testing-library/react';
 import {
   resolveEmploymentStatusMeta,
   useEmploymentStatusTranslation,
-} from './useEmploymentStatusTranslation';
+} from '../useEmploymentStatusTranslation';
 import { EMPLOYMENT_STATUS_TRANSLATIONS } from '@/constants/teacherEmploymentStatusTranslation';
 
 describe('useEmploymentStatusTranslation', () => {

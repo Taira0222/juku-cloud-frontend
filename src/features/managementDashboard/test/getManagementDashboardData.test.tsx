@@ -9,13 +9,8 @@ describe('getManagementDashboardData', () => {
     });
 
     expect(user.name).toBe('admin user');
-    expect(navMain).toHaveLength(4);
-    expect(navMain.map((i) => i.url)).toEqual([
-      '/students',
-      '/teachers',
-      '/subjects',
-      '/learning_materials',
-    ]);
+    expect(navMain).toHaveLength(2);
+    expect(navMain.map((i) => i.url)).toEqual(['/students', '/teachers']);
     // icon は存在していれば十分（関数/コンポーネント参照）
     navMain.forEach((item) => {
       expect(item.icon).toBeTruthy();

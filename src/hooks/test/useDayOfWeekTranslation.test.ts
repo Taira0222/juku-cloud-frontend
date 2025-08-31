@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { useDayOfWeekTranslation } from './useDayOfWeekTranslation';
+import { useDayOfWeekTranslation } from '../useDayOfWeekTranslation';
 import { renderHook } from '@testing-library/react';
 import { DAY_OF_WEEK_TRANSLATIONS } from '@/constants/dayOfWeekTranslations';
 
