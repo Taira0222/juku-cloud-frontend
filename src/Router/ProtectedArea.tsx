@@ -8,6 +8,7 @@ import { ForbiddenPage } from '@/pages/error/ForbiddenPage';
 import { NotFoundPage } from '@/pages/error/NotFoundPage';
 import { StudentDashboard } from '@/pages/studentDashboard/StudentDashboard';
 import { DashboardPage } from '@/pages/dashboard/DashboardPage';
+import { InternalServerErrorPage } from '@/pages/error/InternalServerErrorPage';
 
 export const ProtectedArea = () => {
   const location = useLocation();
@@ -40,6 +41,10 @@ export const ProtectedArea = () => {
         {/** エラー表示画面 */}
         <Route path="/forbidden" element={<ForbiddenPage />} />
         <Route path="*" element={<NotFoundPage />} />
+        <Route
+          path="/internal_server_error"
+          element={<InternalServerErrorPage />}
+        />
       </Routes>
 
       {/* モーダル用：背景がある時だけ重ねる */}
@@ -51,6 +56,10 @@ export const ProtectedArea = () => {
           {/** エラー表示画面 */}
           <Route path="/forbidden" element={<ForbiddenPage />} />
           <Route path="*" element={<NotFoundPage />} />
+          <Route
+            path="/internal_server_error"
+            element={<InternalServerErrorPage />}
+          />
         </Routes>
       )}
     </>

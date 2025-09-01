@@ -66,7 +66,3 @@ export const fetchStudentsSuccessResponseSchema = z.object({
   students: z.array(studentSchema),
   meta: metaSchema,
 });
-
-export const fetchStudentsErrorResponseSchema = z.object({
-  error: z.string(),
-});

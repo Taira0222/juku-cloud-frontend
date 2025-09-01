@@ -5,7 +5,7 @@ import { fetchStudentsSuccessResponseSchema } from '../types/students';
 import { z } from 'zod';
 
 export const useStudentsQuery = (filters: StudentListFilters) =>
-  useQuery<z.infer<typeof fetchStudentsSuccessResponseSchema>>({
+  useQuery<z.infer<typeof fetchStudentsSuccessResponseSchema>, unknown>({
     queryKey: studentKeys.list(filters),
     queryFn: () => fetchStudents(filters),
     placeholderData: keepPreviousData,

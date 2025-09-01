@@ -1,11 +1,12 @@
 import SpinnerWithText from '@/components/common/status/Loading';
 import { StudentsTable } from '@/features/students/components/table/StudentsTable';
 import { useStudentsQuery } from '@/features/students/queries/useStudentsQuery';
+import { getErrorMessage } from '@/lib/errors/getErrorMessage';
 import { useStudentsStore } from '@/stores/studentsStore';
 
 export const StudentsPage = () => {
   const filters = useStudentsStore((state) => state.filters);
-  const { error, isPending } = useStudentsQuery(filters);
+  const { error, isError, isPending } = useStudentsQuery(filters);
 
   if (isPending) {
     return (
@@ -16,9 +17,12 @@ export const StudentsPage = () => {
       </div>
     );
   }
+
   return (
     <div className="p-6">
-      {error && <div className="text-red-500 mb-4">{error.message}</div>}
+      {isError && (
+        <div className="text-red-500 mb-4">{getErrorMessage(error)}</div>
+      )}
       <StudentsTable />
     </div>
   );
