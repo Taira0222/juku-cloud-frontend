@@ -5,6 +5,7 @@ import axios, {
   type AxiosRequestConfig,
   type InternalAxiosRequestConfig,
 } from 'axios';
+import { toast } from 'sonner';
 
 export const api = axios.create({
   // APIのベースURLを環境変数から取得
@@ -24,6 +25,7 @@ const HEADER_EXPIRY = 'expiry';
 const HTTP_STATUS_UNAUTHORIZED = 401;
 const HTTP_STATUS_FORBIDDEN = 403;
 const HTTP_STATUS_NOT_FOUND = 404;
+const HTTP_STATUS_INTERNAL_SERVER_ERROR = 500;
 
 // リクエスト前に自動でヘッダーを付与
 api.interceptors.request.use(
@@ -64,41 +66,47 @@ api.interceptors.response.use(
     return response;
   },
   (error) => {
-    // AxiosError 以外はそのまま投げる
+    // Axios 以外 → 触らず返す（コードバグなど）
     if (!axios.isAxiosError(error)) {
-      // 想定外（コードバグなど）はそのまま投げる
       return Promise.reject(error);
     }
-    // clearAuth は 更新関数なので最初のスナップショットを取得
-    const { clearAuth } = useAuthStore.getState();
-    const { setNextPath } = useNavStore.getState();
-    const { setWarningMessage } = useWarningStore.getState();
-    const status = error.response?.status;
-    const cfg = error?.config as AxiosRequestConfig | undefined;
 
-    // ネットワーク/タイムアウト等（response が無い）
-    if (!status) {
-      setWarningMessage(
-        'ネットワークエラーが発生しました。しばらくしてから再度お試しください。'
+    if (!error.response) {
+      toast.error(
+        '通信エラーが発生しました。接続を確認して再度お試しください。'
       );
       return Promise.reject(error);
     }
 
+    // ここから下は "AxiosError かつ response あり" が確定
+    const status = error.response.status;
+    const cfg = error.config as AxiosRequestConfig | undefined;
+
+    const { clearAuth } = useAuthStore.getState();
+    const { setNextPath } = useNavStore.getState();
+    const { setWarningMessage } = useWarningStore.getState();
+
     // ステータスによるエラー
-    if (status === HTTP_STATUS_UNAUTHORIZED) {
-      clearAuth();
-      if (!cfg?.suppressAuthRedirect) {
-        setWarningMessage('認証情報が不完全です。ログインしてください。');
-        setNextPath('/sign_in', { replace: true });
-      }
-    }
-    if (status === HTTP_STATUS_FORBIDDEN) {
-      setNextPath('/forbidden');
-    }
-    if (status === HTTP_STATUS_NOT_FOUND) {
-      setNextPath('/404');
+    switch (status) {
+      case HTTP_STATUS_UNAUTHORIZED:
+        clearAuth();
+        if (!cfg?.suppressAuthRedirect) {
+          setWarningMessage('認証情報が不完全です。ログインしてください。');
+          setNextPath('/sign_in', { replace: true });
+        }
+        break;
+      case HTTP_STATUS_FORBIDDEN:
+        setNextPath('/forbidden');
+        break;
+      case HTTP_STATUS_NOT_FOUND:
+        setNextPath('/404');
+        break;
+      case HTTP_STATUS_INTERNAL_SERVER_ERROR:
+        setNextPath('/internal_server_error');
+        break;
     }
 
+    // 422 や 400のエラーをそのまま投げる
     return Promise.reject(error);
   }
 );

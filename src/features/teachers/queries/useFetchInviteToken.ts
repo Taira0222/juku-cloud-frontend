@@ -21,7 +21,7 @@ export const useFetchInviteToken = () => {
       setInviteToken(response.data);
     } catch (err) {
       let errorMessage = DEFAULT_ERROR_MESSAGE;
-      // 401,403,404 以外のエラーの場合
+      // axiosのエラー400 や422
       if (isAxiosError<InviteTokenErrorResponse>(err)) {
         errorMessage = err.response?.data.message ?? DEFAULT_ERROR_MESSAGE;
       } else if (err instanceof Error && err.message) {

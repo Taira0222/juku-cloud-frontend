@@ -11,6 +11,7 @@ import { AuthRoute } from './AuthRoute';
 
 import { ForbiddenPage } from '@/pages/error/ForbiddenPage';
 import { ProtectedArea } from './ProtectedArea';
+import { InternalServerErrorPage } from '@/pages/error/InternalServerErrorPage';
 
 export const Router = () => {
   return (
@@ -37,6 +38,10 @@ export const Router = () => {
         {/** エラー表示画面 */}
         <Route path="/forbidden" element={<ForbiddenPage />} />
         <Route path="*" element={<NotFoundPage />} />
+        <Route
+          path="/internal_server_error"
+          element={<InternalServerErrorPage />}
+        />
       </Routes>
     </>
   );
