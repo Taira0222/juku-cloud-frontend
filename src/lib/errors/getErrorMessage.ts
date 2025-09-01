@@ -17,6 +17,6 @@ export const getErrorMessage = (error: unknown): string => {
   if (error instanceof ZodError) {
     return 'データ形式が不正です';
   }
-  // 予期せぬエラー
-  return '予期せぬエラーが発生しました。';
+  // 通信エラーなど
+  return '通信エラーが発生しました。';
 };
