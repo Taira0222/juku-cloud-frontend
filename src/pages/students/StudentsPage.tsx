@@ -6,7 +6,7 @@ import { useStudentsStore } from '@/stores/studentsStore';
 
 export const StudentsPage = () => {
   const filters = useStudentsStore((state) => state.filters);
-  const { error, isError, isPending } = useStudentsQuery(filters);
+  const { data, error, isError, isPending } = useStudentsQuery(filters);
 
   if (isPending) {
     return (
@@ -23,7 +23,17 @@ export const StudentsPage = () => {
       {isError && (
         <div className="text-red-500 mb-4">{getErrorMessage(error)}</div>
       )}
-      <StudentsTable />
+      <StudentsTable
+        data={data?.students ?? []}
+        meta={
+          data?.meta ?? {
+            total_pages: 0,
+            total_count: 0,
+            current_page: 0,
+            per_page: 0,
+          }
+        }
+      />
     </div>
   );
 };

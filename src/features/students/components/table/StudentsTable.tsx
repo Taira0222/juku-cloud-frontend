@@ -22,7 +22,7 @@ import type {
   SortingState,
   VisibilityState,
 } from '@tanstack/react-table';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/form/Button/button';
 import {
   DropdownMenu,
@@ -49,9 +49,17 @@ import {
 import { Tabs, TabsContent } from '@/components/ui/navigation/Tabs/tabs';
 import { StudentsColumns } from './StudentsColumns';
 import { useStudentsStore } from '@/stores/studentsStore';
-import { useStudentsQuery } from '../../queries/useStudentsQuery';
+import { STUDENTS_LEVEL_OPTIONS } from '@/constants/studentsLevel';
+import z from 'zod';
+import { metaSchema, studentSchema } from '../../types/students';
 
-export const StudentsTable = () => {
+export const StudentsTable = ({
+  data,
+  meta,
+}: {
+  data: z.infer<typeof studentSchema>[];
+  meta: z.infer<typeof metaSchema>;
+}) => {
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -62,17 +70,53 @@ export const StudentsTable = () => {
   });
   const filters = useStudentsStore((state) => state.filters);
   const setFilters = useStudentsStore((state) => state.setFilters);
-  const { data } = useStudentsQuery(filters);
 
   const columns = StudentsColumns();
   const pageCount =
-    data?.meta?.total_pages ??
-    (data?.meta?.total_count
-      ? Math.ceil(data.meta.total_count / (filters.perPage ?? 10))
+    meta?.total_pages ??
+    (meta?.total_count
+      ? Math.ceil(meta.total_count / (filters.perPage ?? 10))
       : 1);
+  const VIEW_VALUE = 'students-table-view';
+  const selectValue = (() => {
+    if (!filters.school_stage || !filters.grade) return 'all';
+    return `${filters.school_stage}-${filters.grade}`;
+  })();
+
+  const onSelectChange = (value: string) => {
+    let newFilters;
+    if (value === 'all') {
+      newFilters = {
+        ...filters,
+        school_stage: undefined,
+        grade: undefined,
+        page: 1,
+      };
+    } else {
+      const [school_stage, gradeString] = value.split('-');
+      const grade = Number(gradeString);
+      newFilters = {
+        ...filters,
+        school_stage,
+        grade,
+        page: 1,
+      };
+    }
+    setFilters(newFilters);
+    table.setPageIndex(0);
+  };
+
+  // setFiltersは描画後に更新する
+  useEffect(() => {
+    setFilters((prev) => ({
+      ...prev,
+      page: pagination.pageIndex + 1,
+      perPage: pagination.pageSize,
+    }));
+  }, [pagination.pageIndex, pagination.pageSize, setFilters]);
 
   const table = useReactTable({
-    data: data?.students ?? [],
+    data: data,
     columns,
     state: {
       sorting,
@@ -90,14 +134,9 @@ export const StudentsTable = () => {
     onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
     onPaginationChange: (updater) => {
-      const next =
-        typeof updater === 'function' ? updater(pagination) : updater;
-      setPagination(next); // ローカル state 更新
-      setFilters({
-        ...filters,
-        page: next.pageIndex + 1,
-        perPage: next.pageSize,
-      });
+      setPagination((prev) =>
+        typeof updater === 'function' ? updater(prev) : updater
+      );
     },
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
@@ -119,15 +158,12 @@ export const StudentsTable = () => {
 
   return (
     <Tabs
-      defaultValue="outline"
+      defaultValue={VIEW_VALUE}
       className="w-full flex-col justify-start gap-6"
     >
       <div className="flex items-center justify-between px-4 lg:px-6">
-        <Label htmlFor="view-selector" className="sr-only">
-          View
-        </Label>
         {/** セレクター */}
-        <Select defaultValue="outline">
+        <Select value={selectValue} onValueChange={onSelectChange}>
           <SelectTrigger
             className="flex w-fit @4xl/main:hidden"
             size="sm"
@@ -136,7 +172,15 @@ export const StudentsTable = () => {
             <SelectValue placeholder="Select a view" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="outline">生徒一覧</SelectItem>
+            <SelectItem value="all">生徒一覧</SelectItem>
+            {STUDENTS_LEVEL_OPTIONS.map((option) => (
+              <SelectItem
+                key={option.label}
+                value={`${option.school_stage}-${option.grade}`}
+              >
+                {option.label}
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
 
@@ -186,7 +230,7 @@ export const StudentsTable = () => {
         {/** タブの内容 */}
       </div>
       <TabsContent
-        value="outline"
+        value={VIEW_VALUE}
         className="relative flex flex-col gap-4 overflow-auto px-4 lg:px-6"
       >
         <div className="overflow-hidden rounded-lg border">
@@ -232,7 +276,7 @@ export const StudentsTable = () => {
                     colSpan={columns.length}
                     className="h-24 text-center"
                   >
-                    No results.
+                    生徒が見つかりません。
                   </TableCell>
                 </TableRow>
               )}

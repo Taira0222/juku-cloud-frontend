@@ -19,32 +19,40 @@ export const ProtectedArea = () => {
     <>
       {/* 背景・通常用のルーティング */}
       <Routes location={background || location}>
-        {/** admin, teacher 共通 */}
+        {/** 管理画面：admin, teacher 共通のレイアウト */}
         <Route element={<RoleRoute allowedRoles={['admin', 'teacher']} />}>
           <Route element={<ManagementDashboard />}>
+            {/* admin, teacher 共通 */}
             <Route path="/students" element={<StudentsPage />} />
+
+            {/* admin 専用：NestedRoute で権限チェック */}
+            <Route element={<RoleRoute allowedRoles={['admin']} />}>
+              <Route path="/teachers" element={<TeachersPage />} />
+              {/* 直アクセス時のみ表示 */}
+              {!background && (
+                <Route
+                  path="/teachers/:id/edit"
+                  element={<EditTeacherDialog />}
+                />
+              )}
+            </Route>
           </Route>
-          {/** 生徒ごとのページ */}
+        </Route>
+
+        {/** 生徒ごとのページ（別レイアウト） */}
+        <Route element={<RoleRoute allowedRoles={['admin', 'teacher']} />}>
           <Route element={<StudentDashboard />}>
             <Route path="/dashboard/:id" element={<DashboardPage />} />
           </Route>
         </Route>
 
-        {/** admin 専用 */}
-        <Route element={<RoleRoute allowedRoles={['admin']} />}>
-          <Route element={<ManagementDashboard />}>
-            <Route path="/teachers" element={<TeachersPage />} />
-            {/* 直アクセス時に表示されるフルページ版の編集 エラーハンドリングを行う */}
-            <Route path="/teachers/:id/edit" element={<EditTeacherDialog />} />
-          </Route>
-        </Route>
         {/** エラー表示画面 */}
         <Route path="/forbidden" element={<ForbiddenPage />} />
-        <Route path="*" element={<NotFoundPage />} />
         <Route
           path="/internal_server_error"
           element={<InternalServerErrorPage />}
         />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
 
       {/* モーダル用：背景がある時だけ重ねる */}
@@ -53,13 +61,6 @@ export const ProtectedArea = () => {
           <Route element={<RoleRoute allowedRoles={['admin']} />}>
             <Route path="/teachers/:id/edit" element={<EditTeacherDialog />} />
           </Route>
-          {/** エラー表示画面 */}
-          <Route path="/forbidden" element={<ForbiddenPage />} />
-          <Route path="*" element={<NotFoundPage />} />
-          <Route
-            path="/internal_server_error"
-            element={<InternalServerErrorPage />}
-          />
         </Routes>
       )}
     </>

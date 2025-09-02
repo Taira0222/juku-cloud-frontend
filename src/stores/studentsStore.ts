@@ -8,18 +8,20 @@ type Filters = {
   perPage: number; // 1ページあたりの件数
 };
 
-type StudentState = {
+type StudentsState = {
   filters: Filters;
-  setFilters: (filters: Partial<Filters>) => void;
+  setFilters: (
+    patch: Partial<Filters> | ((prev: Filters) => Partial<Filters>)
+  ) => void;
 };
 
-export const useStudentsStore = create<StudentState>((set) => ({
-  filters: {
-    page: 1,
-    perPage: 10,
-  },
-  setFilters: (newFilters) =>
+export const useStudentsStore = create<StudentsState>((set) => ({
+  filters: { page: 1, perPage: 10 },
+  setFilters: (patch) =>
     set((state) => ({
-      filters: { ...state.filters, ...newFilters },
+      filters: {
+        ...state.filters,
+        ...(typeof patch === 'function' ? patch(state.filters) : patch),
+      },
     })),
 }));
