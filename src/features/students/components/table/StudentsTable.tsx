@@ -84,31 +84,29 @@ export const StudentsTable = ({
   })();
 
   const onSelectChange = (value: string) => {
+    let newFilters;
     if (value === 'all') {
-      setFilters({
+      newFilters = {
         ...filters,
         school_stage: undefined,
         grade: undefined,
         page: 1,
-      });
-      table.setPageIndex(0);
-      return;
+      };
+    } else {
+      const [school_stage, gradeString] = value.split('-');
+      const grade = Number(gradeString);
+      newFilters = {
+        ...filters,
+        school_stage,
+        grade,
+        page: 1,
+      };
     }
-
-    const [school_stage, gradeString] = value.split('-');
-    const grade = Number(gradeString);
-
-    const newFilters = {
-      ...filters,
-      school_stage,
-      grade,
-      page: 1,
-    };
     setFilters(newFilters);
     table.setPageIndex(0);
   };
 
-  // setFilters の更新は 描画後に行う
+  // setFiltersは描画後に更新する
   useEffect(() => {
     setFilters((prev) => ({
       ...prev,
@@ -166,7 +164,6 @@ export const StudentsTable = ({
       <div className="flex items-center justify-between px-4 lg:px-6">
         {/** セレクター */}
         <Select value={selectValue} onValueChange={onSelectChange}>
-          {/* ↑ selectValue() ではなく selectValue */}
           <SelectTrigger
             className="flex w-fit @4xl/main:hidden"
             size="sm"
