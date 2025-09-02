@@ -130,7 +130,11 @@ export const TeacherTable = () => {
         <div className="flex items-center gap-2">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm">
+              <Button
+                variant="outline"
+                size="sm"
+                aria-label="カラム表示のカスタマイズ"
+              >
                 <IconLayoutColumns />
                 <span className="hidden lg:inline">
                   カラム表示のカスタマイズ
@@ -246,7 +250,7 @@ export const TeacherTable = () => {
                   />
                 </SelectTrigger>
                 <SelectContent side="top">
-                  {[10, 20, 30, 40, 50].map((pageSize) => (
+                  {[10, 20].map((pageSize) => (
                     <SelectItem key={pageSize} value={`${pageSize}`}>
                       {pageSize}
                     </SelectItem>
@@ -264,6 +268,7 @@ export const TeacherTable = () => {
                 className="hidden h-8 w-8 p-0 lg:flex"
                 onClick={() => table.setPageIndex(0)}
                 disabled={!table.getCanPreviousPage()}
+                aria-label="最初のページへ"
               >
                 <span className="sr-only">最初のページへ</span>
                 <IconChevronsLeft />
@@ -274,6 +279,7 @@ export const TeacherTable = () => {
                 size="icon"
                 onClick={() => table.previousPage()}
                 disabled={!table.getCanPreviousPage()}
+                aria-label="前のページへ"
               >
                 <span className="sr-only">前のページへ</span>
                 <IconChevronLeft />
@@ -284,6 +290,7 @@ export const TeacherTable = () => {
                 size="icon"
                 onClick={() => table.nextPage()}
                 disabled={!table.getCanNextPage()}
+                aria-label="次のページへ"
               >
                 <span className="sr-only">次のページへ</span>
                 <IconChevronRight />
@@ -294,6 +301,7 @@ export const TeacherTable = () => {
                 size="icon"
                 onClick={() => table.setPageIndex(table.getPageCount() - 1)}
                 disabled={!table.getCanNextPage()}
+                aria-label="最終ページへ"
               >
                 <span className="sr-only">最終ページへ</span>
                 <IconChevronsRight />

@@ -19,7 +19,7 @@ type formatDays = {
   name: string;
 }[];
 
-export const useFormatEditData = ({ formData }: Props) => {
+export const formatEditData = ({ formData }: Props) => {
   const formatSubjectsData = (): formatSubjects => {
     const filteredSubjects = SUBJECTS.filter((subject) =>
       formData.subjects.includes(subject.name)

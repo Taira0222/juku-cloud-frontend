@@ -31,10 +31,11 @@ import { Badge } from '@/components/ui/display/Badge/badge';
 import { DAY_OF_WEEK_TRANSLATIONS } from '@/constants/dayOfWeekTranslations';
 import { useIsMobile } from '@/hooks/useMobile';
 import { cn } from '@/lib/utils';
-import { useFormatEditData } from '../../hooks/useFormatEditData';
+
 import { useTeacherUpdate } from '../../mutations/useTeacherUpdate';
 import { toast } from 'sonner';
 import SpinnerWithText from '@/components/common/status/Loading';
+import { formatEditData } from '../../utils/formatEditData';
 
 // toggleInArray を使用するkey の型
 type ToggleableKeys = 'subjects' | 'available_days';
@@ -68,7 +69,7 @@ export const EditTeacherDialog = () => {
   });
 
   // teacherStore 更新用の成型済みデータを取得
-  const { formatSubjectsData, formatDaysData } = useFormatEditData({
+  const { formatSubjectsData, formatDaysData } = formatEditData({
     formData,
   });
 

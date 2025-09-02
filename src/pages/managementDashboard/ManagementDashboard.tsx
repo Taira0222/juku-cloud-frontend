@@ -7,17 +7,27 @@ import {
 import { useUserStore } from '@/stores/userStore';
 import { Outlet } from 'react-router-dom';
 import { getManagementDashboardData } from '@/features/managementDashboard/components/getManagementDashboardData';
+import SpinnerWithText from '@/components/common/status/Loading';
 
 export const ManagementDashboard = () => {
   const user = useUserStore((state) => state.user);
 
   const data = getManagementDashboardData({
-    role: user?.role ?? null,
+    role: user?.role ?? '',
     user: {
-      name: user?.name ?? null,
-      email: user?.email ?? null,
+      name: user?.name ?? '',
+      email: user?.email ?? '',
     },
   });
+
+  if (!data)
+    return (
+      <div className="p-6">
+        <SpinnerWithText className="flex items-center justify-center h-32">
+          Loading...
+        </SpinnerWithText>
+      </div>
+    );
 
   return (
     <SidebarProvider

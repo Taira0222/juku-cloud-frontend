@@ -76,7 +76,7 @@ export const mockData = [
     day: 32,
     hours: 0,
     minutes: 0,
-    mockLabel: '1か月以上',
+    mockLabel: '1か月以上前',
     colorClass: 'text-red-500',
     Icon: IconCircleFilled,
   },

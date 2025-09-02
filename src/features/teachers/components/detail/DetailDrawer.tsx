@@ -13,21 +13,22 @@ import { Label } from '@/components/ui/form/Label/label';
 import { useIsMobile } from '@/hooks/useMobile';
 import { Badge } from '@/components/ui/display/Badge/badge';
 import { IconX } from '@tabler/icons-react';
-import { useSubjectTranslation } from '@/hooks/useSubjectTranslation';
 
 import { Fragment } from 'react/jsx-runtime';
-import { useSignInStatus } from '@/hooks/useSignInStatus';
 import type { teacherDetailDrawer } from '../../types/teachers';
 
 import { formatDayOfWeek } from '@/utils/formatDayOfWeek';
-import { useStatusTranslation } from '@/hooks/useStatusTranslation';
+
 import { formatSchoolStage } from '@/utils/formatSchoolStage';
+import { statusBadgeUtils } from '@/utils/statusBadgeUtils';
+import { subjectBadgeUtils } from '@/utils/subjectBadgeUtils';
+import { getSignInStatus } from '@/utils/getSignInStatus';
 
 export const DetailDrawer = ({ item }: { item: teacherDetailDrawer }) => {
   const isMobile = useIsMobile();
-  const { createIconTranslationBadge } = useSubjectTranslation();
-  const { createStatusBadge } = useStatusTranslation();
-  const { label, colorClass, Icon } = useSignInStatus(item.current_sign_in_at);
+  const { createIconTranslationBadge } = subjectBadgeUtils();
+  const { createStatusBadge } = statusBadgeUtils();
+  const { label, colorClass, Icon } = getSignInStatus(item.current_sign_in_at);
 
   return (
     <Drawer direction={isMobile ? 'bottom' : 'right'}>

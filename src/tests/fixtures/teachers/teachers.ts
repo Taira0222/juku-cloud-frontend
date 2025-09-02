@@ -4,6 +4,8 @@ import type {
   teacherDetailDrawer,
 } from '../../../features/teachers/types/teachers';
 
+import { faker } from '@faker-js/faker';
+
 export const student1 = {
   id: 1,
   name: 'Student One',
@@ -59,13 +61,13 @@ export const currentUserResponse = {
   current_sign_in_at: '2023-01-01T12:00:00Z',
   students: [student1, student2],
   available_days: [
-    AVAILABLE_DAYS_MOCK[1], // Monday
-    AVAILABLE_DAYS_MOCK[3], // Wednesday
-    AVAILABLE_DAYS_MOCK[5], // Friday
+    AVAILABLE_DAYS_MOCK[1], // 月曜日
+    AVAILABLE_DAYS_MOCK[3], // 水曜日
+    AVAILABLE_DAYS_MOCK[5], // 金曜日
   ],
   class_subjects: [
-    SUBJECTS_MOCK[0], // English
-    SUBJECTS_MOCK[2], // Mathematics
+    SUBJECTS_MOCK[0], // 英語
+    SUBJECTS_MOCK[2], // 数学
   ],
 } as unknown as currentUser;
 
@@ -79,12 +81,12 @@ export const teacher1 = {
   current_sign_in_at: '2024-01-01T12:00:00Z',
   students: [student3],
   available_days: [
-    AVAILABLE_DAYS_MOCK[2], // Tuesday
-    AVAILABLE_DAYS_MOCK[4], // Thursday
+    AVAILABLE_DAYS_MOCK[2], // 火曜日
+    AVAILABLE_DAYS_MOCK[4], // 木曜日
   ],
   class_subjects: [
-    SUBJECTS_MOCK[0], // English
-    SUBJECTS_MOCK[3], // Science
+    SUBJECTS_MOCK[0], // 英語
+    SUBJECTS_MOCK[3], // 理科
   ],
 } as unknown as currentUser;
 
@@ -98,17 +100,31 @@ export const teacher2 = {
   current_sign_in_at: '2024-01-01T12:00:00Z',
   students: [student3],
   available_days: [
-    AVAILABLE_DAYS_MOCK[2], // Tuesday
-    AVAILABLE_DAYS_MOCK[4], // Thursday
+    AVAILABLE_DAYS_MOCK[2], // 火曜日
+    AVAILABLE_DAYS_MOCK[4], // 木曜日
   ],
   class_subjects: [
-    SUBJECTS_MOCK[0], // English
-    SUBJECTS_MOCK[3], // Science
+    SUBJECTS_MOCK[0], // 英語
+    SUBJECTS_MOCK[3], // 理科
   ],
 } as unknown as currentUser;
 
-// msw の handlers で使用する講師一覧のモックデータ
-export const teachers = [teacher1, teacher2];
+export const teacher3 = {
+  id: 4,
+  name: 'Bob Brown',
+  role: 'teacher',
+  email: 'bob.brown@example.com',
+  created_at: '2024-01-01T12:00:00Z',
+  employment_status: 'active',
+  current_sign_in_at: '2024-01-01T12:00:00Z',
+  students: [student3],
+  available_days: [
+    AVAILABLE_DAYS_MOCK[5], // 金曜日
+  ],
+  class_subjects: [
+    SUBJECTS_MOCK[2], // 数学
+  ],
+} as unknown as currentUser;
 
 export const teachersData = [teacher1];
 
@@ -145,3 +161,30 @@ export const formatEditMock = {
   },
   detailDrawer: detailDrawer,
 };
+
+const createTeacher = (id: number) => {
+  return {
+    id,
+    name: `Teacher${id}`,
+    role: 'teacher',
+    email: faker.internet.email(),
+    created_at: faker.date.past().toISOString(),
+    employment_status: faker.helpers.arrayElement([
+      'active',
+      'inactive',
+      'on_leave',
+    ]),
+    current_sign_in_at: faker.date.recent().toISOString(),
+    students: [student3], // 適当に1人だけ紐付け
+    available_days: faker.helpers.arrayElements(AVAILABLE_DAYS_MOCK, 2), // ランダムに2日
+    class_subjects: faker.helpers.arrayElements(SUBJECTS_MOCK, 2), // ランダムに2科目
+  } as unknown as currentUser;
+};
+
+// 10人分まとめて作成
+export const TEACHERS_MOCK = Array.from({ length: 10 }, (_, i) =>
+  createTeacher(i + 5)
+);
+
+// msw の handlers で使用する講師一覧のモックデータ
+export const teachers = [teacher1, teacher2, ...TEACHERS_MOCK];

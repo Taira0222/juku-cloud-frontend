@@ -3,12 +3,13 @@ import { IconShieldStar, IconUsers } from '@tabler/icons-react';
 import type { ColumnDef } from '@tanstack/react-table';
 import { Badge } from '@/components/ui/display/Badge/badge';
 import { z } from 'zod';
-import { useSubjectTranslation } from '@/hooks/useSubjectTranslation';
-import { useSignInStatus } from '@/hooks/useSignInStatus';
+
 import { useTeachersStore } from '@/stores/teachersStore';
 import { DetailDrawer } from '../detail/DetailDrawer';
 import { TeacherRawActions } from './TeachesrRawActions';
-import { useStatusTranslation } from '@/hooks/useStatusTranslation';
+import { statusBadgeUtils } from '@/utils/statusBadgeUtils';
+import { subjectBadgeUtils } from '@/utils/subjectBadgeUtils';
+import { getSignInStatus } from '@/utils/getSignInStatus';
 
 export const schema = z.object({
   id: z.number(),
@@ -90,7 +91,7 @@ export const TeacherColumns = (): ColumnDef<z.infer<typeof schema>>[] => {
       accessorKey: 'employment_status',
       header: '出勤状況',
       cell: ({ row }) => {
-        const { createStatusBadge } = useStatusTranslation();
+        const { createStatusBadge } = statusBadgeUtils();
         return createStatusBadge(
           row.original.employment_status,
           row.original.role
@@ -102,7 +103,7 @@ export const TeacherColumns = (): ColumnDef<z.infer<typeof schema>>[] => {
       accessorKey: 'class_subjects',
       header: '担当科目',
       cell: ({ row }) => {
-        const { createIconTranslationBadge } = useSubjectTranslation();
+        const { createIconTranslationBadge } = subjectBadgeUtils();
         const subjects = row.original.class_subjects.map((cs) => (
           <span key={cs.id}>{createIconTranslationBadge(cs.name)}</span>
         ));
@@ -122,7 +123,7 @@ export const TeacherColumns = (): ColumnDef<z.infer<typeof schema>>[] => {
       accessorKey: 'current_sign_in_at',
       header: '直近ログイン',
       cell: ({ row }) => {
-        const { label, colorClass, Icon } = useSignInStatus(
+        const { label, colorClass, Icon } = getSignInStatus(
           row.original.current_sign_in_at
         );
         return (

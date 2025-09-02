@@ -10,7 +10,7 @@ export const resolveSubjectMeta = (en: string) => {
   };
 };
 
-export const useSubjectTranslation = () => {
+export const subjectBadgeUtils = () => {
   const createIconTranslationBadge = (en: string) => {
     const { label, color, Icon } = resolveSubjectMeta(en);
     return (

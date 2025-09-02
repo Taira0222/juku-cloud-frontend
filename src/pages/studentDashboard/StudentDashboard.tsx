@@ -1,5 +1,6 @@
 import { AppSidebar } from '@/components/common/dashboard/app-sidebar';
 import { SiteHeader } from '@/components/common/dashboard/site-header';
+import SpinnerWithText from '@/components/common/status/Loading';
 import {
   SidebarInset,
   SidebarProvider,
@@ -13,13 +14,22 @@ export const StudentDashboard = () => {
   const { id } = useParams<{ id: string }>();
 
   const data = getStudentDashboardData({
-    role: user?.role ?? null,
+    role: user?.role ?? '',
     user: {
-      name: user?.name ?? null,
-      email: user?.email ?? null,
+      name: user?.name ?? '',
+      email: user?.email ?? '',
     },
-    id,
+    id: id ?? '',
   });
+
+  if (!data)
+    return (
+      <div className="p-6">
+        <SpinnerWithText className="flex items-center justify-center h-32">
+          Loading...
+        </SpinnerWithText>
+      </div>
+    );
 
   return (
     <SidebarProvider
