@@ -1,10 +1,10 @@
 import { IconUser, IconUserStar } from '@tabler/icons-react';
 
 type GetManagementDashboardDataProps = {
-  role: string | null;
+  role: string;
   user: {
-    name: string | null;
-    email: string | null;
+    name: string;
+    email: string;
   };
 };
 
@@ -12,6 +12,7 @@ export const getManagementDashboardData = ({
   role,
   user,
 }: GetManagementDashboardDataProps) => {
+  if (!role || !user) return null;
   const navMain =
     role === 'admin'
       ? [

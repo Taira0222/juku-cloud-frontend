@@ -1,14 +1,15 @@
 import { Checkbox } from '@/components/ui/form/CheckBox/checkbox';
 import type { ColumnDef } from '@tanstack/react-table';
 import { z } from 'zod';
-import { useSubjectTranslation } from '@/hooks/useSubjectTranslation';
+
 import { StudentsRawActions } from './StudentsRawActions';
 import type { studentSchema } from '../../types/students';
 import { Link } from 'react-router-dom';
 import { formatGrade } from '@/utils/formatGrade';
-import { useStatusTranslation } from '@/hooks/useStatusTranslation';
 import { formatDayOfWeek } from '@/utils/formatDayOfWeek';
 import { formatIsoToDate } from '@/utils/formatIsoToDate';
+import { subjectBadgeUtils } from '@/utils/subjectBadgeUtils';
+import { statusBadgeUtils } from '@/utils/statusBadgeUtils';
 
 // columns を関数として定義し、getDetailDrawerData を受け取る
 export const StudentsColumns = (): ColumnDef<
@@ -68,7 +69,7 @@ export const StudentsColumns = (): ColumnDef<
       accessorKey: 'status',
       header: '通塾状況',
       cell: ({ row }) => {
-        const { createStatusBadge } = useStatusTranslation();
+        const { createStatusBadge } = statusBadgeUtils();
         return createStatusBadge(row.original.status, 'student');
       },
     },
@@ -77,7 +78,7 @@ export const StudentsColumns = (): ColumnDef<
       accessorKey: 'class_subjects',
       header: '受講科目',
       cell: ({ row }) => {
-        const { createIconTranslationBadge } = useSubjectTranslation();
+        const { createIconTranslationBadge } = subjectBadgeUtils();
         const subjects = row.original.class_subjects.map((cs) => (
           <span key={cs.id}>{createIconTranslationBadge(cs.name)}</span>
         ));

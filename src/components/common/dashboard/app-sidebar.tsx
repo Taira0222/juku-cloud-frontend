@@ -18,8 +18,8 @@ import type { IconProps } from '@tabler/icons-react';
 type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
   data: {
     user: {
-      name: string | null;
-      email: string | null;
+      name: string;
+      email: string;
     };
     navMain: {
       title: string;

@@ -10,7 +10,7 @@ type StatusMeta = {
   Icon: TablerIcon;
 };
 
-export const useSignInStatus = (signInAt: string | null): StatusMeta => {
+export const getSignInStatus = (signInAt: string | null): StatusMeta => {
   if (!signInAt) {
     return {
       label: '未ログイン',
@@ -65,7 +65,7 @@ export const useSignInStatus = (signInAt: string | null): StatusMeta => {
     };
   } else {
     return {
-      label: '1か月以上',
+      label: '1か月以上前',
       colorClass: 'text-red-500',
       Icon: IconCircleFilled,
     };

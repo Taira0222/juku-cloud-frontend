@@ -15,7 +15,7 @@ export const resolveStatusMeta = (en: string, role: string) => {
   };
 };
 
-export const useStatusTranslation = () => {
+export const statusBadgeUtils = () => {
   const createStatusBadge = (en: string, role: string) => {
     const { label, color, Icon } = resolveStatusMeta(en, role);
     return (

@@ -1,12 +1,12 @@
 import { IconUser, IconUserStar } from '@tabler/icons-react';
 
 type GetStudentDashboardDataProps = {
-  role: string | null;
+  role: string;
   user: {
-    name: string | null;
-    email: string | null;
+    name: string;
+    email: string;
   };
-  id?: string;
+  id: string;
 };
 
 export const getStudentDashboardData = ({
@@ -14,6 +14,8 @@ export const getStudentDashboardData = ({
   user,
   id,
 }: GetStudentDashboardDataProps) => {
+  // role, user, id が定義されていない場合は空文字(falsy) なのでnull になる
+  if (!role || !user || !id) return null;
   const navMain =
     role === 'admin'
       ? [
@@ -24,7 +26,7 @@ export const getStudentDashboardData = ({
           },
           {
             title: '特性管理',
-            url: '/teachers',
+            url: '/dashboard/traits',
             icon: IconUserStar,
           },
         ]

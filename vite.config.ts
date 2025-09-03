@@ -29,9 +29,6 @@ export default defineConfig({
       exclude: [
         // shadcn/ui のコンポーネントは除外
         'src/components/**',
-        // shadcn/ui から参照したコンポーネントは除く
-        'src/features/teachers/components/table/Columns.tsx',
-        'src/features/teachers/components/table/DataTable.tsx',
         'src/hooks/useMobile.ts',
         // その他テスト不要なファイルを除外
         'src/pages/error/**',

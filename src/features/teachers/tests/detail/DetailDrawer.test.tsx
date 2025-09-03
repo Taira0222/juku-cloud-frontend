@@ -6,30 +6,6 @@ import userEvent from '@testing-library/user-event';
 import { DetailDrawer } from '../../components/detail/DetailDrawer';
 import { getDetailDrawerDataMock } from '../../../../tests/fixtures/teachers/teachers';
 
-vi.mock('@/hooks/useSubjectTranslation', () => ({
-  useSubjectTranslation: () => ({
-    createIconTranslationBadge: (subject: string) => <span>{subject}</span>,
-  }),
-}));
-
-vi.mock('@/utils/formatDayOfWeek', () => ({
-  formatDayOfWeek: (day: string) => day,
-}));
-
-vi.mock('@/hooks/useSchoolStageTranslations', () => ({
-  useSchoolStageTranslation: () => ({
-    translateSchoolStage: (stage: string) => stage,
-  }),
-}));
-
-vi.mock('@/hooks/useSignInStatus', () => ({
-  useSignInStatus: () => ({
-    label: 'Online',
-    colorClass: 'text-green-500',
-    Icon: () => <span>Online Icon</span>,
-  }),
-}));
-
 vi.mock('@/hooks/useMobile', () => ({
   useIsMobile: vi.fn(),
 }));
@@ -49,19 +25,19 @@ describe('DetailDrawer', () => {
 
     user.click(drawerTrigger);
 
-    const expectedDays = getDetailDrawerDataMock(1)
-      .available_days.map((day) => day.name)
-      .join(', ');
-
     await waitFor(() => {
       expect(screen.getByText('講師の詳細情報')).toBeInTheDocument();
       expect(screen.getByText('admin')).toBeInTheDocument();
       expect(screen.getByText('在籍')).toBeInTheDocument();
-      expect(screen.getByText('mathematics')).toBeInTheDocument();
-      expect(screen.getByText('english')).toBeInTheDocument();
-      expect(screen.getByText(expectedDays)).toBeInTheDocument();
+      expect(screen.getByText('数学')).toBeInTheDocument();
+      expect(screen.getByText('英語')).toBeInTheDocument();
+      expect(screen.getByText(/月曜日/)).toBeInTheDocument();
+      expect(screen.getByText(/水曜日/)).toBeInTheDocument();
+      expect(screen.getByText(/金曜日/)).toBeInTheDocument();
+      expect(screen.getByText(/Student One/)).toBeInTheDocument();
+      expect(screen.getByText(/Student Two/)).toBeInTheDocument();
       expect(screen.getByText('john.doe@example.com')).toBeInTheDocument();
-      expect(screen.getByText('Online Icon')).toBeInTheDocument();
+      expect(screen.getByText('1か月以上前')).toBeInTheDocument();
     });
   });
 
@@ -76,19 +52,17 @@ describe('DetailDrawer', () => {
 
     user.click(drawerTrigger);
 
-    const expectedDays = getDetailDrawerDataMock(1)
-      .available_days.map((day) => day.name)
-      .join(', ');
-
     await waitFor(() => {
       expect(screen.getByText('講師の詳細情報')).toBeInTheDocument();
       expect(screen.getByText('admin')).toBeInTheDocument();
       expect(screen.getByText('在籍')).toBeInTheDocument();
-      expect(screen.getByText('mathematics')).toBeInTheDocument();
-      expect(screen.getByText('english')).toBeInTheDocument();
-      expect(screen.getByText(expectedDays)).toBeInTheDocument();
+      expect(screen.getByText('数学')).toBeInTheDocument();
+      expect(screen.getByText('英語')).toBeInTheDocument();
+      expect(screen.getByText(/月曜日/)).toBeInTheDocument();
+      expect(screen.getByText(/水曜日/)).toBeInTheDocument();
+      expect(screen.getByText(/金曜日/)).toBeInTheDocument();
       expect(screen.getByText('john.doe@example.com')).toBeInTheDocument();
-      expect(screen.getByText('Online Icon')).toBeInTheDocument();
+      expect(screen.getByText('1か月以上前')).toBeInTheDocument();
     });
   });
 
@@ -103,19 +77,16 @@ describe('DetailDrawer', () => {
 
     user.click(drawerTrigger);
 
-    const expectedDays = getDetailDrawerDataMock(2)
-      .available_days.map((day) => day.name)
-      .join(', ');
-
     await waitFor(() => {
       expect(screen.getByText('講師の詳細情報')).toBeInTheDocument();
       expect(screen.getByText('teacher')).toBeInTheDocument();
       expect(screen.getByText('在籍')).toBeInTheDocument();
-      expect(screen.getByText('science')).toBeInTheDocument();
-      expect(screen.getByText('english')).toBeInTheDocument();
-      expect(screen.getByText(expectedDays)).toBeInTheDocument();
+      expect(screen.getByText('英語')).toBeInTheDocument();
+      expect(screen.getByText('理科')).toBeInTheDocument();
+      expect(screen.getByText(/火曜日/)).toBeInTheDocument();
+      expect(screen.getByText(/木曜日/)).toBeInTheDocument();
       expect(screen.getByText('jane.smith@example.com')).toBeInTheDocument();
-      expect(screen.getByText('Online Icon')).toBeInTheDocument();
+      expect(screen.getByText('1か月以上前')).toBeInTheDocument();
     });
   });
 });

@@ -2,21 +2,32 @@ import { isAxiosError } from 'axios';
 import { ZodError } from 'zod';
 
 type CommonServerError = {
-  error?: string; // 401/403/404/500 など
+  // api.ts で401/403/404/500 エラー処理はするが、念のため error フィールドは定義しておく
+  error?: string;
   errors?: string[]; // 400/422 の配列
 };
 
-export const getErrorMessage = (error: unknown): string => {
-  if (!error) return '';
+export const getErrorMessage = (error: unknown): string[] => {
+  if (!error) return ['無効なエラー'];
 
   // axiosError
   if (isAxiosError<CommonServerError>(error)) {
-    return error.response?.data?.error ?? '予期せぬエラーが発生しました。';
+    const response = error.response?.data;
+    const status = error.response?.status;
+
+    if (typeof status === 'number') {
+      if ([401, 403, 404, 500].includes(status)) {
+        return [response?.error || '予期せぬエラーが発生しました。'];
+      } else if ([400, 422].includes(status)) {
+        return response?.errors || ['予期せぬエラーが発生しました。'];
+      }
+    }
   }
+
   // ZodError
   if (error instanceof ZodError) {
-    return 'データ形式が不正です';
+    return ['データ形式が不正です'];
   }
   // 通信エラーなど
-  return '通信エラーが発生しました。';
+  return ['通信エラーが発生しました。'];
 };
