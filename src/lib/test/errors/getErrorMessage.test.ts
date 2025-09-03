@@ -5,9 +5,9 @@ import { ZodError } from 'zod';
 describe('getErrorMessage', () => {
   test('should return empty string for null input', () => {
     const input = null;
-    const expectedOutput = '';
+    const expectedOutput = ['無効なエラー'];
     const result = getErrorMessage(input);
-    expect(result).toBe(expectedOutput);
+    expect(result).toEqual(expectedOutput);
   });
 
   test('should return axiosError message for AxiosError error input', () => {
@@ -20,9 +20,9 @@ describe('getErrorMessage', () => {
         status: 404,
       },
     };
-    const expectedOutput = 'NotFound';
+    const expectedOutput = ['NotFound'];
     const result = getErrorMessage(input);
-    expect(result).toBe(expectedOutput);
+    expect(result).toEqual(expectedOutput);
   });
 
   test('should return axiosError message for AxiosError errors input', () => {
@@ -49,14 +49,14 @@ describe('getErrorMessage', () => {
         expected: 'string',
       },
     ]);
-    const expectedOutput = 'データ形式が不正です';
+    const expectedOutput = ['データ形式が不正です'];
     const result = getErrorMessage(input);
     expect(result).toEqual(expectedOutput);
   });
 
   test('should return communication error message for other error input', () => {
     const input = new Error('Communication error');
-    const expectedOutput = '通信エラーが発生しました。';
+    const expectedOutput = ['通信エラーが発生しました。'];
     const result = getErrorMessage(input);
     expect(result).toEqual(expectedOutput);
   });

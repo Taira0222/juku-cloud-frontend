@@ -9,16 +9,16 @@ describe('formatIsoToDate', () => {
     expect(result).toBe(expectedOutput);
   });
 
-  test('should return an empty string for empty input', () => {
+  test('should return an error message for empty input', () => {
     const input = '';
-    const expectedOutput = '';
+    const expectedOutput = '無効な日付';
     const result = formatIsoToDate(input);
     expect(result).toBe(expectedOutput);
   });
 
   test('should return an error message for invalid ISO date strings', () => {
     const input = 'invalid-date';
-    const expectedOutput = '';
+    const expectedOutput = '無効な日付';
     const result = formatIsoToDate(input);
     expect(result).toBe(expectedOutput);
   });
