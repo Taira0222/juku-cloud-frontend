@@ -9,20 +9,27 @@ import { isAxiosError } from 'axios';
 
 const DEFAULT_ERROR_MESSAGE = '予期せぬエラーが発生しました。';
 
-export const useFetchTeachers = () => {
+export const useFetchTeachers = (enabled: boolean = true) => {
   const [currentUserData, setCurrentUserData] = useState<currentUser | null>(
     null
   );
   const [teachersData, setTeachersData] = useState<teachers>(null);
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(true); // ローディング状態を追加
-  const fetchTeachersData = useCallback(async () => {
+  const [loading, setLoading] = useState<boolean>(enabled);
+
+  // リクエストがキャンセルされたかどうかを判定する関数
+  const isCanceled = (err: unknown) =>
+    isAxiosError(err) && err.code === 'ERR_CANCELED';
+
+  const fetchTeachersData = useCallback(async (signal?: AbortSignal) => {
     try {
       setLoading(true);
-      const response = await fetchTeachers();
+      setError(null);
+      const response = await fetchTeachers(signal);
       setCurrentUserData(response.data.current_user);
       setTeachersData(response.data.teachers);
     } catch (err) {
+      if (isCanceled(err)) return;
       let errorMessage = DEFAULT_ERROR_MESSAGE;
       if (isAxiosError<fetchTeachersErrorResponse>(err)) {
         errorMessage = err.response?.data?.error || DEFAULT_ERROR_MESSAGE;
@@ -36,8 +43,16 @@ export const useFetchTeachers = () => {
   }, []);
 
   useEffect(() => {
-    fetchTeachersData();
-  }, [fetchTeachersData]);
+    // CreateStudentDialog などで enabled を false にしている場合があるので、その場合は fetch しない
+    if (!enabled) {
+      setLoading(false);
+      return;
+    }
+    const ac = new AbortController();
+    fetchTeachersData(ac.signal);
+    // enabled が false になるか unmount 時に abort する
+    return () => ac.abort();
+  }, [enabled, fetchTeachersData]);
 
   return {
     currentUserData,

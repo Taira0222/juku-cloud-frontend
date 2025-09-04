@@ -8,6 +8,7 @@ import {
 } from '@tabler/icons-react';
 
 type SubjectTranslation = {
+  id: number;
   name: string;
   icon: TablerIcon;
   color: string;
@@ -15,26 +16,31 @@ type SubjectTranslation = {
 
 export const SUBJECT_TRANSLATIONS: Record<string, SubjectTranslation> = {
   english: {
+    id: 1,
     name: '英語',
     icon: IconAlphabetLatin,
     color: 'bg-purple-100',
   },
   japanese: {
+    id: 2,
     name: '国語',
     icon: IconBook,
     color: 'bg-red-100',
   },
   mathematics: {
+    id: 3,
     name: '数学',
     icon: IconMathSymbols,
     color: 'bg-blue-100',
   },
   science: {
+    id: 4,
     name: '理科',
     icon: IconMicroscope,
     color: 'bg-green-100',
   },
   social_studies: {
+    id: 5,
     name: '社会',
     icon: IconMap,
     color: 'bg-yellow-100',

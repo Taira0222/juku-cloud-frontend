@@ -156,7 +156,7 @@ export const EditTeacherDialog = () => {
   return (
     <Dialog open={true} onOpenChange={handleClose}>
       <DialogContent
-        onOpenAutoFocus={(e) => e.preventDefault()} // iOSのフォーカスずれ防止
+        onOpenAutoFocus={(e) => e.preventDefault()} // iOS safariのフォーカスずれ防止
         className={cn(
           'sm:max-w-lg overflow-y-auto',
           isMobile

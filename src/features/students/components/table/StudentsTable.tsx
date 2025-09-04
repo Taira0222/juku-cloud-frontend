@@ -5,7 +5,6 @@ import {
   IconChevronsLeft,
   IconChevronsRight,
   IconLayoutColumns,
-  IconPlus,
 } from '@tabler/icons-react';
 import {
   flexRender,
@@ -52,6 +51,7 @@ import { useStudentsStore } from '@/stores/studentsStore';
 import { STUDENTS_LEVEL_OPTIONS } from '@/constants/studentsLevel';
 import z from 'zod';
 import { metaSchema, studentSchema } from '../../types/students';
+import { CreateStudentDialog } from '../dialog/CreateStudentDialog';
 
 export const StudentsTable = ({
   data,
@@ -222,10 +222,7 @@ export const StudentsTable = ({
             </DropdownMenuContent>
           </DropdownMenu>
           {/** 生徒を追加するボタン */}
-          <Button variant="outline" size="sm">
-            <IconPlus />
-            <span className="hidden lg:inline">生徒を追加する</span>
-          </Button>
+          <CreateStudentDialog />
         </div>
         {/** タブの内容 */}
       </div>

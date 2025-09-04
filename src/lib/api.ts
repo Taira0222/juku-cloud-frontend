@@ -2,6 +2,7 @@ import { useAuthStore } from '@/stores/authStore';
 import { useNavStore } from '@/stores/navStore';
 import { useWarningStore } from '@/stores/warningStore';
 import axios, {
+  isAxiosError,
   type AxiosRequestConfig,
   type InternalAxiosRequestConfig,
 } from 'axios';
@@ -67,7 +68,11 @@ api.interceptors.response.use(
   },
   (error) => {
     // Axios 以外 → 触らず返す（コードバグなど）
-    if (!axios.isAxiosError(error)) {
+    if (!isAxiosError(error)) {
+      return Promise.reject(error);
+    }
+    // キャンセルエラー → 触らず返す
+    if (isAxiosError(error) && error.code === 'ERR_CANCELED') {
       return Promise.reject(error);
     }
 
