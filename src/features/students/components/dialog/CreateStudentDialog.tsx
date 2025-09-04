@@ -251,6 +251,7 @@ export const CreateStudentDialog = () => {
   };
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     // 余分な空白を削除して null に変換
     const payload = {
       ...formData,
@@ -259,12 +260,9 @@ export const CreateStudentDialog = () => {
           ? formData.desired_school.trim()
           : null,
     };
-    event.preventDefault();
     const parsed = studentSchema.safeParse(payload);
     if (!parsed.success) {
-      parsed.error.issues.forEach((issue) => {
-        toast.error(issue.message);
-      });
+      toast.error(parsed.error.issues.map((issue) => issue.message).join('\n'));
       return;
     }
   };
