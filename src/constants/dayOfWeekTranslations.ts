@@ -7,3 +7,11 @@ export const DAY_OF_WEEK_TRANSLATIONS: Record<string, string> = {
   friday: '金曜日',
   saturday: '土曜日',
 };
+
+export const DAY_OF_WEEK_WITH_ID = Object.entries(DAY_OF_WEEK_TRANSLATIONS).map(
+  ([key, value], index) => ({
+    id: index + 1,
+    key: key,
+    name: value,
+  })
+);

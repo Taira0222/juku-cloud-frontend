@@ -6,7 +6,11 @@ import { TeacherTable } from '@/features/teachers/components/table/TeachersTable
 export const TeachersPage = () => {
   const { loading, error, currentUserData, teachersData } = useFetchTeachers();
   // loadingがfalse になったら useFormatTeachersData を作成
-  useFormatTeachersData(currentUserData, teachersData, !loading);
+  useFormatTeachersData(
+    currentUserData,
+    teachersData,
+    !loading && !!teachersData
+  );
 
   if (loading) {
     return (
