@@ -111,7 +111,11 @@ export const CreateStudentDialog = () => {
   const { loading, error, currentUserData, teachersData } =
     useFetchTeachers(needFetch);
 
-  useFormatTeachersData(currentUserData, teachersData, needFetch && !loading);
+  useFormatTeachersData(
+    currentUserData,
+    teachersData,
+    needFetch && !!teachersData
+  );
 
   // detailDrawer を取り出して Teacher の型に当てはめる
   const teachers: Teacher[] = detailDrawer.map((teacher) => ({
@@ -157,7 +161,7 @@ export const CreateStudentDialog = () => {
       });
     }
     return { all, bySubject };
-  }, [teachers, selectedSubjects, selectedDays]);
+  }, [teachers, selectedSubjects, dayIdSet]);
 
   const dateToISO = (date: Date) => {
     // ローカルずれ回避のため、手動で YYYY-MM-DD を作成
@@ -303,9 +307,9 @@ export const CreateStudentDialog = () => {
               <div className="space-y-4">
                 {/* 名前：Input */}
                 <div className="space-y-2">
-                  <Label htmlFor="teacherName">生徒の名前</Label>
+                  <Label htmlFor="studentName">生徒の名前</Label>
                   <Input
-                    id="teacherName"
+                    id="studentName"
                     value={formData.name}
                     onChange={handleInputChange('name')}
                     placeholder="生徒の名前を入力してください"
@@ -663,7 +667,7 @@ export const CreateStudentDialog = () => {
                 <Button type="button" variant="outline" onClick={handleClose}>
                   キャンセル
                 </Button>
-                <Button type="submit">更新</Button>
+                <Button type="submit">作成</Button>
               </DialogFooter>
             </form>
           </>
