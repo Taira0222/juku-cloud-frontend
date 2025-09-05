@@ -70,9 +70,10 @@ export const CreateStudentDialog = () => {
             value={value}
             onChange={setValue}
             onSubmit={() => {
-              // zod バリデーション成功後の処理
               submit(
+                // zod のバリデーションを通ったら mutate を呼ぶ
                 (valid) => mutate(valid),
+                // zod のバリデーションに落ちたらエラーメッセージをトースト表示
                 (msgs) => msgs.forEach((m) => toast.error(m))
               );
             }}

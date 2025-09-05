@@ -28,8 +28,7 @@ export const useCreateStudentMutation = (
       options?.onSuccess?.(student, variables, context);
     },
     onError: (error) => {
-      const errorMessage = getErrorMessage(error).toString();
-      toast.error(errorMessage);
+      getErrorMessage(error).forEach((msg) => toast.error(msg));
     },
   });
 };

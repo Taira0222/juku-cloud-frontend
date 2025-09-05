@@ -9,7 +9,10 @@ import {
 import { Calendar } from '@/components/ui/form/Calendar/calendar';
 import type { Draft } from '../../../types/studentForm';
 import { RequiredLabel } from '@/components/common/form/RequiredLabel';
-import { isoToDate } from '@/features/students/utils/studentFormTransforms';
+import {
+  dateToISO,
+  isoToDate,
+} from '@/features/students/utils/studentFormTransforms';
 
 export default function JoinedOnPicker({
   value,
@@ -52,10 +55,7 @@ export default function JoinedOnPicker({
               captionLayout="dropdown"
               onSelect={(date) => {
                 if (!date) return;
-                const y = date.getFullYear();
-                const m = String(date.getMonth() + 1).padStart(2, '0');
-                const d = String(date.getDate()).padStart(2, '0');
-                onChange(`${y}-${m}-${d}`);
+                onChange(dateToISO(date));
                 setOpen(false);
               }}
             />

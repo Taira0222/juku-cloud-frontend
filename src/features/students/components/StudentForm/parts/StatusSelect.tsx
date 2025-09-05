@@ -28,7 +28,9 @@ export default function StatusSelect({
         <SelectContent>
           {Object.entries(STUDENT_STATUS_TRANSLATIONS).map(
             ([key, { name }]) => (
-              <SelectItem key={key} value={key}>{`${name}(${key})`}</SelectItem>
+              <SelectItem key={key} value={key}>
+                {name}
+              </SelectItem>
             )
           )}
         </SelectContent>
