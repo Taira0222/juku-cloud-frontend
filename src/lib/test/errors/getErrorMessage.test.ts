@@ -30,7 +30,7 @@ describe('getErrorMessage', () => {
       isAxiosError: true,
       response: {
         data: {
-          errors: ['invalid request'],
+          errors: [{ code: 'INVALID_REQUEST', message: 'invalid request' }],
         },
         status: 422,
       },

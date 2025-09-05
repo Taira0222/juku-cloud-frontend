@@ -1,10 +1,16 @@
 import { isAxiosError } from 'axios';
 import { ZodError } from 'zod';
 
+type Errors = {
+  code: string;
+  field?: string;
+  message: string;
+};
+
 type CommonServerError = {
   // api.ts で401/403/404/500 エラー処理はするが、念のため error フィールドは定義しておく
   error?: string;
-  errors?: string[]; // 400/422 の配列
+  errors?: Errors[]; // 400/422 の配列
 };
 
 export const getErrorMessage = (error: unknown): string[] => {
@@ -19,7 +25,11 @@ export const getErrorMessage = (error: unknown): string[] => {
       if ([401, 403, 404, 500].includes(status)) {
         return [response?.error || '予期せぬエラーが発生しました。'];
       } else if ([400, 422].includes(status)) {
-        return response?.errors || ['予期せぬエラーが発生しました。'];
+        return (
+          response?.errors?.map((error) => error.message) || [
+            '予期せぬエラーが発生しました。',
+          ]
+        );
       }
     }
   }
