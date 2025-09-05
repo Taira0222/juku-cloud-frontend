@@ -55,7 +55,7 @@ export const CreateStudentDialog = () => {
 
         {loading && (
           <div className="flex items-center justify-center h-32">
-            講師情報を読み込み中...
+            <SpinnerWithText>講師情報を読み込み中...</SpinnerWithText>
           </div>
         )}
         {isPending && (

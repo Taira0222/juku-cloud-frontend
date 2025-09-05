@@ -23,4 +23,5 @@ export const normalizePayload = (draft: Draft) => ({
 });
 
 export const getSubjectLabel = (id: number) =>
-  Object.entries(SUBJECT_TRANSLATIONS).find(([, v]) => v.id === id)?.[0];
+  Object.entries(SUBJECT_TRANSLATIONS).find(([, v]) => v.id === id)?.[0] ??
+  '科目が見つかりませんでした';

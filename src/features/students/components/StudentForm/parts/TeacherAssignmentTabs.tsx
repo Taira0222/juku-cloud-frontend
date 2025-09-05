@@ -53,9 +53,7 @@ export default function TeacherAssignmentTabs({
                       })
                     }
                   />
-                  {createIconTranslationBadge(
-                    getSubjectLabel(subject.id) ?? subject.name
-                  )}
+                  {createIconTranslationBadge(getSubjectLabel(subject.id))}
                 </label>
               );
             })}
