@@ -10,13 +10,13 @@ export const resolveSubjectMeta = (en: string) => {
   };
 };
 
-export const subjectBadgeUtils = () => {
+export const subjectBadgeUtils = (className?: string) => {
   const createIconTranslationBadge = (en: string) => {
     const { label, color, Icon } = resolveSubjectMeta(en);
     return (
       <Badge
         variant="outline"
-        className={`text-muted-foreground px-1.5 mx-1 ${color}`}
+        className={`text-muted-foreground px-1.5 mx-1 ${color} ${className}`}
       >
         {Icon && <Icon aria-hidden="true" data-testid={`subject-icon-${en}`} />}
         {label}

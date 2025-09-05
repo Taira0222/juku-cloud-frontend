@@ -11,7 +11,7 @@ export const DAY_OF_WEEK_TRANSLATIONS: Record<string, string> = {
 export const DAY_OF_WEEK_WITH_ID = Object.entries(DAY_OF_WEEK_TRANSLATIONS).map(
   ([key, value], index) => ({
     id: index + 1,
-    key: key,
+    en: key,
     name: value,
   })
 );

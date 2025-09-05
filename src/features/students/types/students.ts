@@ -31,6 +31,29 @@ export const StatusEnum = z.enum(
 );
 
 const roleEnum = z.enum(['admin', 'teacher'], { message: '役割が不正です' });
+const gradeSchema = z
+  .number()
+  .min(1, { message: '学年は1から6の範囲で入力してください' })
+  .max(6, { message: '学年は1から6の範囲で入力してください' });
+
+const desiredSchoolSchema = z
+  .string({ message: '志望校は文字列または空である必要があります' })
+  .nullable();
+
+const joinedOnSchema = z
+  .string()
+  .nullable()
+  .refine(
+    (val) => {
+      if (!val) return true;
+      const today = new Date();
+      const inputDate = new Date(val);
+      return inputDate <= today;
+    },
+    {
+      message: '入会日は今日以前の日付を入力してください',
+    }
+  );
 
 // 共通の型
 export const classSubjectsSchema = z.object({
@@ -62,16 +85,9 @@ export const studentSchema = z.object({
   name: z.string().max(50, { message: '生徒名は50文字以内で入力してください' }),
   status: StatusEnum,
   school_stage: SchoolStageEnum,
-  grade: z
-    .number()
-    .min(1, { message: '学年は1から6の範囲で入力してください' })
-    .max(6, { message: '学年は1から6の範囲で入力してください' }),
-  desired_school: z
-    .string({ message: '志望校は文字列または空である必要があります' })
-    .nullable(),
-  joined_on: z.string({
-    message: '入塾日はISO8601形式の日付文字列である必要があります',
-  }),
+  grade: gradeSchema,
+  desired_school: desiredSchoolSchema,
+  joined_on: joinedOnSchema,
   class_subjects: z.array(classSubjectsSchema, {
     message: '受講科目一覧の形式が不正です',
   }),
@@ -99,3 +115,36 @@ export const fetchStudentsSuccessResponseSchema = z.object({
   students: z.array(studentSchema, { message: '生徒一覧の形式が不正です' }),
   meta: metaSchema,
 });
+
+// Create用（idなし）
+export const createStudentSchema = z.object({
+  name: z.string().max(50, { message: '生徒名は50文字以内で入力してください' }),
+  status: StatusEnum,
+  school_stage: SchoolStageEnum,
+  grade: gradeSchema,
+  desired_school: desiredSchoolSchema,
+  joined_on: joinedOnSchema,
+  subject_ids: z
+    .array(z.number({ message: '科目IDは数値である必要があります' }), {
+      message: '受講科目一覧の形式が不正です',
+    })
+    .min(1, { message: '受講科目を1つ以上選択してください' }),
+  available_day_ids: z
+    .array(z.number({ message: '曜日IDは数値である必要があります' }), {
+      message: '希望曜日一覧の形式が不正です',
+    })
+    .min(1, { message: '希望曜日を1つ以上選択してください' }),
+  assignments: z
+    .array(
+      z.object({
+        teacher_id: z.number({ message: '講師IDは数値である必要があります' }),
+        subject_id: z.number({ message: '科目IDは数値である必要があります' }),
+        day_id: z.number({ message: '曜日IDは数値である必要があります' }),
+      }),
+      { message: '担当講師一覧の形式が不正です' }
+    )
+    .min(1, { message: '担当講師を1人以上割り当ててください' }),
+});
+
+export type createStudentPayload = z.infer<typeof createStudentSchema>;
+export type Student = z.infer<typeof studentSchema>;
