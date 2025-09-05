@@ -1,7 +1,7 @@
 import { Checkbox } from '@/components/ui/form/CheckBox/checkbox';
 import type { Assignment, Teacher } from '../../../types/studentForm';
-import { SUBJECT_TRANSLATIONS } from '@/constants/subjectTranslations';
 import { subjectBadgeUtils } from '@/utils/subjectBadgeUtils';
+import { getSubjectLabel } from '@/features/students/utils/studentFormTransforms';
 
 export default function TeacherAssignmentTabs({
   dayId,
@@ -22,9 +22,6 @@ export default function TeacherAssignmentTabs({
     assigned.some(
       (a) => a.teacher_id === tId && a.subject_id === sId && a.day_id === dId
     );
-
-  const getSubjectLabel = (id: number) =>
-    Object.entries(SUBJECT_TRANSLATIONS).find(([, v]) => v.id === id)?.[0];
 
   if (!teachers?.length) {
     return (

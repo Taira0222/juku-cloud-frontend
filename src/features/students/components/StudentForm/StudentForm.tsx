@@ -123,7 +123,9 @@ export default function StudentForm({
                 {selectedDayIds
                   .sort((a, b) => a - b)
                   .map((id) => {
-                    const label = DAY_OF_WEEK_WITH_ID[id - 1]?.name ?? '？';
+                    const label =
+                      DAY_OF_WEEK_WITH_ID.find((day) => day.id === id)?.name ??
+                      '？';
                     return (
                       <TabsTrigger key={id} value={String(id)}>
                         {shortDayLabel(label)}

@@ -16,7 +16,9 @@ export const subjectBadgeUtils = (className?: string) => {
     return (
       <Badge
         variant="outline"
-        className={`text-muted-foreground px-1.5 mx-1 ${color} ${className}`}
+        className={`text-muted-foreground px-1.5 mx-1 ${color} ${
+          className ?? ''
+        }`}
       >
         {Icon && <Icon aria-hidden="true" data-testid={`subject-icon-${en}`} />}
         {label}

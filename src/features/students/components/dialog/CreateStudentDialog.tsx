@@ -73,7 +73,7 @@ export const CreateStudentDialog = () => {
               // zod バリデーション成功後の処理
               submit(
                 (valid) => mutate(valid),
-                (msg) => toast.error(msg)
+                (msgs) => msgs.forEach((m) => toast.error(m))
               );
             }}
             loading={isPending}

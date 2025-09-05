@@ -27,12 +27,12 @@ export const useStudentForm = (mode: StudentFormMode, initial?: Draft) => {
 
   const submit = (
     onValid: (data: CreateStudentPayload) => void,
-    onInvalid?: (msg: string) => void
+    onInvalid?: (msgs: string[]) => void
   ) => {
     const payload = normalizePayload(value);
     const parsed = createStudentSchema.safeParse(payload);
     if (parsed.success) onValid(parsed.data);
-    else onInvalid?.(parsed.error.issues.map((i) => i.message).join('\n'));
+    else onInvalid?.(parsed.error.issues.map((i) => i.message));
     return parsed.success;
   };
 

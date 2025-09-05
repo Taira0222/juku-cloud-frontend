@@ -14,9 +14,7 @@ export default function DayCheckboxes({
   const selected = value.available_day_ids ?? [];
   return (
     <div className="space-y-2">
-      <RequiredLabel htmlFor="availableDays" required>
-        受講可能曜日（複数可）
-      </RequiredLabel>
+      <RequiredLabel required>受講可能曜日（複数可）</RequiredLabel>
       <div className="grid grid-cols-2 gap-2">
         {DAY_OF_WEEK_WITH_ID.map(({ id, name }) => {
           const checkboxId = `day-checkbox-${id}`;

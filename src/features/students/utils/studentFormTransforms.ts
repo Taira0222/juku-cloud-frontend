@@ -1,3 +1,4 @@
+import { SUBJECT_TRANSLATIONS } from '@/constants/subjectTranslations';
 import type { Draft } from '../types/studentForm';
 
 export const dateToISO = (date: Date) => {
@@ -20,3 +21,6 @@ export const normalizePayload = (draft: Draft) => ({
       ? draft.desired_school.trim()
       : null,
 });
+
+export const getSubjectLabel = (id: number) =>
+  Object.entries(SUBJECT_TRANSLATIONS).find(([, v]) => v.id === id)?.[0];

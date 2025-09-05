@@ -15,9 +15,7 @@ export default function SubjectCheckboxes({
   const selected = value.subject_ids ?? [];
   return (
     <div className="space-y-2">
-      <RequiredLabel htmlFor="subjects" required>
-        受講科目（複数可）
-      </RequiredLabel>
+      <RequiredLabel required>受講科目（複数可）</RequiredLabel>
       <div className="grid grid-cols-2 gap-3 py-2">
         {Object.entries(SUBJECT_TRANSLATIONS).map(([key, { id, name }]) => {
           const checkboxId = `subject-checkbox-${key}`;
