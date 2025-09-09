@@ -2,12 +2,15 @@ import { SUBJECT_TRANSLATIONS } from '@/constants/subjectTranslations';
 import type { Draft } from '../types/studentForm';
 
 export const dateToISO = (date: Date) => {
+  if (isNaN(date.getTime())) return '誤った日付です';
   const y = date.getFullYear();
+  // 文字列の長さが 2文字になるように左側を '0' で埋める
   const m = String(date.getMonth() + 1).padStart(2, '0');
   const d = String(date.getDate()).padStart(2, '0');
   return `${y}-${m}-${d}`;
 };
 
+// ISOからDateオブジェクトに変換。月と日が省略されている場合は1を補完。
 export const isoToDate = (iso?: string | null) => {
   if (!iso) return undefined;
   const [y, m, d] = iso.split('-').map(Number);

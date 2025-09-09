@@ -5,10 +5,12 @@ import { useFormatTeachersData } from '@/features/teachers/hooks/useFormatTeache
 export const useTeachersForStudent = (enabled: boolean) => {
   const detailDrawer = useTeachersStore((s) => s.detailDrawer);
   const isStoreEmpty = (detailDrawer?.length ?? 0) === 0;
+  // enabled(open)かつstoreが空のときだけfetchする
   const needFetch = enabled && isStoreEmpty;
 
   const { loading, error, currentUserData, teachersData } =
     useFetchTeachers(needFetch);
+
   useFormatTeachersData(
     currentUserData,
     teachersData,

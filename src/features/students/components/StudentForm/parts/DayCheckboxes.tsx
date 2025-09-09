@@ -4,13 +4,12 @@ import { DAY_OF_WEEK_WITH_ID } from '@/constants/dayOfWeekTranslations';
 import type { Draft } from '../../../types/studentForm';
 import { RequiredLabel } from '@/components/common/form/RequiredLabel';
 
-export default function DayCheckboxes({
-  value,
-  toggle,
-}: {
+export type DayCheckboxesProps = {
   value: Draft;
   toggle: (id: number) => void;
-}) {
+};
+
+export const DayCheckboxes = ({ value, toggle }: DayCheckboxesProps) => {
   const selected = value.available_day_ids ?? [];
   return (
     <div className="space-y-2">
@@ -35,4 +34,4 @@ export default function DayCheckboxes({
       </div>
     </div>
   );
-}
+};

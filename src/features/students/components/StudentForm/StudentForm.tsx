@@ -13,25 +13,25 @@ import { DAY_OF_WEEK_WITH_ID } from '@/constants/dayOfWeekTranslations';
 
 import { cn } from '@/lib/utils';
 
-import NameField from './parts/NameField';
-import LevelSelect from './parts/LevelSelect';
-import DesiredSchoolField from './parts/DesiredSchoolField';
-import JoinedOnPicker from './parts/JoinedOnPicker';
-import StatusSelect from './parts/StatusSelect';
-import SubjectCheckboxes from './parts/SubjectCheckboxes';
-import DayCheckboxes from './parts/DayCheckboxes';
-import TeacherAssignmentTabs from './parts/TeacherAssignmentTabs';
-import SelectedAssignmentsBadges from './parts/SelectedAssignmentsBadges';
+import { NameField } from './parts/NameField';
+import { LevelSelect } from './parts/LevelSelect';
+import { DesiredSchoolField } from './parts/DesiredSchoolField';
+import { JoinedOnPicker } from './parts/JoinedOnPicker';
+import { StatusSelect } from './parts/StatusSelect';
+import { SubjectCheckboxes } from './parts/SubjectCheckboxes';
+import { DayCheckboxes } from './parts/DayCheckboxes';
+import { TeacherAssignmentTabs } from './parts/TeacherAssignmentTabs';
+import { SelectedAssignmentsBadges } from './parts/SelectedAssignmentsBadges';
 import { Button } from '@/components/ui/form/Button/button';
 
-export default function StudentForm({
+export const StudentForm = ({
   mode,
   value,
   onChange,
   onSubmit,
   loading,
   teachers,
-}: StudentFormProps) {
+}: StudentFormProps) => {
   // フォーム操作ハンドラ
   const H = createStudentFormHandlers(onChange);
 
@@ -41,14 +41,8 @@ export default function StudentForm({
 
   // 講師リスト(すべて・曜日ごと)をタブ表示用に変換
   const teachersByTab = useMemo(
-    () =>
-      buildTeachersByTab(
-        teachers,
-        selectedSubjectIds,
-        selectedDayIds,
-        ALL_DAY_IDS
-      ),
-    [teachers, selectedSubjectIds, selectedDayIds]
+    () => buildTeachersByTab(teachers, selectedSubjectIds, ALL_DAY_IDS),
+    [teachers, selectedSubjectIds]
   );
 
   // タブ自動選択
@@ -176,4 +170,4 @@ export default function StudentForm({
       </div>
     </form>
   );
-}
+};

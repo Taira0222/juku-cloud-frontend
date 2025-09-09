@@ -9,13 +9,12 @@ import { STUDENTS_LEVEL_OPTIONS } from '@/constants/studentsLevel';
 import type { Draft } from '../../../types/studentForm';
 import { RequiredLabel } from '@/components/common/form/RequiredLabel';
 
-export default function LevelSelect({
-  value,
-  onChange,
-}: {
+export type LevelSelectProps = {
   value: Draft;
   onChange: (v: string) => void; // "stage-grade"
-}) {
+};
+
+export const LevelSelect = ({ value, onChange }: LevelSelectProps) => {
   const level =
     value.school_stage && typeof value.grade === 'number'
       ? `${value.school_stage}-${value.grade}`
@@ -42,4 +41,4 @@ export default function LevelSelect({
       </Select>
     </div>
   );
-}
+};

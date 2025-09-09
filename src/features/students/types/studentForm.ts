@@ -9,7 +9,7 @@ export type Draft = {
   status: string;
   school_stage: string;
   grade: number | null;
-  desired_school: string;
+  desired_school: string | null;
   joined_on: string | null; // YYYY-MM-DD
   subject_ids: number[];
   available_day_ids: number[];

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/navigation/Dialog/dialog';
 import { Button } from '@/components/ui/form/Button/button';
 import { IconPlus } from '@tabler/icons-react';
-import StudentForm from '../StudentForm/StudentForm';
+import { StudentForm } from '../StudentForm/StudentForm';
 import { useStudentForm } from '../../hooks/useStudentForm';
 import { useTeachersForStudent } from '../../hooks/useTeachersForStudent';
 import { useCreateStudentMutation } from '../../mutations/useCreateStudentMutation';
@@ -29,6 +29,13 @@ export const CreateStudentDialog = () => {
       reset();
     },
   });
+
+  useEffect(() => {
+    if (!open) {
+      // ダイアログを閉じたらフォームをリセット
+      reset();
+    }
+  }, [open, reset]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>

@@ -1,3 +1,10 @@
+import type { Draft } from '@/features/students/types/studentForm';
+import type {
+  createStudentPayload,
+  editStudentSchema,
+  Student,
+  teachersSchema,
+} from '@/features/students/types/students';
 import {
   AVAILABLE_DAYS_MOCK,
   SUBJECTS_MOCK,
@@ -5,8 +12,9 @@ import {
   teacher2,
   teacher3,
 } from '@/tests/fixtures/teachers/teachers';
+import type z from 'zod';
 
-const isoString = new Date(Date.now()).toISOString();
+const isoString = '2025-09-01';
 
 export const mockStudent1 = {
   id: 1,
@@ -15,7 +23,7 @@ export const mockStudent1 = {
   school_stage: 'high_school',
   grade: 3,
   desired_school: 'Stanford university',
-  joined_on: isoString, // 今の日時をRails に合わせてISOに変換する
+  joined_on: isoString,
   class_subjects: [
     SUBJECTS_MOCK[0], // 英語
     SUBJECTS_MOCK[2], // 数学
@@ -81,6 +89,28 @@ export const mockStudent2 = {
   ],
 };
 
+// createStudent のレスポンス用モック
+const mockStudent3: Student = {
+  id: 3,
+  name: 'mockStudent Three',
+  status: 'inactive',
+  school_stage: 'elementary_school',
+  grade: 6,
+  desired_school: null,
+  joined_on: isoString,
+  class_subjects: [SUBJECTS_MOCK[0]], // 英語
+  available_days: [AVAILABLE_DAYS_MOCK[2]], // 火曜日
+  teachers: [
+    {
+      id: teacher1.id,
+      name: teacher1.name,
+      role: teacher1.role,
+      teachable_subjects: teacher1.class_subjects, // 英語、理科
+      workable_days: teacher1.available_days, // 火曜日、木曜日
+    } as z.infer<typeof teachersSchema>,
+  ],
+};
+
 export const mockMeta = {
   total_pages: 1,
   total_count: 2,
@@ -89,3 +119,46 @@ export const mockMeta = {
 };
 
 export const studentsMock = [mockStudent1, mockStudent2];
+
+export const createStudentMockPayload: createStudentPayload = {
+  name: 'mockStudent Three',
+  status: 'inactive',
+  school_stage: 'elementary_school',
+  grade: 6,
+  desired_school: null,
+  joined_on: isoString,
+  subject_ids: [1], // 英語
+  available_day_ids: [3], // 火曜日
+  assignments: [
+    { teacher_id: 2, subject_id: 1, day_id: 3 }, // teacher1をアサイン
+  ],
+};
+export const createResponseStudentMock: Student = mockStudent3;
+
+// studentFormDerived のモック
+export const mockTeachers = [teacher1, teacher2, teacher3].map((t) => ({
+  id: t.id,
+  name: t.name,
+  role: t.role,
+  teachable_subjects: t.class_subjects,
+  workable_days: t.available_days,
+}));
+
+// useStudentForm の edit モード用モック
+export const editStudentMockPayload: z.infer<typeof editStudentSchema> = {
+  ...createStudentMockPayload,
+  id: 3,
+  status: 'active',
+};
+
+export const initialMockValue: Draft = {
+  name: '',
+  school_stage: '',
+  grade: null,
+  status: '',
+  desired_school: '',
+  joined_on: null,
+  subject_ids: [],
+  available_day_ids: [],
+  assignments: [],
+};
