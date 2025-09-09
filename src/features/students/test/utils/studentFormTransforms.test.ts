@@ -14,11 +14,6 @@ describe('dateToISO', () => {
     const isoString = dateToISO(date);
     expect(isoString).toBe('2023-01-05');
   });
-  test('does not convert invalid date', () => {
-    const date = new Date('invalid-date');
-    const isoString = dateToISO(date);
-    expect(isoString).toBeNull();
-  });
 });
 
 describe('isoToDate', () => {

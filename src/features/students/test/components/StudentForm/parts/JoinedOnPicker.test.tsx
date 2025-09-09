@@ -36,7 +36,7 @@ describe('JoinedOnPicker', () => {
       name: 'Wednesday, September 3rd, 2025',
     });
     await user.click(dateButton);
-    expect(mockProps.onChange).toHaveBeenCalledWith('2025-09-03'); // 2025-09-03が選択される
-    expect(calendar).not.toBeInTheDocument(); // カレンダーが閉じる
+    expect(mockProps.onChange).toHaveBeenCalledWith('2025-09-03');
+    expect(calendar).not.toBeInTheDocument();
   });
 });

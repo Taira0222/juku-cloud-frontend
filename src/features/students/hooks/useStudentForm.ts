@@ -4,14 +4,18 @@ import { normalizePayload } from '../utils/studentFormTransforms';
 import { createStudentSchema, editStudentSchema } from '../types/students';
 import { z } from 'zod';
 
-type CreateStudentPayload = z.infer<typeof createStudentSchema>;
-type EditStudentPayload = z.infer<typeof editStudentSchema>;
 type EditDraft = Draft & { id: number };
 
+type SchemaByMode = {
+  create: typeof createStudentSchema;
+  edit: typeof editStudentSchema;
+};
+
+// satisfiesで型を保証
 const SCHEMA = {
   create: createStudentSchema,
   edit: editStudentSchema,
-} as const;
+} as const satisfies SchemaByMode;
 
 export const INITIAL_DRAFT: Draft = {
   name: '',
@@ -26,15 +30,14 @@ export const INITIAL_DRAFT: Draft = {
 };
 
 // モードに応じて submit の型を切り替える
-type PayloadByMode<T extends StudentFormMode> = T extends 'edit'
-  ? EditStudentPayload
-  : CreateStudentPayload;
+type PayloadByMode<M extends StudentFormMode> = z.infer<SchemaByMode[M]>;
 
 // modeに応じてDraftの型を切り替える
 type DraftByMode<T extends StudentFormMode> = T extends 'edit'
   ? EditDraft
   : Draft;
 
+const getSchema = <M extends StudentFormMode>(m: M) => SCHEMA[m];
 export const INITIAL_ERROR_MESSAGES =
   'useStudentForm("edit"): initial に id:number が必須です';
 
@@ -61,7 +64,7 @@ export const useStudentForm = <T extends StudentFormMode>(
   }, [mode, initial]);
 
   // modeに応じてスキーマを切り替え
-  const schema = SCHEMA[mode];
+  const schema = getSchema(mode);
 
   const submit = (
     onValid: (data: PayloadByMode<T>) => void,
@@ -69,6 +72,7 @@ export const useStudentForm = <T extends StudentFormMode>(
   ) => {
     const payload = normalizePayload(value);
     const parsed = schema.safeParse(payload);
+    // 実行時にはmodeとTは一致するので, PayloadByMode<T>は安全な型アサーション
     if (parsed.success) onValid(parsed.data as PayloadByMode<T>);
     else onInvalid?.(parsed.error.issues.map((i) => i.message));
     return parsed.success;

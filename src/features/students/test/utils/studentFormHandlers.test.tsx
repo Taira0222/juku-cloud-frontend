@@ -33,7 +33,7 @@ describe('createStudentFormHandlers', () => {
   test('handleSelectChange should update the form state for status', () => {
     const h = makeOnChangeHarness(initialMockValue);
     const { handleSelectChange } = createStudentFormHandlers(h.onChange);
-    handleSelectChange<string>('status')('active');
+    handleSelectChange('status')('active');
 
     expect(h.get().status).toBe('active');
   });
@@ -41,9 +41,9 @@ describe('createStudentFormHandlers', () => {
   test('handleSelectChange should update the form state for joined_on', () => {
     const h = makeOnChangeHarness(initialMockValue);
     const { handleSelectChange } = createStudentFormHandlers(h.onChange);
-    handleSelectChange<Date | null>('joined_on')(new Date('2023-01-01'));
+    handleSelectChange('joined_on')('2023-01-01');
 
-    expect(h.get().joined_on).toEqual(new Date('2023-01-01'));
+    expect(h.get().joined_on).toEqual('2023-01-01');
   });
 
   test('handleStudentOptionChange should update school_stage and grade', () => {

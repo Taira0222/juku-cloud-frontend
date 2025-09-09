@@ -1,6 +1,5 @@
 import type { Assignment } from '../types/studentForm';
 
-// subject_ids, available_day_ids の配列の中で、v があれば削除、なければ追加した配列を返す
 export const toggleValueById = (list: number[], v: number) =>
   list.includes(v) ? list.filter((x) => x !== v) : [...list, v];
 
