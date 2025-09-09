@@ -10,12 +10,14 @@ export const createStudentFormHandlers = (onChange: OnChange) => {
       onChange((prev) => ({ ...prev, [field]: e.target.value }));
     };
 
+  // 入塾日と通塾状況の際に使用
   const handleSelectChange =
-    <T>(field: keyof Draft) =>
-    (value: T) => {
-      onChange((prev) => ({ ...prev, [field]: value } as Draft));
+    <T extends keyof Draft>(field: T) =>
+    (value: Draft[T]) => {
+      onChange((prev) => ({ ...prev, [field]: value }));
     };
 
+  // 学年セレクトの際に使用
   const handleStudentOptionChange = (value: string) => {
     onChange((prev) => {
       if (value === '') return { ...prev, school_stage: '', grade: null };
@@ -24,11 +26,12 @@ export const createStudentFormHandlers = (onChange: OnChange) => {
     });
   };
 
+  // 科目・曜日に使用、追加や削除ができる
   const toggleInArray = (key: ToggleableKeys, id: number) => {
-    onChange(
-      (prev) =>
-        ({ ...prev, [key]: toggleValueById(prev[key] ?? [], id) } as Draft)
-    );
+    onChange((prev) => ({
+      ...prev,
+      [key]: toggleValueById(prev[key] ?? [], id),
+    }));
   };
 
   const toggleAssignmentInForm = (a: Assignment) => {

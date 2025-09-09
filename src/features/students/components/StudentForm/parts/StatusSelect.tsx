@@ -9,13 +9,12 @@ import { STUDENT_STATUS_TRANSLATIONS } from '@/constants/studentStatusTranslatio
 import type { Draft } from '../../../types/studentForm';
 import { RequiredLabel } from '@/components/common/form/RequiredLabel';
 
-export default function StatusSelect({
-  value,
-  onChange,
-}: {
+export type StatusSelectProps = {
   value: Draft;
   onChange: (v: string) => void;
-}) {
+};
+
+export const StatusSelect = ({ value, onChange }: StatusSelectProps) => {
   return (
     <div className="space-y-2">
       <RequiredLabel htmlFor="status" required>
@@ -37,4 +36,4 @@ export default function StatusSelect({
       </Select>
     </div>
   );
-}
+};

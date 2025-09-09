@@ -8,6 +8,7 @@ export const dateToISO = (date: Date) => {
   return `${y}-${m}-${d}`;
 };
 
+// ISOからDateオブジェクトに変換。月と日が省略されている場合は1を補完。
 export const isoToDate = (iso?: string | null) => {
   if (!iso) return undefined;
   const [y, m, d] = iso.split('-').map(Number);

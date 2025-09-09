@@ -1,10 +1,21 @@
 import { useEffect, useState } from 'react';
 import type { Draft, StudentFormMode } from '../types/studentForm';
 import { normalizePayload } from '../utils/studentFormTransforms';
-import { createStudentSchema } from '../types/students';
+import { createStudentSchema, editStudentSchema } from '../types/students';
 import { z } from 'zod';
 
-type CreateStudentPayload = z.infer<typeof createStudentSchema>;
+type EditDraft = Draft & { id: number };
+
+type SchemaByMode = {
+  create: typeof createStudentSchema;
+  edit: typeof editStudentSchema;
+};
+
+// satisfiesで型を保証
+const SCHEMA = {
+  create: createStudentSchema,
+  edit: editStudentSchema,
+} as const satisfies SchemaByMode;
 
 export const INITIAL_DRAFT: Draft = {
   name: '',
@@ -12,31 +23,62 @@ export const INITIAL_DRAFT: Draft = {
   grade: null,
   status: '',
   desired_school: '',
-  joined_on: null,
+  joined_on: '',
   subject_ids: [],
   available_day_ids: [],
   assignments: [],
 };
 
-export const useStudentForm = (mode: StudentFormMode, initial?: Draft) => {
-  const [value, setValue] = useState<Draft>(initial ?? INITIAL_DRAFT);
+// モードに応じて submit の型を切り替える
+type PayloadByMode<M extends StudentFormMode> = z.infer<SchemaByMode[M]>;
+
+// modeに応じてDraftの型を切り替える
+type DraftByMode<T extends StudentFormMode> = T extends 'edit'
+  ? EditDraft
+  : Draft;
+
+const getSchema = <M extends StudentFormMode>(m: M) => SCHEMA[m];
+export const INITIAL_ERROR_MESSAGES =
+  'useStudentForm("edit"): initial に id:number が必須です';
+
+export const useStudentForm = <T extends StudentFormMode>(
+  mode: T,
+  initial?: DraftByMode<T>
+) => {
+  // 初期値の設定
+  const makeInitial = (): DraftByMode<T> => {
+    if (mode === 'edit') {
+      // editモードの場合、initialが必須でid:numberを持つことを保証
+      if (!initial || typeof (initial as EditDraft).id !== 'number') {
+        throw new Error(INITIAL_ERROR_MESSAGES);
+      }
+      return initial as DraftByMode<T>;
+    }
+    return INITIAL_DRAFT as DraftByMode<T>;
+  };
+
+  const [value, setValue] = useState<DraftByMode<T>>(makeInitial());
 
   useEffect(() => {
     if (mode === 'edit' && initial) setValue(initial);
   }, [mode, initial]);
 
+  // modeに応じてスキーマを切り替え
+  const schema = getSchema(mode);
+
   const submit = (
-    onValid: (data: CreateStudentPayload) => void,
+    onValid: (data: PayloadByMode<T>) => void,
     onInvalid?: (msgs: string[]) => void
   ) => {
     const payload = normalizePayload(value);
-    const parsed = createStudentSchema.safeParse(payload);
-    if (parsed.success) onValid(parsed.data);
+    const parsed = schema.safeParse(payload);
+    // 実行時にはmodeとTは一致するので, PayloadByMode<T>は安全な型アサーション
+    if (parsed.success) onValid(parsed.data as PayloadByMode<T>);
     else onInvalid?.(parsed.error.issues.map((i) => i.message));
     return parsed.success;
   };
 
-  const reset = () => setValue(initial ?? INITIAL_DRAFT);
+  const reset = () => setValue(makeInitial());
 
   return { value, setValue, submit, reset };
 };

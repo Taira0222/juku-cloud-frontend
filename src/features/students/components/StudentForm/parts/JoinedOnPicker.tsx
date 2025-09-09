@@ -14,13 +14,12 @@ import {
   isoToDate,
 } from '@/features/students/utils/studentFormTransforms';
 
-export default function JoinedOnPicker({
-  value,
-  onChange,
-}: {
+export type JoinedOnPickerProps = {
   value: Draft;
   onChange: (v: string | null) => void;
-}) {
+};
+
+export const JoinedOnPicker = ({ value, onChange }: JoinedOnPickerProps) => {
   const [open, setOpen] = useState(false);
   const selected = isoToDate(value.joined_on);
   const label = selected
@@ -64,4 +63,4 @@ export default function JoinedOnPicker({
       </div>
     </div>
   );
-}
+};

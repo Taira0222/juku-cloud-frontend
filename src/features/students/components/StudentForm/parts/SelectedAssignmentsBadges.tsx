@@ -4,15 +4,17 @@ import { SUBJECT_TRANSLATIONS } from '@/constants/subjectTranslations';
 import { DAY_OF_WEEK_WITH_ID } from '@/constants/dayOfWeekTranslations';
 import { shortDayLabel } from '@/features/students/constants/studentForm';
 
-export default function SelectedAssignmentsBadges({
-  assignments,
-  teachers,
-  untoggle,
-}: {
+export type SelectedAssignmentsBadgesProps = {
   assignments: Assignment[];
   teachers: Teacher[];
   untoggle: (a: Assignment) => void;
-}) {
+};
+
+export const SelectedAssignmentsBadges = ({
+  assignments,
+  teachers,
+  untoggle,
+}: SelectedAssignmentsBadgesProps) => {
   if (!assignments?.length) return null;
 
   return (
@@ -40,4 +42,4 @@ export default function SelectedAssignmentsBadges({
       })}
     </section>
   );
-}
+};

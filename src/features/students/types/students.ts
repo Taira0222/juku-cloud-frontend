@@ -40,20 +40,17 @@ const desiredSchoolSchema = z
   .string({ message: '志望校は文字列または空である必要があります' })
   .nullable();
 
-const joinedOnSchema = z
-  .string()
-  .nullable()
-  .refine(
-    (val) => {
-      if (!val) return true;
-      const today = new Date();
-      const inputDate = new Date(val);
-      return inputDate <= today;
-    },
-    {
-      message: '入会日は今日以前の日付を入力してください',
-    }
-  );
+const joinedOnSchema = z.string().refine(
+  (val) => {
+    if (!val) return true;
+    const today = new Date();
+    const inputDate = new Date(val);
+    return inputDate <= today;
+  },
+  {
+    message: '入会日は今日以前の日付を入力してください',
+  }
+);
 
 // 共通の型
 export const classSubjectsSchema = z.object({
@@ -148,3 +145,10 @@ export const createStudentSchema = z.object({
 
 export type createStudentPayload = z.infer<typeof createStudentSchema>;
 export type Student = z.infer<typeof studentSchema>;
+
+// 編集の際に使うスキーマ
+export const editStudentSchema = createStudentSchema.extend({
+  id: z
+    .number({ message: '生徒IDは数値である必要があります' })
+    .positive({ message: '生徒IDは正の数である必要があります' }),
+});

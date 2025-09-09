@@ -3,19 +3,21 @@ import type { Assignment, Teacher } from '../../../types/studentForm';
 import { subjectBadgeUtils } from '@/utils/subjectBadgeUtils';
 import { getSubjectLabel } from '@/features/students/utils/studentFormTransforms';
 
-export default function TeacherAssignmentTabs({
-  dayId,
-  teachers,
-  selectedSubjectIds,
-  assigned,
-  toggle,
-}: {
+export type TeacherAssignmentTabsProps = {
   dayId: number;
   teachers: Teacher[];
   selectedSubjectIds: number[];
   assigned: Assignment[];
   toggle: (a: Assignment) => void;
-}) {
+};
+
+export const TeacherAssignmentTabs = ({
+  dayId,
+  teachers,
+  selectedSubjectIds,
+  assigned,
+  toggle,
+}: TeacherAssignmentTabsProps) => {
   const { createIconTranslationBadge } = subjectBadgeUtils('mx-0');
 
   const isAssigned = (tId: number, sId: number, dId: number) =>
@@ -44,6 +46,9 @@ export default function TeacherAssignmentTabs({
               return (
                 <label key={subject.id} className="flex items-center gap-1">
                   <Checkbox
+                    aria-label={`${teacher.name}の${getSubjectLabel(
+                      subject.id
+                    )}の割り当て`}
                     checked={checked}
                     onCheckedChange={() =>
                       toggle({
@@ -62,4 +67,4 @@ export default function TeacherAssignmentTabs({
       ))}
     </>
   );
-}
+};

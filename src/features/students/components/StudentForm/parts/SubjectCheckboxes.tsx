@@ -5,13 +5,15 @@ import { SUBJECT_TRANSLATIONS } from '@/constants/subjectTranslations';
 import type { Draft } from '../../../types/studentForm';
 import { RequiredLabel } from '@/components/common/form/RequiredLabel';
 
-export default function SubjectCheckboxes({
-  value,
-  toggle,
-}: {
+export type SubjectCheckboxesProps = {
   value: Draft;
   toggle: (id: number) => void;
-}) {
+};
+
+export const SubjectCheckboxes = ({
+  value,
+  toggle,
+}: SubjectCheckboxesProps) => {
   const selected = value.subject_ids ?? [];
   return (
     <div className="space-y-2">
@@ -63,4 +65,4 @@ export default function SubjectCheckboxes({
       )}
     </div>
   );
-}
+};
