@@ -157,7 +157,7 @@ export const initialMockValue: Draft = {
   grade: null,
   status: '',
   desired_school: '',
-  joined_on: null,
+  joined_on: '',
   subject_ids: [],
   available_day_ids: [],
   assignments: [],

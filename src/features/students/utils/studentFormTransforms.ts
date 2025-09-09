@@ -2,7 +2,7 @@ import { SUBJECT_TRANSLATIONS } from '@/constants/subjectTranslations';
 import type { Draft } from '../types/studentForm';
 
 export const dateToISO = (date: Date) => {
-  if (isNaN(date.getTime())) return '誤った日付です';
+  if (isNaN(date.getTime())) return null;
   const y = date.getFullYear();
   // 文字列の長さが 2文字になるように左側を '0' で埋める
   const m = String(date.getMonth() + 1).padStart(2, '0');

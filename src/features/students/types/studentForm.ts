@@ -9,8 +9,8 @@ export type Draft = {
   status: string;
   school_stage: string;
   grade: number | null;
-  desired_school: string | null;
-  joined_on: string | null; // YYYY-MM-DD
+  desired_school: string | null; // null許容
+  joined_on: string; // YYYY-MM-DD形式の文字列
   subject_ids: number[];
   available_day_ids: number[];
   assignments: Assignment[];

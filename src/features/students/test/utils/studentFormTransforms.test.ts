@@ -17,7 +17,7 @@ describe('dateToISO', () => {
   test('does not convert invalid date', () => {
     const date = new Date('invalid-date');
     const isoString = dateToISO(date);
-    expect(isoString).toBe('誤った日付です');
+    expect(isoString).toBeNull();
   });
 });
 
