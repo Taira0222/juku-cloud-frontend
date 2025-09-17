@@ -2,8 +2,9 @@ import {
   currentUserResponse,
   teacher1,
   teachers,
-} from '@/tests/fixtures/teachers/teachers';
+} from "@/tests/fixtures/teachers/teachers";
 import type {
+  Errors,
   InviteTokenCreateResponseBodyType,
   SignInRequestBodyType,
   SignInResponseBodyType,
@@ -17,11 +18,11 @@ import type {
   TeacherUpdateResponseBodyType,
   TokenConfirmPathParams,
   TokenConfirmResponseBodyType,
-} from '@/tests/fixtures/server/types/msw';
-import { http, HttpResponse } from 'msw';
+} from "@/tests/fixtures/server/types/msw";
+import { http, HttpResponse } from "msw";
 
 const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-const ADMIN_ID = '1';
+const ADMIN_ID = "1";
 
 export const handlers = [
   // サインインのハンドラー
@@ -33,11 +34,11 @@ export const handlers = [
       const { email, password } = body;
 
       // テスト用の認証情報
-      const testEmail = 'test@example.com';
-      const testPassword = 'password123';
+      const testEmail = "test@example.com";
+      const testPassword = "password123";
 
       // エラーメッセージの内容
-      const errorMessage = 'ログインに失敗しました。もう一度お試しください。';
+      const errorMessage = "ログインに失敗しました。もう一度お試しください。";
 
       if (email === testEmail && password === testPassword) {
         // 成功時のレスポンス
@@ -45,25 +46,25 @@ export const handlers = [
           {
             data: {
               email: testEmail,
-              provider: 'email',
-              uid: 'fake-uid',
+              provider: "email",
+              uid: "fake-uid",
               id: 1,
               allow_password_change: false,
-              name: 'Test User',
-              role: 'teacher',
-              school_stage: 'bachelor',
+              name: "Test User",
+              role: "teacher",
+              school_stage: "bachelor",
               grade: 1,
-              graduated_university: 'Fake University',
+              graduated_university: "Fake University",
             },
           },
           {
             status: 200,
             headers: {
-              'access-token': 'fake-access-token',
-              client: 'fake-client',
-              uid: 'fake-uid',
-              'token-type': 'Bearer',
-              expiry: '1754694561', // string としてわたってくるので、Date型に変換する必要はない
+              "access-token": "fake-access-token",
+              client: "fake-client",
+              uid: "fake-uid",
+              "token-type": "Bearer",
+              expiry: "1754694561", // string としてわたってくるので、Date型に変換する必要はない
             },
           }
         );
@@ -71,8 +72,12 @@ export const handlers = [
         // 失敗時のレスポンス
         return HttpResponse.json(
           {
-            success: false,
-            errors: [errorMessage],
+            errors: [
+              {
+                code: "INVALID_LOGIN",
+                message: errorMessage,
+              },
+            ],
           },
           {
             status: 401,
@@ -89,59 +94,53 @@ export const handlers = [
       const { email, password, password_confirmation, token, name } = body;
 
       // エラーを収集する配列
-      const errors: { [key: string]: string[] } = {};
-      const fullMessages: string[] = [];
+      const errors: Errors = [];
 
       // バリデーション
       // メールアドレスの重複チェック
-      if (email === 'duplicate@example.com') {
-        errors.email = ['メールアドレスはすでに使用されています。'];
-        fullMessages.push(errors.email[0]);
+      if (email === "duplicate@example.com") {
+        errors.push({
+          code: "EMAIL_TAKEN",
+          field: "email",
+          message: "メールアドレスはすでに使用されています。",
+        });
       }
 
       // パスワードの長さチェック
       if (password && password.length < 6) {
-        errors.password = ['パスワードは6文字以上で入力してください。'];
-        fullMessages.push(errors.password[0]);
+        errors.push({
+          code: "PASSWORD_TOO_SHORT",
+          field: "password",
+          message: "パスワードは6文字以上で入力してください。",
+        });
       }
 
       // パスワード確認チェック
       if (password !== password_confirmation) {
-        errors.password_confirmation = ['パスワードが一致しません。'];
-        fullMessages.push(errors.password_confirmation[0]);
+        errors.push({
+          code: "PASSWORD_CONFIRMATION_MISMATCH",
+          field: "password_confirmation",
+          message: "パスワードが一致しません。",
+        });
       }
 
       // 学校コードの有効性チェック
-      if (token !== '123456') {
-        errors.school_code = ['学校コードが無効です。'];
-        fullMessages.push(errors.school_code[0]);
+      if (token !== "123456") {
+        errors.push({
+          code: "INVALID_SCHOOL_CODE",
+          field: "token",
+          message: "学校コードが無効です。",
+        });
       }
 
       // エラーがある場合
-      if (Object.keys(errors).length > 0) {
+      if (errors.length > 0) {
         return HttpResponse.json(
           {
-            data: {
-              id: null,
-              provider: 'email',
-              uid: 'fake-uid',
-              allow_password_change: false,
-              name: name || 'Test User',
-              role: null,
-              school_stage: null,
-              grade: null,
-              graduated_university: null,
-              email: email,
-              created_at: new Date().toISOString(),
-              updated_at: new Date().toISOString(),
-            },
-            errors: {
-              ...errors,
-              full_messages: fullMessages,
-            },
+            errors: errors,
           },
           {
-            status: 422, // devise token auth が返すステータスコード
+            status: 422,
           }
         );
       }
@@ -151,11 +150,11 @@ export const handlers = [
         {
           data: {
             id: 1,
-            provider: 'email',
-            uid: 'fake-uid',
+            provider: "email",
+            uid: "fake-uid",
             allow_password_change: false,
-            name: name || 'Test User',
-            role: 'admin',
+            name: name || "Test User",
+            role: "admin",
             school_stage: null,
             grade: null,
             graduated_university: null,
@@ -186,7 +185,14 @@ export const handlers = [
         );
       } catch {
         return HttpResponse.json(
-          { error: '予期せぬエラーが発生しました。' },
+          {
+            errors: [
+              {
+                code: "INTERNAL_SERVER_ERROR",
+                message: "予期せぬエラーが発生しました。",
+              },
+            ],
+          },
           { status: 500 }
         );
       }
@@ -200,7 +206,7 @@ export const handlers = [
       try {
         return HttpResponse.json(
           {
-            token: '123456',
+            token: "123456",
           },
           {
             status: 200,
@@ -208,7 +214,15 @@ export const handlers = [
         );
       } catch {
         return HttpResponse.json(
-          { message: 'トークン作成に失敗しました' },
+          {
+            errors: [
+              {
+                code: "CREATE_TOKEN_FAILED",
+                field: "base",
+                message: "トークンの作成に失敗しました。",
+              },
+            ],
+          },
           { status: 422 }
         );
       }
@@ -221,20 +235,36 @@ export const handlers = [
     async ({ params }) => {
       try {
         const token = params.token;
-        if (token !== '123456') {
+        if (token !== "123456") {
           return HttpResponse.json(
-            { message: 'この招待リンクは無効か期限切れです。' },
-            { status: 404 }
+            {
+              errors: [
+                {
+                  code: "INVALID_OR_EXPIRED_TOKEN",
+                  message: "この招待リンクは無効か期限切れです。",
+                },
+              ],
+            },
+            {
+              status: 404,
+            }
           );
         }
 
         return HttpResponse.json(
-          { school_name: 'First_school' },
+          { school_name: "First_school" },
           { status: 200 }
         );
       } catch {
         return HttpResponse.json(
-          { message: '予期せぬエラーが発生しました。' },
+          {
+            errors: [
+              {
+                code: "INTERNAL_SERVER_ERROR",
+                message: "予期せぬエラーが発生しました。",
+              },
+            ],
+          },
           { status: 500 }
         );
       }
@@ -256,18 +286,39 @@ export const handlers = [
         // idが1の時はadminのため削除できない
         if (id === ADMIN_ID) {
           return HttpResponse.json(
-            { error: '管理者は削除できません。' },
+            {
+              errors: [
+                {
+                  code: "FORBIDDEN",
+                  message: "管理者は削除できません。",
+                },
+              ],
+            },
             { status: 403 }
           );
           // フロントに削除ボタンはあるけど、db 側でユーザーが見つからない想定
         } else if (id !== teacher1Id) {
           return HttpResponse.json(
-            { error: 'ユーザーが見つかりませんでした。' },
+            {
+              errors: [
+                {
+                  code: "NOT_FOUND",
+                  message: "ユーザーが見つかりませんでした。",
+                },
+              ],
+            },
             { status: 404 }
           );
         } else {
           return HttpResponse.json(
-            { error: '予期せぬエラーが発生しました。' },
+            {
+              errors: [
+                {
+                  code: "INTERNAL_SERVER_ERROR",
+                  message: "予期せぬエラーが発生しました。",
+                },
+              ],
+            },
             { status: 500 }
           );
         }

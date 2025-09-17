@@ -1,30 +1,30 @@
-import { useState } from 'react';
-import { Button } from '@/components/ui/form/Button/button';
-import { ChevronDownIcon } from 'lucide-react';
+import { useState } from "react";
+import { Button } from "@/components/ui/form/Button/button";
+import { ChevronDownIcon } from "lucide-react";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@/components/ui/popover';
-import { Calendar } from '@/components/ui/form/Calendar/calendar';
-import type { Draft } from '../../../types/studentForm';
-import { RequiredLabel } from '@/components/common/form/RequiredLabel';
+} from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/form/Calendar/calendar";
+import type { Draft } from "../../../types/studentForm";
+import { RequiredLabel } from "@/components/common/form/RequiredLabel";
 import {
   dateToISO,
   isoToDate,
-} from '@/features/students/utils/studentFormTransforms';
+} from "@/features/students/utils/studentFormTransforms";
 
 export type JoinedOnPickerProps = {
   value: Draft;
-  onChange: (v: string | null) => void;
+  onChange: (v: string) => void;
 };
 
 export const JoinedOnPicker = ({ value, onChange }: JoinedOnPickerProps) => {
   const [open, setOpen] = useState(false);
   const selected = isoToDate(value.joined_on);
   const label = selected
-    ? new Intl.DateTimeFormat('ja-JP').format(selected)
-    : '日付を選択';
+    ? new Intl.DateTimeFormat("ja-JP").format(selected)
+    : "日付を選択";
 
   return (
     <div className="space-y-2">

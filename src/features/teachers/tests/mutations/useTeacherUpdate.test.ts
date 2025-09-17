@@ -1,7 +1,6 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { updateTeacherApi } from '../../api/updateTeacherApi';
 import type {
-  updateTeacherErrorResponse,
   updateTeacherSuccessResponse,
 } from '../../types/teachers';
 import type { AxiosError, AxiosResponse } from 'axios';
@@ -42,10 +41,15 @@ describe('useTeacherUpdate', () => {
       isAxiosError: true,
       response: {
         data: {
-          errors: ['Invalid employment status'],
+          errors: [{
+            code: 'INVALID_EMPLOYMENT_STATUS',
+            field: 'base',
+            message: 'Invalid employment status'
+          }],
         },
+        status: 422,
       },
-    } as unknown as AxiosError<updateTeacherErrorResponse>;
+    } as unknown as AxiosError;
     vi.mocked(updateTeacherApi).mockRejectedValue(axiosLikeError);
 
     const { result } = renderHook(() => useTeacherUpdate());
@@ -59,7 +63,7 @@ describe('useTeacherUpdate', () => {
     });
 
     await waitFor(() => {
-      expect(result.current.error).toBe('Invalid employment status');
+      expect(result.current.error).toEqual(['Invalid employment status']);
       expect(result.current.loading).toBe(false);
     });
   });
@@ -80,7 +84,7 @@ describe('useTeacherUpdate', () => {
     });
 
     await waitFor(() => {
-      expect(result.current.error).toBe('Network Error');
+      expect(result.current.error).toEqual(['通信エラーが発生しました。']);
       expect(result.current.loading).toBe(false);
     });
   });

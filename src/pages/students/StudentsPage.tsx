@@ -1,8 +1,9 @@
-import SpinnerWithText from '@/components/common/status/Loading';
-import { StudentsTable } from '@/features/students/components/table/StudentsTable';
-import { useStudentsQuery } from '@/features/students/queries/useStudentsQuery';
-import { getErrorMessage } from '@/lib/errors/getErrorMessage';
-import { useStudentsStore } from '@/stores/studentsStore';
+import { ErrorDisplay } from "@/components/common/status/ErrorDisplay";
+import SpinnerWithText from "@/components/common/status/Loading";
+import { StudentsTable } from "@/features/students/components/table/StudentsTable";
+import { useStudentsQuery } from "@/features/students/queries/useStudentsQuery";
+import { getErrorMessage } from "@/lib/errors/getErrorMessage";
+import { useStudentsStore } from "@/stores/studentsStore";
 
 export const StudentsPage = () => {
   const filters = useStudentsStore((state) => state.filters);
@@ -20,9 +21,7 @@ export const StudentsPage = () => {
 
   return (
     <div className="p-6">
-      {isError && (
-        <div className="text-red-500 mb-4">{getErrorMessage(error)}</div>
-      )}
+      {isError && <ErrorDisplay error={getErrorMessage(error)} />}
       <StudentsTable
         data={data?.students ?? []}
         meta={

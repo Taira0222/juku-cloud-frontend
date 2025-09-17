@@ -1,11 +1,11 @@
 import { renderHook, waitFor } from '@testing-library/react';
-import type { AxiosError, AxiosResponse } from 'axios';
+import type { AxiosResponse } from 'axios';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
-import { tokenConfirmApi } from '../services/tokenConfirmApi';
-import { useTokenConfirm } from './useTokenConfirm';
-import type { TokenConfirmErrorResponse } from '../types/tokenConfirm';
+import { tokenConfirmApi } from '../../api/tokenConfirmApi';
+import { useTokenConfirm } from '../../hooks/useTokenConfirm';
 
-vi.mock('../services/tokenConfirmApi');
+
+vi.mock('../../api/tokenConfirmApi');
 const SCHOOL_NAME = 'First_school';
 
 describe('useTokenConfirm', () => {
@@ -46,13 +46,15 @@ describe('useTokenConfirm', () => {
       isAxiosError: true,
       response: {
         data: {
-          message: 'Invalid token',
+          errors: [{
+            code: 'MISSING_EMAIL',
+            field: 'email',
+            message: 'メールアドレスが見つかりません。',
+          }]
         },
+        status: 401,
       },
-    } as Partial<
-      AxiosError<TokenConfirmErrorResponse>
-    > as AxiosError<TokenConfirmErrorResponse>;
-
+    };
     // 誤ったtoken
     const requestData = {
       token: 'invalid_token',
@@ -63,7 +65,7 @@ describe('useTokenConfirm', () => {
     const { result } = renderHook(() => useTokenConfirm(requestData.token));
 
     await waitFor(() => {
-      expect(result.current.tokenError).toEqual('Invalid token');
+      expect(result.current.tokenError).toEqual(['メールアドレスが見つかりません。']);
       expect(result.current.loading).toBe(false);
     });
   });
@@ -81,7 +83,7 @@ describe('useTokenConfirm', () => {
 
     await waitFor(() => {
       expect(result.current.data).toBeNull();
-      expect(result.current.tokenError).toEqual('Network Error');
+      expect(result.current.tokenError).toEqual(['通信エラーが発生しました。']);
       expect(result.current.loading).toBe(false);
     });
   });

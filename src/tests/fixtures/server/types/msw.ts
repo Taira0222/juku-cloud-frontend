@@ -1,27 +1,26 @@
-import type {
-  SignInErrorResponse,
-  SignInSuccessResponse,
-} from '@/features/auth/types/auth';
+import type { SignInSuccessResponse } from "@/features/auth/types/auth";
 import type {
   SignUpErrorResponse,
   SignUpSuccessResponse,
-} from '@/features/auth/types/signUp';
+} from "@/features/auth/types/signUp";
+import type { TokenConfirmSuccessResponse } from "@/features/auth/types/tokenConfirm";
+import type { InviteTokenSuccessResponse } from "@/features/teachers/types/inviteToken";
 import type {
-  TokenConfirmErrorResponse,
-  TokenConfirmSuccessResponse,
-} from '@/features/auth/types/tokenConfirm';
-import type {
-  InviteTokenErrorResponse,
-  InviteTokenSuccessResponse,
-} from '@/features/teachers/types/inviteToken';
-import type {
-  fetchTeachersErrorResponse,
   fetchTeachersSuccessResponse,
-  teacherDeleteErrorResponse,
-  updateTeacherErrorResponse,
   updateTeacherRequest,
   updateTeacherSuccessResponse,
-} from '@/features/teachers/types/teachers';
+} from "@/features/teachers/types/teachers";
+
+// エラーの共通型
+export type Errors = {
+  code: string;
+  field?: string;
+  message: string;
+}[];
+
+export type CommonErrorResponse = {
+  errors: Errors;
+};
 
 // サインインの型定義
 
@@ -32,7 +31,7 @@ export type SignInRequestBodyType = {
 
 export type SignInResponseBodyType =
   | SignInSuccessResponse
-  | SignInErrorResponse;
+  | CommonErrorResponse;
 
 // サインアップの型定義
 
@@ -52,13 +51,13 @@ export type SignUpResponseBodyType =
 
 export type TeacherFetchResponseBodyType =
   | fetchTeachersSuccessResponse
-  | fetchTeachersErrorResponse;
+  | CommonErrorResponse;
 
 // 講師作成トークンの型定義
 
 export type InviteTokenCreateResponseBodyType =
   | InviteTokenSuccessResponse
-  | InviteTokenErrorResponse;
+  | CommonErrorResponse;
 
 // トークン確認の型定義
 export type TokenConfirmPathParams = {
@@ -67,13 +66,13 @@ export type TokenConfirmPathParams = {
 
 export type TokenConfirmResponseBodyType =
   | TokenConfirmSuccessResponse
-  | TokenConfirmErrorResponse;
+  | CommonErrorResponse;
 
 // 講師削除の型定義
 export type TeacherDeletePathParams = {
   id: string;
 };
-export type TeacherDeleteResponseBodyType = teacherDeleteErrorResponse;
+export type TeacherDeleteResponseBodyType = CommonErrorResponse;
 
 // 講師更新の型定義
 export type TeacherUpdatePathParams = {
@@ -84,4 +83,4 @@ export type TeacherUpdateRequestBodyType = updateTeacherRequest;
 
 export type TeacherUpdateResponseBodyType =
   | updateTeacherSuccessResponse
-  | updateTeacherErrorResponse;
+  | CommonErrorResponse;

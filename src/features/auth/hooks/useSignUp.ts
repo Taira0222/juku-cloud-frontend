@@ -1,8 +1,8 @@
-import { isAxiosError } from 'axios';
-import { signUpApi } from '../services/signUpApi';
-import type { SignUpErrorResponse, SignUpRequestData } from '../types/signUp';
+import { signUpApi } from '../api/signUpApi';
+import type {SignUpRequestData } from '../types/signUp';
 import { useCallback, useState } from 'react';
 import { useWarningStore } from '@/stores/warningStore';
+import { getErrorMessage } from '@/lib/errors/getErrorMessage';
 
 export const useSignUp = () => {
   const [error, setError] = useState<string[] | null>(null);
@@ -21,17 +21,7 @@ export const useSignUp = () => {
         await signUpApi(data);
         return { ok: true as const };
       } catch (err: unknown) {
-        // full_message は配列なので空配列を初期値にする
-        let full_msg: string[] = [];
-        if (isAxiosError<SignUpErrorResponse>(err)) {
-          const errors = err.response?.data?.errors;
-          full_msg = errors?.full_messages ?? [
-            '新規登録に失敗しました。もう一度お試しください。',
-          ];
-          // 予期しないエラーの場合
-        } else if (err instanceof Error && err.message) {
-          full_msg = [err.message];
-        }
+        const full_msg = getErrorMessage(err);
         setError(full_msg);
         return { ok: false as const };
       } finally {

@@ -8,9 +8,7 @@ type Errors = {
 };
 
 type CommonServerError = {
-  // api.ts で401/403/404/500 エラー処理はするが、念のため error フィールドは定義しておく
-  error?: string;
-  errors?: Errors[]; // 400/422 の配列
+  errors?: Errors[]; 
 };
 
 export const getErrorMessage = (error: unknown): string[] => {
@@ -23,7 +21,7 @@ export const getErrorMessage = (error: unknown): string[] => {
 
     if (typeof status === 'number') {
       if ([401, 403, 404, 500].includes(status)) {
-        return [response?.error || '予期せぬエラーが発生しました。'];
+        return [response?.errors?.[0].message || '予期せぬエラーが発生しました。'];
       } else if ([400, 422].includes(status)) {
         return (
           response?.errors?.map((error) => error.message) || [

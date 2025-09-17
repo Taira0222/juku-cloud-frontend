@@ -1,17 +1,13 @@
-import { useCallback, useState } from 'react';
-import type {
-  InviteTokenErrorResponse,
-  InviteTokenSuccessResponse,
-} from '@/features/teachers/types/inviteToken';
-import { inviteTokenApi } from '@/features/teachers/api/inviteTokenApi';
-import { isAxiosError } from 'axios';
+import { useCallback, useState } from "react";
+import type { InviteTokenSuccessResponse } from "@/features/teachers/types/inviteToken";
+import { inviteTokenApi } from "@/features/teachers/api/inviteTokenApi";
+import { getErrorMessage } from "@/lib/errors/getErrorMessage";
 
 export const useFetchInviteToken = () => {
   const [inviteToken, setInviteToken] =
     useState<InviteTokenSuccessResponse | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string[] | null>(null);
   const [loading, setLoading] = useState(false);
-  const DEFAULT_ERROR_MESSAGE = '予期せぬエラーが発生しました。';
 
   const refetch = useCallback(async () => {
     setLoading(true);
@@ -20,13 +16,7 @@ export const useFetchInviteToken = () => {
       const response = await inviteTokenApi();
       setInviteToken(response.data);
     } catch (err) {
-      let errorMessage = DEFAULT_ERROR_MESSAGE;
-      // axiosのエラー400 や422
-      if (isAxiosError<InviteTokenErrorResponse>(err)) {
-        errorMessage = err.response?.data.message ?? DEFAULT_ERROR_MESSAGE;
-      } else if (err instanceof Error && err.message) {
-        errorMessage = err.message;
-      }
+      const errorMessage = getErrorMessage(err);
       setError(errorMessage);
     } finally {
       setLoading(false);

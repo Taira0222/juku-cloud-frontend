@@ -1,9 +1,9 @@
 import { useAuthStore } from '@/stores/authStore';
-import { signInApi } from '../services/signInApi';
-import type { AuthHeader, SignInErrorResponse } from '../types/auth';
-import { isAxiosError } from 'axios';
+import { signInApi } from '../api/signInApi';
+import type { AuthHeader } from '../types/auth';
 import { useCallback, useState } from 'react';
 import { useWarningStore } from '@/stores/warningStore';
+import { getErrorMessage } from '@/lib/errors/getErrorMessage';
 
 // ヘッダー名の定数を定義
 const HEADER_ACCESS_TOKEN = 'access-token';
@@ -57,16 +57,7 @@ export const useSignIn = () => {
           return { ok: false as const };
         }
       } catch (err: unknown) {
-        // エラーメッセージを配列として初期化
-        let msg: string[] = [];
-        if (isAxiosError<SignInErrorResponse>(err)) {
-          msg = err.response?.data?.errors ?? [
-            'ログインに失敗しました。もう一度お試しください。',
-          ];
-          // 予期せぬエラーの場合
-        } else if (err instanceof Error && err.message) {
-          msg = [err.message];
-        }
+        const msg = getErrorMessage(err);
         setError(msg);
         return { ok: false as const };
       } finally {

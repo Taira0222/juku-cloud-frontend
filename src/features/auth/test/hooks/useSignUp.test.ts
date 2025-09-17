@@ -2,11 +2,11 @@ import { renderHook, act } from '@testing-library/react';
 import { useWarningStore } from '@/stores/warningStore';
 import type { AxiosResponse } from 'axios';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
-import { signUpApi } from '../services/signUpApi';
-import { useSignUp } from './useSignUp';
-import type { SignUpRequestData } from '../types/signUp';
+import { signUpApi } from '../../api/signUpApi';
+import { useSignUp } from '../../hooks/useSignUp';
+import type { SignUpRequestData } from '../../types/signUp';
 
-vi.mock('../services/signUpApi');
+vi.mock('../../api/signUpApi');
 vi.mock('@/stores/warningStore', () => ({
   useWarningStore: vi.fn(),
 }));
@@ -63,10 +63,13 @@ describe('useSignUp', () => {
       isAxiosError: true,
       response: {
         data: {
-          errors: {
-            full_messages: ['Invalid token'],
-          },
+          errors: [{
+            code: 'INVALID_TOKEN',
+            field: 'token',
+            message: 'Invalid token',
+          }],
         },
+        status: 422
       },
     };
 
@@ -114,7 +117,7 @@ describe('useSignUp', () => {
     });
 
     expect(res).toEqual({ ok: false });
-    expect(result.current.error).toEqual(['Network Error']);
+    expect(result.current.error).toEqual(['通信エラーが発生しました。']);
     expect(result.current.isSubmitting).toBe(false);
   });
 });

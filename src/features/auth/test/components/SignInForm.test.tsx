@@ -1,8 +1,9 @@
 import { beforeEach, describe, expect, test } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import { SignInForm } from './SignInForm';
+
 import { useWarningStore } from '@/stores/warningStore';
+import { SignInForm } from '../../components/SignInForm';
 
 describe('SignIn Form tests', () => {
   // warningMessage をセットしておく

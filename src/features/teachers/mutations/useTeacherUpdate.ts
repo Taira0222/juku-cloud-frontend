@@ -1,15 +1,13 @@
 import { useCallback, useState } from 'react';
-import { isAxiosError } from 'axios';
 import type {
-  updateTeacherErrorResponse,
   updateTeacherRequest,
 } from '../types/teachers';
 import { updateTeacherApi } from '../api/updateTeacherApi';
+import { getErrorMessage } from '@/lib/errors/getErrorMessage';
 
-const DEFAULT_ERROR_MESSAGE = '予期せぬエラーが発生しました。';
 
 export const useTeacherUpdate = () => {
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string[] | null>(null);
   const [loading, setLoading] = useState(false);
 
   const updateTeacher = useCallback(
@@ -21,13 +19,8 @@ export const useTeacherUpdate = () => {
         const responseTeacherId = response.data.teacher_id;
         return { ok: true as const, updatedId: responseTeacherId };
       } catch (err) {
-        let errorMessage = DEFAULT_ERROR_MESSAGE;
-        if (isAxiosError<updateTeacherErrorResponse>(err)) {
-          errorMessage =
-            err.response?.data.errors.join(', ') ?? DEFAULT_ERROR_MESSAGE;
-        } else if (err instanceof Error && err.message) {
-          errorMessage = err.message;
-        }
+        const errorMessage = getErrorMessage(err)
+        
         setError(errorMessage);
         return { ok: false as const };
       } finally {

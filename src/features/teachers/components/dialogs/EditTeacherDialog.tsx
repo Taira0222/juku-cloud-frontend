@@ -1,6 +1,6 @@
-import { Button } from '@/components/ui/form/Button/button';
-import { Input } from '@/components/ui/form/Input/input';
-import { Label } from '@/components/ui/form/Label/label';
+import { Button } from "@/components/ui/form/Button/button";
+import { Input } from "@/components/ui/form/Input/input";
+import { Label } from "@/components/ui/form/Label/label";
 import {
   Dialog,
   DialogContent,
@@ -8,37 +8,38 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/navigation/Dialog/dialog';
+} from "@/components/ui/navigation/Dialog/dialog";
 import {
   Navigate,
   useLocation,
   useNavigate,
   useParams,
-} from 'react-router-dom';
-import { useTeachersStore } from '@/stores/teachersStore';
-import { useState, type ChangeEvent, type FormEvent } from 'react';
+} from "react-router-dom";
+import { useTeachersStore } from "@/stores/teachersStore";
+import { useState, type ChangeEvent, type FormEvent } from "react";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/form/Select/select';
-import { EMPLOYMENT_STATUS_TRANSLATIONS } from '@/constants/teacherEmploymentStatusTranslation';
-import { Checkbox } from '@/components/ui/form/CheckBox/checkbox';
-import { SUBJECT_TRANSLATIONS } from '@/constants/subjectTranslations';
-import { Badge } from '@/components/ui/display/Badge/badge';
-import { DAY_OF_WEEK_TRANSLATIONS } from '@/constants/dayOfWeekTranslations';
-import { useIsMobile } from '@/hooks/useMobile';
-import { cn } from '@/lib/utils';
+} from "@/components/ui/form/Select/select";
+import { EMPLOYMENT_STATUS_TRANSLATIONS } from "@/constants/teacherEmploymentStatusTranslation";
+import { Checkbox } from "@/components/ui/form/CheckBox/checkbox";
+import { SUBJECT_TRANSLATIONS } from "@/constants/subjectTranslations";
+import { Badge } from "@/components/ui/display/Badge/badge";
+import { DAY_OF_WEEK_TRANSLATIONS } from "@/constants/dayOfWeekTranslations";
+import { useIsMobile } from "@/hooks/useMobile";
+import { cn } from "@/lib/utils";
 
-import { useTeacherUpdate } from '../../mutations/useTeacherUpdate';
-import { toast } from 'sonner';
-import SpinnerWithText from '@/components/common/status/Loading';
-import { formatEditData } from '../../utils/formatEditData';
+import { useTeacherUpdate } from "../../mutations/useTeacherUpdate";
+import { toast } from "sonner";
+import SpinnerWithText from "@/components/common/status/Loading";
+import { formatEditData } from "../../utils/formatEditData";
+import { ErrorDisplay } from "@/components/common/status/ErrorDisplay";
 
 // toggleInArray を使用するkey の型
-type ToggleableKeys = 'subjects' | 'available_days';
+type ToggleableKeys = "subjects" | "available_days";
 
 export const EditTeacherDialog = () => {
   const navigate = useNavigate();
@@ -55,8 +56,8 @@ export const EditTeacherDialog = () => {
   const teacher = detailDrawer.find((t) => t.id === teacherId);
 
   // 講師の初期値
-  const initialName = teacher?.name || '';
-  const initialEmploymentStatus = teacher?.employment_status || '';
+  const initialName = teacher?.name || "";
+  const initialEmploymentStatus = teacher?.employment_status || "";
   const initialSubjects = teacher?.class_subjects.map((s) => s.name) || [];
   const initialAvailableDays = teacher?.available_days.map((d) => d.name) || [];
 
@@ -136,7 +137,7 @@ export const EditTeacherDialog = () => {
     if (result.ok) {
       const updatedId = result.updatedId;
       if (updatedId == null) {
-        toast.error('APIレスポンスに更新IDが含まれていません。');
+        toast.error("APIレスポンスに更新IDが含まれていません。");
         return;
       }
       updateTeacherLocal(updatedId, {
@@ -146,10 +147,10 @@ export const EditTeacherDialog = () => {
         available_days: formatDaysData(),
       });
 
-      toast.success('更新に成功しました');
+      toast.success("更新に成功しました");
       handleClose();
     } else {
-      toast.error('更新に失敗しました');
+      toast.error("更新に失敗しました");
     }
   };
 
@@ -158,17 +159,17 @@ export const EditTeacherDialog = () => {
       <DialogContent
         onOpenAutoFocus={(e) => e.preventDefault()} // iOS safariのフォーカスずれ防止
         className={cn(
-          'sm:max-w-lg overflow-y-auto',
+          "sm:max-w-lg overflow-y-auto",
           isMobile
-            ? 'top-12 translate-y-0 max-h-[85dvh]' // モバイル: 上寄せ + 本体スクロール
-            : 'top-1/2 -translate-y-1/2 max-h-[90dvh]' // デスクトップ: 中央寄せ
+            ? "top-12 translate-y-0 max-h-[85dvh]" // モバイル: 上寄せ + 本体スクロール
+            : "top-1/2 -translate-y-1/2 max-h-[90dvh]" // デスクトップ: 中央寄せ
         )}
       >
         <form onSubmit={handleSubmit} className="px-4 sm:px-6 py-6 space-y-5">
           <DialogHeader>
             <DialogTitle>講師を編集</DialogTitle>
             <div className="text-muted-foreground leading-7">
-              {loading && '読み込み中'}
+              {loading && "読み込み中"}
               {!loading && (
                 <span>講師「{teacher?.name}」の情報を編集します。</span>
               )}
@@ -187,14 +188,14 @@ export const EditTeacherDialog = () => {
           {/* 正常時のレンダリング */}
           {!loading && (
             <>
-              {error && <div className="text-sm text-red-500">{error}</div>}
+              <ErrorDisplay error={error} />
               <div className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="teacherName">講師名</Label>
                   <Input
                     id="teacherName"
                     value={formData.name}
-                    onChange={handleInputChange('name')}
+                    onChange={handleInputChange("name")}
                     placeholder="講師名を入力してください"
                     required
                   />
@@ -236,7 +237,7 @@ export const EditTeacherDialog = () => {
                               id={checkboxId}
                               checked={formData.subjects.includes(key)}
                               onCheckedChange={() =>
-                                toggleInArray('subjects', key)
+                                toggleInArray("subjects", key)
                               }
                             />
                             <Label
@@ -259,14 +260,14 @@ export const EditTeacherDialog = () => {
                       {formData.subjects.map((v) => {
                         const label = SUBJECT_TRANSLATIONS[v]?.name ?? v;
                         const Icon = SUBJECT_TRANSLATIONS[v]?.icon;
-                        const color = SUBJECT_TRANSLATIONS[v]?.color ?? 'gray';
+                        const color = SUBJECT_TRANSLATIONS[v]?.color ?? "gray";
 
                         return (
                           <Badge
                             key={v}
                             variant="secondary"
                             className={`cursor-pointer text-muted-foreground inline-flex items-center gap-1 ${color}`}
-                            onClick={() => toggleInArray('subjects', v)}
+                            onClick={() => toggleInArray("subjects", v)}
                             aria-label={`${label} を削除`}
                           >
                             {Icon && (
@@ -276,7 +277,7 @@ export const EditTeacherDialog = () => {
                               />
                             )}
                             <span>{label}</span>
-                            <span aria-hidden="true">✕</span>{' '}
+                            <span aria-hidden="true">✕</span>{" "}
                           </Badge>
                         );
                       })}
@@ -297,7 +298,7 @@ export const EditTeacherDialog = () => {
                               id={checkboxId}
                               checked={formData.available_days.includes(key)}
                               onCheckedChange={() =>
-                                toggleInArray('available_days', key)
+                                toggleInArray("available_days", key)
                               }
                               aria-label={name}
                             />
