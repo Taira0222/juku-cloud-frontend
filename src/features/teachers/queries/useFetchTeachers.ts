@@ -2,19 +2,17 @@ import { useCallback, useEffect, useState } from 'react';
 import { fetchTeachers } from '@/features/teachers/api/teachersApi';
 import {
   type currentUser,
-  type fetchTeachersErrorResponse,
   type teachers,
 } from '@/features/teachers/types/teachers';
 import { isAxiosError } from 'axios';
-
-const DEFAULT_ERROR_MESSAGE = '予期せぬエラーが発生しました。';
+import { getErrorMessage } from '@/lib/errors/getErrorMessage';
 
 export const useFetchTeachers = (enabled: boolean = true) => {
   const [currentUserData, setCurrentUserData] = useState<currentUser | null>(
     null
   );
   const [teachersData, setTeachersData] = useState<teachers>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string[] | null>(null);
   const [loading, setLoading] = useState<boolean>(enabled);
 
   // リクエストがキャンセルされたかどうかを判定する関数
@@ -30,12 +28,7 @@ export const useFetchTeachers = (enabled: boolean = true) => {
       setTeachersData(response.data.teachers);
     } catch (err) {
       if (isCanceled(err)) return;
-      let errorMessage = DEFAULT_ERROR_MESSAGE;
-      if (isAxiosError<fetchTeachersErrorResponse>(err)) {
-        errorMessage = err.response?.data?.error || DEFAULT_ERROR_MESSAGE;
-      } else if (err instanceof Error && err.message) {
-        errorMessage = err.message;
-      }
+      const errorMessage = getErrorMessage(err);
       setError(errorMessage);
     } finally {
       setLoading(false);

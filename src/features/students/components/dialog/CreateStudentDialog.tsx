@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -6,22 +6,23 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/navigation/Dialog/dialog';
-import { Button } from '@/components/ui/form/Button/button';
-import { IconPlus } from '@tabler/icons-react';
-import { StudentForm } from '../StudentForm/StudentForm';
-import { useStudentForm } from '../../hooks/useStudentForm';
-import { useTeachersForStudent } from '../../hooks/useTeachersForStudent';
-import { useCreateStudentMutation } from '../../mutations/useCreateStudentMutation';
-import { toast } from 'sonner';
-import SpinnerWithText from '@/components/common/status/Loading';
-import { cn } from '@/lib/utils';
-import { useIsMobile } from '@/hooks/useMobile';
+} from "@/components/ui/navigation/Dialog/dialog";
+import { Button } from "@/components/ui/form/Button/button";
+import { IconPlus } from "@tabler/icons-react";
+import { StudentForm } from "../StudentForm/StudentForm";
+import { useStudentForm } from "../../hooks/useStudentForm";
+import { useTeachersForStudent } from "../../hooks/useTeachersForStudent";
+import { useCreateStudentMutation } from "../../mutations/useCreateStudentMutation";
+import { toast } from "sonner";
+import SpinnerWithText from "@/components/common/status/Loading";
+import { cn } from "@/lib/utils";
+import { useIsMobile } from "@/hooks/useMobile";
+import { ErrorDisplay } from "@/components/common/status/ErrorDisplay";
 
 export const CreateStudentDialog = () => {
   const isMobile = useIsMobile();
   const [open, setOpen] = useState(false);
-  const { value, setValue, submit, reset } = useStudentForm('create');
+  const { value, setValue, submit, reset } = useStudentForm("create");
   const { loading, error, teachers } = useTeachersForStudent(open);
   const { mutate, isPending } = useCreateStudentMutation({
     onSuccess: () => {
@@ -47,10 +48,10 @@ export const CreateStudentDialog = () => {
       </DialogTrigger>
       <DialogContent
         className={cn(
-          'sm:max-w-lg overflow-y-auto',
+          "sm:max-w-lg overflow-y-auto",
           isMobile
-            ? 'top-12 translate-y-0 max-h-[85dvh]' // モバイル: 上寄せ + 本体スクロール
-            : 'top-1/2 -translate-y-1/2 max-h-[90dvh]' // デスクトップ: 中央寄せ
+            ? "top-12 translate-y-0 max-h-[85dvh]" // モバイル: 上寄せ + 本体スクロール
+            : "top-1/2 -translate-y-1/2 max-h-[90dvh]" // デスクトップ: 中央寄せ
         )}
       >
         <DialogHeader>
@@ -70,7 +71,7 @@ export const CreateStudentDialog = () => {
             <SpinnerWithText>生徒情報を作成中...</SpinnerWithText>
           </div>
         )}
-        {error && <div className="text-red-500">{error}</div>}
+        <ErrorDisplay error={error} />
         {!loading && !error && !isPending && (
           <StudentForm
             mode="create"

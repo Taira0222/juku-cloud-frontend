@@ -23,12 +23,6 @@ export type SignInSuccessResponse = {
   };
 };
 
-// SignInErrorResponseは、railsでいうresponse.body の部分です。
-export type SignInErrorResponse = {
-  success: boolean;
-  errors: string[];
-};
-
 // SignIn の場合は401のエラー時にリダイレクト は不要
 declare module 'axios' {
   export interface AxiosRequestConfig {

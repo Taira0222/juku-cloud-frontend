@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/form/Button/button';
+import { Button } from "@/components/ui/form/Button/button";
 import {
   Dialog,
   DialogContent,
@@ -6,15 +6,16 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/navigation/Dialog/dialog';
-import { Input } from '@/components/ui/form/Input/input';
-import { Label } from '@/components/ui/form/Label/label';
-import { useEffect, useState } from 'react';
-import { useTeacherDelete } from '../../mutations/useTeacherDelete';
-import { toast } from 'sonner';
-import SpinnerWithText from '@/components/common/status/Loading';
-import { cn } from '@/lib/utils';
-import { useTeachersStore } from '@/stores/teachersStore';
+} from "@/components/ui/navigation/Dialog/dialog";
+import { Input } from "@/components/ui/form/Input/input";
+import { Label } from "@/components/ui/form/Label/label";
+import { useEffect, useState } from "react";
+import { useTeacherDelete } from "../../mutations/useTeacherDelete";
+import { toast } from "sonner";
+import SpinnerWithText from "@/components/common/status/Loading";
+import { cn } from "@/lib/utils";
+import { useTeachersStore } from "@/stores/teachersStore";
+import { ErrorDisplay } from "@/components/common/status/ErrorDisplay";
 
 type Props = {
   open: boolean;
@@ -27,7 +28,7 @@ export const DeleteTeacherDialog = ({
   onOpenChange,
   teacherId,
 }: Props) => {
-  const [confirmText, setConfirmText] = useState('');
+  const [confirmText, setConfirmText] = useState("");
   const [warning, setWarning] = useState<string | null>(null);
   const { error, loading, deleteTeacher } = useTeacherDelete();
   const deleteTeacherLocal = useTeachersStore(
@@ -39,7 +40,7 @@ export const DeleteTeacherDialog = ({
   // 開くたびに入力とエラーを初期化
   useEffect(() => {
     if (open) {
-      setConfirmText('');
+      setConfirmText("");
       setWarning(null);
     }
   }, [open]);
@@ -47,21 +48,21 @@ export const DeleteTeacherDialog = ({
   const onClickDelete = async () => {
     // 文字が一致しているか確認
     if (confirmText !== teacher?.name) {
-      setWarning('名前が一致しません。');
+      setWarning("名前が一致しません。");
       return;
     }
 
-    setConfirmText('');
+    setConfirmText("");
     setWarning(null);
 
     const result = await deleteTeacher(teacherId);
     if (result.ok) {
       onOpenChange(false); // Dialog を閉じる
-      toast.success('講師を削除しました。');
+      toast.success("講師を削除しました。");
       deleteTeacherLocal(teacherId); // teachersStore からteacher を削除して更新
     } else {
       // 削除失敗時の処理
-      toast.error('講師の削除に失敗しました。');
+      toast.error("講師の削除に失敗しました。");
     }
   };
 
@@ -71,13 +72,13 @@ export const DeleteTeacherDialog = ({
         <div className="p-6 sm:p-7 space-y-5">
           <DialogHeader>
             <DialogTitle>
-              {loading && '読み込み中'}
-              {!loading && '講師を削除しますか？'}
+              {loading && "読み込み中"}
+              {!loading && "講師を削除しますか？"}
             </DialogTitle>
 
             <div className="text-muted-foreground leading-7">
               <span>
-                講師 <span className="font-semibold">「{teacher?.name}」</span>{' '}
+                講師 <span className="font-semibold">「{teacher?.name}」</span>{" "}
                 を削除します。
               </span>
             </div>
@@ -109,7 +110,7 @@ export const DeleteTeacherDialog = ({
           {!loading && (
             <>
               {warning && <div className="text-sm text-red-500">{warning}</div>}
-              {error && <div className="text-sm text-red-500">{error}</div>}
+              <ErrorDisplay error={error} />
 
               <section className="space-y-2">
                 <Label htmlFor="confirmTeacherName">確認入力</Label>
@@ -132,11 +133,11 @@ export const DeleteTeacherDialog = ({
                 <Button
                   variant="destructive"
                   onClick={onClickDelete}
-                  aria-label={`講師「${teacher?.name || ''}」を削除する`}
+                  aria-label={`講師「${teacher?.name || ""}」を削除する`}
                   disabled={loading}
-                  className={cn({ 'opacity-50': loading })}
+                  className={cn({ "opacity-50": loading })}
                 >
-                  {loading ? '読み込み中...' : '講師を削除する'}
+                  {loading ? "読み込み中..." : "講師を削除する"}
                 </Button>
               </DialogFooter>
             </>

@@ -1,18 +1,18 @@
-import { Toaster } from '@/components/ui/feedback/Sonner/sonner';
-import { CreateStudentDialog } from '@/features/students/components/dialog/CreateStudentDialog';
-import { useStudentForm } from '@/features/students/hooks/useStudentForm';
-import { useTeachersForStudent } from '@/features/students/hooks/useTeachersForStudent';
-import { useCreateStudentMutation } from '@/features/students/mutations/useCreateStudentMutation';
-import type { createStudentPayload } from '@/features/students/types/students';
+import { Toaster } from "@/components/ui/feedback/Sonner/sonner";
+import { CreateStudentDialog } from "@/features/students/components/dialog/CreateStudentDialog";
+import { useStudentForm } from "@/features/students/hooks/useStudentForm";
+import { useTeachersForStudent } from "@/features/students/hooks/useTeachersForStudent";
+import { useCreateStudentMutation } from "@/features/students/mutations/useCreateStudentMutation";
+import type { createStudentPayload } from "@/features/students/types/students";
 import {
   createStudentMockPayload,
   initialMockValue,
   mockTeachers,
-} from '@/tests/fixtures/students/students';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { beforeEach, describe, expect, test, vi } from 'vitest';
+} from "@/tests/fixtures/students/students";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { beforeEach, describe, expect, test, vi } from "vitest";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -29,24 +29,24 @@ const wrapper = () => {
   );
 };
 
-vi.mock('@/features/students/hooks/useTeachersForStudent', () => ({
+vi.mock("@/features/students/hooks/useTeachersForStudent", () => ({
   useTeachersForStudent: vi.fn(),
 }));
 
-vi.mock('@/features/students/mutations/useCreateStudentMutation', () => ({
+vi.mock("@/features/students/mutations/useCreateStudentMutation", () => ({
   useCreateStudentMutation: vi.fn(),
 }));
 
-vi.mock('@/features/students/hooks/useStudentForm', () => ({
+vi.mock("@/features/students/hooks/useStudentForm", () => ({
   useStudentForm: vi.fn(),
 }));
 
-describe('CreateStudentDialog', () => {
+describe("CreateStudentDialog", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     queryClient.clear();
   });
-  test('should open and close the dialog correctly and reset the form', async () => {
+  test("should open and close the dialog correctly and reset the form", async () => {
     const user = userEvent.setup();
     const mockSetValue = vi.fn();
     const mockReset = vi.fn();
@@ -71,30 +71,30 @@ describe('CreateStudentDialog', () => {
 
     wrapper();
 
-    const openButton = screen.getByRole('button', { name: /生徒の追加/ });
+    const openButton = screen.getByRole("button", { name: /生徒の追加/ });
     expect(openButton).toBeInTheDocument();
 
     await user.click(openButton);
 
-    expect(screen.getByText('生徒を新規作成')).toBeInTheDocument();
+    expect(screen.getByText("生徒を新規作成")).toBeInTheDocument();
     expect(
-      screen.getByText('生徒の基本情報を入力してください。')
+      screen.getByText("生徒の基本情報を入力してください。")
     ).toBeInTheDocument();
 
     const nameInput = screen.getByLabelText(/生徒の名前/);
-    await user.type(nameInput, 'Test Student');
+    await user.type(nameInput, "Test Student");
     expect(mockSetValue).toHaveBeenCalled();
 
     // ダイアログを閉じる
 
-    const closeButton = screen.getByRole('button', { name: 'Close' });
+    const closeButton = screen.getByRole("button", { name: "Close" });
     expect(closeButton).toBeInTheDocument();
     await user.click(closeButton);
 
     expect(mockReset).toHaveBeenCalled();
   });
 
-  test('should call mutate when form is submitted', async () => {
+  test("should call mutate when form is submitted", async () => {
     const user = userEvent.setup();
     const mockMutate = vi.fn();
     const mockReset = vi.fn();
@@ -130,17 +130,17 @@ describe('CreateStudentDialog', () => {
 
     wrapper();
 
-    const openButton = screen.getByRole('button', { name: /生徒の追加/ });
+    const openButton = screen.getByRole("button", { name: /生徒の追加/ });
     expect(openButton).toBeInTheDocument();
 
     await user.click(openButton);
 
-    expect(screen.getByText('生徒を新規作成')).toBeInTheDocument();
+    expect(screen.getByText("生徒を新規作成")).toBeInTheDocument();
     expect(
-      screen.getByText('生徒の基本情報を入力してください。')
+      screen.getByText("生徒の基本情報を入力してください。")
     ).toBeInTheDocument();
 
-    const submitButton = screen.getByRole('button', { name: '作成' });
+    const submitButton = screen.getByRole("button", { name: "作成" });
     expect(submitButton).toBeInTheDocument();
 
     await user.click(submitButton);
@@ -150,7 +150,7 @@ describe('CreateStudentDialog', () => {
     expect(mockReset).toHaveBeenCalled();
   });
 
-  test('should display error message when form is invalid', async () => {
+  test("should display error message when form is invalid", async () => {
     const user = userEvent.setup();
     // 失敗を返す
     const mockSubmit = vi.fn(
@@ -159,7 +159,7 @@ describe('CreateStudentDialog', () => {
         onInvalid?: (msgs: string[]) => void
       ) => {
         onValid(createStudentMockPayload);
-        onInvalid?.(['生徒名は50文字以内で入力してください']);
+        onInvalid?.(["生徒名は50文字以内で入力してください"]);
         return false;
       }
     );
@@ -176,7 +176,7 @@ describe('CreateStudentDialog', () => {
     } as unknown as ReturnType<typeof useCreateStudentMutation>);
 
     vi.mocked(useStudentForm).mockReturnValue({
-      value: { ...createStudentMockPayload, name: 'a'.repeat(51) }, // 名前が51文字の無効なデータ
+      value: { ...createStudentMockPayload, name: "a".repeat(51) }, // 名前が51文字の無効なデータ
       setValue: vi.fn(),
       submit: mockSubmit,
       reset: vi.fn(),
@@ -184,27 +184,27 @@ describe('CreateStudentDialog', () => {
 
     wrapper();
 
-    const openButton = screen.getByRole('button', { name: /生徒の追加/ });
+    const openButton = screen.getByRole("button", { name: /生徒の追加/ });
     expect(openButton).toBeInTheDocument();
 
     await user.click(openButton);
 
-    expect(screen.getByText('生徒を新規作成')).toBeInTheDocument();
+    expect(screen.getByText("生徒を新規作成")).toBeInTheDocument();
     expect(
-      screen.getByText('生徒の基本情報を入力してください。')
+      screen.getByText("生徒の基本情報を入力してください。")
     ).toBeInTheDocument();
 
-    const submitButton = screen.getByRole('button', { name: '作成' });
+    const submitButton = screen.getByRole("button", { name: "作成" });
     expect(submitButton).toBeInTheDocument();
 
     await user.click(submitButton);
     expect(mockSubmit).toHaveBeenCalled();
     expect(
-      screen.getByText('生徒名は50文字以内で入力してください')
+      screen.getByText("生徒名は50文字以内で入力してください")
     ).toBeInTheDocument();
   });
 
-  test('should display loading state when fetching teachers', async () => {
+  test("should display loading state when fetching teachers", async () => {
     const user = userEvent.setup();
     vi.mocked(useTeachersForStudent).mockReturnValue({
       loading: true,
@@ -226,25 +226,25 @@ describe('CreateStudentDialog', () => {
 
     wrapper();
 
-    const openButton = screen.getByRole('button', { name: /生徒の追加/ });
+    const openButton = screen.getByRole("button", { name: /生徒の追加/ });
     expect(openButton).toBeInTheDocument();
 
     await user.click(openButton);
 
-    expect(screen.getByText('生徒を新規作成')).toBeInTheDocument();
+    expect(screen.getByText("生徒を新規作成")).toBeInTheDocument();
     expect(
-      screen.getByText('生徒の基本情報を入力してください。')
+      screen.getByText("生徒の基本情報を入力してください。")
     ).toBeInTheDocument();
 
     // ローディング表示を確認
-    expect(screen.getByText('講師情報を読み込み中...')).toBeInTheDocument();
+    expect(screen.getByText("講師情報を読み込み中...")).toBeInTheDocument();
   });
 
-  test('should display error state when fetching teachers fails', async () => {
+  test("should display error state when fetching teachers fails", async () => {
     const user = userEvent.setup();
     vi.mocked(useTeachersForStudent).mockReturnValue({
       loading: false,
-      error: '講師の情報の取得に失敗しました。',
+      error: ["講師の情報の取得に失敗しました。"],
       teachers: [],
     });
 
@@ -262,23 +262,23 @@ describe('CreateStudentDialog', () => {
 
     wrapper();
 
-    const openButton = screen.getByRole('button', { name: /生徒の追加/ });
+    const openButton = screen.getByRole("button", { name: /生徒の追加/ });
     expect(openButton).toBeInTheDocument();
 
     await user.click(openButton);
 
-    expect(screen.getByText('生徒を新規作成')).toBeInTheDocument();
+    expect(screen.getByText("生徒を新規作成")).toBeInTheDocument();
     expect(
-      screen.getByText('生徒の基本情報を入力してください。')
+      screen.getByText("生徒の基本情報を入力してください。")
     ).toBeInTheDocument();
 
     // エラー表示を確認
     expect(
-      screen.getByText('講師の情報の取得に失敗しました。')
+      screen.getByText("講師の情報の取得に失敗しました。")
     ).toBeInTheDocument();
   });
 
-  test('should disable submit button when mutation is pending', async () => {
+  test("should disable submit button when mutation is pending", async () => {
     const user = userEvent.setup();
     vi.mocked(useTeachersForStudent).mockReturnValue({
       loading: false,
@@ -300,16 +300,16 @@ describe('CreateStudentDialog', () => {
 
     wrapper();
 
-    const openButton = screen.getByRole('button', { name: /生徒の追加/ });
+    const openButton = screen.getByRole("button", { name: /生徒の追加/ });
     expect(openButton).toBeInTheDocument();
 
     await user.click(openButton);
 
-    expect(screen.getByText('生徒を新規作成')).toBeInTheDocument();
+    expect(screen.getByText("生徒を新規作成")).toBeInTheDocument();
     expect(
-      screen.getByText('生徒の基本情報を入力してください。')
+      screen.getByText("生徒の基本情報を入力してください。")
     ).toBeInTheDocument();
 
-    expect(screen.getByText('生徒情報を作成中...')).toBeInTheDocument();
+    expect(screen.getByText("生徒情報を作成中...")).toBeInTheDocument();
   });
 });

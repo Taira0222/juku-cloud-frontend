@@ -1,13 +1,13 @@
 import { renderHook, act } from '@testing-library/react';
-import { useSignIn } from './useSignIn';
-import { signInApi } from '../services/signInApi';
+import { useSignIn } from '../../hooks/useSignIn';
+import { signInApi } from '../../api/signInApi';
 import { useAuthStore } from '@/stores/authStore';
 import { useWarningStore } from '@/stores/warningStore';
 import type { AxiosResponse } from 'axios';
-import type { AuthHeader } from '../types/auth';
+import type { AuthHeader } from '../../types/auth';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 
-vi.mock('../services/signInApi');
+vi.mock('../../api/signInApi');
 vi.mock('@/stores/authStore', () => ({
   useAuthStore: vi.fn(),
 }));
@@ -101,6 +101,6 @@ describe('useSignIn', () => {
     });
 
     expect(res).toEqual({ ok: false });
-    expect(result.current.error).toEqual(['Network Error']);
+    expect(result.current.error).toEqual(['通信エラーが発生しました。']);
   });
 });

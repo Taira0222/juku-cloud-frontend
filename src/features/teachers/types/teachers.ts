@@ -41,20 +41,10 @@ export type fetchTeachersSuccessResponse = {
   teachers: teachers;
 };
 
-export type fetchTeachersErrorResponse = {
-  error: string;
-};
-
-// teacher 削除のためのデータ型
-
-export type teacherDeleteErrorResponse = {
-  error: string;
-};
-
 // 詳細情報を表示するためのデータ
 export type teacherDetailDrawer = Omit<
   currentUser,
-  'provider' | 'uid' | 'allow_password_change' | 'updated_at' | 'school_id'
+  "provider" | "uid" | "allow_password_change" | "updated_at" | "school_id"
 >;
 
 // teachersStore の型
@@ -82,11 +72,6 @@ export type updateTeacherRequest = {
 // updateTeacherApi の成功時のレスポンスのデータの型
 export type updateTeacherSuccessResponse = {
   teacher_id: number;
-};
-
-// updateTeacherApi のエラー時のレスポンスのデータの型
-export type updateTeacherErrorResponse = {
-  errors: string[];
 };
 
 // updateTeacherLocal(teachersStore) に送信するデータの型

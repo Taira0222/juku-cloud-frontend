@@ -15,7 +15,11 @@ describe('getErrorMessage', () => {
       isAxiosError: true,
       response: {
         data: {
-          error: 'NotFound',
+          errors: [{
+            code: 'NotFound',
+            field: 'email',
+            message: 'NotFound',
+          }]
         },
         status: 404,
       },

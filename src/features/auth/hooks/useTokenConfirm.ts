@@ -1,16 +1,14 @@
 import { useEffect, useState } from 'react';
-import { tokenConfirmApi } from '../services/tokenConfirmApi';
+import { tokenConfirmApi } from '../api/tokenConfirmApi';
 import type {
-  TokenConfirmErrorResponse,
   TokenConfirmSuccessResponse,
 } from '../types/tokenConfirm';
-import { isAxiosError } from 'axios';
+import { getErrorMessage } from '@/lib/errors/getErrorMessage';
 
 export const useTokenConfirm = (token: string | null) => {
   const [loading, setLoading] = useState<boolean>(false);
-  const [tokenError, setTokenError] = useState<string | null>(null);
+  const [tokenError, setTokenError] = useState<string[] | null>(null);
   const [data, setData] = useState<TokenConfirmSuccessResponse | null>(null);
-  const DEFAULT_ERROR_MESSAGE = '予期せぬエラーが発生しました。';
 
   useEffect(() => {
     const confirmToken = async () => {
@@ -19,12 +17,7 @@ export const useTokenConfirm = (token: string | null) => {
         const response = await tokenConfirmApi(token);
         setData(response.data);
       } catch (err) {
-        let errorMessage = DEFAULT_ERROR_MESSAGE;
-        if (isAxiosError<TokenConfirmErrorResponse>(err)) {
-          errorMessage = err.response?.data?.message || DEFAULT_ERROR_MESSAGE;
-        } else if (err instanceof Error && err.message) {
-          errorMessage = err.message;
-        }
+        const errorMessage = getErrorMessage(err)
         setTokenError(errorMessage);
       } finally {
         setLoading(false);

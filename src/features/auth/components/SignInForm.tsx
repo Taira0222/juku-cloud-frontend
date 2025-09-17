@@ -1,18 +1,19 @@
-import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/form/Button/button';
-import { Input } from '@/components/ui/form/Input/input';
-import { Label } from '@/components/ui/form/Label/label';
-import { useState, type FormEvent } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useWarningStore } from '@/stores/warningStore';
-import { useSignIn } from '../../hooks/useSignIn';
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/form/Button/button";
+import { Input } from "@/components/ui/form/Input/input";
+import { Label } from "@/components/ui/form/Label/label";
+import { useState, type FormEvent } from "react";
+import { useNavigate } from "react-router-dom";
+import { useWarningStore } from "@/stores/warningStore";
+import { useSignIn } from "../hooks/useSignIn";
+import { ErrorDisplay } from "@/components/common/status/ErrorDisplay";
 
 export function SignInForm({
   className,
   ...props
-}: React.ComponentProps<'form'>) {
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+}: React.ComponentProps<"form">) {
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
   const navigate = useNavigate();
   const warningMessage = useWarningStore((state) => state.warningMessage);
   const { isSubmitting, error, submit } = useSignIn();
@@ -23,14 +24,14 @@ export function SignInForm({
     const result = await submit(email, password);
 
     if (result?.ok) {
-      navigate('/students', { replace: true });
+      navigate("/students", { replace: true });
     } else {
-      setPassword('');
+      setPassword("");
     }
   };
   return (
     <form
-      className={cn('flex flex-col gap-6', className)}
+      className={cn("flex flex-col gap-6", className)}
       onSubmit={handleSubmit}
       {...props}
     >
@@ -44,17 +45,11 @@ export function SignInForm({
       {warningMessage && (
         <p className="text-red-500 text-center">{warningMessage}</p>
       )}
-      {error && (
-        <div className="text-red-500 text-center text-sm">
-          <ul>
-            {error.map((message, index) => (
-              <li key={index} className="mb-1 last:mb-0">
-                {message}
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+      <ErrorDisplay
+        error={error}
+        className="text-center text-sm"
+        childClassName="mb-1 last:mb-0"
+      />
 
       <div className="grid gap-6">
         <div className="grid gap-3">
@@ -83,12 +78,12 @@ export function SignInForm({
         </div>
         <Button
           type="submit"
-          className={cn('w-full', {
-            'opacity-50 cursor-not-allowed': isSubmitting,
+          className={cn("w-full", {
+            "opacity-50 cursor-not-allowed": isSubmitting,
           })}
           disabled={isSubmitting}
         >
-          {isSubmitting ? 'ログイン中...' : 'ログイン'}
+          {isSubmitting ? "ログイン中..." : "ログイン"}
         </Button>
 
         {/* <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">

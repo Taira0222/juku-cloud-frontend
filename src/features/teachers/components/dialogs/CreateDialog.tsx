@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/form/Button/button';
+import { Button } from "@/components/ui/form/Button/button";
 import {
   Dialog,
   DialogContent,
@@ -7,16 +7,17 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/navigation/Dialog/dialog';
-import { Input } from '@/components/ui/form/Input/input';
-import SpinnerWithText from '@/components/common/status/Loading';
+} from "@/components/ui/navigation/Dialog/dialog";
+import { Input } from "@/components/ui/form/Input/input";
+import SpinnerWithText from "@/components/common/status/Loading";
 
-import { IconPlus } from '@tabler/icons-react';
-import { Check, Copy } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { IconPlus } from "@tabler/icons-react";
+import { Check, Copy } from "lucide-react";
+import { useEffect, useState } from "react";
 
-import { Label } from '@/components/ui/form/Label/label';
-import { useFetchInviteToken } from '../../queries/useFetchInviteToken';
+import { Label } from "@/components/ui/form/Label/label";
+import { useFetchInviteToken } from "../../queries/useFetchInviteToken";
+import { ErrorDisplay } from "@/components/common/status/ErrorDisplay";
 
 export const CreateDialog = () => {
   const [open, setOpen] = useState(false);
@@ -27,7 +28,7 @@ export const CreateDialog = () => {
     ? `${import.meta.env.VITE_FRONTEND_BASE_URL}/sign_up?token=${
         inviteToken.token
       }`
-    : '';
+    : "";
 
   useEffect(() => {
     if (open) {
@@ -48,7 +49,7 @@ export const CreateDialog = () => {
       setTimeout(() => setCopied(false), 2000);
     } catch {
       setCopied(false);
-      setCopyError('コピーに失敗しました。');
+      setCopyError("コピーに失敗しました。");
     }
   };
 
@@ -63,18 +64,18 @@ export const CreateDialog = () => {
       <DialogContent className="sm:max-w-lg">
         <DialogHeader>
           <DialogTitle>
-            {loading && '読み込み中'}
-            {!loading && error && 'エラー'}
-            {!loading && !error && '招待リンクを共有'}
+            {loading && "読み込み中"}
+            {!loading && error && "エラー"}
+            {!loading && !error && "招待リンクを共有"}
           </DialogTitle>
           <DialogDescription>
-            {loading && 'データを読み込んでいます…'}
+            {loading && "データを読み込んでいます…"}
             {!loading &&
               error &&
-              'エラーが発生しました。内容を確認してください。'}
+              "エラーが発生しました。内容を確認してください。"}
             {!loading &&
               !error &&
-              'このURLを講師に送って登録してもらってください。リンクの有効期限は7日間、1回のみ有効です'}
+              "このURLを講師に送って登録してもらってください。リンクの有効期限は7日間、1回のみ有効です"}
           </DialogDescription>
         </DialogHeader>
         {/* API の読み込み中 */}
@@ -84,9 +85,7 @@ export const CreateDialog = () => {
           </div>
         )}
         {/* エラーメッセージの表示 */}
-        {!loading && error && (
-          <div className="text-sm text-red-500">{error}</div>
-        )}{' '}
+        {!loading && error && <ErrorDisplay error={error} />}
         {/* 正常時のレンダリング */}
         {!loading && !error && (
           <>

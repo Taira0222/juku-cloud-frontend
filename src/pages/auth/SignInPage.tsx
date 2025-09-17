@@ -1,11 +1,12 @@
 import { CloudCog } from 'lucide-react';
-import { SignInForm } from '@/features/auth/components/SignInForm/SignInForm';
+
 import {
   Card,
   CardContent,
   CardHeader,
 } from '@/components/ui/layout/Card/card';
 import { Link } from 'react-router-dom';
+import { SignInForm } from '@/features/auth/components/SignInForm';
 
 export const SignInPage = () => {
   return (

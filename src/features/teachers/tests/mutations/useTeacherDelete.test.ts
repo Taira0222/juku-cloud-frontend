@@ -1,23 +1,22 @@
-import { renderHook, waitFor } from '@testing-library/react';
-import type { AxiosError, AxiosResponse } from 'axios';
-import { beforeEach, describe, expect, test, vi } from 'vitest';
-import type { teacherDeleteErrorResponse } from '../../types/teachers';
-import { deleteTeacherApi } from '../../api/deleteTeacherApi';
-import { useTeacherDelete } from '../../mutations/useTeacherDelete';
+import { renderHook, waitFor } from "@testing-library/react";
+import type { AxiosError, AxiosResponse } from "axios";
+import { beforeEach, describe, expect, test, vi } from "vitest";
+import { deleteTeacherApi } from "../../api/deleteTeacherApi";
+import { useTeacherDelete } from "../../mutations/useTeacherDelete";
 
 type DeleteTeacherResult = {
   ok: boolean;
 };
 
-vi.mock('@/features/teachers/api/deleteTeacherApi');
+vi.mock("@/features/teachers/api/deleteTeacherApi");
 const MOCK_ID = 1;
 
-describe('useTeacherDelete', () => {
+describe("useTeacherDelete", () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
-  test('returns ok when it succeeds', async () => {
+  test("returns ok when it succeeds", async () => {
     // Partial ですべてのAxiosResponseでなくてもよくして、部分的なモックを作成する
     // その後、as AxiosResponseで型を強制する
 
@@ -37,16 +36,23 @@ describe('useTeacherDelete', () => {
     });
   });
 
-  test('returns error when send wrong data', async () => {
+  test("returns error when send wrong data", async () => {
     // AxiosErrorのモックを作成
     const axiosLikeError = {
       isAxiosError: true,
       response: {
         data: {
-          error: 'Unexpected Error',
+          errors: [
+            {
+              code: "NOT_FOUND",
+              field: "base",
+              message: "Not Found",
+            },
+          ],
         },
+        status: 404,
       },
-    } as unknown as AxiosError<teacherDeleteErrorResponse>;
+    } as unknown as AxiosError;
 
     vi.mocked(deleteTeacherApi).mockRejectedValueOnce(axiosLikeError);
 
@@ -59,14 +65,14 @@ describe('useTeacherDelete', () => {
 
     await waitFor(() => {
       expect(res).toEqual({ ok: false });
-      expect(result.current.error).toEqual('Unexpected Error');
+      expect(result.current.error).toEqual(["Not Found"]);
       expect(result.current.loading).toBe(false);
     });
   });
 
-  test('sets error message when API call fails', async () => {
+  test("sets error message when API call fails", async () => {
     vi.mocked(deleteTeacherApi).mockRejectedValueOnce(
-      new Error('Network Error')
+      new Error("Network Error")
     );
 
     const { result } = renderHook(() => useTeacherDelete());
@@ -78,7 +84,7 @@ describe('useTeacherDelete', () => {
 
     await waitFor(() => {
       expect(res).toEqual({ ok: false });
-      expect(result.current.error).toEqual('Network Error');
+      expect(result.current.error).toEqual(["通信エラーが発生しました。"]);
       expect(result.current.loading).toBe(false);
     });
   });

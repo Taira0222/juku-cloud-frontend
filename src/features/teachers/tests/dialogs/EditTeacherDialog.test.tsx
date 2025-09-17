@@ -183,7 +183,7 @@ describe('EditTeacherDialog', () => {
       .mockResolvedValue({ ok: false, updatedId: undefined });
 
     vi.mocked(useTeacherUpdate).mockReturnValue({
-      error: 'Update failed',
+      error: ['Update failed'],
       loading: false,
       updateTeacher: updateTeacherMock,
     });
