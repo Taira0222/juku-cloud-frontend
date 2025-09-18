@@ -1,15 +1,14 @@
-import { useEffect, useState } from 'react';
-import type { Draft, StudentFormMode } from '../types/studentForm';
-import { normalizePayload } from '../utils/studentFormTransforms';
-import { createStudentSchema, editStudentSchema } from '../types/students';
-import { z } from 'zod';
-
-type EditDraft = Draft & { id: number };
-
-type SchemaByMode = {
-  create: typeof createStudentSchema;
-  edit: typeof editStudentSchema;
-};
+import { useEffect, useState } from "react";
+import type {
+  Draft,
+  DraftByMode,
+  EditDraft,
+  PayloadByMode,
+  SchemaByMode,
+  StudentFormMode,
+} from "../types/studentForm";
+import { normalizePayload } from "../utils/studentFormTransforms";
+import { createStudentSchema, editStudentSchema } from "../types/students";
 
 // satisfiesで型を保証
 const SCHEMA = {
@@ -18,24 +17,16 @@ const SCHEMA = {
 } as const satisfies SchemaByMode;
 
 export const INITIAL_DRAFT: Draft = {
-  name: '',
-  school_stage: '',
+  name: "",
+  school_stage: "",
   grade: null,
-  status: '',
-  desired_school: '',
-  joined_on: '',
+  status: "",
+  desired_school: "",
+  joined_on: "",
   subject_ids: [],
   available_day_ids: [],
   assignments: [],
 };
-
-// モードに応じて submit の型を切り替える
-type PayloadByMode<M extends StudentFormMode> = z.infer<SchemaByMode[M]>;
-
-// modeに応じてDraftの型を切り替える
-type DraftByMode<T extends StudentFormMode> = T extends 'edit'
-  ? EditDraft
-  : Draft;
 
 const getSchema = <M extends StudentFormMode>(m: M) => SCHEMA[m];
 export const INITIAL_ERROR_MESSAGES =
@@ -47,9 +38,9 @@ export const useStudentForm = <T extends StudentFormMode>(
 ) => {
   // 初期値の設定
   const makeInitial = (): DraftByMode<T> => {
-    if (mode === 'edit') {
+    if (mode === "edit") {
       // editモードの場合、initialが必須でid:numberを持つことを保証
-      if (!initial || typeof (initial as EditDraft).id !== 'number') {
+      if (!initial || typeof (initial as EditDraft).id !== "number") {
         throw new Error(INITIAL_ERROR_MESSAGES);
       }
       return initial as DraftByMode<T>;
@@ -60,7 +51,7 @@ export const useStudentForm = <T extends StudentFormMode>(
   const [value, setValue] = useState<DraftByMode<T>>(makeInitial());
 
   useEffect(() => {
-    if (mode === 'edit' && initial) setValue(initial);
+    if (mode === "edit" && initial) setValue(initial);
   }, [mode, initial]);
 
   // modeに応じてスキーマを切り替え

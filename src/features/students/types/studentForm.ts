@@ -1,3 +1,6 @@
+import type z from "zod";
+import type { createStudentSchema, editStudentSchema } from "./students";
+
 export type Assignment = {
   teacher_id: number;
   subject_id: number;
@@ -16,7 +19,9 @@ export type Draft = {
   assignments: Assignment[];
 };
 
-export type StudentFormMode = 'create' | 'edit';
+export type EditDraft = Draft & { id: number };
+
+export type StudentFormMode = "create" | "edit";
 
 export type Teacher = {
   id: number;
@@ -25,13 +30,30 @@ export type Teacher = {
   workable_days: { id: number; name: string }[];
 };
 
-export type ToggleableKeys = 'subject_ids' | 'available_day_ids';
+export type SchemaByMode = {
+  create: typeof createStudentSchema;
+  edit: typeof editStudentSchema;
+};
 
-export type StudentFormProps = {
-  mode: StudentFormMode;
-  value: Draft;
-  onChange: (next: Draft | ((prev: Draft) => Draft)) => void;
-  onSubmit: (valid: Draft) => void;
+// モードに応じて submit の型を切り替える
+export type PayloadByMode<M extends StudentFormMode> = z.infer<SchemaByMode[M]>;
+
+// modeに応じてDraftの型を切り替える
+export type DraftByMode<T extends StudentFormMode> = T extends "edit"
+  ? EditDraft
+  : Draft;
+
+export type ToggleableKeys = "subject_ids" | "available_day_ids";
+
+export type OnChange<M extends StudentFormMode> = (
+  updater: DraftByMode<M> | ((prev: DraftByMode<M>) => DraftByMode<M>)
+) => void;
+
+export type StudentFormProps<M extends StudentFormMode> = {
+  mode: M;
+  value: DraftByMode<M>;
+  onChange: OnChange<M>;
+  onSubmit: (valid: DraftByMode<M>) => void;
   loading?: boolean;
   teachers: Teacher[];
 };
