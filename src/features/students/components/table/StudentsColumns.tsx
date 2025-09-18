@@ -1,15 +1,15 @@
-import { Checkbox } from '@/components/ui/form/CheckBox/checkbox';
-import type { ColumnDef } from '@tanstack/react-table';
-import { z } from 'zod';
+import { Checkbox } from "@/components/ui/form/CheckBox/checkbox";
+import type { ColumnDef } from "@tanstack/react-table";
+import { z } from "zod";
 
-import { StudentsRawActions } from './StudentsRawActions';
-import type { studentSchema } from '../../types/students';
-import { Link } from 'react-router-dom';
-import { formatGrade } from '@/utils/formatGrade';
-import { formatDayOfWeek } from '@/utils/formatDayOfWeek';
-import { formatIsoToDate } from '@/utils/formatIsoToDate';
-import { subjectBadgeUtils } from '@/utils/subjectBadgeUtils';
-import { statusBadgeUtils } from '@/utils/statusBadgeUtils';
+import { StudentsRawActions } from "./StudentsRawActions";
+import type { studentSchema } from "../../types/students";
+import { Link } from "react-router-dom";
+import { formatGrade } from "@/utils/formatGrade";
+import { formatDayOfWeek } from "@/utils/formatDayOfWeek";
+import { formatIsoToDate } from "@/utils/formatIsoToDate";
+import { subjectBadgeUtils } from "@/utils/subjectBadgeUtils";
+import { statusBadgeUtils } from "@/utils/statusBadgeUtils";
 
 // columns を関数として定義し、getDetailDrawerData を受け取る
 export const StudentsColumns = (): ColumnDef<
@@ -17,13 +17,13 @@ export const StudentsColumns = (): ColumnDef<
 >[] => {
   return [
     {
-      id: 'select',
+      id: "select",
       header: ({ table }) => (
         <div className="flex items-center justify-center px-4">
           <Checkbox
             checked={
               table.getIsAllPageRowsSelected() ||
-              (table.getIsSomePageRowsSelected() && 'indeterminate')
+              (table.getIsSomePageRowsSelected() && "indeterminate")
             }
             onCheckedChange={(value) =>
               table.toggleAllPageRowsSelected(!!value)
@@ -45,8 +45,8 @@ export const StudentsColumns = (): ColumnDef<
       enableHiding: false,
     },
     {
-      accessorKey: 'name',
-      header: '名前',
+      accessorKey: "name",
+      header: "名前",
       cell: ({ row }) => {
         return (
           <Link to={`/dashboard/${row.original.id}`}>{row.original.name}</Link>
@@ -55,8 +55,8 @@ export const StudentsColumns = (): ColumnDef<
       enableHiding: false,
     },
     {
-      accessorKey: 'grade',
-      header: '学年',
+      accessorKey: "grade",
+      header: "学年",
       cell: ({ row }) => {
         const formattedGrade = formatGrade(
           row.original.school_stage,
@@ -66,17 +66,17 @@ export const StudentsColumns = (): ColumnDef<
       },
     },
     {
-      accessorKey: 'status',
-      header: '通塾状況',
+      accessorKey: "status",
+      header: "通塾状況",
       cell: ({ row }) => {
         const { createStatusBadge } = statusBadgeUtils();
-        return createStatusBadge(row.original.status, 'student');
+        return createStatusBadge(row.original.status, "student");
       },
     },
 
     {
-      accessorKey: 'class_subjects',
-      header: '受講科目',
+      accessorKey: "class_subjects",
+      header: "受講科目",
       cell: ({ row }) => {
         const { createIconTranslationBadge } = subjectBadgeUtils();
         const subjects = row.original.class_subjects.map((cs) => (
@@ -86,29 +86,29 @@ export const StudentsColumns = (): ColumnDef<
       },
     },
     {
-      accessorKey: 'available_days',
-      header: '授業曜日',
+      accessorKey: "available_days",
+      header: "授業曜日",
       cell: ({ row }) => {
         return (
           <div className="text-muted-foreground">
             {row.original.available_days
               .map((day) => formatDayOfWeek(day.name))
-              .join(', ')}
+              .join(", ")}
           </div>
         );
       },
     },
     {
-      accessorKey: 'joined_on',
-      header: '入塾日',
+      accessorKey: "joined_on",
+      header: "入塾日",
       cell: ({ row }) => {
         const joinedOn = formatIsoToDate(row.original.joined_on);
         return <div className="text-muted-foreground">{joinedOn}</div>;
       },
     },
     {
-      id: 'actions',
-      cell: ({ row }) => <StudentsRawActions studentId={row.original.id} />,
+      id: "actions",
+      cell: ({ row }) => <StudentsRawActions student={row.original} />,
     },
   ];
 };

@@ -1,10 +1,19 @@
-import type { ChangeEvent } from 'react';
-import type { Draft, Assignment, ToggleableKeys } from '../types/studentForm';
-import { toggleAssignment, toggleValueById } from './studentFormToggles';
+import type { ChangeEvent } from "react";
+import type {
+  Assignment,
+  ToggleableKeys,
+  OnChange,
+  StudentFormMode,
+  DraftByMode,
+} from "../types/studentForm";
+import { toggleAssignment, toggleValueById } from "./studentFormToggles";
 
-type OnChange = (updater: Draft | ((prev: Draft) => Draft)) => void;
+export const createStudentFormHandlers = <M extends StudentFormMode>(
+  onChange: OnChange<M>
+) => {
+  // Draftの型をmodeに応じて切り替え
+  type Draft = DraftByMode<M>;
 
-export const createStudentFormHandlers = (onChange: OnChange) => {
   const handleInputChange =
     (field: keyof Draft) => (e: ChangeEvent<HTMLInputElement>) => {
       onChange((prev) => ({ ...prev, [field]: e.target.value }));
@@ -20,8 +29,8 @@ export const createStudentFormHandlers = (onChange: OnChange) => {
   // 学年セレクトの際に使用
   const handleStudentOptionChange = (value: string) => {
     onChange((prev) => {
-      if (value === '') return { ...prev, school_stage: '', grade: null };
-      const [stage, grade] = value.split('-');
+      if (value === "") return { ...prev, school_stage: "", grade: null };
+      const [stage, grade] = value.split("-");
       return { ...prev, school_stage: stage, grade: Number(grade) };
     });
   };

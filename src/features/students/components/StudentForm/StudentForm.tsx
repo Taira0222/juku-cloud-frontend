@@ -1,37 +1,40 @@
-import { useMemo, useState, useEffect } from 'react';
-import type { StudentFormProps } from '../../types/studentForm';
-import { createStudentFormHandlers } from '../../utils/studentFormHandlers';
-import { buildTeachersByTab } from '../../utils/studentFormDerived';
-import { ALL_DAY_IDS, shortDayLabel } from '../../constants/studentForm';
+import { useMemo, useState, useEffect } from "react";
+import type {
+  StudentFormMode,
+  StudentFormProps,
+} from "../../types/studentForm";
+import { createStudentFormHandlers } from "../../utils/studentFormHandlers";
+import { buildTeachersByTab } from "../../utils/studentFormDerived";
+import { ALL_DAY_IDS, shortDayLabel } from "../../constants/studentForm";
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-} from '@/components/ui/navigation/Tabs/tabs';
-import { DAY_OF_WEEK_WITH_ID } from '@/constants/dayOfWeekTranslations';
+} from "@/components/ui/navigation/Tabs/tabs";
+import { DAY_OF_WEEK_WITH_ID } from "@/constants/dayOfWeekTranslations";
 
-import { cn } from '@/lib/utils';
+import { cn } from "@/lib/utils";
 
-import { NameField } from './parts/NameField';
-import { LevelSelect } from './parts/LevelSelect';
-import { DesiredSchoolField } from './parts/DesiredSchoolField';
-import { JoinedOnPicker } from './parts/JoinedOnPicker';
-import { StatusSelect } from './parts/StatusSelect';
-import { SubjectCheckboxes } from './parts/SubjectCheckboxes';
-import { DayCheckboxes } from './parts/DayCheckboxes';
-import { TeacherAssignmentTabs } from './parts/TeacherAssignmentTabs';
-import { SelectedAssignmentsBadges } from './parts/SelectedAssignmentsBadges';
-import { Button } from '@/components/ui/form/Button/button';
+import { NameField } from "./parts/NameField";
+import { LevelSelect } from "./parts/LevelSelect";
+import { DesiredSchoolField } from "./parts/DesiredSchoolField";
+import { JoinedOnPicker } from "./parts/JoinedOnPicker";
+import { StatusSelect } from "./parts/StatusSelect";
+import { SubjectCheckboxes } from "./parts/SubjectCheckboxes";
+import { DayCheckboxes } from "./parts/DayCheckboxes";
+import { TeacherAssignmentTabs } from "./parts/TeacherAssignmentTabs";
+import { SelectedAssignmentsBadges } from "./parts/SelectedAssignmentsBadges";
+import { Button } from "@/components/ui/form/Button/button";
 
-export const StudentForm = ({
+export const StudentForm = <M extends StudentFormMode>({
   mode,
   value,
   onChange,
   onSubmit,
   loading,
   teachers,
-}: StudentFormProps) => {
+}: StudentFormProps<M>) => {
   // フォーム操作ハンドラ
   const H = createStudentFormHandlers(onChange);
 
@@ -79,19 +82,19 @@ export const StudentForm = ({
 
         <JoinedOnPicker
           value={value}
-          onChange={H.handleSelectChange('joined_on')}
+          onChange={H.handleSelectChange("joined_on")}
         />
 
-        <StatusSelect value={value} onChange={H.handleSelectChange('status')} />
+        <StatusSelect value={value} onChange={H.handleSelectChange("status")} />
 
         <SubjectCheckboxes
           value={value}
-          toggle={(id: number) => H.toggleInArray('subject_ids', id)}
+          toggle={(id: number) => H.toggleInArray("subject_ids", id)}
         />
 
         <DayCheckboxes
           value={value}
-          toggle={(id: number) => H.toggleInArray('available_day_ids', id)}
+          toggle={(id: number) => H.toggleInArray("available_day_ids", id)}
         />
 
         {/* 担当講師 */}
@@ -119,7 +122,7 @@ export const StudentForm = ({
                   .map((id) => {
                     const label =
                       DAY_OF_WEEK_WITH_ID.find((day) => day.id === id)?.name ??
-                      '？';
+                      "？";
                     return (
                       <TabsTrigger key={id} value={String(id)}>
                         {shortDayLabel(label)}
@@ -138,8 +141,8 @@ export const StudentForm = ({
                   >
                     <div
                       className={cn(
-                        'overflow-y-auto rounded-md border p-3 space-y-2',
-                        'max-h-60'
+                        "overflow-y-auto rounded-md border p-3 space-y-2",
+                        "max-h-60"
                       )}
                     >
                       <TeacherAssignmentTabs
@@ -165,7 +168,7 @@ export const StudentForm = ({
 
       <div className="mt-6 gap-2 sm:justify-between">
         <Button type="submit" disabled={loading}>
-          {mode === 'edit' ? '更新' : '作成'}
+          {mode === "edit" ? "更新" : "作成"}
         </Button>
       </div>
     </form>
