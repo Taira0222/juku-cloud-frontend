@@ -24,10 +24,10 @@ export const EditStudentDialog = () => {
   const studentId = id ? parseInt(id, 10) : 0;
 
   const { student } = useStudentForEdit(studentId);
-  const formattedStudent = useMemo(
-    () => studentFormatForEdit(student),
-    [student]
-  );
+  const formattedStudent = useMemo(() => {
+    if (!student) return null;
+    return studentFormatForEdit(student);
+  }, [student]);
 
   const isMobile = useIsMobile();
   const navigate = useNavigate();
