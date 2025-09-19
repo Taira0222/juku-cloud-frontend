@@ -29,6 +29,12 @@ export const EditStudentDialog = () => {
   const studentId = id ? parseInt(id, 10) : 0;
   const location = useLocation();
   const state = location.state;
+  const hasBackground = !!state?.background;
+
+  // エラーハンドリングによる画面遷移
+  if (!hasBackground) {
+    return <Navigate to="/students" replace />;
+  }
 
   const { student } = useStudentForEdit(studentId, state);
   const formattedStudent = useMemo(() => {
@@ -56,14 +62,6 @@ export const EditStudentDialog = () => {
       reset();
     },
   });
-
-  // エラーハンドリングによる画面遷移
-  if (state?.background === undefined) {
-    return <Navigate to="/forbidden" state={{ from: location }} replace />;
-  }
-  if (!student) {
-    return <Navigate to="/students" state={{ from: location }} replace />;
-  }
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>

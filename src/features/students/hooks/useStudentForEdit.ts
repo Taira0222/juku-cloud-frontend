@@ -5,7 +5,7 @@ import type { editLocationState } from "../types/students";
 
 export const useStudentForEdit = (
   studentId: number,
-  state: editLocationState
+  state?: editLocationState
 ) => {
   const stateStudent = state?.student;
   const filters = useStudentsStore((state) => state.filters);

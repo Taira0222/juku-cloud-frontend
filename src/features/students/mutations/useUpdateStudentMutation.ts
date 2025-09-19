@@ -4,27 +4,17 @@ import {
   type UseMutationOptions,
 } from "@tanstack/react-query";
 import { studentKeys } from "../key";
-import type {
-  updateStudentPayload,
-  updateStudentResponseSchema,
-} from "../types/students";
+import type { Student, updateStudentPayload } from "../types/students";
 import { toast } from "sonner";
 import { getErrorMessage } from "@/lib/errors/getErrorMessage";
-import type z from "zod";
 import { studentUpdateApi } from "../api/studentUpdateApi";
 
-type updateStudentResponse = z.infer<typeof updateStudentResponseSchema>;
-
 export const useUpdateStudentMutation = (
-  options?: UseMutationOptions<
-    updateStudentResponse,
-    unknown,
-    updateStudentPayload
-  >
+  options?: UseMutationOptions<Student, unknown, updateStudentPayload>
 ) => {
   const queryClient = useQueryClient();
 
-  return useMutation<updateStudentResponse, Error, updateStudentPayload>({
+  return useMutation<Student, Error, updateStudentPayload>({
     mutationFn: (payload: updateStudentPayload) => studentUpdateApi(payload),
     ...options,
     onSuccess: (student, variables, context) => {
