@@ -156,9 +156,15 @@ export const createStudentSchema = z.object({
 export type createStudentPayload = z.infer<typeof createStudentSchema>;
 export type Student = z.infer<typeof studentSchema>;
 
-// 編集の際に使うスキーマ
+// update 時の schema
 export const editStudentSchema = createStudentSchema.extend({
   id: z
     .number({ message: "生徒IDは数値である必要があります" })
     .positive({ message: "生徒IDは正の数である必要があります" }),
 });
+export type updateStudentPayload = z.infer<typeof editStudentSchema>;
+
+export type editLocationState = {
+  background?: Location;
+  student?: Student;
+};
