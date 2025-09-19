@@ -9,7 +9,6 @@ import {
 import { StudentForm } from "../StudentForm/StudentForm";
 import { useStudentForm } from "../../hooks/useStudentForm";
 import { useTeachersForStudent } from "../../hooks/useTeachersForStudent";
-import { useCreateStudentMutation } from "../../mutations/useCreateStudentMutation";
 import { toast } from "sonner";
 import SpinnerWithText from "@/components/common/status/Loading";
 import { cn } from "@/lib/utils";
@@ -18,6 +17,7 @@ import { ErrorDisplay } from "@/components/common/status/ErrorDisplay";
 import { useNavigate, useParams } from "react-router-dom";
 import { useStudentForEdit } from "../../hooks/useStudentForEdit";
 import { studentFormatForEdit } from "../../utils/studentFormatForEdit";
+import { useUpdateStudentMutation } from "../../mutations/useUpdateStudentMutation";
 
 export const EditStudentDialog = () => {
   const { id } = useParams<{ id: string }>();
@@ -43,7 +43,7 @@ export const EditStudentDialog = () => {
   const open = true;
   const { loading, error, teachers } = useTeachersForStudent(open);
   // のちに更新用のmutationに差し替える
-  const { mutate, isPending } = useCreateStudentMutation({
+  const { mutate, isPending } = useUpdateStudentMutation({
     onSuccess: () => {
       handleClose();
       reset();
