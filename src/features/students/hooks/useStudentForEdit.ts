@@ -1,10 +1,13 @@
 import { useStudentsStore } from "@/stores/studentsStore";
-import { useLocation } from "react-router-dom";
-import { useStudentsQuery } from "../queries/useStudentsQuery";
 
-export const useStudentForEdit = (studentId: number) => {
-  const location = useLocation();
-  const stateStudent = location.state?.student;
+import { useStudentsQuery } from "../queries/useStudentsQuery";
+import type { editLocationState } from "../types/students";
+
+export const useStudentForEdit = (
+  studentId: number,
+  state: editLocationState
+) => {
+  const stateStudent = state?.student;
   const filters = useStudentsStore((state) => state.filters);
 
   // state でstudent が渡されてなければ、students の一覧を refetch する
@@ -12,5 +15,6 @@ export const useStudentForEdit = (studentId: number) => {
 
   const student =
     stateStudent ?? data?.students.find((s) => s.id === studentId);
+
   return { student };
 };

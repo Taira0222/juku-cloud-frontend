@@ -14,7 +14,12 @@ import SpinnerWithText from "@/components/common/status/Loading";
 import { cn } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/useMobile";
 import { ErrorDisplay } from "@/components/common/status/ErrorDisplay";
-import { useNavigate, useParams } from "react-router-dom";
+import {
+  Navigate,
+  useLocation,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
 import { useStudentForEdit } from "../../hooks/useStudentForEdit";
 import { studentFormatForEdit } from "../../utils/studentFormatForEdit";
 import { useUpdateStudentMutation } from "../../mutations/useUpdateStudentMutation";
@@ -22,8 +27,10 @@ import { useUpdateStudentMutation } from "../../mutations/useUpdateStudentMutati
 export const EditStudentDialog = () => {
   const { id } = useParams<{ id: string }>();
   const studentId = id ? parseInt(id, 10) : 0;
+  const location = useLocation();
+  const state = location.state;
 
-  const { student } = useStudentForEdit(studentId);
+  const { student } = useStudentForEdit(studentId, state);
   const formattedStudent = useMemo(() => {
     if (!student) return null;
     return studentFormatForEdit(student);
@@ -49,6 +56,14 @@ export const EditStudentDialog = () => {
       reset();
     },
   });
+
+  // エラーハンドリングによる画面遷移
+  if (state?.background === undefined) {
+    return <Navigate to="/forbidden" state={{ from: location }} replace />;
+  }
+  if (!student) {
+    return <Navigate to="/students" state={{ from: location }} replace />;
+  }
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>

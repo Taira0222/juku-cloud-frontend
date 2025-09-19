@@ -169,3 +169,8 @@ export const updateStudentResponseSchema = z.object({
     .number({ message: "生徒IDは数値である必要があります" })
     .positive({ message: "生徒IDは正の数である必要があります" }),
 });
+
+export type editLocationState = {
+  background: Location;
+  student: Student;
+};
