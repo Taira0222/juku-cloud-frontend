@@ -114,7 +114,7 @@ export const mockStudent2: Student = {
 };
 
 // createStudent のレスポンス用モック
-const mockStudent3: Student = {
+export const mockStudent3: Student = {
   id: 3,
   name: "mockStudent Three",
   status: "inactive",
@@ -179,7 +179,11 @@ export const mockTeachers = [teacher1, teacher2, teacher3].map((t) => ({
 export const editStudentMockPayload: z.infer<typeof editStudentSchema> = {
   ...createStudentMockPayload,
   id: 3,
-  status: "active",
+};
+
+export const editResponseStudentMock: Student = {
+  ...mockStudent3,
+  status: "inactive",
 };
 
 export const initialMockValue: Draft = {

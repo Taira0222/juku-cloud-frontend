@@ -36,10 +36,28 @@ export const EditStudentDialog = () => {
     return <Navigate to="/students" replace />;
   }
 
-  const { student } = useStudentForEdit(studentId, state);
+  const { student, isNotFound, isLoading } = useStudentForEdit(
+    studentId,
+    state
+  );
+
+  // student の取得中
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-32">
+        <SpinnerWithText>生徒情報を読み込み中...</SpinnerWithText>
+      </div>
+    );
+  }
+
+  // 取得処理完了済みだが、該当IDの生徒が存在しない場合
+  if (isNotFound) {
+    return <Navigate to="/404" replace />;
+  }
+
+  // ここまでくれば student は確実に存在する
   const formattedStudent = useMemo(() => {
-    if (!student) return null;
-    return studentFormatForEdit(student);
+    return studentFormatForEdit(student!);
   }, [student]);
 
   const isMobile = useIsMobile();

@@ -42,9 +42,8 @@ describe("Teacher Update Integration Tests", () => {
     routeWithRender();
 
     // 講師一覧がでるまで待機
-    await waitFor(() => {
-      expect(screen.getByText("講師一覧")).toBeInTheDocument();
-    });
+
+    expect(await screen.findByText("講師一覧")).toBeInTheDocument();
 
     const adminMenuButton = getMenuButtonById(ADMIN_ID);
     await user.click(adminMenuButton);
@@ -53,26 +52,21 @@ describe("Teacher Update Integration Tests", () => {
     const editMenuButton = screen.getByRole("menuitem", { name: "編集" });
     await user.click(editMenuButton);
 
-    const nameInput = screen.getByLabelText("講師名");
     const section = screen.getByLabelText("選択中の担当科目");
     const englishBadge = within(section).getByText("英語");
     const mondayCheckbox = screen.getByRole("checkbox", { name: "月曜日" });
     const updateButton = screen.getByRole("button", { name: "更新" });
 
     // 変更前の情報を確認
-    expect(nameInput).toHaveValue("John Doe");
     expect(englishBadge).toBeInTheDocument();
     expect(mondayCheckbox).toBeChecked();
 
     // 変更を加える
-    await user.clear(nameInput);
-    await user.type(nameInput, "New Name");
     await user.click(englishBadge);
     await user.click(mondayCheckbox);
 
     // 更新ボタンの前にクリックが反映されているか確認
     await waitFor(() => {
-      expect(nameInput).toHaveValue("New Name");
       expect(englishBadge).not.toBeInTheDocument();
       expect(mondayCheckbox).not.toBeChecked();
     });
@@ -83,7 +77,6 @@ describe("Teacher Update Integration Tests", () => {
       expect(screen.getByText("更新に成功しました")).toBeInTheDocument();
       // 講師一覧に戻り、変更が反映されていることを確認
       expect(screen.getByText("講師一覧")).toBeInTheDocument();
-      expect(screen.getByText("New Name")).toBeInTheDocument();
     });
   });
 

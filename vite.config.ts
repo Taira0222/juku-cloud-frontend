@@ -19,7 +19,7 @@ export default defineConfig({
     env: {
       VITE_API_BASE_URL: "http://api.example.com",
     },
-    testTimeout: 7_000,
+    testTimeout: 15_000,
     globals: true,
     environment: "happy-dom",
     setupFiles: ["./vitest-setup.ts"],

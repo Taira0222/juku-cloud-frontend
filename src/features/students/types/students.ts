@@ -162,7 +162,7 @@ export const editStudentSchema = createStudentSchema.extend({
     .number({ message: "生徒IDは数値である必要があります" })
     .positive({ message: "生徒IDは正の数である必要があります" }),
 });
-export type updateStudentPayload = z.infer<typeof editStudentSchema>;
+export type editStudentPayload = z.infer<typeof editStudentSchema>;
 
 export type editLocationState = {
   background?: Location;
