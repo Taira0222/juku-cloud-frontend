@@ -1,7 +1,7 @@
 import { mockMeta, mockStudent3 } from "@/tests/fixtures/students/students";
 import { renderHook, waitFor } from "@testing-library/react";
-import { describe } from "node:test";
-import { beforeEach, expect, test, vi } from "vitest";
+
+import { beforeEach, describe, expect, test, vi } from "vitest";
 import { useStudentForEdit } from "../../hooks/useStudentForEdit";
 import { useStudentsStore } from "@/stores/studentsStore";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
