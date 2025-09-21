@@ -1,4 +1,4 @@
-import type { EditDraft } from "../hooks/useStudentForm";
+import type { EditDraft } from "../types/studentForm";
 import type { Student } from "../types/students";
 
 export const studentFormatForEdit = (student: Student) => {

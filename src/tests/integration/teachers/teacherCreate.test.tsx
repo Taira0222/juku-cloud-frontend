@@ -87,19 +87,15 @@ describe("Teacher create integration tests", () => {
     );
     routeWithRender();
 
-    await waitFor(() => {
-      expect(screen.getByText("講師の追加")).toBeInTheDocument();
-    });
+    expect(await screen.findByText("講師の追加")).toBeInTheDocument();
 
     const addTeachersButton = screen.getByRole("button", {
       name: "講師の追加",
     });
     await user.click(addTeachersButton);
 
-    await waitFor(() => {
-      expect(
-        screen.getByText("トークンの作成に失敗しました。")
-      ).toBeInTheDocument();
-    });
+    expect(
+      await screen.findByText("トークンの作成に失敗しました。")
+    ).toBeInTheDocument();
   });
 });

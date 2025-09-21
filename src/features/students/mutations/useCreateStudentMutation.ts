@@ -3,7 +3,7 @@ import {
   useQueryClient,
   type UseMutationOptions,
 } from "@tanstack/react-query";
-import { createStudent } from "../api/studentCreateApi";
+import { studentCreate } from "../api/studentCreateApi";
 import { studentKeys } from "../key";
 import type { createStudentPayload, Student } from "../types/students";
 import { toast } from "sonner";
@@ -15,7 +15,7 @@ export const useCreateStudentMutation = (
   const queryClient = useQueryClient();
 
   return useMutation<Student, unknown, createStudentPayload>({
-    mutationFn: (payload: createStudentPayload) => createStudent(payload),
+    mutationFn: (payload: createStudentPayload) => studentCreate(payload),
     ...options,
     onSuccess: (student, variables, context) => {
       // 生徒一覧のキャッシュを無効化して再フェッチ
