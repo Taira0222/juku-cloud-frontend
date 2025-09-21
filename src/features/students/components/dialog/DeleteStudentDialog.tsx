@@ -45,7 +45,7 @@ export const DeleteStudentDialog = ({ open, onOpenChange, student }: Props) => {
 
   const onClickDelete = async () => {
     // 文字が一致しているか確認
-    if (confirmText !== student?.name) {
+    if (confirmText !== student.name) {
       setWarning("名前が一致しません。");
       return;
     }
@@ -63,12 +63,12 @@ export const DeleteStudentDialog = ({ open, onOpenChange, student }: Props) => {
           <DialogHeader>
             <DialogTitle>
               {isPending && "読み込み中"}
-              {!isPending && "講師を削除しますか？"}
+              {!isPending && "生徒を削除しますか？"}
             </DialogTitle>
 
             <div className="text-muted-foreground leading-7">
               <span>
-                講師 <span className="font-semibold">「{student.name}」</span>
+                生徒 <span className="font-semibold">「{student.name}」</span>
                 を削除します。
               </span>
             </div>
@@ -81,9 +81,9 @@ export const DeleteStudentDialog = ({ open, onOpenChange, student }: Props) => {
                   <ul className="list-disc bg-red-50 pl-5 mt-2 space-y-1 text-left">
                     <li>この操作は取り消せません。</li>
                     <li>
-                      削除後は講師のデータは完全に失われますのでご注意ください
+                      削除後は生徒のデータは完全に失われますのでご注意ください
                     </li>
-                    <li>担当割当などの関連は解除されます</li>
+                    <li>講師との割当などの関連は解除されます</li>
                     <li>削除する場合は「{student.name}」と入力してください</li>
                   </ul>
                 </div>
