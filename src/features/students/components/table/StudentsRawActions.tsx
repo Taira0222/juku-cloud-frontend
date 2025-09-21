@@ -10,6 +10,8 @@ import { IconDotsVertical } from "@tabler/icons-react";
 
 import { Link, useLocation } from "react-router-dom";
 import type { Student } from "../../types/students";
+import { DeleteStudentDialog } from "../dialog/DeleteStudentDialog";
+import { useState } from "react";
 
 type Props = {
   student: Student;
@@ -17,6 +19,7 @@ type Props = {
 
 export const StudentsRawActions = ({ student }: Props) => {
   const location = useLocation();
+  const [open, setOpen] = useState(false);
   return (
     <>
       <DropdownMenu>
@@ -41,9 +44,22 @@ export const StudentsRawActions = ({ student }: Props) => {
             </Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem variant="destructive">削除</DropdownMenuItem>
+          <DropdownMenuItem
+            variant="destructive"
+            onSelect={(e) => {
+              e.preventDefault(); // フォーカス移動によるチラつき防止
+              setOpen(true); // Dialog を開く
+            }}
+          >
+            削除
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
+      <DeleteStudentDialog
+        open={open}
+        onOpenChange={setOpen}
+        student={student}
+      />
     </>
   );
 };
