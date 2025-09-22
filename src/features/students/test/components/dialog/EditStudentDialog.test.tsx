@@ -90,7 +90,7 @@ describe("EditStudentDialog", () => {
     vi.mocked(useUpdateStudentMutation).mockReturnValue({
       isPending: false,
       mutate: vi.fn(),
-    } as unknown as ReturnType<typeof useUpdateStudentMutation>);
+    });
 
     vi.mocked(useStudentForEdit).mockReturnValue({
       student: mockStudent3,
@@ -114,7 +114,7 @@ describe("EditStudentDialog", () => {
     vi.mocked(useUpdateStudentMutation).mockReturnValue({
       isPending: false,
       mutate: mockMutation,
-    } as unknown as ReturnType<typeof useUpdateStudentMutation>);
+    });
 
     vi.mocked(useStudentForEdit).mockReturnValue({
       student: mockStudent3,
@@ -158,7 +158,7 @@ describe("EditStudentDialog", () => {
     vi.mocked(useUpdateStudentMutation).mockReturnValue({
       isPending: false,
       mutate: vi.fn(),
-    } as unknown as ReturnType<typeof useUpdateStudentMutation>);
+    });
 
     vi.mocked(useStudentForEdit).mockReturnValue({
       student: mockStudent3,
@@ -194,7 +194,7 @@ describe("EditStudentDialog", () => {
     vi.mocked(useUpdateStudentMutation).mockReturnValue({
       isPending: false,
       mutate: vi.fn(),
-    } as unknown as ReturnType<typeof useUpdateStudentMutation>);
+    });
 
     wrapper(initialPath, state);
     await waitFor(() => {
@@ -224,8 +224,7 @@ describe("EditStudentDialog", () => {
     vi.mocked(useUpdateStudentMutation).mockReturnValue({
       isPending: false,
       mutate: vi.fn(),
-    } as unknown as ReturnType<typeof useUpdateStudentMutation>);
-
+    });
     wrapper(initialPath, state);
 
     await waitFor(() => {
@@ -249,7 +248,7 @@ describe("EditStudentDialog", () => {
     vi.mocked(useUpdateStudentMutation).mockReturnValue({
       isPending: false,
       mutate: vi.fn(),
-    } as unknown as ReturnType<typeof useUpdateStudentMutation>);
+    });
 
     successfulRender();
     await waitFor(() => {
@@ -273,7 +272,7 @@ describe("EditStudentDialog", () => {
     vi.mocked(useUpdateStudentMutation).mockReturnValue({
       isPending: false,
       mutate: vi.fn(),
-    } as unknown as ReturnType<typeof useUpdateStudentMutation>);
+    });
 
     successfulRender();
     await waitFor(() => {
@@ -299,7 +298,7 @@ describe("EditStudentDialog", () => {
     vi.mocked(useUpdateStudentMutation).mockReturnValue({
       isPending: true,
       mutate: vi.fn(),
-    } as unknown as ReturnType<typeof useUpdateStudentMutation>);
+    });
 
     successfulRender();
     await waitFor(() => {

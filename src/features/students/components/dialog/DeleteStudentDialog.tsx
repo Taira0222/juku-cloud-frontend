@@ -11,15 +11,13 @@ import { Input } from "@/components/ui/form/Input/input";
 import { Label } from "@/components/ui/form/Label/label";
 import { useEffect, useState } from "react";
 import SpinnerWithText from "@/components/common/status/Loading";
-import { cn } from "@/lib/utils";
 import type { Student } from "../../types/students";
 import { useDeleteStudentMutation } from "../../mutations/useDeleteStudentMutation";
-import { Navigate } from "react-router-dom";
 
 type Props = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  student: Student;
+  student?: Student;
 };
 
 export const DeleteStudentDialog = ({ open, onOpenChange, student }: Props) => {
@@ -30,10 +28,12 @@ export const DeleteStudentDialog = ({ open, onOpenChange, student }: Props) => {
       onOpenChange(false);
     },
   });
-  // 更新ボタンなどでstudent が null になる可能性があるのでガード
-  if (!student) {
-    return <Navigate to="/students" replace={true} />;
-  }
+  // student が undefined の場合は閉じる
+  useEffect(() => {
+    if (open && !student) {
+      onOpenChange(false);
+    }
+  }, [student]);
 
   // 開くたびに入力とエラーを初期化
   useEffect(() => {
@@ -45,7 +45,7 @@ export const DeleteStudentDialog = ({ open, onOpenChange, student }: Props) => {
 
   const onClickDelete = async () => {
     // 文字が一致しているか確認
-    if (confirmText !== student.name) {
+    if (confirmText !== student?.name) {
       setWarning("名前が一致しません。");
       return;
     }
@@ -68,7 +68,7 @@ export const DeleteStudentDialog = ({ open, onOpenChange, student }: Props) => {
 
             <div className="text-muted-foreground leading-7">
               <span>
-                生徒 <span className="font-semibold">「{student.name}」</span>
+                生徒 <span className="font-semibold">「{student?.name}」</span>
                 を削除します。
               </span>
             </div>
@@ -84,7 +84,7 @@ export const DeleteStudentDialog = ({ open, onOpenChange, student }: Props) => {
                       削除後は生徒のデータは完全に失われますのでご注意ください
                     </li>
                     <li>講師との割当などの関連は解除されます</li>
-                    <li>削除する場合は「{student.name}」と入力してください</li>
+                    <li>削除する場合は「{student?.name}」と入力してください</li>
                   </ul>
                 </div>
               )}
@@ -105,7 +105,7 @@ export const DeleteStudentDialog = ({ open, onOpenChange, student }: Props) => {
                 <Label htmlFor="confirmStudentName">確認入力</Label>
                 <Input
                   id="confirmStudentName"
-                  placeholder={student.name}
+                  placeholder={student?.name}
                   value={confirmText}
                   onChange={(e) => setConfirmText(e.currentTarget.value)}
                 />
@@ -122,11 +122,10 @@ export const DeleteStudentDialog = ({ open, onOpenChange, student }: Props) => {
                 <Button
                   variant="destructive"
                   onClick={onClickDelete}
-                  aria-label={`生徒「${student.name}」を削除する`}
+                  aria-label={`生徒「${student?.name}」を削除する`}
                   disabled={isPending}
-                  className={cn({ "opacity-50": isPending })}
                 >
-                  {isPending ? "読み込み中..." : "生徒を削除する"}
+                  生徒を削除する
                 </Button>
               </DialogFooter>
             </>

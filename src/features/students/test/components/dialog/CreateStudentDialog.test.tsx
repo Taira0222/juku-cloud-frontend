@@ -60,7 +60,7 @@ describe("CreateStudentDialog", () => {
     vi.mocked(useCreateStudentMutation).mockReturnValue({
       isPending: false,
       mutate: vi.fn(),
-    } as unknown as ReturnType<typeof useCreateStudentMutation>);
+    });
 
     vi.mocked(useStudentForm).mockReturnValue({
       value: initialMockValue,
@@ -119,7 +119,7 @@ describe("CreateStudentDialog", () => {
     vi.mocked(useCreateStudentMutation).mockReturnValue({
       isPending: false,
       mutate: mockMutate,
-    } as unknown as ReturnType<typeof useCreateStudentMutation>);
+    });
 
     vi.mocked(useStudentForm).mockReturnValue({
       value: createStudentMockPayload,
@@ -173,7 +173,7 @@ describe("CreateStudentDialog", () => {
     vi.mocked(useCreateStudentMutation).mockReturnValue({
       isPending: false,
       mutate: vi.fn(),
-    } as unknown as ReturnType<typeof useCreateStudentMutation>);
+    });
 
     vi.mocked(useStudentForm).mockReturnValue({
       value: { ...createStudentMockPayload, name: "a".repeat(51) }, // 名前が51文字の無効なデータ
@@ -215,7 +215,7 @@ describe("CreateStudentDialog", () => {
     vi.mocked(useCreateStudentMutation).mockReturnValue({
       isPending: false,
       mutate: vi.fn(),
-    } as unknown as ReturnType<typeof useCreateStudentMutation>);
+    });
 
     vi.mocked(useStudentForm).mockReturnValue({
       value: initialMockValue,
@@ -251,7 +251,7 @@ describe("CreateStudentDialog", () => {
     vi.mocked(useCreateStudentMutation).mockReturnValue({
       isPending: false,
       mutate: vi.fn(),
-    } as unknown as ReturnType<typeof useCreateStudentMutation>);
+    });
 
     vi.mocked(useStudentForm).mockReturnValue({
       value: initialMockValue,
@@ -289,7 +289,7 @@ describe("CreateStudentDialog", () => {
     vi.mocked(useCreateStudentMutation).mockReturnValue({
       isPending: true, // ミューテーションが保留中
       mutate: vi.fn(),
-    } as unknown as ReturnType<typeof useCreateStudentMutation>);
+    });
 
     vi.mocked(useStudentForm).mockReturnValue({
       value: initialMockValue,
