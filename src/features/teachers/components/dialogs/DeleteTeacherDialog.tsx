@@ -13,7 +13,6 @@ import { useEffect, useState } from "react";
 import { useTeacherDelete } from "../../mutations/useTeacherDelete";
 import { toast } from "sonner";
 import SpinnerWithText from "@/components/common/status/Loading";
-import { cn } from "@/lib/utils";
 import { useTeachersStore } from "@/stores/teachersStore";
 import { ErrorDisplay } from "@/components/common/status/ErrorDisplay";
 
@@ -135,9 +134,8 @@ export const DeleteTeacherDialog = ({
                   onClick={onClickDelete}
                   aria-label={`講師「${teacher?.name || ""}」を削除する`}
                   disabled={loading}
-                  className={cn({ "opacity-50": loading })}
                 >
-                  {loading ? "読み込み中..." : "講師を削除する"}
+                  講師を削除する
                 </Button>
               </DialogFooter>
             </>
