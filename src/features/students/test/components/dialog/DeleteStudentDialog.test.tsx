@@ -50,7 +50,7 @@ describe("DeleteStudentDialog", () => {
     vi.mocked(useDeleteStudentMutation).mockReturnValue({
       isPending: false,
       mutate: mockMutation,
-    });
+    } as unknown as ReturnType<typeof useDeleteStudentMutation>);
 
     const user = userEvent.setup();
 
@@ -84,7 +84,7 @@ describe("DeleteStudentDialog", () => {
     vi.mocked(useDeleteStudentMutation).mockReturnValue({
       isPending: false,
       mutate: vi.fn(),
-    });
+    } as unknown as ReturnType<typeof useDeleteStudentMutation>);
 
     mockRender(props);
     expect(props.onOpenChange).toHaveBeenCalledWith(false);
@@ -101,7 +101,7 @@ describe("DeleteStudentDialog", () => {
     vi.mocked(useDeleteStudentMutation).mockReturnValue({
       isPending: true,
       mutate: mockMutation,
-    });
+    } as unknown as ReturnType<typeof useDeleteStudentMutation>);
     mockRender(props);
     expect(screen.getByText("読み込み中")).toBeInTheDocument();
     expect(
@@ -121,7 +121,7 @@ describe("DeleteStudentDialog", () => {
     vi.mocked(useDeleteStudentMutation).mockReturnValue({
       isPending: false,
       mutate: mockMutation,
-    });
+    } as unknown as ReturnType<typeof useDeleteStudentMutation>);
 
     const user = userEvent.setup();
 

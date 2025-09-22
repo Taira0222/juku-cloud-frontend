@@ -33,7 +33,7 @@ export const DeleteStudentDialog = ({ open, onOpenChange, student }: Props) => {
     if (open && !student) {
       onOpenChange(false);
     }
-  }, [student]);
+  }, [open, student, onOpenChange]);
 
   // 開くたびに入力とエラーを初期化
   useEffect(() => {
@@ -44,8 +44,12 @@ export const DeleteStudentDialog = ({ open, onOpenChange, student }: Props) => {
   }, [open]);
 
   const onClickDelete = async () => {
-    // 文字が一致しているか確認
-    if (confirmText !== student?.name) {
+    if (!student) {
+      setWarning("生徒が選択されていません。");
+      return;
+    }
+
+    if (confirmText !== student.name) {
       setWarning("名前が一致しません。");
       return;
     }

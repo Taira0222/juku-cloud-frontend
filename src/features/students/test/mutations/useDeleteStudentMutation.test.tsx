@@ -52,6 +52,8 @@ describe("useDeleteStudentMutation", () => {
     const detailKey = studentKeys.detail(mockPayload.id);
     expect(removeQuerySpy).toHaveBeenCalledWith({ queryKey: detailKey });
 
+    expect(result.current.isSuccess).toBe(true);
+    expect(result.current.data).toBeUndefined();
     expect(toast.success).toHaveBeenCalledWith("生徒を削除しました");
   });
 
@@ -71,6 +73,8 @@ describe("useDeleteStudentMutation", () => {
       result.current.mutate(mockPayload.id);
     });
 
+    expect(result.current.isError).toBe(true);
+    expect(result.current.error).toBe(mockError);
     expect(toast.error).toHaveBeenCalled();
   });
 });

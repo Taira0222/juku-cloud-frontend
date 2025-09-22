@@ -2,7 +2,6 @@ import {
   useMutation,
   useQueryClient,
   type UseMutationOptions,
-  type UseMutationResult,
 } from "@tanstack/react-query";
 import { studentKeys } from "../key";
 import type { editStudentPayload, Student } from "../types/students";
@@ -10,14 +9,9 @@ import { toast } from "sonner";
 import { getErrorMessage } from "@/lib/errors/getErrorMessage";
 import { studentUpdate } from "../api/studentUpdateApi";
 
-export type UpdateStudentMutationResult = Pick<
-  UseMutationResult<Student, unknown, editStudentPayload>,
-  "mutate" | "isPending"
->;
-
 export const useUpdateStudentMutation = (
   options?: UseMutationOptions<Student, unknown, editStudentPayload>
-): UpdateStudentMutationResult => {
+) => {
   const queryClient = useQueryClient();
 
   return useMutation<Student, unknown, editStudentPayload>({
