@@ -5,7 +5,7 @@ import {
   IconChevronsLeft,
   IconChevronsRight,
   IconLayoutColumns,
-} from '@tabler/icons-react';
+} from "@tabler/icons-react";
 import {
   flexRender,
   getCoreRowModel,
@@ -15,28 +15,28 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-} from '@tanstack/react-table';
+} from "@tanstack/react-table";
 import type {
   ColumnFiltersState,
   SortingState,
   VisibilityState,
-} from '@tanstack/react-table';
-import { useEffect, useState } from 'react';
-import { Button } from '@/components/ui/form/Button/button';
+} from "@tanstack/react-table";
+import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/form/Button/button";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger,
-} from '@/components/ui/navigation/DropdownMenu/dropdown-menu';
-import { Label } from '@/components/ui/form/Label/label';
+} from "@/components/ui/navigation/DropdownMenu/dropdown-menu";
+import { Label } from "@/components/ui/form/Label/label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/form/Select/select';
+} from "@/components/ui/form/Select/select";
 import {
   Table,
   TableBody,
@@ -44,21 +44,23 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/display/Table/table';
-import { Tabs, TabsContent } from '@/components/ui/navigation/Tabs/tabs';
-import { StudentsColumns } from './StudentsColumns';
-import { useStudentsStore } from '@/stores/studentsStore';
-import { STUDENTS_LEVEL_OPTIONS } from '@/constants/studentsLevel';
-import z from 'zod';
-import { metaSchema, studentSchema } from '../../types/students';
-import { CreateStudentDialog } from '../dialog/CreateStudentDialog';
+} from "@/components/ui/display/Table/table";
+import { Tabs, TabsContent } from "@/components/ui/navigation/Tabs/tabs";
+import { StudentsColumns } from "./StudentsColumns";
+import { useStudentsStore } from "@/stores/studentsStore";
+import { STUDENTS_LEVEL_OPTIONS } from "@/constants/studentsLevel";
+import z from "zod";
+import { metaSchema, studentSchema } from "../../types/students";
+import { CreateStudentDialog } from "../dialog/CreateStudentDialog";
 
 export const StudentsTable = ({
   data,
   meta,
+  isAdmin,
 }: {
   data: z.infer<typeof studentSchema>[];
   meta: z.infer<typeof metaSchema>;
+  isAdmin: boolean;
 }) => {
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -71,21 +73,21 @@ export const StudentsTable = ({
   const filters = useStudentsStore((state) => state.filters);
   const setFilters = useStudentsStore((state) => state.setFilters);
 
-  const columns = StudentsColumns();
+  const columns = StudentsColumns(isAdmin);
   const pageCount =
     meta?.total_pages ??
     (meta?.total_count
       ? Math.ceil(meta.total_count / (filters.perPage ?? 10))
       : 1);
-  const VIEW_VALUE = 'students-table-view';
+  const VIEW_VALUE = "students-table-view";
   const selectValue = (() => {
-    if (!filters.school_stage || !filters.grade) return 'all';
+    if (!filters.school_stage || !filters.grade) return "all";
     return `${filters.school_stage}-${filters.grade}`;
   })();
 
   const onSelectChange = (value: string) => {
     let newFilters;
-    if (value === 'all') {
+    if (value === "all") {
       newFilters = {
         ...filters,
         school_stage: undefined,
@@ -93,7 +95,7 @@ export const StudentsTable = ({
         page: 1,
       };
     } else {
-      const [school_stage, gradeString] = value.split('-');
+      const [school_stage, gradeString] = value.split("-");
       const grade = Number(gradeString);
       newFilters = {
         ...filters,
@@ -135,7 +137,7 @@ export const StudentsTable = ({
     onColumnVisibilityChange: setColumnVisibility,
     onPaginationChange: (updater) => {
       setPagination((prev) =>
-        typeof updater === 'function' ? updater(prev) : updater
+        typeof updater === "function" ? updater(prev) : updater
       );
     },
     getCoreRowModel: getCoreRowModel(),
@@ -148,12 +150,12 @@ export const StudentsTable = ({
 
   // カラム表示のラベルを定義
   const columnLabelMap: Record<string, string> = {
-    name: '名前',
-    grade: '学年',
-    status: '通塾状況',
-    class_subjects: '受講科目',
-    available_days: '授業曜日',
-    joined_on: '入塾日',
+    name: "名前",
+    grade: "学年",
+    status: "通塾状況",
+    class_subjects: "受講科目",
+    available_days: "授業曜日",
+    joined_on: "入塾日",
   };
 
   return (
@@ -202,7 +204,7 @@ export const StudentsTable = ({
                 .getAllColumns()
                 .filter(
                   (column) =>
-                    typeof column.accessorFn !== 'undefined' &&
+                    typeof column.accessorFn !== "undefined" &&
                     column.getCanHide()
                 )
                 .map((column) => {
@@ -222,7 +224,7 @@ export const StudentsTable = ({
             </DropdownMenuContent>
           </DropdownMenu>
           {/** 生徒を追加するボタン */}
-          <CreateStudentDialog />
+          {isAdmin && <CreateStudentDialog />}
         </div>
         {/** タブの内容 */}
       </div>
@@ -255,7 +257,7 @@ export const StudentsTable = ({
                 table.getRowModel().rows.map((row) => (
                   <TableRow
                     key={row.id}
-                    data-state={row.getIsSelected() && 'selected'}
+                    data-state={row.getIsSelected() && "selected"}
                   >
                     {row.getVisibleCells().map((cell) => (
                       <TableCell key={cell.id}>
@@ -284,7 +286,7 @@ export const StudentsTable = ({
         {/** ページネーションと選択状態の表示 */}
         <div className="flex items-center justify-between px-4">
           <div className="text-muted-foreground hidden flex-1 text-sm lg:flex">
-            {table.getFilteredSelectedRowModel().rows.length} of{' '}
+            {table.getFilteredSelectedRowModel().rows.length} of{" "}
             {table.getFilteredRowModel().rows.length} row(s) selected.
           </div>
           <div className="flex w-full items-center gap-8 lg:w-fit">
@@ -313,7 +315,7 @@ export const StudentsTable = ({
               </Select>
             </div>
             <div className="flex w-fit items-center justify-center text-sm font-medium">
-              Page {table.getState().pagination.pageIndex + 1} of{' '}
+              Page {table.getState().pagination.pageIndex + 1} of{" "}
               {table.getPageCount()}
             </div>
             <div className="ml-auto flex items-center gap-2 lg:ml-0">

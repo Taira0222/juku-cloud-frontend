@@ -4,8 +4,14 @@ import { StudentsTable } from "@/features/students/components/table/StudentsTabl
 import { useStudentsQuery } from "@/features/students/queries/useStudentsQuery";
 import { getErrorMessage } from "@/lib/errors/getErrorMessage";
 import { useStudentsStore } from "@/stores/studentsStore";
+import { useOutletContext } from "react-router-dom";
+
+type ContextType = {
+  role: string | undefined;
+};
 
 export const StudentsPage = () => {
+  const { role } = useOutletContext<ContextType>();
   const filters = useStudentsStore((state) => state.filters);
   const { data, error, isError, isPending } = useStudentsQuery(filters);
 
@@ -32,6 +38,7 @@ export const StudentsPage = () => {
             per_page: 0,
           }
         }
+        isAdmin={role === "admin"}
       />
     </div>
   );
