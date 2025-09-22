@@ -1,7 +1,7 @@
-import * as React from 'react';
+import * as React from "react";
 
-import { NavMain } from '@/components/common/dashboard/nav-main';
-import { NavUser } from '@/components/common/dashboard/nav-user';
+import { NavMain } from "@/components/common/dashboard/nav-main";
+import { NavUser } from "@/components/common/dashboard/nav-user";
 import {
   Sidebar,
   SidebarContent,
@@ -10,10 +10,10 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from '@/components/ui/layout/Sidebar/sidebar';
-import { CloudCog } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import type { IconProps } from '@tabler/icons-react';
+} from "@/components/ui/layout/Sidebar/sidebar";
+import { CloudCog } from "lucide-react";
+import { Link } from "react-router-dom";
+import type { IconProps } from "@tabler/icons-react";
 
 type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
   data: {
@@ -40,7 +40,7 @@ export function AppSidebar({ data, ...props }: AppSidebarProps) {
               asChild
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
-              <Link to="students_management">
+              <Link to="/students">
                 <CloudCog className="!size-5" />
                 <span className="text-base font-semibold">Juku Cloud</span>
               </Link>

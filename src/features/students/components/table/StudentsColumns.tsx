@@ -12,9 +12,9 @@ import { subjectBadgeUtils } from "@/utils/subjectBadgeUtils";
 import { statusBadgeUtils } from "@/utils/statusBadgeUtils";
 
 // columns を関数として定義し、getDetailDrawerData を受け取る
-export const StudentsColumns = (): ColumnDef<
-  z.infer<typeof studentSchema>
->[] => {
+export const StudentsColumns = (
+  isAdmin: boolean
+): ColumnDef<z.infer<typeof studentSchema>>[] => {
   return [
     {
       id: "select",
@@ -108,7 +108,13 @@ export const StudentsColumns = (): ColumnDef<
     },
     {
       id: "actions",
-      cell: ({ row }) => <StudentsRawActions student={row.original} />,
+      cell: ({ row }) => {
+        if (isAdmin) {
+          return <StudentsRawActions student={row.original} />;
+        } else {
+          return null;
+        }
+      },
     },
   ];
 };
