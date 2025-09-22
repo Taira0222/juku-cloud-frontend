@@ -111,6 +111,8 @@ export const StudentsColumns = (
       cell: ({ row }) => {
         if (isAdmin) {
           return <StudentsRawActions student={row.original} />;
+        } else {
+          return null;
         }
       },
     },
