@@ -44,12 +44,7 @@ export const DeleteStudentDialog = ({ open, onOpenChange, student }: Props) => {
   }, [open]);
 
   const onClickDelete = async () => {
-    if (!student) {
-      setWarning("生徒が選択されていません。");
-      return;
-    }
-
-    if (confirmText !== student.name) {
+    if (confirmText !== student?.name) {
       setWarning("名前が一致しません。");
       return;
     }

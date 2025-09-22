@@ -35,7 +35,7 @@ describe("studentDeleteApi", () => {
     await expect(studentDelete(studentId)).rejects.toThrow("API Error");
   });
 
-  test("deleteStudent - handles invalid response data", async () => {
+  test("deleteStudent - handles 404 error response", async () => {
     const invalidResponse = {
       data: {
         errors: {

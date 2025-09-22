@@ -35,7 +35,7 @@ describe("useDeleteStudentMutation", () => {
     const invalidateSpy = vi.spyOn(queryClient, "invalidateQueries");
     const removeQuerySpy = vi.spyOn(queryClient, "removeQueries");
 
-    vi.mocked(toast.success).mockResolvedValueOnce("生徒を削除しました");
+    vi.mocked(toast.success).mockReturnValueOnce("生徒を削除しました");
 
     const { result } = renderHook(() => useDeleteStudentMutation(), {
       wrapper,
