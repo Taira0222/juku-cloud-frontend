@@ -29,7 +29,8 @@ export default defineConfig({
       include: ["src/**/*.{ts,tsx}"],
       exclude: [
         // shadcn/ui のコンポーネントは除外
-        "src/components/**",
+        "src/components/ui/**",
+        "src/components/common/dashboard/**",
         "src/hooks/useMobile.ts",
         // その他テスト不要なファイルを除外
         "src/pages/error/**",

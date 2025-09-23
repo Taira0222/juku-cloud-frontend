@@ -4,10 +4,10 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/form/Select/select';
-import { STUDENTS_LEVEL_OPTIONS } from '@/constants/studentsLevel';
-import type { Draft } from '../../../types/studentForm';
-import { RequiredLabel } from '@/components/common/form/RequiredLabel';
+} from "@/components/ui/form/Select/select";
+import { STUDENTS_LEVEL_OPTIONS } from "@/constants/studentsLevel";
+import type { Draft } from "../../../types/studentForm";
+import { RequiredLabel } from "@/components/common/form/RequiredLabel";
 
 export type LevelSelectProps = {
   value: Draft;
@@ -16,9 +16,9 @@ export type LevelSelectProps = {
 
 export const LevelSelect = ({ value, onChange }: LevelSelectProps) => {
   const level =
-    value.school_stage && typeof value.grade === 'number'
+    value.school_stage && typeof value.grade === "number"
       ? `${value.school_stage}-${value.grade}`
-      : '';
+      : "";
   return (
     <div className="space-y-1">
       <RequiredLabel htmlFor="selectLevel" required>

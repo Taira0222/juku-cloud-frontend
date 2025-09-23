@@ -16,11 +16,11 @@ import { DAY_OF_WEEK_WITH_ID } from "@/constants/dayOfWeekTranslations";
 
 import { cn } from "@/lib/utils";
 
-import { NameField } from "./parts/NameField";
+import { NameField } from "../../../../components/common/form/NameField";
 import { LevelSelect } from "./parts/LevelSelect";
 import { DesiredSchoolField } from "./parts/DesiredSchoolField";
 import { JoinedOnPicker } from "./parts/JoinedOnPicker";
-import { StatusSelect } from "./parts/StatusSelect";
+import { StatusSelect } from "../../../../components/common/form/StatusSelect";
 import { SubjectCheckboxes } from "./parts/SubjectCheckboxes";
 import { DayCheckboxes } from "./parts/DayCheckboxes";
 import { TeacherAssignmentTabs } from "./parts/TeacherAssignmentTabs";
@@ -65,6 +65,8 @@ export const StudentForm = <M extends StudentFormMode>({
     }
   }, [selectedDayIds, selectedSubjectIds, activeTab]);
 
+  const variant = mode === "edit" ? "EditDraft" : "Draft";
+
   return (
     <form
       onSubmit={(e) => {
@@ -74,7 +76,11 @@ export const StudentForm = <M extends StudentFormMode>({
       className="px-4 sm:px-6 py-6 space-y-5"
     >
       <div className="space-y-4">
-        <NameField value={value} onChange={H.handleInputChange} />
+        <NameField
+          variant={variant}
+          value={value}
+          onChange={H.handleInputChange}
+        />
 
         <LevelSelect value={value} onChange={H.handleStudentOptionChange} />
 
@@ -84,8 +90,13 @@ export const StudentForm = <M extends StudentFormMode>({
           value={value}
           onChange={H.handleSelectChange("joined_on")}
         />
-
-        <StatusSelect value={value} onChange={H.handleSelectChange("status")} />
+        {/** TeacherFormでも利用しているため、statusとして渡している
+         */}
+        <StatusSelect
+          variant={variant}
+          status={value.status}
+          onChange={H.handleSelectChange("status")}
+        />
 
         <SubjectCheckboxes
           value={value}

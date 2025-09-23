@@ -1,9 +1,9 @@
-import { Checkbox } from '@/components/ui/form/CheckBox/checkbox';
-import { Label } from '@/components/ui/form/Label/label';
-import { Badge } from '@/components/ui/display/Badge/badge';
-import { SUBJECT_TRANSLATIONS } from '@/constants/subjectTranslations';
-import type { Draft } from '../../../types/studentForm';
-import { RequiredLabel } from '@/components/common/form/RequiredLabel';
+import { Checkbox } from "@/components/ui/form/CheckBox/checkbox";
+import { Label } from "@/components/ui/form/Label/label";
+import { Badge } from "@/components/ui/display/Badge/badge";
+import { SUBJECT_TRANSLATIONS } from "@/constants/subjectTranslations";
+import type { Draft } from "../../../types/studentForm";
+import { RequiredLabel } from "@/components/common/form/RequiredLabel";
 
 export type SubjectCheckboxesProps = {
   value: Draft;
@@ -44,9 +44,9 @@ export const SubjectCheckboxes = ({
             const meta = Object.values(SUBJECT_TRANSLATIONS).find(
               (s) => s.id === id
             );
-            const label = meta?.name ?? '不明な科目';
+            const label = meta?.name ?? "不明な科目";
             const Icon = meta?.icon;
-            const color = meta?.color ?? 'gray';
+            const color = meta?.color ?? "gray";
             return (
               <Badge
                 key={id}
