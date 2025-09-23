@@ -22,7 +22,6 @@ export const TeacherSubmit = ({
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // パフォーマンス的に、handleSubmitが呼び出された際にのみこの処理が実行されるようにする
     const submitData = {
       name: formData.name,
       employment_status: formData.employment_status,

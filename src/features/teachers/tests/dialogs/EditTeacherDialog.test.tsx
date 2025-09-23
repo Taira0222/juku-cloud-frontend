@@ -77,7 +77,7 @@ describe("EditTeacherDialog", () => {
 
   test("renders successful edit dialog if teacher is found and background is set", () => {
     successfulRender();
-    expect(screen.getByText("講師の名前")).toBeInTheDocument();
+    expect(screen.getByLabelText(/講師の名前/)).toBeInTheDocument();
   });
 
   test("updates teacher info successfully", async () => {
@@ -215,7 +215,7 @@ describe("EditTeacherDialog", () => {
   test("employment selector confirms presence and interaction", async () => {
     const user = userEvent.setup();
     successfulRender();
-    expect(screen.getByLabelText(/出勤状況/)).toBeInTheDocument();
+
     // 在籍が最初に表示されていることを確認
     const employmentSelector = screen.getByRole("combobox", {
       name: /出勤状況/,
