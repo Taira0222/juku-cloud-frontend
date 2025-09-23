@@ -44,7 +44,7 @@ const wrapper = (initialPath: string, state: editLocationState) => {
       >
         <Toaster />
         <Routes>
-          <Route path="students/:id/edit" element={<EditStudentDialog />} />
+          <Route path="/students/:id/edit" element={<EditStudentDialog />} />
           <Route path="/students" element={<StudentsPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
@@ -129,7 +129,6 @@ describe("EditStudentDialog", () => {
     await user.click(submitButton);
 
     expect(mockMutation).toHaveBeenCalledWith(editStudentMockPayload);
-    expect(screen.findByText("Students Page")).toBeDefined();
   });
 
   test("should navigate to /students when there is no background state", () => {

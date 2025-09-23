@@ -1,21 +1,21 @@
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test } from "vitest";
 import {
   detailDrawer,
   formatEditMock,
   SUBJECTS_MOCK,
-} from '../../../../tests/fixtures/teachers/teachers';
+} from "../../../../tests/fixtures/teachers/teachers";
 
-import { AVAILABLE_DAYS } from '../../constants/teachers';
-import { formatEditData } from '../../utils/formatEditData';
+import { AVAILABLE_DAYS } from "../../constants/teachers";
+import { formatEditData } from "../../utils/formatEditData";
 
-describe('useFormatEditData', () => {
-  test('should format data correctly', () => {
+describe("useFormatEditData", () => {
+  test("should format data correctly", () => {
     const mockPropsData = {
       formData: {
-        name: 'John Doe',
-        employment_status: 'active',
-        subjects: ['mathematics', 'science'],
-        available_days: ['monday', 'wednesday'],
+        name: "John Doe",
+        employment_status: "active",
+        subjects: ["mathematics", "science"],
+        available_days: ["monday", "wednesday"],
       },
       detailDrawer: detailDrawer,
     };
@@ -27,7 +27,7 @@ describe('useFormatEditData', () => {
     expect(formatDaysData()).toEqual([AVAILABLE_DAYS[1], AVAILABLE_DAYS[3]]);
   });
 
-  test('should return empty arrays when no matches found', () => {
+  test("should return empty arrays when no matches found", () => {
     const result = formatEditData(formatEditMock);
 
     const { formatSubjectsData, formatDaysData } = result;
