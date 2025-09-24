@@ -1,13 +1,13 @@
 import { render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, test, vi } from "vitest";
 
-import { useTeacherDelete } from "../../mutations/useTeacherDelete";
+import { useTeacherDelete } from "../../../mutations/useTeacherDelete";
 import userEvent from "@testing-library/user-event";
 import { Toaster } from "@/components/ui/feedback/Sonner/sonner";
 import { useTeachersStore } from "@/stores/teachersStore";
 
-import { DeleteTeacherDialog } from "../../components/dialogs/DeleteTeacherDialog";
-import { teacher1 } from "../../../../tests/fixtures/teachers/teachers";
+import { DeleteTeacherDialog } from "../../../components/dialogs/DeleteTeacherDialog";
+import { teacher1 } from "../../../../../tests/fixtures/teachers/teachers";
 
 type Props = {
   open: boolean;
@@ -15,7 +15,7 @@ type Props = {
   teacherId: number;
 };
 
-vi.mock("../../mutations/useTeacherDelete", () => ({
+vi.mock("../../../mutations/useTeacherDelete", () => ({
   useTeacherDelete: vi.fn(),
 }));
 

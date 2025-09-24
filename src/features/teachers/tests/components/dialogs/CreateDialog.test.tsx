@@ -4,8 +4,8 @@ import { describe } from "vitest";
 import { render, screen } from "@testing-library/react";
 
 import userEvent from "@testing-library/user-event";
-import { useFetchInviteToken } from "../../queries/useFetchInviteToken";
-import { CreateDialog } from "../../components/dialogs/CreateDialog";
+import { useFetchInviteToken } from "../../../queries/useFetchInviteToken";
+import { CreateDialog } from "../../../components/dialogs/CreateDialog";
 
 vi.mock("@/features/teachers/queries/useFetchInviteToken", () => ({
   useFetchInviteToken: vi.fn(),

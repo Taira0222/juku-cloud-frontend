@@ -1,11 +1,11 @@
 import type { FormEvent } from "react";
 import { useTeacherUpdate } from "../mutations/useTeacherUpdate";
 import { useTeachersStore } from "@/stores/teachersStore";
-import { formatEditData } from "./formatEditData";
+import { formatEditData } from "../utils/formatEditData";
 import { toast } from "sonner";
 import type { TeacherSubmitProps } from "../types/teacherForm";
 
-export const TeacherSubmit = ({
+export const useTeacherSubmit = ({
   formData,
   teacherId,
   handleClose,

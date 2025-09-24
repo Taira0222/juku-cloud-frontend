@@ -42,7 +42,7 @@ export const TeachableSubjectCheckboxes = ({
           className="flex flex-wrap gap-2 pt-1"
         >
           {formData.subjects.map((v) => {
-            const label = SUBJECT_TRANSLATIONS[v]?.name ?? v;
+            const label = SUBJECT_TRANSLATIONS[v]?.name ?? "不明な科目";
             const Icon = SUBJECT_TRANSLATIONS[v]?.icon;
             const color = SUBJECT_TRANSLATIONS[v]?.color ?? "gray";
 

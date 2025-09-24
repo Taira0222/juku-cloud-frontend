@@ -18,7 +18,7 @@ import SpinnerWithText from "@/components/common/status/Loading";
 import { ErrorDisplay } from "@/components/common/status/ErrorDisplay";
 import { TeacherForm } from "../TeacherForm/TeacherForm";
 import { useTeacherForm } from "../../hooks/useTeacherForm";
-import { TeacherSubmit } from "../../utils/TeacherSubmit";
+import { useTeacherSubmit } from "../../hooks/useTeacherSubmit";
 
 export const EditTeacherDialog = () => {
   const navigate = useNavigate();
@@ -47,7 +47,7 @@ export const EditTeacherDialog = () => {
     navigate(-1);
   };
 
-  const { handleSubmit, loading, error } = TeacherSubmit({
+  const { handleSubmit, loading, error } = useTeacherSubmit({
     formData,
     teacherId,
     handleClose,
