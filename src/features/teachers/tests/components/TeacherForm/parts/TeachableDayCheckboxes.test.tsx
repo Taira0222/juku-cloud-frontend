@@ -30,6 +30,6 @@ describe("TeachableDayCheckboxes", () => {
 
     // 月曜日を選択
     await user.click(mondayCheckbox);
-    expect(mockProps.onChange).toHaveBeenCalledWith("available_days", "monday"); // 月曜日のIDは2
+    expect(mockProps.onChange).toHaveBeenCalledWith("available_days", "monday");
   });
 });

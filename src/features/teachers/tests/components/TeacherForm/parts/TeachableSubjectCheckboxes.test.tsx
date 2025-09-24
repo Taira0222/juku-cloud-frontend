@@ -31,7 +31,7 @@ describe("TeachableSubjectCheckboxes", () => {
 
     // 英語を選択
     await user.click(englishCheckbox);
-    expect(mockProps.onChange).toHaveBeenCalledWith("subjects", "english"); // 英語のIDは1
+    expect(mockProps.onChange).toHaveBeenCalledWith("subjects", "english");
   });
   test("should show selected subjects as badges", async () => {
     const user = userEvent.setup();
@@ -51,7 +51,7 @@ describe("TeachableSubjectCheckboxes", () => {
 
     // バッジをクリックして削除
     await user.click(englishBadge);
-    expect(mockProps.onChange).toHaveBeenCalledWith("subjects", "english"); // 英語のIDは1
+    expect(mockProps.onChange).toHaveBeenCalledWith("subjects", "english");
   });
 
   test("should not show badges when no subjects selected", () => {
