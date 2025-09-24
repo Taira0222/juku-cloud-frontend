@@ -42,7 +42,7 @@ export const TeacherForm = ({
                 この講師は以下の生徒を指導しています。講師情報を編集する前に、各生徒の編集画面で講師との連携を解除してください。
               </p>
 
-              <ul className="list-disc bg-yellow-50 pl-5 mt-2 space-y-1 text-left">
+              <ul className="list-disc pl-5 mt-2 space-y-1 text-left">
                 {students.map((student) => (
                   <li key={student.id}>{student.name}</li>
                 ))}
