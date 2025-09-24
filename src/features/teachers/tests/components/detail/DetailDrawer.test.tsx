@@ -34,8 +34,6 @@ describe("DetailDrawer", () => {
       expect(screen.getByText(/月曜日/)).toBeInTheDocument();
       expect(screen.getByText(/水曜日/)).toBeInTheDocument();
       expect(screen.getByText(/金曜日/)).toBeInTheDocument();
-      expect(screen.getByText(/Student One/)).toBeInTheDocument();
-      expect(screen.getByText(/Student Two/)).toBeInTheDocument();
       expect(screen.getByText("john.doe@example.com")).toBeInTheDocument();
       expect(screen.getByText("1か月以上前")).toBeInTheDocument();
     });

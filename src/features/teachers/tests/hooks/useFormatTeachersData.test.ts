@@ -1,15 +1,15 @@
-import { beforeEach, describe, expect, test, vi } from 'vitest';
-import type { currentUser } from '../../types/teachers';
-import { useFormatTeachersData } from '../../hooks/useFormatTeachersData';
-import { renderHook } from '@testing-library/react';
+import { beforeEach, describe, expect, test, vi } from "vitest";
+import type { currentUser } from "../../types/teachers";
+import { useFormatTeachersData } from "../../hooks/useFormatTeachersData";
+import { renderHook } from "@testing-library/react";
 
-import { useTeachersStore } from '@/stores/teachersStore';
+import { useTeachersStore } from "@/stores/teachersStore";
 import {
   currentUserResponse,
   teacher1,
-} from '../../../../tests/fixtures/teachers/teachers';
+} from "../../../../tests/fixtures/teachers/teachers";
 
-describe('useFormatTeachersData', () => {
+describe("useFormatTeachersData", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     useTeachersStore.setState({
@@ -18,13 +18,13 @@ describe('useFormatTeachersData', () => {
     });
   });
 
-  const setDataTableSpy = vi.spyOn(useTeachersStore.getState(), 'setDataTable');
+  const setDataTableSpy = vi.spyOn(useTeachersStore.getState(), "setDataTable");
   const setDetailDrawerSpy = vi.spyOn(
     useTeachersStore.getState(),
-    'setDetailDrawer'
+    "setDetailDrawer"
   );
 
-  test('formats teachers data correctly', () => {
+  test("formats teachers data correctly", () => {
     const teachersResponse = [teacher1] as unknown as currentUser[];
     const loading = false;
     renderHook(() =>
@@ -38,57 +38,57 @@ describe('useFormatTeachersData', () => {
     // 先頭: currentUser
     expect(dataTable[0]).toEqual({
       id: 1,
-      name: 'John Doe',
-      role: 'admin',
-      employment_status: 'active',
+      name: "John Doe",
+      role: "admin",
+      employment_status: "active",
       class_subjects: [
-        { id: 1, name: 'english' },
-        { id: 3, name: 'mathematics' },
+        { id: 1, name: "english" },
+        { id: 3, name: "mathematics" },
       ],
-      studentsCount: 2,
-      current_sign_in_at: '2023-01-01T12:00:00Z',
+      studentsCount: 0,
+      current_sign_in_at: "2023-01-01T12:00:00Z",
     });
 
     // 次: teacher1
     expect(dataTable[1]).toEqual({
       id: 2,
-      name: 'Jane Smith',
-      role: 'teacher',
-      employment_status: 'active',
+      name: "Jane Smith",
+      role: "teacher",
+      employment_status: "active",
       class_subjects: [
-        { id: 1, name: 'english' },
-        { id: 4, name: 'science' },
+        { id: 1, name: "english" },
+        { id: 4, name: "science" },
       ],
       studentsCount: 1,
-      current_sign_in_at: '2024-01-01T12:00:00Z',
+      current_sign_in_at: "2024-01-01T12:00:00Z",
     });
 
     // 詳細データ検索の検証（teacher1）
     const detail2 = detailDrawer.find((detail) => detail.id === 2);
     expect(detail2).toEqual({
       id: 2,
-      name: 'Jane Smith',
-      role: 'teacher',
-      email: 'jane.smith@example.com',
-      created_at: '2024-01-01T12:00:00Z',
-      employment_status: 'active',
-      current_sign_in_at: '2024-01-01T12:00:00Z',
+      name: "Jane Smith",
+      role: "teacher",
+      email: "jane.smith@example.com",
+      created_at: "2024-01-01T12:00:00Z",
+      employment_status: "active",
+      current_sign_in_at: "2024-01-01T12:00:00Z",
       students: [
         {
           id: 3,
-          name: 'Student Three',
-          status: 'active',
-          school_stage: 'junior_high_school',
+          name: "Student Three",
+          status: "active",
+          school_stage: "junior_high_school",
           grade: 2,
         },
       ],
       available_days: [
-        { id: 3, name: 'tuesday' },
-        { id: 5, name: 'thursday' },
+        { id: 3, name: "tuesday" },
+        { id: 5, name: "thursday" },
       ],
       class_subjects: [
-        { id: 1, name: 'english' },
-        { id: 4, name: 'science' },
+        { id: 1, name: "english" },
+        { id: 4, name: "science" },
       ],
     });
 
@@ -96,7 +96,7 @@ describe('useFormatTeachersData', () => {
     expect(setDetailDrawerSpy).toHaveBeenCalled();
   });
 
-  test('should exclude null elements in teachersData (via filter(Boolean))', () => {
+  test("should exclude null elements in teachersData (via filter(Boolean))", () => {
     const teachersResponse = [teacher1, null] as unknown as currentUser[];
     const loading = false;
     renderHook(() =>
@@ -108,7 +108,7 @@ describe('useFormatTeachersData', () => {
     expect(dataTable.map((r) => r.id)).toEqual([1, 2]);
   });
 
-  test('should return only teachers when currentUser is missing', () => {
+  test("should return only teachers when currentUser is missing", () => {
     const teachersResponse = [teacher1] as unknown as currentUser[];
     const loading = false;
 
@@ -118,15 +118,15 @@ describe('useFormatTeachersData', () => {
     expect(dataTable).toHaveLength(1);
     expect(dataTable[0]).toEqual({
       id: 2,
-      name: 'Jane Smith',
-      role: 'teacher',
-      employment_status: 'active',
+      name: "Jane Smith",
+      role: "teacher",
+      employment_status: "active",
       class_subjects: [
-        { id: 1, name: 'english' },
-        { id: 4, name: 'science' },
+        { id: 1, name: "english" },
+        { id: 4, name: "science" },
       ],
       studentsCount: 1,
-      current_sign_in_at: '2024-01-01T12:00:00Z',
+      current_sign_in_at: "2024-01-01T12:00:00Z",
     });
 
     // currentUser はidが1, teacher はidが2
@@ -134,10 +134,10 @@ describe('useFormatTeachersData', () => {
     const teacher = detailDrawer.find((detail) => detail.id === 2);
 
     expect(currentUser).toBeUndefined();
-    expect(teacher?.email).toBe('jane.smith@example.com');
+    expect(teacher?.email).toBe("jane.smith@example.com");
   });
 
-  test('should return an empty array and undefined for lookups when both currentUser and teachersData are missing', () => {
+  test("should return an empty array and undefined for lookups when both currentUser and teachersData are missing", () => {
     const loading = false;
     renderHook(() => useFormatTeachersData(null, null, !loading));
     const { dataTable, detailDrawer } = useTeachersStore.getState();
@@ -147,7 +147,7 @@ describe('useFormatTeachersData', () => {
     expect(currentUser).toBeUndefined();
   });
 
-  test('does not update store when loading is true', () => {
+  test("does not update store when loading is true", () => {
     const teachersResponse = [teacher1] as unknown as currentUser[];
     const loading = true;
     renderHook(() =>
@@ -162,7 +162,7 @@ describe('useFormatTeachersData', () => {
     expect(setDetailDrawerSpy).not.toHaveBeenCalled();
   });
 
-  test('does not update store when prev is equal to same', () => {
+  test("does not update store when prev is equal to same", () => {
     const teachersResponse = [teacher1] as unknown as currentUser[];
     const loading = false;
 

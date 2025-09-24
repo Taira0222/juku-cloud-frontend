@@ -31,15 +31,26 @@ export const EditStudentDialog = () => {
   const state = location.state;
   const hasBackground = !!state?.background;
 
-  // エラーハンドリングによる画面遷移
-  if (!hasBackground) {
-    return <Navigate to="/students" replace />;
-  }
-
   const { student, isNotFound, isLoading } = useStudentForEdit(
     studentId,
     state
   );
+
+  // ここまでくれば student は確実に存在する
+  const formattedStudent = useMemo(() => {
+    return student ? studentFormatForEdit(student) : undefined;
+  }, [student]);
+
+  const isMobile = useIsMobile();
+  const navigate = useNavigate();
+  const handleClose = () => {
+    navigate(-1);
+  };
+
+  // エラーハンドリングによる画面遷移
+  if (!hasBackground) {
+    return <Navigate to="/students" replace />;
+  }
 
   // student の取得中
   if (isLoading) {
@@ -54,17 +65,6 @@ export const EditStudentDialog = () => {
   if (isNotFound) {
     return <Navigate to="/404" replace />;
   }
-
-  // ここまでくれば student は確実に存在する
-  const formattedStudent = useMemo(() => {
-    return studentFormatForEdit(student!);
-  }, [student]);
-
-  const isMobile = useIsMobile();
-  const navigate = useNavigate();
-  const handleClose = () => {
-    navigate(-1);
-  };
 
   const { value, setValue, submit, reset } = useStudentForm(
     "edit",
