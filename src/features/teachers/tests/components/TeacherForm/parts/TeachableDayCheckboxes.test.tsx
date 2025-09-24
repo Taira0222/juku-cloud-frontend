@@ -1,22 +1,22 @@
 import {
-  DayCheckboxes,
-  type DayCheckboxesProps,
-} from "@/features/students/components/StudentForm/parts/DayCheckboxes";
-import { initialMockValue } from "@/tests/fixtures/students/students";
+  TeachableDayCheckboxes,
+  type TeachableDayCheckboxesProps,
+} from "@/features/teachers/components/TeacherForm/parts/TeachableDayCheckboxes";
+import { formatEditDataMock } from "@/tests/fixtures/teachers/teachers";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, test, vi } from "vitest";
 
-describe("DayCheckboxes", () => {
-  const wrapper = (props: DayCheckboxesProps) => {
-    render(<DayCheckboxes {...props} />);
+describe("TeachableDayCheckboxes", () => {
+  const wrapper = (props: TeachableDayCheckboxesProps) => {
+    render(<TeachableDayCheckboxes {...props} />);
   };
 
   test("should render correctly", async () => {
     const user = userEvent.setup();
-    const mockProps: DayCheckboxesProps = {
-      value: initialMockValue,
-      toggle: vi.fn(() => {}),
+    const mockProps: TeachableDayCheckboxesProps = {
+      formData: formatEditDataMock,
+      onChange: vi.fn(() => {}),
     };
 
     wrapper(mockProps);
@@ -26,10 +26,10 @@ describe("DayCheckboxes", () => {
 
     const mondayCheckbox = screen.getByRole("checkbox", { name: "月曜日" });
     expect(mondayCheckbox).toBeInTheDocument();
-    expect(mondayCheckbox).not.toBeChecked();
+    expect(mondayCheckbox).toBeChecked();
 
     // 月曜日を選択
     await user.click(mondayCheckbox);
-    expect(mockProps.toggle).toHaveBeenCalledWith(2); // 月曜日のIDは2
+    expect(mockProps.onChange).toHaveBeenCalledWith("available_days", "monday"); // 月曜日のIDは2
   });
 });

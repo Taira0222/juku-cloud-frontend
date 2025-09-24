@@ -1,3 +1,4 @@
+import type { TeacherFormData } from "@/features/teachers/types/teacherForm";
 import { toTeacherDetailDrawer } from "../../../features/teachers/hooks/useFormatTeachersData";
 import type {
   currentUser,
@@ -188,3 +189,10 @@ export const TEACHERS_MOCK = Array.from({ length: 10 }, (_, i) =>
 
 // msw の handlers で使用する講師一覧のモックデータ
 export const teachers = [teacher1, teacher2, ...TEACHERS_MOCK];
+
+export const formatEditDataMock: TeacherFormData = {
+  name: "test name",
+  employment_status: "active",
+  subjects: ["english", "science"],
+  available_days: ["monday", "wednesday"],
+};
