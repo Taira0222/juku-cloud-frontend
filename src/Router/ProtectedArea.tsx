@@ -68,8 +68,6 @@ export const ProtectedArea = () => {
         <Routes>
           <Route element={<RoleRoute allowedRoles={["admin"]} />}>
             <Route path="/teachers/:id/edit" element={<EditTeacherDialog />} />
-          </Route>
-          <Route element={<RoleRoute allowedRoles={["admin", "teacher"]} />}>
             <Route path="/students/:id/edit" element={<EditStudentDialog />} />
           </Route>
         </Routes>

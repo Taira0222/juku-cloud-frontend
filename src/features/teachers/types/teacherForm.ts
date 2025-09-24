@@ -1,3 +1,5 @@
+import type { teacherDetailDrawer } from "./teachers";
+
 // toggleInArray を使用するkey の型
 export type ToggleableKeys = "subjects" | "available_days";
 
@@ -23,4 +25,5 @@ export type TeacherFormProps = {
   setFormData: setFormDataType;
   handleClose: () => void;
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  teacher: teacherDetailDrawer | undefined;
 };

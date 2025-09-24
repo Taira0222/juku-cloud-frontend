@@ -60,7 +60,7 @@ export const currentUserResponse = {
   created_at: "2023-01-01T12:00:00Z",
   employment_status: "active",
   current_sign_in_at: "2023-01-01T12:00:00Z",
-  students: [student1, student2],
+  students: [],
   available_days: [
     AVAILABLE_DAYS_MOCK[1], // 月曜日
     AVAILABLE_DAYS_MOCK[3], // 水曜日

@@ -40,7 +40,6 @@ export const EditStudentDialog = () => {
     studentId,
     state
   );
-
   // student の取得中
   if (isLoading) {
     return (
@@ -57,7 +56,7 @@ export const EditStudentDialog = () => {
 
   // ここまでくれば student は確実に存在する
   const formattedStudent = useMemo(() => {
-    return studentFormatForEdit(student!);
+    return student ? studentFormatForEdit(student) : undefined;
   }, [student]);
 
   const isMobile = useIsMobile();

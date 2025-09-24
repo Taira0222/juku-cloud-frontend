@@ -89,6 +89,7 @@ export const EditTeacherDialog = () => {
             setFormData={setFormData}
             handleClose={handleClose}
             onSubmit={handleSubmit}
+            teacher={teacher}
           />
         )}
       </DialogContent>
