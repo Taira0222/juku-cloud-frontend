@@ -4,6 +4,12 @@ import type {
   SignUpSuccessResponse,
 } from "@/features/auth/types/signUp";
 import type { TokenConfirmSuccessResponse } from "@/features/auth/types/tokenConfirm";
+import type {
+  createStudentPayload,
+  editStudentPayload,
+  FetchStudentsSuccessResponse,
+  Student,
+} from "@/features/students/types/students";
 import type { InviteTokenSuccessResponse } from "@/features/teachers/types/inviteToken";
 import type {
   fetchTeachersSuccessResponse,
@@ -84,3 +90,33 @@ export type TeacherUpdateRequestBodyType = updateTeacherRequest;
 export type TeacherUpdateResponseBodyType =
   | updateTeacherSuccessResponse
   | CommonErrorResponse;
+
+export type StudentFetchRequestBodyType = {
+  searchKeyword: string;
+  school_stage: string;
+  grade: number;
+  page: number;
+  perPage: number;
+};
+
+export type StudentFetchResponseBodyType =
+  | FetchStudentsSuccessResponse
+  | CommonErrorResponse;
+
+export type StudentCreateRequestBodyType = createStudentPayload;
+
+export type StudentCreateResponseBodyType = Student;
+
+export type StudentUpdatePathParams = {
+  id: string;
+};
+
+export type StudentUpdateRequestBodyType = editStudentPayload;
+
+export type StudentUpdateResponseBodyType = Student | CommonErrorResponse;
+
+export type StudentDeletePathParams = {
+  id: string;
+};
+
+export type StudentDeleteResponseBodyType = never | CommonErrorResponse;
