@@ -3,23 +3,36 @@ import {
   teacher1,
   teachers,
 } from "@/tests/fixtures/teachers/teachers";
-import type {
-  Errors,
-  InviteTokenCreateResponseBodyType,
-  SignInRequestBodyType,
-  SignInResponseBodyType,
-  SignUpRequestBodyType,
-  SignUpResponseBodyType,
-  TeacherDeletePathParams,
-  TeacherDeleteResponseBodyType,
-  TeacherFetchResponseBodyType,
-  TeacherUpdatePathParams,
-  TeacherUpdateRequestBodyType,
-  TeacherUpdateResponseBodyType,
-  TokenConfirmPathParams,
-  TokenConfirmResponseBodyType,
+import {
+  type StudentCreateRequestBodyType,
+  type Errors,
+  type InviteTokenCreateResponseBodyType,
+  type SignInRequestBodyType,
+  type SignInResponseBodyType,
+  type SignUpRequestBodyType,
+  type SignUpResponseBodyType,
+  type StudentCreateResponseBodyType,
+  type StudentFetchRequestBodyType,
+  type StudentFetchResponseBodyType,
+  type TeacherDeletePathParams,
+  type TeacherDeleteResponseBodyType,
+  type TeacherFetchResponseBodyType,
+  type TeacherUpdatePathParams,
+  type TeacherUpdateRequestBodyType,
+  type TeacherUpdateResponseBodyType,
+  type TokenConfirmPathParams,
+  type TokenConfirmResponseBodyType,
+  type StudentUpdatePathParams,
+  type StudentUpdateRequestBodyType,
+  type StudentUpdateResponseBodyType,
 } from "@/tests/fixtures/server/types/msw";
 import { http, HttpResponse } from "msw";
+import {
+  mockMeta,
+  mockStudent1,
+  mockStudent4,
+  studentsMock,
+} from "../students/students";
 
 const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const ADMIN_ID = "1";
@@ -342,4 +355,121 @@ export const handlers = [
       }
     );
   }),
+
+  http.get<never, StudentFetchRequestBodyType, StudentFetchResponseBodyType>(
+    `${VITE_API_BASE_URL}/api/v1/students`,
+    async ({ request }) => {
+      const url = new URL(request.url);
+      const gradeParam = url.searchParams.get("grade");
+      const schoolStageParam = url.searchParams.get("school_stage");
+      const perPageParam = url.searchParams.get("perPage");
+
+      const grade = gradeParam ? Number(gradeParam) : undefined;
+      const school_stage = schoolStageParam || undefined;
+      const perPage = perPageParam ? Number(perPageParam) : undefined;
+
+      // 高校3年でフィルタした場合は mockStudent One のみ返す
+      if (grade === 3 && school_stage === "high_school") {
+        return HttpResponse.json(
+          {
+            students: [studentsMock[0]], // mockStudent One のみ
+            meta: {
+              total_count: 1,
+              per_page: 10,
+              current_page: 1,
+              total_pages: 1,
+            },
+          },
+          { status: 200 }
+        );
+      } else if (perPage === 20) {
+        return HttpResponse.json(
+          {
+            students: studentsMock,
+            meta: {
+              total_count: 2,
+              per_page: 20,
+              current_page: 1,
+              total_pages: 1,
+            },
+          },
+          { status: 200 }
+        );
+      } else {
+        return HttpResponse.json(
+          {
+            students: studentsMock,
+            meta: mockMeta,
+          },
+          { status: 200 }
+        );
+      }
+    }
+  ),
+  // 生徒作成のハンドラー
+  http.post<never, StudentCreateRequestBodyType, StudentCreateResponseBodyType>(
+    `${VITE_API_BASE_URL}/api/v1/students`,
+    async ({ request }) => {
+      const body = await request.json();
+
+      // 成功時のレスポンス
+      return HttpResponse.json(
+        {
+          ...mockStudent4,
+          name: body.name,
+          grade: body.grade,
+          school_stage: body.school_stage,
+          status: body.status,
+          joined_on: body.joined_on,
+          desired_school: null,
+        },
+        { status: 201 }
+      );
+    }
+  ),
+  http.patch<
+    StudentUpdatePathParams,
+    StudentUpdateRequestBodyType,
+    StudentUpdateResponseBodyType
+  >(`${VITE_API_BASE_URL}/api/v1/students/:id`, async ({ params, request }) => {
+    const body = await request.json();
+    const { id } = params;
+
+    // 成功時のレスポンス
+    return HttpResponse.json(
+      {
+        ...mockStudent1,
+        id: Number(id),
+        name: body.name,
+        grade: body.grade,
+        school_stage: body.school_stage,
+        status: body.status,
+        joined_on: body.joined_on,
+        desired_school: null,
+      },
+      { status: 200 }
+    );
+  }),
+  http.delete<StudentUpdatePathParams, never, StudentUpdateResponseBodyType>(
+    `${VITE_API_BASE_URL}/api/v1/students/:id`,
+    async ({ params }) => {
+      const { id } = params;
+
+      if (id === "1") {
+        return new HttpResponse(null, { status: 204 });
+      } else {
+        return HttpResponse.json(
+          {
+            errors: [
+              {
+                code: "NOT_FOUND",
+                message: "生徒が見つかりませんでした。",
+              },
+            ],
+          },
+          { status: 404 }
+        );
+      }
+    }
+  ),
 ];

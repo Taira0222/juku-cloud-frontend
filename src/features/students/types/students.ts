@@ -123,6 +123,10 @@ export const fetchStudentsSuccessResponseSchema = z.object({
   meta: metaSchema,
 });
 
+export type FetchStudentsSuccessResponse = z.infer<
+  typeof fetchStudentsSuccessResponseSchema
+>;
+
 // Create用（idなし）
 export const createStudentSchema = z.object({
   name: z.string().max(50, { message: "生徒名は50文字以内で入力してください" }),

@@ -170,6 +170,7 @@ export const StudentsTable = ({
             className="flex w-fit @4xl/main:hidden"
             size="sm"
             id="view-selector"
+            aria-label="表示切替"
           >
             <SelectValue placeholder="Select a view" />
           </SelectTrigger>

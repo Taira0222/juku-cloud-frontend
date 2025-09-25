@@ -7,6 +7,7 @@ import type {
 } from "@/features/students/types/students";
 import {
   AVAILABLE_DAYS_MOCK,
+  currentUserResponse,
   SUBJECTS_MOCK,
   teacher1,
   teacher2,
@@ -101,7 +102,7 @@ export const mockStudent2: Student = {
   ],
   teaching_assignments: [
     {
-      teacher_id: 2, // teacher1
+      teacher_id: 3, // teacher2
       subject_id: 1, // 英語
       day_id: 3, // 火曜日
     },
@@ -138,6 +139,34 @@ export const mockStudent3: Student = {
       teacher_id: 2,
       subject_id: 1,
       day_id: 3,
+    },
+  ],
+};
+
+export const mockStudent4: Student = {
+  id: 4,
+  name: "mockStudent Four",
+  status: "active",
+  school_stage: "junior_high_school",
+  grade: 2,
+  desired_school: null,
+  joined_on: "2025-09-03",
+  class_subjects: [SUBJECTS_MOCK[0]], // 英語
+  available_days: [AVAILABLE_DAYS_MOCK[1]], // 火曜日
+  teachers: [
+    {
+      id: currentUserResponse.id,
+      name: currentUserResponse.name,
+      role: currentUserResponse.role,
+      teachable_subjects: currentUserResponse.class_subjects, // 英語、理科
+      workable_days: currentUserResponse.available_days, // 火曜日、木曜日
+    } as z.infer<typeof teachersSchema>,
+  ],
+  teaching_assignments: [
+    {
+      teacher_id: 1,
+      subject_id: 1,
+      day_id: 2,
     },
   ],
 };
