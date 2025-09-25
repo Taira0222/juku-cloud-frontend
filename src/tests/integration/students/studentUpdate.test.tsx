@@ -95,7 +95,7 @@ describe("Student Update Page", () => {
     const nameInput = screen.getByLabelText(/生徒の名前/);
 
     await user.clear(nameInput);
-    await user.type(nameInput, "a".repeat(51)); // 51文字入力
+    await user.type(nameInput, "a".repeat(50 + 1)); // 51文字入力
 
     const updateButton = screen.getByRole("button", { name: "更新" });
     await user.click(updateButton);

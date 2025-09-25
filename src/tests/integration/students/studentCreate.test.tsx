@@ -123,7 +123,7 @@ describe("Student Create Page", () => {
     // 名前を入力
     const nameInput = screen.getByLabelText(/生徒の名前/);
 
-    await user.type(nameInput, "a".repeat(51)); // 51文字入力
+    await user.type(nameInput, "a".repeat(50 + 1)); // 51文字入力
 
     // 作成ボタンをクリック
     const submitButton = screen.getByRole("button", { name: "作成" });
