@@ -4,13 +4,13 @@ import {
   SidebarInset,
   SidebarProvider,
 } from "@/components/ui/layout/Sidebar/sidebar";
-import { useUserStore } from "@/stores/userStore";
-import { Outlet } from "react-router-dom";
+import { type User } from "@/stores/userStore";
+import { Outlet, useOutletContext } from "react-router-dom";
 import { getManagementDashboardData } from "@/features/managementDashboard/components/getManagementDashboardData";
 import SpinnerWithText from "@/components/common/status/Loading";
 
 export const ManagementDashboard = () => {
-  const user = useUserStore((state) => state.user);
+  const user = useOutletContext<User>();
 
   const data = getManagementDashboardData({
     role: user?.role ?? "",
@@ -42,7 +42,7 @@ export const ManagementDashboard = () => {
       <AppSidebar variant="inset" data={data} />
       {/** ここがメイン部分 */}
       <SidebarInset>
-        <SiteHeader school={user?.school ?? null} />
+        <SiteHeader school={user?.school ?? ""} />
         <div className="flex flex-1 flex-col">
           {/** ここがメインコンテンツ部分 */}
           <Outlet context={{ role: user?.role }} />
