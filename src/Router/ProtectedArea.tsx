@@ -20,37 +20,36 @@ export const ProtectedArea = () => {
     <>
       {/* 背景・通常用のルーティング */}
       <Routes location={background || location}>
-        {/** 管理画面：admin, teacher 共通のレイアウト */}
+        {/** admin, teacher 共通 */}
         <Route element={<RoleRoute allowedRoles={["admin", "teacher"]} />}>
+          {/** 管理画面 */}
           <Route element={<ManagementDashboard />}>
-            {/* admin, teacher 共通 */}
             <Route path="/students" element={<StudentsPage />} />
+          </Route>
+
+          {/** 生徒ごとのページ */}
+          <Route element={<StudentDashboard />}>
+            <Route path="/dashboard/:id" element={<DashboardPage />} />
+          </Route>
+        </Route>
+
+        {/* admin 専用*/}
+        <Route element={<RoleRoute allowedRoles={["admin"]} />}>
+          <Route element={<ManagementDashboard />}>
+            <Route path="/teachers" element={<TeachersPage />} />
             {/* 直アクセス時された際のエラーハンドリング用 */}
             {!background && (
-              <Route
-                path="/students/:id/edit"
-                element={<EditStudentDialog />}
-              />
-            )}
-
-            {/* admin 専用：NestedRoute で権限チェック */}
-            <Route element={<RoleRoute allowedRoles={["admin"]} />}>
-              <Route path="/teachers" element={<TeachersPage />} />
-              {/* 直アクセス時された際のエラーハンドリング用 */}
-              {!background && (
+              <>
                 <Route
                   path="/teachers/:id/edit"
                   element={<EditTeacherDialog />}
                 />
-              )}
-            </Route>
-          </Route>
-        </Route>
-
-        {/** 生徒ごとのページ（別レイアウト） */}
-        <Route element={<RoleRoute allowedRoles={["admin", "teacher"]} />}>
-          <Route element={<StudentDashboard />}>
-            <Route path="/dashboard/:id" element={<DashboardPage />} />
+                <Route
+                  path="/students/:id/edit"
+                  element={<EditStudentDialog />}
+                />
+              </>
+            )}
           </Route>
         </Route>
 

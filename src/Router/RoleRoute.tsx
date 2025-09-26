@@ -1,8 +1,8 @@
-import SpinnerWithText from '@/components/common/status/Loading';
-import { useUserStore } from '@/stores/userStore';
-import { Navigate, Outlet } from 'react-router-dom';
+import SpinnerWithText from "@/components/common/status/Loading";
+import { useUserStore } from "@/stores/userStore";
+import { Navigate, Outlet } from "react-router-dom";
 
-export type Role = 'admin' | 'teacher';
+export type Role = "admin" | "teacher";
 
 type Props = {
   allowedRoles?: Role[];
@@ -10,7 +10,6 @@ type Props = {
 
 export const RoleRoute = ({ allowedRoles }: Props) => {
   const user = useUserStore((state) => state.user);
-
   // ロールチェック
   if (allowedRoles) {
     // useFetchUser 読み込み中UI
@@ -25,5 +24,5 @@ export const RoleRoute = ({ allowedRoles }: Props) => {
       return <Navigate to="/forbidden" />;
     }
   }
-  return <Outlet />;
+  return <Outlet context={user} />;
 };
