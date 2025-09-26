@@ -13,10 +13,10 @@ export const ManagementDashboard = () => {
   const user = useOutletContext<User>();
 
   const data = getManagementDashboardData({
-    role: user?.role,
+    role: user.role,
     user: {
-      name: user?.name,
-      email: user?.email,
+      name: user.name,
+      email: user.email,
     },
   });
 
@@ -42,10 +42,10 @@ export const ManagementDashboard = () => {
       <AppSidebar variant="inset" data={data} />
       {/** ここがメイン部分 */}
       <SidebarInset>
-        <SiteHeader school={user?.school} />
+        <SiteHeader school={user.school} />
         <div className="flex flex-1 flex-col">
           {/** ここがメインコンテンツ部分 */}
-          <Outlet context={{ role: user?.role }} />
+          <Outlet context={{ role: user.role }} />
         </div>
       </SidebarInset>
     </SidebarProvider>
