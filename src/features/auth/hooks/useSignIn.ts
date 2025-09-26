@@ -1,16 +1,9 @@
-import { useAuthStore } from '@/stores/authStore';
-import { signInApi } from '../api/signInApi';
-import type { AuthHeader } from '../types/auth';
-import { useCallback, useState } from 'react';
-import { useWarningStore } from '@/stores/warningStore';
-import { getErrorMessage } from '@/lib/errors/getErrorMessage';
-
-// ヘッダー名の定数を定義
-const HEADER_ACCESS_TOKEN = 'access-token';
-const HEADER_CLIENT = 'client';
-const HEADER_UID = 'uid';
-const HEADER_TOKEN_TYPE = 'token-type';
-const HEADER_EXPIRY = 'expiry';
+import { useAuthStore } from "@/stores/authStore";
+import { signInApi } from "../api/signInApi";
+import { useCallback, useState } from "react";
+import { useWarningStore } from "@/stores/warningStore";
+import { getErrorMessage } from "@/lib/errors/getErrorMessage";
+import { parseAuthHeader } from "../utils/parseAuthHeader";
 
 export const useSignIn = () => {
   const setAuth = useAuthStore((state) => state.setAuth);
@@ -30,30 +23,14 @@ export const useSignIn = () => {
 
       try {
         const response = await signInApi(email, password);
-        const headers = response.headers;
+        const authHeader = parseAuthHeader(response.headers);
 
-        // 必要なプロパティが存在するかチェック
-        if (
-          headers[HEADER_ACCESS_TOKEN] &&
-          headers[HEADER_CLIENT] &&
-          headers[HEADER_UID] &&
-          headers[HEADER_TOKEN_TYPE] &&
-          headers[HEADER_EXPIRY]
-        ) {
-          // AuthHeader型に必要なプロパティのみを抽出
-          const authHeader: AuthHeader = {
-            'access-token': headers[HEADER_ACCESS_TOKEN],
-            client: headers[HEADER_CLIENT],
-            uid: headers[HEADER_UID],
-            'token-type': headers[HEADER_TOKEN_TYPE],
-            expiry: headers[HEADER_EXPIRY],
-          };
-
+        if (authHeader) {
           setAuth(authHeader);
           return { ok: true as const };
         } else {
           // 認証ヘッダーが不足している場合のエラー処理
-          setError(['認証情報の取得に失敗しました。']);
+          setError(["認証情報の取得に失敗しました。"]);
           return { ok: false as const };
         }
       } catch (err: unknown) {
