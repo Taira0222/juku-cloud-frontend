@@ -1,4 +1,4 @@
-import type { Teacher } from '../types/studentForm';
+import type { Teacher } from "../types/studentForm";
 
 export const buildTeachersByTab = (
   teachers: Teacher[],
