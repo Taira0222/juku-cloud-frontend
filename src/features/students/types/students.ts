@@ -31,16 +31,16 @@ export const StatusEnum = z.enum(
 );
 
 const roleEnum = z.enum(["admin", "teacher"], { message: "役割が不正です" });
-const gradeSchema = z
+export const gradeSchema = z
   .number()
   .min(1, { message: "学年は1から6の範囲で入力してください" })
   .max(6, { message: "学年は1から6の範囲で入力してください" });
 
-const desiredSchoolSchema = z
+export const desiredSchoolSchema = z
   .string({ message: "志望校は文字列または空である必要があります" })
   .nullable();
 
-const joinedOnSchema = z.string().refine(
+export const joinedOnSchema = z.string().refine(
   (val) => {
     if (!val) return true;
     const today = new Date();

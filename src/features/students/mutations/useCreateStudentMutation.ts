@@ -4,7 +4,7 @@ import {
   type UseMutationOptions,
 } from "@tanstack/react-query";
 import { studentCreate } from "../api/studentCreateApi";
-import { studentKeys } from "../key";
+import { studentKeys } from "../../key";
 import type { createStudentPayload, Student } from "../types/students";
 import { toast } from "sonner";
 import { getErrorMessage } from "@/lib/errors/getErrorMessage";

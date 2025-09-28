@@ -10,6 +10,7 @@ import { StudentDashboard } from "@/pages/studentDashboard/StudentDashboard";
 import { DashboardPage } from "@/pages/dashboard/DashboardPage";
 import { InternalServerErrorPage } from "@/pages/error/InternalServerErrorPage";
 import { EditStudentDialog } from "@/features/students/components/dialog/EditStudentDialog";
+import { StudentTraitPage } from "@/pages/studentTrait/StudentTraitPage";
 
 export const ProtectedArea = () => {
   const location = useLocation();
@@ -50,6 +51,14 @@ export const ProtectedArea = () => {
                 />
               </>
             )}
+          </Route>
+          {/** 生徒ごとのページ */}
+          <Route element={<StudentDashboard />}>
+            <Route path="/dashboard/:id" element={<DashboardPage />} />
+            <Route
+              path="/dashboard/:id/traits"
+              element={<StudentTraitPage />}
+            />
           </Route>
         </Route>
 
