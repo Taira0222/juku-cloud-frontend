@@ -9,7 +9,7 @@ export const DashboardPage = () => {
   const { data, isError, error } =
     useOutletContext<UseQueryResult<StudentDetail, unknown>>();
 
-  if (!data) return <Navigate to="404" replace />;
+  if (!data) return <Navigate to="/404" replace />;
 
   const formattedGrade = formatGrade(data.school_stage, data.grade);
   const desiredSchool = data.desired_school ?? "未設定";

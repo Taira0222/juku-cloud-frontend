@@ -21,7 +21,7 @@ export const StudentDashboard = () => {
   const studentId = Number(id);
   // 整数でない、または0以下の数値なら404へリダイレクト
   if (!Number.isInteger(studentId) || studentId <= 0)
-    return <Navigate to="404" replace />;
+    return <Navigate to="/404" replace />;
 
   const query = useStudentDetailQuery(studentId);
 
