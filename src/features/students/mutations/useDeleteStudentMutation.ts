@@ -3,7 +3,7 @@ import {
   useQueryClient,
   type UseMutationOptions,
 } from "@tanstack/react-query";
-import { studentKeys } from "../key";
+import { studentKeys } from "../../key";
 import { toast } from "sonner";
 import { getErrorMessage } from "@/lib/errors/getErrorMessage";
 import { studentDelete } from "../api/studentDeleteApi";

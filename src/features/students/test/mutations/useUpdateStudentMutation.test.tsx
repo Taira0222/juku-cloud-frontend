@@ -5,7 +5,7 @@ import {
   editStudentMockPayload,
 } from "@/tests/fixtures/students/students";
 import { renderHook, waitFor } from "@testing-library/react";
-import { studentKeys } from "../../key";
+import { studentKeys } from "../../../key";
 import { toast } from "sonner";
 import { studentUpdate } from "../../api/studentUpdateApi";
 import { useUpdateStudentMutation } from "../../mutations/useUpdateStudentMutation";

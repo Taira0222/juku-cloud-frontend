@@ -7,7 +7,7 @@ import {
 } from "@/tests/fixtures/students/students";
 import { renderHook, waitFor } from "@testing-library/react";
 import { useCreateStudentMutation } from "../../mutations/useCreateStudentMutation";
-import { studentKeys } from "../../key";
+import { studentKeys } from "../../../key";
 import { toast } from "sonner";
 
 const queryClient = new QueryClient({
