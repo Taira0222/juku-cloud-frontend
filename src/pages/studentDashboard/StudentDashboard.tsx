@@ -1,6 +1,5 @@
 import { AppSidebar } from "@/components/common/dashboard/app-sidebar";
 import { SiteHeader } from "@/components/common/dashboard/site-header";
-import { ErrorDisplay } from "@/components/common/status/ErrorDisplay";
 import SpinnerWithText from "@/components/common/status/Loading";
 import {
   SidebarInset,
@@ -8,7 +7,6 @@ import {
 } from "@/components/ui/layout/Sidebar/sidebar";
 import { getStudentDashboardData } from "@/features/studentDashboard/components/getStudentDashboardData";
 import { useStudentDetailQuery } from "@/features/studentDashboard/queries/useStudentDetailQuery";
-import { getErrorMessage } from "@/lib/errors/getErrorMessage";
 import type { User } from "@/stores/userStore";
 import {
   Navigate,
@@ -61,10 +59,8 @@ export const StudentDashboard = () => {
         <SiteHeader school={user?.school ?? null} />
         <div className="flex flex-1 flex-col">
           {/** ここがメインコンテンツ部分 */}
-          {query.isError && (
-            <ErrorDisplay error={getErrorMessage(query.error)} />
-          )}
-          <Outlet context={query.data} />
+
+          <Outlet context={query} />
         </div>
       </SidebarInset>
     </SidebarProvider>
