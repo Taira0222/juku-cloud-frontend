@@ -26,7 +26,11 @@ import { useUpdateStudentMutation } from "../../mutations/useUpdateStudentMutati
 
 export const EditStudentDialog = () => {
   const { id } = useParams<{ id: string }>();
-  const studentId = id ? parseInt(id, 10) : 0;
+  const studentId = Number(id);
+  // 整数でない、または0以下の数値なら404へリダイレクト
+  if (!Number.isInteger(studentId) || studentId <= 0)
+    return <Navigate to="/404" replace />;
+
   const location = useLocation();
   const state = location.state;
   const hasBackground = !!state?.background;
@@ -123,6 +127,7 @@ export const EditStudentDialog = () => {
             }}
             loading={isPending}
             teachers={teachers}
+            studentId={studentId}
           />
         )}
       </DialogContent>
