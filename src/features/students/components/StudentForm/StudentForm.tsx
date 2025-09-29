@@ -1,4 +1,4 @@
-import { useMemo, useState, useEffect, useRef } from "react";
+import { useMemo, useState, useEffect } from "react";
 import type {
   StudentFormMode,
   StudentFormProps,
@@ -35,33 +35,36 @@ export const StudentForm = <M extends StudentFormMode>({
   onSubmit,
   loading,
   teachers,
+  studentId,
 }: StudentFormProps<M>) => {
+  const variant = mode === "edit" ? "EditDraft" : "Draft";
   // フォーム操作ハンドラ
   const H = createStudentFormHandlers(onChange);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<string | null>(null);
+  const [initialSubjectIds, setInitialSubjectIds] = useState<number[]>([]);
 
   // すでに選択された科目・曜日
   const selectedSubjectIds = value.subject_ids ?? [];
   const selectedDayIds = value.available_day_ids ?? [];
 
-  // 初期 subject_ids を固定スナップショット
-  const initialSubjectIdsRef = useRef<number[] | null>(null);
-  if (mode === "edit" && initialSubjectIdsRef.current === null) {
-    initialSubjectIdsRef.current = [...selectedSubjectIds];
-  }
-
   // 初期値から外れた科目IDの配列
   const removeSubjectIds = useMemo(() => {
     if (mode !== "edit") return [];
-    const init = new Set(initialSubjectIdsRef.current ?? []);
+    const init = new Set(initialSubjectIds);
     return [...init].filter((id) => !selectedSubjectIds.includes(id));
-  }, [mode, selectedSubjectIds]);
+  }, [mode, initialSubjectIds, selectedSubjectIds]);
 
   const teachersByTab = useMemo(
     () => buildTeachersByTab(teachers, selectedSubjectIds, ALL_DAY_IDS),
     [teachers, selectedSubjectIds]
   );
+
+  useEffect(() => {
+    if (mode === "edit") {
+      setInitialSubjectIds([...selectedSubjectIds]);
+    }
+  }, [studentId, mode]);
 
   useEffect(() => {
     if (
@@ -77,8 +80,6 @@ export const StudentForm = <M extends StudentFormMode>({
       setActiveTab(null);
     }
   }, [selectedDayIds, selectedSubjectIds, activeTab]);
-
-  const variant = mode === "edit" ? "EditDraft" : "Draft";
 
   return (
     <>

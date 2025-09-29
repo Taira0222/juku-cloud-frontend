@@ -56,4 +56,5 @@ export type StudentFormProps<M extends StudentFormMode> = {
   onSubmit: (valid: DraftByMode<M>) => void;
   loading?: boolean;
   teachers: Teacher[];
+  studentId?: number; // modeがeditのときのみ必要
 };

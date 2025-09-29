@@ -79,7 +79,7 @@ describe("Student Update Page", () => {
     expect(await screen.findByText("生徒を更新しました")).toBeInTheDocument();
   }, 20000);
 
-  test("should display a confirmation dialog when removing subjects that have lesson notes", async () => {
+  test("should display a confirmation dialog when removing subjects", async () => {
     const user = userEvent.setup();
     updateRender();
 
