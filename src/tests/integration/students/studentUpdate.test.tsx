@@ -79,6 +79,35 @@ describe("Student Update Page", () => {
     expect(await screen.findByText("生徒を更新しました")).toBeInTheDocument();
   }, 20000);
 
+  test("should display a confirmation dialog when removing subjects", async () => {
+    const user = userEvent.setup();
+    updateRender();
+
+    expect(await screen.findByText("mockStudent One")).toBeInTheDocument();
+    const studentMenuButton = getMenuButtonById(STUDENT1_ID);
+    await user.click(studentMenuButton);
+
+    // 編集をクリック
+    const editMenuButton = screen.getByRole("menuitem", { name: "編集" });
+    await user.click(editMenuButton);
+
+    expect(await screen.findByText("生徒情報を編集")).toBeInTheDocument();
+
+    // 科目の選択を外す (数学を外す)
+    const mathCheckbox = screen.getByRole("checkbox", { name: "数学" });
+    await user.click(mathCheckbox);
+    expect(mathCheckbox).not.toBeChecked();
+
+    const updateButton = screen.getByRole("button", { name: "更新" });
+    await user.click(updateButton);
+
+    // 確認ダイアログが表示される
+    expect(await screen.findByText("本当に更新しますか？")).toBeInTheDocument();
+    expect(
+      screen.getByText(/選択を外した科目に関連する授業引継ぎメモは削除されます/)
+    ).toBeInTheDocument();
+  });
+
   test("should display validation errors when submitting an empty form", async () => {
     const user = userEvent.setup();
     updateRender();
