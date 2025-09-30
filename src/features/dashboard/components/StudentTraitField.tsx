@@ -73,10 +73,8 @@ export const StudentTraitField = ({
               <li
                 key={trait.id}
                 className={cn(
-                  "rounded-md",
-                  isMobile ? "text-[11px] leading-5" : "text-sm leading-6",
-                  // 行ホバーでうっすら背景（カードなしでも触れる要素だと分かる）
-                  "hover:bg-muted/40 transition-colors"
+                  "rounded-md hover:bg-muted/40 transition-colors",
+                  isMobile ? "text-xs" : "text-sm"
                 )}
               >
                 <TraitHoverCard trait={trait} isMobile={isMobile} />

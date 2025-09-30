@@ -68,6 +68,7 @@ export const LessonNotesTable = ({
   isAdmin: boolean;
   isMobile: boolean;
 }) => {
+  // 科目はDBでかならず1件以上登録されているので、サイズ0の可能性は考慮しない
   const defaultSubject = subjects[0];
 
   // タブの初期値を最初の科目に設定

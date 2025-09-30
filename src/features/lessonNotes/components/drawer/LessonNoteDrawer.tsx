@@ -88,8 +88,8 @@ export const LessonNoteDrawer = ({ lessonNote }: Props) => {
             </div>
           </div>
           <div className="flex flex-col gap-2">
-            <Label htmlFor="availableDays">最終更新日</Label>
-            <p id="availableDays" className="text-muted-foreground">
+            <Label htmlFor="lastUpdatedAt">最終更新日</Label>
+            <p id="lastUpdatedAt" className="text-muted-foreground">
               {created_at === updated_at ? "---" : formatIsoToDate(updated_at)}
             </p>
           </div>

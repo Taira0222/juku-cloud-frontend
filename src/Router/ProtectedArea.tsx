@@ -32,7 +32,7 @@ export const ProtectedArea = () => {
           {/** 生徒ごとのページ */}
           <Route element={<StudentDashboard />}>
             <Route path="/dashboard/:id" element={<DashboardPage />} />
-            {/* 直アクセス時された際のエラーハンドリング用 */}
+            {/* 直アクセスされた際のエラーハンドリング用 */}
             {!background && (
               <>
                 <Route
@@ -48,7 +48,7 @@ export const ProtectedArea = () => {
         <Route element={<RoleRoute allowedRoles={["admin"]} />}>
           <Route element={<ManagementDashboard />}>
             <Route path="/teachers" element={<TeachersPage />} />
-            {/* 直アクセス時された際のエラーハンドリング用 */}
+            {/* 直アクセスされた際のエラーハンドリング用 */}
             {!background && (
               <>
                 <Route

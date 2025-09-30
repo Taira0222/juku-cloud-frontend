@@ -29,7 +29,7 @@ export const DashboardPage = () => {
       <div
         className={cn(
           "grid grid-cols-2 gap-x-6 ",
-          isMobile ? "px-2" : "px-10  mb-6"
+          isMobile ? "px-2" : "px-10 mb-6"
         )}
       >
         <StudentTraitField
