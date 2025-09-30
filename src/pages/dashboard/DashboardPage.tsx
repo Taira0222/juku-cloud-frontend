@@ -35,15 +35,18 @@ export const DashboardPage = () => {
         <StudentTraitField
           cardTitle="よい特性"
           traits={goodTraits}
+          category="good"
           isMobile={isMobile}
         />
         <StudentTraitField
           cardTitle="注意が必要な特性"
           traits={carefulTraits}
+          category="careful"
           isMobile={isMobile}
         />
       </div>
       <LessonNotesTable
+        subjects={data.class_subjects}
         lessonNotes={data.lesson_notes}
         isAdmin={role === "admin"}
         isMobile={isMobile}

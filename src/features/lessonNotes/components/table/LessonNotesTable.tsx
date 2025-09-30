@@ -55,23 +55,20 @@ import {
 import { LessonNotesColumns } from "./LessonNotesColumns";
 import type { lessonNote } from "@/features/studentDashboard/type/studentDashboard";
 import { resolveSubjectMeta } from "@/utils/subjectBadgeUtils";
+import type { ClassSubjectType } from "@/features/students/types/students";
 
 export const LessonNotesTable = ({
+  subjects,
   lessonNotes,
   isAdmin,
   isMobile,
 }: {
+  subjects: ClassSubjectType[];
   lessonNotes: lessonNote[];
   isAdmin: boolean;
   isMobile: boolean;
 }) => {
-  const lessonNotesSubjects = lessonNotes.map(
-    (note) => note.student_class_subject.class_subject
-  );
-  const uniqueSubjects = Array.from(
-    new Map(lessonNotesSubjects.map((item) => [item.id, item])).values()
-  );
-  const defaultSubject = uniqueSubjects[0];
+  const defaultSubject = subjects[0];
 
   // タブの初期値を最初の科目に設定
   const [tabValue, setTabValue] = useState<string>(defaultSubject.name);
@@ -140,7 +137,7 @@ export const LessonNotesTable = ({
       <div className="flex items-center justify-between lg:px-6">
         {/** タブ */}
         <TabsList>
-          {uniqueSubjects.map((subject) => {
+          {subjects.map((subject) => {
             const { label } = resolveSubjectMeta(subject.name);
             return (
               <TabsTrigger key={subject.id} value={subject.name}>
@@ -171,6 +168,7 @@ export const LessonNotesTable = ({
                 .getAllColumns()
                 .filter(
                   (column) =>
+                    column.id !== "subject" &&
                     typeof column.accessorFn !== "undefined" &&
                     column.getCanHide()
                 )

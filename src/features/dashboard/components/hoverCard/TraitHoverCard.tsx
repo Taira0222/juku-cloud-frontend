@@ -47,7 +47,7 @@ export const TraitHoverCard = ({ trait, isMobile }: TraitHoverCardProps) => {
               <h4 className="text-sm font-semibold">{trait.title}</h4>
             </div>
             <p className="text-sm">
-              {trait.description || "No description available."}
+              {trait.description || "詳細説明はありません。"}
             </p>
           </div>
         </div>

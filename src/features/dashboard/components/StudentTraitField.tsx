@@ -1,4 +1,7 @@
-import type { studentTrait } from "@/features/studentDashboard/type/studentDashboard";
+import type {
+  CategoryType,
+  studentTrait,
+} from "@/features/studentDashboard/type/studentDashboard";
 import { AlertTriangle, CheckCircle } from "lucide-react";
 import { TraitHoverCard } from "./hoverCard/TraitHoverCard";
 import { cn } from "@/lib/utils";
@@ -7,14 +10,16 @@ type TraitFieldProps = {
   cardTitle: string;
   traits: studentTrait[];
   isMobile: boolean;
+  category: CategoryType;
 };
 
 export const StudentTraitField = ({
   cardTitle,
   traits,
   isMobile,
+  category,
 }: TraitFieldProps) => {
-  const isGood = cardTitle === "よい特性";
+  const isGood = category === "good";
 
   const traitIcon = isGood ? (
     <CheckCircle

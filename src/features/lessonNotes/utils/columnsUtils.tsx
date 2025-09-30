@@ -15,10 +15,7 @@ export const columnsUtils = () => {
     if (isPast) {
       return (
         // 期限切れのバッジを作成
-        <Badge
-          variant="outline"
-          className={"text-muted-foreground px-1.5 mx-1 "}
-        >
+        <Badge variant="outline" className="text-muted-foreground px-1.5 mx-1">
           <IconCalendarX
             aria-hidden="true"
             className="fill-gray-300 dark:fill-red-400"

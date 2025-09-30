@@ -54,10 +54,12 @@ export const joinedOnSchema = z.string().refine(
 );
 
 // 共通の型
-export const classSubjectsSchema = z.object({
+export const classSubjectSchema = z.object({
   id: z.number({ message: "科目IDは数値である必要があります" }),
   name: subjectEnum,
 });
+
+export type ClassSubjectType = z.infer<typeof classSubjectSchema>;
 
 export const availableDaysSchema = z.object({
   id: z.number({ message: "曜日IDは数値である必要があります" }),
@@ -69,7 +71,7 @@ export const teachersSchema = z.object({
   id: z.number({ message: "講師IDは数値である必要があります" }),
   name: z.string().max(50, { message: "講師名は50文字以内で入力してください" }),
   role: roleEnum,
-  teachable_subjects: z.array(classSubjectsSchema, {
+  teachable_subjects: z.array(classSubjectSchema, {
     message: "担当可能な科目一覧の形式が不正です",
   }),
   workable_days: z.array(availableDaysSchema, {
@@ -93,7 +95,7 @@ export const studentSchema = z.object({
   grade: gradeSchema,
   desired_school: desiredSchoolSchema,
   joined_on: joinedOnSchema,
-  class_subjects: z.array(classSubjectsSchema, {
+  class_subjects: z.array(classSubjectSchema, {
     message: "受講科目一覧の形式が不正です",
   }),
   available_days: z.array(availableDaysSchema, {
