@@ -11,7 +11,6 @@ import { formatIsoToDate } from "@/utils/formatIsoToDate";
 import { subjectBadgeUtils } from "@/utils/subjectBadgeUtils";
 import { statusBadgeUtils } from "@/utils/statusBadgeUtils";
 
-// columns を関数として定義し、getDetailDrawerData を受け取る
 export const StudentsColumns = (
   isAdmin: boolean
 ): ColumnDef<z.infer<typeof studentSchema>>[] => {

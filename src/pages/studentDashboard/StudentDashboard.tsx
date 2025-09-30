@@ -1,5 +1,5 @@
 import { AppSidebar } from "@/components/common/dashboard/app-sidebar";
-import { SiteHeader } from "@/components/common/dashboard/site-header";
+import { StudentSiteHeader } from "@/features/studentDashboard/components/dashboard/StudentSiteHeader";
 import SpinnerWithText from "@/components/common/status/Loading";
 import {
   SidebarInset,
@@ -56,11 +56,13 @@ export const StudentDashboard = () => {
       <AppSidebar variant="inset" data={sidebarData} />
       {/** ここがメイン部分 */}
       <SidebarInset>
-        <SiteHeader school={user?.school ?? null} />
+        {query.data && (
+          <StudentSiteHeader school={user.school} data={query.data} />
+        )}
         <div className="flex flex-1 flex-col">
           {/** ここがメインコンテンツ部分 */}
 
-          <Outlet context={query} />
+          <Outlet context={{ query, role: user.role }} />
         </div>
       </SidebarInset>
     </SidebarProvider>

@@ -31,6 +31,7 @@ export const StatusEnum = z.enum(
 );
 
 const roleEnum = z.enum(["admin", "teacher"], { message: "役割が不正です" });
+export type userRole = z.infer<typeof roleEnum>;
 export const gradeSchema = z
   .number()
   .min(1, { message: "学年は1から6の範囲で入力してください" })

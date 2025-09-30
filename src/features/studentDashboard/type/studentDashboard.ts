@@ -26,6 +26,8 @@ const noteTypeEnum = z.enum(["homework", "lesson", "other"], {
   message: "ノートタイプが正しくありません",
 });
 
+export type NoteType = z.infer<typeof noteTypeEnum>;
+
 const studentClassSubjectSchema = z.object({
   id: z.number({ message: "科目IDは数値である必要があります" }),
   class_subject: classSubjectsSchema,
@@ -87,3 +89,6 @@ export const StudentDetailSchema = z.object({
 });
 
 export type StudentDetail = z.infer<typeof StudentDetailSchema>;
+
+export type studentTrait = z.infer<typeof studentTraitsSchema>;
+export type lessonNote = z.infer<typeof lessonNotesSchema>;

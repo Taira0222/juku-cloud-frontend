@@ -10,7 +10,8 @@ import { StudentDashboard } from "@/pages/studentDashboard/StudentDashboard";
 import { DashboardPage } from "@/pages/dashboard/DashboardPage";
 import { InternalServerErrorPage } from "@/pages/error/InternalServerErrorPage";
 import { EditStudentDialog } from "@/features/students/components/dialog/EditStudentDialog";
-import { StudentTraitPage } from "@/pages/studentTrait/StudentTraitPage";
+import { StudentTraitsPage } from "@/pages/studentTraits/StudentTraitsPage";
+import { EditLessonNoteDialog } from "@/features/lessonNotes/components/dialog/EditLessonNoteDialog";
 
 export const ProtectedArea = () => {
   const location = useLocation();
@@ -31,6 +32,15 @@ export const ProtectedArea = () => {
           {/** 生徒ごとのページ */}
           <Route element={<StudentDashboard />}>
             <Route path="/dashboard/:id" element={<DashboardPage />} />
+            {/* 直アクセス時された際のエラーハンドリング用 */}
+            {!background && (
+              <>
+                <Route
+                  path="/lessonNotes/:id/edit"
+                  element={<EditLessonNoteDialog />}
+                />
+              </>
+            )}
           </Route>
         </Route>
 
@@ -54,10 +64,9 @@ export const ProtectedArea = () => {
           </Route>
           {/** 生徒ごとのページ */}
           <Route element={<StudentDashboard />}>
-            <Route path="/dashboard/:id" element={<DashboardPage />} />
             <Route
               path="/dashboard/:id/traits"
-              element={<StudentTraitPage />}
+              element={<StudentTraitsPage />}
             />
           </Route>
         </Route>
