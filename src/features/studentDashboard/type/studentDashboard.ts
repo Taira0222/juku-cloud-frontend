@@ -1,5 +1,5 @@
 import {
-  classSubjectsSchema,
+  classSubjectSchema,
   desiredSchoolSchema,
   gradeSchema,
   joinedOnSchema,
@@ -22,13 +22,17 @@ const categoryEnum = z.enum(["good", "careful"], {
   message: "カテゴリーが正しくありません",
 });
 
+export type CategoryType = z.infer<typeof categoryEnum>;
+
 const noteTypeEnum = z.enum(["homework", "lesson", "other"], {
   message: "ノートタイプが正しくありません",
 });
 
+export type NoteType = z.infer<typeof noteTypeEnum>;
+
 const studentClassSubjectSchema = z.object({
   id: z.number({ message: "科目IDは数値である必要があります" }),
-  class_subject: classSubjectsSchema,
+  class_subject: classSubjectSchema,
 });
 
 const someoneBySchema = z.object({
@@ -75,7 +79,7 @@ export const StudentDetailSchema = z.object({
   grade: gradeSchema,
   desired_school: desiredSchoolSchema,
   joined_on: joinedOnSchema,
-  class_subjects: z.array(classSubjectsSchema, {
+  class_subjects: z.array(classSubjectSchema, {
     message: "受講科目一覧の形式が不正です",
   }),
   student_traits: z.array(studentTraitsSchema, {
@@ -87,3 +91,6 @@ export const StudentDetailSchema = z.object({
 });
 
 export type StudentDetail = z.infer<typeof StudentDetailSchema>;
+
+export type studentTrait = z.infer<typeof studentTraitsSchema>;
+export type lessonNote = z.infer<typeof lessonNotesSchema>;
