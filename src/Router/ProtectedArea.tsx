@@ -12,6 +12,7 @@ import { InternalServerErrorPage } from "@/pages/error/InternalServerErrorPage";
 import { EditStudentDialog } from "@/features/students/components/dialog/EditStudentDialog";
 import { StudentTraitsPage } from "@/pages/studentTraits/StudentTraitsPage";
 import { EditLessonNoteDialog } from "@/features/lessonNotes/components/dialog/EditLessonNoteDialog";
+import { EditStudentTraitDialog } from "@/features/studentTraits/components/dialog/EditStudentTraitDialog";
 
 export const ProtectedArea = () => {
   const location = useLocation();
@@ -31,12 +32,12 @@ export const ProtectedArea = () => {
 
           {/** 生徒ごとのページ */}
           <Route element={<StudentDashboard />}>
-            <Route path="/dashboard/:id" element={<DashboardPage />} />
+            <Route path="/dashboard/:studentId" element={<DashboardPage />} />
             {/* 直アクセスされた際のエラーハンドリング用 */}
             {!background && (
               <>
                 <Route
-                  path="/lessonNotes/:id/edit"
+                  path="/lessonNotes/:lessonNoteId/edit"
                   element={<EditLessonNoteDialog />}
                 />
               </>
@@ -52,11 +53,11 @@ export const ProtectedArea = () => {
             {!background && (
               <>
                 <Route
-                  path="/teachers/:id/edit"
+                  path="/teachers/:teacherId/edit"
                   element={<EditTeacherDialog />}
                 />
                 <Route
-                  path="/students/:id/edit"
+                  path="/students/:studentId/edit"
                   element={<EditStudentDialog />}
                 />
               </>
@@ -65,9 +66,15 @@ export const ProtectedArea = () => {
           {/** 生徒ごとのページ */}
           <Route element={<StudentDashboard />}>
             <Route
-              path="/dashboard/:id/traits"
+              path="/dashboard/:studentId/traits"
               element={<StudentTraitsPage />}
             />
+            {!background && (
+              <Route
+                path="/dashboard/:studentId/traits/:traitId/edit"
+                element={<EditStudentTraitDialog />}
+              />
+            )}
           </Route>
         </Route>
 
@@ -83,9 +90,26 @@ export const ProtectedArea = () => {
       {/* モーダル用：背景がある時だけ重ねる */}
       {background && (
         <Routes>
+          <Route element={<RoleRoute allowedRoles={["teacher", "admin"]} />}>
+            <Route
+              path="/lessonNotes/:lessonNoteId/edit"
+              element={<EditLessonNoteDialog />}
+            />
+          </Route>
+
           <Route element={<RoleRoute allowedRoles={["admin"]} />}>
-            <Route path="/teachers/:id/edit" element={<EditTeacherDialog />} />
-            <Route path="/students/:id/edit" element={<EditStudentDialog />} />
+            <Route
+              path="/teachers/:teacherId/edit"
+              element={<EditTeacherDialog />}
+            />
+            <Route
+              path="/students/:studentId/edit"
+              element={<EditStudentDialog />}
+            />
+            <Route
+              path="/dashboard/:studentId/traits/:traitId/edit"
+              element={<EditStudentTraitDialog />}
+            />
           </Route>
         </Routes>
       )}

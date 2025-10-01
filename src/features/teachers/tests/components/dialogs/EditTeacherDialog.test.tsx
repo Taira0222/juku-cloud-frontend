@@ -24,7 +24,10 @@ const renderWithRouter = (initialPath: string, background?: Location) => {
     >
       <Toaster position="top-right" />
       <Routes>
-        <Route path="/teachers/:id/edit" element={<EditTeacherDialog />} />
+        <Route
+          path="/teachers/:teacherId/edit"
+          element={<EditTeacherDialog />}
+        />
         <Route path="/forbidden" element={<ForbiddenPage />} />
         <Route path="/teachers" element={<TeachersPage />} />
       </Routes>

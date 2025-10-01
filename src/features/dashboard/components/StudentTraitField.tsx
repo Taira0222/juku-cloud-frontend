@@ -3,7 +3,7 @@ import type {
   studentTrait,
 } from "@/features/studentDashboard/type/studentDashboard";
 import { AlertTriangle, CheckCircle } from "lucide-react";
-import { TraitHoverCard } from "./hoverCard/TraitHoverCard";
+import { TraitHoverCard } from "../../studentTraits/components/hoverCard/TraitHoverCard";
 import { cn } from "@/lib/utils";
 
 type TraitFieldProps = {

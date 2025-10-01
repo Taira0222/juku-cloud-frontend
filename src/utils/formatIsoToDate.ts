@@ -1,11 +1,14 @@
+import { format, parseISO } from "date-fns";
+
+export const parseAndFormatDate = (isoString: string): string | null => {
+  if (!isoString) return null;
+  try {
+    return format(parseISO(isoString), "yyyy/MM/dd"); // "2025/09/03" 形式
+  } catch {
+    return null;
+  }
+};
+
 export const formatIsoToDate = (isoString: string) => {
-  if (!isoString) return "無効な日付";
-  const date = new Date(isoString);
-  if (isNaN(date.getTime())) return "無効な日付";
-  return new Intl.DateTimeFormat("ja-JP", {
-    // 日本のローカル日付形式で返す
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-  }).format(date);
+  return parseAndFormatDate(isoString) ?? "無効な日付";
 };

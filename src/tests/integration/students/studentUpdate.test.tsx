@@ -31,7 +31,10 @@ const updateRender = (role: ContextType["role"] = "admin") => {
         <Routes>
           <Route element={<Layout context={{ role }} />}>
             <Route path="/students" element={<StudentsPage />} />
-            <Route path="/students/:id/edit" element={<EditStudentDialog />} />
+            <Route
+              path="/students/:studentId/edit"
+              element={<EditStudentDialog />}
+            />
           </Route>
         </Routes>
       </MemoryRouter>

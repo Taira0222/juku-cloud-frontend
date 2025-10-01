@@ -25,10 +25,10 @@ import { studentFormatForEdit } from "../../utils/studentFormatForEdit";
 import { useUpdateStudentMutation } from "../../mutations/useUpdateStudentMutation";
 
 export const EditStudentDialog = () => {
-  const { id } = useParams<{ id: string }>();
-  const studentId = Number(id);
+  const { studentId } = useParams<{ studentId: string }>();
+  const studentIdNumber = Number(studentId);
   // 整数でない、または0以下の数値なら404へリダイレクト
-  if (!Number.isInteger(studentId) || studentId <= 0)
+  if (!Number.isInteger(studentIdNumber) || studentIdNumber <= 0)
     return <Navigate to="/404" replace />;
 
   const location = useLocation();
@@ -41,7 +41,7 @@ export const EditStudentDialog = () => {
   }
 
   const { student, isNotFound, isLoading } = useStudentForEdit(
-    studentId,
+    studentIdNumber,
     state
   );
   // student の取得中
@@ -127,7 +127,7 @@ export const EditStudentDialog = () => {
             }}
             loading={isPending}
             teachers={teachers}
-            studentId={studentId}
+            studentId={studentIdNumber}
           />
         )}
       </DialogContent>
