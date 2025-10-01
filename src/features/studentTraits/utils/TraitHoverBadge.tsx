@@ -2,6 +2,7 @@ import { Badge } from "@/components/ui/display/Badge/badge";
 import type { CategoryType } from "@/features/studentDashboard/type/studentDashboard";
 import { cn } from "@/lib/utils";
 import { AlertTriangle, CheckCircle } from "lucide-react";
+import { TRAIT_CONFIG } from "../constants/StudentTraitTable";
 
 type TraitHoverBadgeProps = {
   category: CategoryType;
@@ -26,8 +27,8 @@ export const TraitHoverBadge = ({
     );
 
   const TraitBadge = () => {
-    const badgeColor = category === "good" ? "emerald" : "amber";
-    const badgeText = category === "good" ? "よい特性" : "注意が必要な特性";
+    const badgeColor = TRAIT_CONFIG[category].color;
+    const badgeText = TRAIT_CONFIG[category].text;
 
     return (
       <Badge

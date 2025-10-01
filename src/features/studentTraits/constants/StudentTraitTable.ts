@@ -21,3 +21,14 @@ export const HEADER_COLOR_BY_TRAIT = {
   good: "bg-emerald-100",
   careful: "bg-amber-100",
 } satisfies Record<(typeof TRAITS_COLUMNS)[number]["value"], string>;
+
+export const TRAIT_CONFIG = {
+  good: {
+    color: "emerald",
+    text: "よい特性",
+  },
+  careful: {
+    color: "amber",
+    text: "注意が必要な特性",
+  },
+} as const;

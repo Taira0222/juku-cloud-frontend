@@ -2,8 +2,8 @@ import { Checkbox } from "@/components/ui/form/CheckBox/checkbox";
 import type { ColumnDef } from "@tanstack/react-table";
 import { StudentTraitsRawActions } from "./StudentTraitsRawActions";
 import type { StudentTraitType } from "@/features/studentDashboard/type/studentDashboard";
-import { TraitHoverCard } from "@/features/dashboard/components/hoverCard/TraitHoverCard";
-import { TraitHoverBadge } from "@/features/dashboard/utils/TraitHoverBadge";
+import { TraitHoverCard } from "@/features/studentTraits/components/hoverCard/TraitHoverCard";
+import { TraitHoverBadge } from "@/features/studentTraits/utils/TraitHoverBadge";
 import { formatIsoToDate } from "@/utils/formatIsoToDate";
 
 export const StudentTraitsColumns = (
@@ -72,7 +72,7 @@ export const StudentTraitsColumns = (
           isMobile,
         });
 
-        return <div className="text-muted-foreground">{TraitBadge()}</div>;
+        return <div className="text-muted-foreground">{<TraitBadge />}</div>;
       },
     },
     {
@@ -90,9 +90,10 @@ export const StudentTraitsColumns = (
       header: "最終更新日",
       cell: ({ row }) => {
         const updatedAt =
+          // Rails は created_at と updated_at が同じなので、単純比較で判定できる
           row.original.updated_at === row.original.created_at
-            ? formatIsoToDate(row.original.updated_at)
-            : "---";
+            ? "---"
+            : formatIsoToDate(row.original.updated_at);
         return (
           <div className="text-muted-foreground px-1.5 mx-1">{updatedAt}</div>
         );
