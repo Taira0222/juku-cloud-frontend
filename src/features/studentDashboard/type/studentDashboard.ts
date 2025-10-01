@@ -51,6 +51,8 @@ export const studentTraitsSchema = z.object({
   updated_at: z.string({ message: "更新日の形式が不正です" }),
 });
 
+export type StudentTraitType = z.infer<typeof studentTraitsSchema>;
+
 export const lessonNotesSchema = z.object({
   id: z.number({ message: "IDは数値である必要があります" }),
   title: titleSchema,

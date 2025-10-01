@@ -1,18 +1,19 @@
 import { Badge } from "@/components/ui/display/Badge/badge";
 import { IconCalendarX } from "@tabler/icons-react";
-import { NOTE_TYPE } from "../constants/lessonNote";
+import { NOTE_TYPE } from "../constants/lessonNoteTable";
 import type { NoteType } from "@/features/studentDashboard/type/studentDashboard";
+import { parseAndFormatDate } from "@/utils/formatIsoToDate";
 
 export const columnsUtils = () => {
   const formatExpireDate = (isoString: string) => {
-    if (!isoString) return "無効な日付";
+    const formattedDate = parseAndFormatDate(isoString);
+    if (!formattedDate) {
+      return <span className="text-muted-foreground">無効な日付</span>;
+    }
     const date = new Date(isoString);
-    if (isNaN(date.getTime())) return "無効な日付";
-
     const today = new Date();
-    const isPast = date < today;
 
-    if (isPast) {
+    if (date < today) {
       return (
         // 期限切れのバッジを作成
         <Badge variant="outline" className="text-muted-foreground px-1.5 mx-1">
@@ -25,12 +26,7 @@ export const columnsUtils = () => {
       );
     } else {
       // 通常の日付表示
-      const displayDate = new Intl.DateTimeFormat("ja-JP", {
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-      }).format(date);
-      return <span>{displayDate}</span>;
+      return <span>{formattedDate}</span>;
     }
   };
   const formatNoteType = (en: NoteType) => {

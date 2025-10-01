@@ -1,0 +1,113 @@
+import { Checkbox } from "@/components/ui/form/CheckBox/checkbox";
+import type { ColumnDef } from "@tanstack/react-table";
+import { StudentTraitsRawActions } from "./StudentTraitsRawActions";
+import type { StudentTraitType } from "@/features/studentDashboard/type/studentDashboard";
+import { TraitHoverCard } from "@/features/dashboard/components/hoverCard/TraitHoverCard";
+import { TraitHoverBadge } from "@/features/dashboard/utils/TraitHoverBadge";
+import { formatIsoToDate } from "@/utils/formatIsoToDate";
+
+export const StudentTraitsColumns = (
+  studentId: number,
+  isMobile: boolean
+): ColumnDef<StudentTraitType>[] => {
+  return [
+    {
+      id: "category",
+      accessorFn: (row) => row.category,
+      filterFn: (row, id, value: string) => row.getValue<string>(id) === value,
+      header: () => null,
+      cell: () => null,
+    },
+    {
+      id: "select",
+      header: ({ table }) => (
+        <div className="flex items-center justify-center px-4">
+          <Checkbox
+            checked={
+              table.getIsAllPageRowsSelected() ||
+              (table.getIsSomePageRowsSelected() && "indeterminate")
+            }
+            onCheckedChange={(value) =>
+              table.toggleAllPageRowsSelected(!!value)
+            }
+            aria-label="Select all"
+          />
+        </div>
+      ),
+      cell: ({ row }) => (
+        <div className="flex items-center justify-center">
+          <Checkbox
+            checked={row.getIsSelected()}
+            onCheckedChange={(value) => row.toggleSelected(!!value)}
+            aria-label="Select row"
+          />
+        </div>
+      ),
+      enableSorting: false,
+      enableHiding: false,
+    },
+
+    {
+      accessorKey: "title",
+      header: "タイトル",
+      cell: ({ row }) => {
+        return (
+          <>
+            <TraitHoverCard
+              trait={row.original}
+              isMobile={isMobile}
+              className="whitespace-nowrap"
+            />
+          </>
+        );
+      },
+      enableHiding: false,
+    },
+    {
+      accessorKey: "categoryDisplay",
+      header: "特性の種類",
+      cell: ({ row }) => {
+        const { TraitBadge } = TraitHoverBadge({
+          category: row.original.category,
+          isMobile,
+        });
+
+        return <div className="text-muted-foreground">{TraitBadge()}</div>;
+      },
+    },
+    {
+      accessorKey: "created_at",
+      header: "作成日",
+      cell: ({ row }) => {
+        const createdAt = formatIsoToDate(row.original.created_at);
+        return (
+          <div className="text-muted-foreground px-1.5 mx-1">{createdAt}</div>
+        );
+      },
+    },
+    {
+      accessorKey: "updated_at",
+      header: "最終更新日",
+      cell: ({ row }) => {
+        const updatedAt =
+          row.original.updated_at === row.original.created_at
+            ? formatIsoToDate(row.original.updated_at)
+            : "---";
+        return (
+          <div className="text-muted-foreground px-1.5 mx-1">{updatedAt}</div>
+        );
+      },
+    },
+    {
+      id: "actions",
+      cell: ({ row }) => {
+        return (
+          <StudentTraitsRawActions
+            studentTrait={row.original}
+            studentId={studentId}
+          />
+        );
+      },
+    },
+  ];
+};

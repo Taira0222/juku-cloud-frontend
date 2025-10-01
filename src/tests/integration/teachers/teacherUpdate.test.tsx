@@ -14,7 +14,10 @@ const routeWithRender = () => {
       <Toaster position="top-right" />
       <Routes>
         <Route path="/teachers" element={<TeachersPage />} />
-        <Route path="/teachers/:id/edit" element={<EditTeacherDialog />} />
+        <Route
+          path="/teachers/:teacherId/edit"
+          element={<EditTeacherDialog />}
+        />
       </Routes>
     </MemoryRouter>
   );

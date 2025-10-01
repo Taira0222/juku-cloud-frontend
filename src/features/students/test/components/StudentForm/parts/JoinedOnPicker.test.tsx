@@ -1,19 +1,20 @@
 import {
   JoinedOnPicker,
   type JoinedOnPickerProps,
-} from '@/features/students/components/StudentForm/parts/JoinedOnPicker';
-import { initialMockValue } from '@/tests/fixtures/students/students';
+} from "@/features/students/components/StudentForm/parts/JoinedOnPicker";
+import { initialMockValue } from "@/tests/fixtures/students/students";
 
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { describe, expect, test, vi } from 'vitest';
+import { render, screen, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { format } from "date-fns";
+import { describe, expect, test, vi } from "vitest";
 
-describe('JoinedOnPicker', () => {
+describe("JoinedOnPicker", () => {
   const wrapper = (props: JoinedOnPickerProps) => {
     render(<JoinedOnPicker {...props} />);
   };
 
-  test('should render correctly', async () => {
+  test("should render correctly", async () => {
     const user = userEvent.setup();
     const mockProps: JoinedOnPickerProps = {
       value: initialMockValue,
@@ -22,21 +23,24 @@ describe('JoinedOnPicker', () => {
 
     wrapper(mockProps);
 
-    const dayButton = screen.getByRole('button', { name: /入塾日/ });
+    const dayButton = screen.getByRole("button", { name: /入塾日/ });
     expect(dayButton).toBeInTheDocument();
-    expect(dayButton).toHaveTextContent('日付を選択');
+    expect(dayButton).toHaveTextContent("日付を選択");
 
     // カレンダー表示
     await user.click(dayButton);
-    const calendar = screen.getByRole('dialog');
+    const calendar = screen.getByRole("dialog");
     expect(calendar).toBeInTheDocument();
 
-    // 日付選択
-    const dateButton = screen.getByRole('button', {
-      name: 'Wednesday, September 3rd, 2025',
-    });
-    await user.click(dateButton);
-    expect(mockProps.onChange).toHaveBeenCalledWith('2025-09-03');
+    const isoToday = format(new Date(), "yyyy-MM-dd");
+    const dayCell = calendar.querySelector<HTMLTableCellElement>(
+      `[data-day="${isoToday}"]`
+    );
+    expect(dayCell).toBeTruthy();
+
+    await user.click(within(dayCell!).getByRole("button"));
+
+    expect(mockProps.onChange).toHaveBeenCalledWith(isoToday);
     expect(calendar).not.toBeInTheDocument();
   });
 });

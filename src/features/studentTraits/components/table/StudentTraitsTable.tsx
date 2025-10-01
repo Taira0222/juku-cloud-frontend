@@ -52,48 +52,44 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/ui/navigation/Tabs/tabs";
-import { LessonNotesColumns } from "./LessonNotesColumns";
-import type { lessonNote } from "@/features/studentDashboard/type/studentDashboard";
-import { resolveSubjectMeta } from "@/utils/subjectBadgeUtils";
-import type { ClassSubjectType } from "@/features/students/types/students";
-import { HEADER_COLOR_BY_SUBJECT } from "../../constants/lessonNoteTable";
-import type { subjectType } from "@/features/students/types/students";
+import { StudentTraitsColumns } from "./StudentTraitsColumns";
+import type { StudentTraitType } from "@/features/studentDashboard/type/studentDashboard";
+import {
+  HEADER_COLOR_BY_TRAIT,
+  TRAITS_COLUMNS,
+} from "../../constants/StudentTraitTable";
 
-export const LessonNotesTable = ({
-  subjects,
-  lessonNotes,
-  isAdmin,
+export const StudentTraitsTable = ({
+  studentId,
+  studentTraits,
   isMobile,
 }: {
-  subjects: ClassSubjectType[];
-  lessonNotes: lessonNote[];
-  isAdmin: boolean;
+  studentId: number;
+  studentTraits: StudentTraitType[];
   isMobile: boolean;
 }) => {
-  // 科目はDBでかならず1件以上登録されているので、サイズ0の可能性は考慮しない
-  const defaultSubject = subjects[0];
+  // タブの初期値を all に設定
+  const defaultTabValue = TRAITS_COLUMNS[0].value;
 
-  // タブの初期値を最初の科目に設定
-  const [tabValue, setTabValue] = useState<string>(defaultSubject.name);
+  const [tabValue, setTabValue] = useState<string>(defaultTabValue);
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
-    subject: false,
+    category: false,
   });
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
   const [pagination, setPagination] = useState({
     pageIndex: 0,
-    pageSize: 5,
+    pageSize: 10,
   });
-  // 科目ごとにヘッダーの背景色を変える
 
+  const columns = StudentTraitsColumns(studentId, isMobile);
   const headerBGColor =
-    HEADER_COLOR_BY_SUBJECT[tabValue as subjectType] ?? "bg-muted";
-
-  const columns = LessonNotesColumns(isAdmin);
+    HEADER_COLOR_BY_TRAIT[tabValue as keyof typeof HEADER_COLOR_BY_TRAIT] ??
+    "bg-muted";
 
   const table = useReactTable({
-    data: lessonNotes,
+    data: studentTraits,
     columns,
     state: {
       sorting,
@@ -123,16 +119,20 @@ export const LessonNotesTable = ({
 
   // カラム表示のラベルを定義
   const columnLabelMap: Record<string, string> = {
-    expire_date: "有効期限",
     title: "タイトル",
-    note_type: "分類",
-    created_by_name: "作成者",
-    last_updated_by_name: "最終更新者",
+    categoryDisplay: "特性の種類",
+    created_at: "作成日",
+    updated_at: "最終更新日",
   };
 
   // タブが変わるたびにフィルタ更新
   useEffect(() => {
-    if (tabValue) setColumnFilters([{ id: "subject", value: tabValue }]);
+    if (tabValue === "all") {
+      setColumnFilters([]);
+      return;
+    }
+    // category カラムでフィルタリング
+    if (tabValue) setColumnFilters([{ id: "category", value: tabValue }]);
   }, [tabValue]);
 
   return (
@@ -144,20 +144,20 @@ export const LessonNotesTable = ({
       <div className="flex items-center justify-between lg:px-6">
         {/** タブ */}
         <TabsList>
-          {subjects.map((subject) => {
-            const { label } = resolveSubjectMeta(subject.name);
+          {TRAITS_COLUMNS.map((column) => {
             return (
-              <TabsTrigger key={subject.id} value={subject.name}>
-                {label}
+              <TabsTrigger key={column.id} value={column.value}>
+                {column.name}
               </TabsTrigger>
             );
           })}
         </TabsList>
 
         {/** カラムのカスタマイズとセクション追加ボタン */}
+
         <div className="flex items-center gap-2">
-          <DropdownMenu>
-            {!isMobile && (
+          {!isMobile && (
+            <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="outline" size="sm">
                   <IconLayoutColumns />
@@ -168,38 +168,38 @@ export const LessonNotesTable = ({
                   <IconChevronDown />
                 </Button>
               </DropdownMenuTrigger>
-            )}
 
-            <DropdownMenuContent align="end" className="w-56">
-              {table
-                .getAllColumns()
-                .filter(
-                  (column) =>
-                    column.id !== "subject" &&
-                    typeof column.accessorFn !== "undefined" &&
-                    column.getCanHide()
-                )
-                .map((column) => {
-                  return (
-                    <DropdownMenuCheckboxItem
-                      key={column.id}
-                      className="capitalize"
-                      checked={column.getIsVisible()}
-                      onCheckedChange={(value) =>
-                        column.toggleVisibility(!!value)
-                      }
-                    >
-                      {columnLabelMap[column.id]}
-                    </DropdownMenuCheckboxItem>
-                  );
-                })}
-            </DropdownMenuContent>
-          </DropdownMenu>
+              <DropdownMenuContent align="end" className="w-56">
+                {table
+                  .getAllColumns()
+                  .filter(
+                    (column) =>
+                      column.id !== "category" &&
+                      typeof column.accessorFn !== "undefined" &&
+                      column.getCanHide()
+                  )
+                  .map((column) => {
+                    return (
+                      <DropdownMenuCheckboxItem
+                        key={column.id}
+                        className="capitalize"
+                        checked={column.getIsVisible()}
+                        onCheckedChange={(value) =>
+                          column.toggleVisibility(!!value)
+                        }
+                      >
+                        {columnLabelMap[column.id]}
+                      </DropdownMenuCheckboxItem>
+                    );
+                  })}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
 
           {/** 科目ごとの引継ぎ事項を追加するボタン */}
           <Button variant="outline" size="sm">
             <IconPlus />
-            <span className="hidden lg:inline">引継ぎ事項を追加</span>
+            <span className="hidden lg:inline">特性を追加</span>
           </Button>
         </div>
         {/** タブの内容 */}
@@ -251,7 +251,7 @@ export const LessonNotesTable = ({
                     colSpan={columns.length}
                     className="h-24 text-center"
                   >
-                    引継ぎ事項が見つかりません。
+                    特性が見つかりません。
                   </TableCell>
                 </TableRow>
               )}
@@ -282,7 +282,7 @@ export const LessonNotesTable = ({
                   />
                 </SelectTrigger>
                 <SelectContent side="top">
-                  {[5, 10].map((pageSize) => (
+                  {[10, 20].map((pageSize) => (
                     <SelectItem key={pageSize} value={`${pageSize}`}>
                       {pageSize}
                     </SelectItem>

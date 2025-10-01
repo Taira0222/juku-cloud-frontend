@@ -5,6 +5,8 @@ const subjectEnum = z.enum(
   { message: "科目が不正です" }
 );
 
+export type subjectType = z.infer<typeof subjectEnum>;
+
 const availableDaysEnum = z.enum(
   [
     "sunday",

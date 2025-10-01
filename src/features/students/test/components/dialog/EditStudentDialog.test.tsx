@@ -44,7 +44,10 @@ const wrapper = (initialPath: string, state: editLocationState) => {
       >
         <Toaster />
         <Routes>
-          <Route path="/students/:id/edit" element={<EditStudentDialog />} />
+          <Route
+            path="/students/:studentId/edit"
+            element={<EditStudentDialog />}
+          />
           <Route path="/students" element={<StudentsPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>

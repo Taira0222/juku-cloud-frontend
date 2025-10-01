@@ -25,13 +25,13 @@ export const EditTeacherDialog = () => {
   const location = useLocation();
   const state = location.state;
 
-  const { id } = useParams<{ id: string }>();
+  const { teacherId } = useParams<{ teacherId: string }>();
   const detailDrawer = useTeachersStore((state) => state.detailDrawer);
 
   const isMobile = useIsMobile();
 
-  const teacherId = id ? parseInt(id, 10) : 0;
-  const teacher = detailDrawer.find((t) => t.id === teacherId);
+  const teacherIdNumber = Number(teacherId);
+  const teacher = detailDrawer.find((t) => t.id === teacherIdNumber);
 
   // エラーハンドリングによる画面遷移
   if (state?.background === undefined) {
@@ -49,7 +49,7 @@ export const EditTeacherDialog = () => {
 
   const { handleSubmit, loading, error } = useTeacherSubmit({
     formData,
-    teacherId,
+    teacherId: teacherIdNumber,
     handleClose,
   });
 

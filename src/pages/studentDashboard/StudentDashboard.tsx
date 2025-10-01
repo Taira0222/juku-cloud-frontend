@@ -17,13 +17,13 @@ import {
 
 export const StudentDashboard = () => {
   const user = useOutletContext<User>();
-  const { id } = useParams<{ id: string }>();
-  const studentId = Number(id);
+  const { studentId } = useParams<{ studentId: string }>();
+  const studentIdNumber = Number(studentId);
   // 整数でない、または0以下の数値なら404へリダイレクト
-  if (!Number.isInteger(studentId) || studentId <= 0)
+  if (!Number.isInteger(studentIdNumber) || studentIdNumber <= 0)
     return <Navigate to="/404" replace />;
 
-  const query = useStudentDetailQuery(studentId);
+  const query = useStudentDetailQuery(studentIdNumber);
 
   const sidebarData = getStudentDashboardData({
     role: user.role,
@@ -31,7 +31,7 @@ export const StudentDashboard = () => {
       name: user.name,
       email: user.email,
     },
-    id: studentId.toString(),
+    id: studentIdNumber.toString(),
   });
 
   if (!sidebarData || query.isPending)

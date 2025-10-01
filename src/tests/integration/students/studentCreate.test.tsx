@@ -2,8 +2,9 @@ import { Toaster } from "@/components/ui/feedback/Sonner/sonner";
 import { StudentsPage } from "@/pages/students/StudentsPage";
 import type { ContextType } from "@/types";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { format } from "date-fns";
 import { MemoryRouter, Outlet, Route, Routes } from "react-router-dom";
 import { describe, expect, test } from "vitest";
 
@@ -63,11 +64,15 @@ describe("Student Create Page", () => {
     // カレンダーを表示させる
     const dayButton = screen.getByRole("button", { name: /入塾日/ });
     await user.click(dayButton);
+    const calendar = screen.getByRole("dialog");
     // 日付選択
-    const dateButton = screen.getByRole("button", {
-      name: "Wednesday, September 3rd, 2025",
-    });
-    await user.click(dateButton);
+    const isoToday = format(new Date(), "yyyy-MM-dd");
+    const dayCell = calendar.querySelector<HTMLTableCellElement>(
+      `[data-day="${isoToday}"]`
+    );
+    expect(dayCell).toBeTruthy();
+
+    await user.click(within(dayCell!).getByRole("button"));
 
     // ステータスを選択
     const selectStatus = screen.getByLabelText(/通塾状況/);
