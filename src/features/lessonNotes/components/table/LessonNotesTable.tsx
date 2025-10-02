@@ -5,7 +5,6 @@ import {
   IconChevronsLeft,
   IconChevronsRight,
   IconLayoutColumns,
-  IconPlus,
 } from "@tabler/icons-react";
 import {
   flexRender,
@@ -53,23 +52,19 @@ import {
   TabsTrigger,
 } from "@/components/ui/navigation/Tabs/tabs";
 import { LessonNotesColumns } from "./LessonNotesColumns";
-import type { lessonNote } from "@/features/studentDashboard/type/studentDashboard";
 import { resolveSubjectMeta } from "@/utils/subjectBadgeUtils";
-import type { ClassSubjectType } from "@/features/students/types/students";
 import { HEADER_COLOR_BY_SUBJECT } from "../../constants/lessonNoteTable";
 import type { subjectType } from "@/features/students/types/students";
+import { CreateLessonNoteDialog } from "../dialog/CreateLessonNoteDialog";
+import type { LessonNoteTableProps } from "../../types/lessonNoteTable";
 
 export const LessonNotesTable = ({
+  studentId,
   subjects,
   lessonNotes,
   isAdmin,
   isMobile,
-}: {
-  subjects: ClassSubjectType[];
-  lessonNotes: lessonNote[];
-  isAdmin: boolean;
-  isMobile: boolean;
-}) => {
+}: LessonNoteTableProps) => {
   // 科目はDBでかならず1件以上登録されているので、サイズ0の可能性は考慮しない
   const defaultSubject = subjects[0];
 
@@ -90,7 +85,7 @@ export const LessonNotesTable = ({
   const headerBGColor =
     HEADER_COLOR_BY_SUBJECT[tabValue as subjectType] ?? "bg-muted";
 
-  const columns = LessonNotesColumns(isAdmin);
+  const columns = LessonNotesColumns({ isAdmin, subjects, studentId });
 
   const table = useReactTable({
     data: lessonNotes,
@@ -197,10 +192,7 @@ export const LessonNotesTable = ({
           </DropdownMenu>
 
           {/** 科目ごとの引継ぎ事項を追加するボタン */}
-          <Button variant="outline" size="sm">
-            <IconPlus />
-            <span className="hidden lg:inline">引継ぎ事項を追加</span>
-          </Button>
+          <CreateLessonNoteDialog subjects={subjects} />
         </div>
         {/** タブの内容 */}
       </div>

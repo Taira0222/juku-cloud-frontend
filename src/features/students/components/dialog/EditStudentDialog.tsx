@@ -76,7 +76,6 @@ export const EditStudentDialog = () => {
   // URLでDialogの開閉を制御するため、常にtrueにしておく
   const open = true;
   const { loading, error, teachers } = useTeachersForStudent(open);
-  // のちに更新用のmutationに差し替える
   const { mutate, isPending } = useUpdateStudentMutation({
     onSuccess: () => {
       handleClose();

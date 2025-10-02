@@ -3,12 +3,13 @@ import type {
   Draft,
   DraftByMode,
   EditDraft,
+  Mode,
   PayloadByMode,
   SchemaByMode,
-  StudentFormMode,
 } from "../types/studentForm";
 import { normalizePayload } from "../utils/studentFormTransforms";
 import { createStudentSchema, editStudentSchema } from "../types/students";
+import { makeByMode } from "@/utils/makeInitiakState";
 
 // satisfiesで型を保証
 const SCHEMA = {
@@ -28,27 +29,24 @@ export const INITIAL_DRAFT: Draft = {
   assignments: [],
 };
 
-const getSchema = <M extends StudentFormMode>(m: M) => SCHEMA[m];
+const getSchema = <M extends Mode>(m: M) => SCHEMA[m];
 export const INITIAL_ERROR_MESSAGES =
   'useStudentForm("edit"): initial に id:number が必須です';
 
-export const useStudentForm = <T extends StudentFormMode>(
-  mode: T,
-  initial?: DraftByMode<T>
+export const useStudentForm = <M extends Mode>(
+  mode: M,
+  initial?: DraftByMode<M>
 ) => {
   // 初期値の設定
-  const makeInitial = (): DraftByMode<T> => {
-    if (mode === "edit") {
-      // editモードの場合、initialが必須でid:numberを持つことを保証
-      if (!initial || typeof (initial as EditDraft).id !== "number") {
-        throw new Error(INITIAL_ERROR_MESSAGES);
-      }
-      return initial as DraftByMode<T>;
-    }
-    return INITIAL_DRAFT as DraftByMode<T>;
-  };
+  const makeInitial = (): DraftByMode<M> =>
+    makeByMode<Draft, EditDraft>(
+      mode as M,
+      initial as EditDraft | undefined,
+      INITIAL_DRAFT,
+      INITIAL_ERROR_MESSAGES
+    ) as DraftByMode<M>;
 
-  const [value, setValue] = useState<DraftByMode<T>>(makeInitial());
+  const [value, setValue] = useState<DraftByMode<M>>(makeInitial());
 
   useEffect(() => {
     if (mode === "edit" && initial) setValue(initial);
@@ -58,13 +56,13 @@ export const useStudentForm = <T extends StudentFormMode>(
   const schema = getSchema(mode);
 
   const submit = (
-    onValid: (data: PayloadByMode<T>) => void,
+    onValid: (data: PayloadByMode<M>) => void,
     onInvalid?: (msgs: string[]) => void
   ) => {
     const payload = normalizePayload(value);
     const parsed = schema.safeParse(payload);
-    // 実行時にはmodeとTは一致するので, PayloadByMode<T>は安全な型アサーション
-    if (parsed.success) onValid(parsed.data as PayloadByMode<T>);
+    // 実行時にはmodeとMは一致するので, PayloadByMode<M>は安全な型アサーション
+    if (parsed.success) onValid(parsed.data as PayloadByMode<M>);
     else onInvalid?.(parsed.error.issues.map((i) => i.message));
     return parsed.success;
   };

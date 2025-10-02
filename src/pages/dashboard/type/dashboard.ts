@@ -5,4 +5,5 @@ import type { UseQueryResult } from "@tanstack/react-query";
 export type DashboardContextType = {
   query: UseQueryResult<StudentDetail, unknown>;
   role: userRole;
+  studentId: number;
 };

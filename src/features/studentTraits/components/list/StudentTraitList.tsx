@@ -3,8 +3,8 @@ import type {
   studentTrait,
 } from "@/features/studentDashboard/type/studentDashboard";
 import { AlertTriangle, CheckCircle } from "lucide-react";
-import { TraitHoverCard } from "../../studentTraits/components/hoverCard/TraitHoverCard";
 import { cn } from "@/lib/utils";
+import { TraitHoverCard } from "../hoverCard/TraitHoverCard";
 
 type TraitFieldProps = {
   cardTitle: string;
@@ -13,7 +13,7 @@ type TraitFieldProps = {
   category: CategoryType;
 };
 
-export const StudentTraitField = ({
+export const StudentTraitList = ({
   cardTitle,
   traits,
   isMobile,

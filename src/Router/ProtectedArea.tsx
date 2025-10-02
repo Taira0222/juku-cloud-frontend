@@ -37,7 +37,7 @@ export const ProtectedArea = () => {
             {!background && (
               <>
                 <Route
-                  path="/lessonNotes/:lessonNoteId/edit"
+                  path="/dashboard/:studentId/lesson-notes/:lessonNoteId/edit"
                   element={<EditLessonNoteDialog />}
                 />
               </>
@@ -66,12 +66,12 @@ export const ProtectedArea = () => {
           {/** 生徒ごとのページ */}
           <Route element={<StudentDashboard />}>
             <Route
-              path="/dashboard/:studentId/traits"
+              path="/dashboard/:studentId/student-traits"
               element={<StudentTraitsPage />}
             />
             {!background && (
               <Route
-                path="/dashboard/:studentId/traits/:traitId/edit"
+                path="/dashboard/:studentId/student-traits/:traitId/edit"
                 element={<EditStudentTraitDialog />}
               />
             )}
@@ -92,7 +92,7 @@ export const ProtectedArea = () => {
         <Routes>
           <Route element={<RoleRoute allowedRoles={["teacher", "admin"]} />}>
             <Route
-              path="/lessonNotes/:lessonNoteId/edit"
+              path="/dashboard/:studentId/lesson-notes/:lessonNoteId/edit"
               element={<EditLessonNoteDialog />}
             />
           </Route>
@@ -107,7 +107,7 @@ export const ProtectedArea = () => {
               element={<EditStudentDialog />}
             />
             <Route
-              path="/dashboard/:studentId/traits/:traitId/edit"
+              path="/dashboard/:studentId/student-traits/:traitId/edit"
               element={<EditStudentTraitDialog />}
             />
           </Route>
