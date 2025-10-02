@@ -2,7 +2,7 @@ import type { Mode } from "@/features/students/types/studentForm";
 import type { LessonNoteFormProps } from "../../types/lessonNoteForm";
 import { Button } from "@/components/ui/form/Button/button";
 
-import { lessonNoteFormHandlers } from "@/features/studentTraits/utils/lessonNoteFormHandlers";
+import { lessonNoteFormHandlers } from "@/features/lessonNotes/utils/lessonNoteFormHandlers";
 import { TitleField } from "./parts/TitleField";
 import { DescriptionField } from "./parts/DescriptionField";
 import { NoteTypeSelect } from "./parts/NoteTypeSelect";

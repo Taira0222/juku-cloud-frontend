@@ -16,7 +16,7 @@ export const DescriptionField = <M extends Mode>({
 }: DescriptionFieldProps<M>) => {
   return (
     <div className="space-y-2">
-      <RequiredLabel htmlFor="description" required>
+      <RequiredLabel htmlFor="description" required={false}>
         詳細説明
       </RequiredLabel>
       <Input

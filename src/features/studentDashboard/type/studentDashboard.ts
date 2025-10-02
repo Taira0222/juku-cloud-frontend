@@ -11,6 +11,7 @@ import z from "zod";
 
 export const titleSchema = z
   .string()
+  .trim()
   .min(1, { message: "タイトルは必須です" })
   .max(100, { message: "タイトルは100文字以内で入力してください" });
 
