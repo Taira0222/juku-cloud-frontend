@@ -13,11 +13,11 @@ export const titleSchema = z
   .string()
   .trim()
   .min(1, { message: "タイトルは必須です" })
-  .max(100, { message: "タイトルは100文字以内で入力してください" });
+  .max(50, { message: "タイトルは50文字以内で入力してください" });
 
 export const descriptionSchema = z
   .string()
-  .max(1000, { message: "説明は1000文字以内で入力してください" })
+  .max(500, { message: "説明は500文字以内で入力してください" })
   .nullable();
 
 const categoryEnum = z.enum(["good", "careful"], {
