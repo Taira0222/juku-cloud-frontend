@@ -9,14 +9,13 @@ import {
 import { IconDotsVertical } from "@tabler/icons-react";
 
 import { Link, useLocation } from "react-router-dom";
-import type { studentTrait } from "@/features/studentDashboard/type/studentDashboard";
+import type { StudentTraitsRawActionsProps } from "../../types/studentTraitTable";
 
-type Props = {
-  studentId: number;
-  studentTrait: studentTrait;
-};
-
-export const StudentTraitsRawActions = ({ studentId, studentTrait }: Props) => {
+export const StudentTraitsRawActions = ({
+  studentId,
+  subjects,
+  studentTrait,
+}: StudentTraitsRawActionsProps) => {
   const location = useLocation();
   return (
     <>
@@ -36,7 +35,7 @@ export const StudentTraitsRawActions = ({ studentId, studentTrait }: Props) => {
           <DropdownMenuItem asChild>
             <Link
               to={`/dashboard/${studentId}/traits/${studentTrait.id}/edit`}
-              state={{ studentTrait, background: location }}
+              state={{ studentTrait, subjects, background: location }}
             >
               編集
             </Link>

@@ -1,8 +1,9 @@
 import { Badge } from "@/components/ui/display/Badge/badge";
 import { IconCalendarX } from "@tabler/icons-react";
 import { NOTE_TYPE } from "../constants/lessonNoteTable";
-import type { NoteType } from "@/features/studentDashboard/type/studentDashboard";
+
 import { parseAndFormatDate } from "@/utils/formatIsoToDate";
+import type { NoteType } from "../types/lessonNote";
 
 export const columnsUtils = () => {
   const formatExpireDate = (isoString: string) => {

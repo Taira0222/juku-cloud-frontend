@@ -22,20 +22,19 @@ export const StudentsPage = () => {
       </div>
     );
   }
+  if (isError) {
+    return (
+      <div className="p-6">
+        <ErrorDisplay error={getErrorMessage(error)} />
+      </div>
+    );
+  }
 
   return (
     <div className="p-6">
-      {isError && <ErrorDisplay error={getErrorMessage(error)} />}
       <StudentsTable
-        data={data?.students ?? []}
-        meta={
-          data?.meta ?? {
-            total_pages: 0,
-            total_count: 0,
-            current_page: 0,
-            per_page: 0,
-          }
-        }
+        data={data.students}
+        meta={data.meta}
         isAdmin={role === "admin"}
       />
     </div>

@@ -1,22 +1,39 @@
-import { ErrorDisplay } from "@/components/common/status/ErrorDisplay";
 import { StudentTraitsTable } from "@/features/studentTraits/components/table/StudentTraitsTable";
-import type { StudentTraitsContextType } from "@/features/studentTraits/types/studentTraits";
 import { useIsMobile } from "@/hooks/useMobile";
+import { useOutletContext } from "react-router-dom";
+import type { StudentTraitsContextType } from "./types/studentTraits";
+import { useStudentTraitsStore } from "@/stores/studentTraitsStore";
+import { useStudentTraitsQuery } from "@/features/studentTraits/queries/useStudentTraitsQuery";
+import SpinnerWithText from "@/components/common/status/Loading";
+import { ErrorDisplay } from "@/components/common/status/ErrorDisplay";
 import { getErrorMessage } from "@/lib/errors/getErrorMessage";
-import { Navigate, useOutletContext } from "react-router-dom";
 
 export const StudentTraitsPage = () => {
-  const { query, studentId } = useOutletContext<StudentTraitsContextType>();
+  const { student, studentId } = useOutletContext<StudentTraitsContextType>();
+  const filters = useStudentTraitsStore((state) => state.filters);
+  const { data, isError, error, isPending } = useStudentTraitsQuery(filters);
   const isMobile = useIsMobile();
-  const { data, isError, error } = query;
-  if (!data) return <Navigate to="/404" replace />;
+
+  if (isPending) {
+    return (
+      <div className="p-6">
+        <SpinnerWithText className="flex items-center justify-center h-32">
+          Loading...
+        </SpinnerWithText>
+      </div>
+    );
+  }
+  if (isError) {
+    return <ErrorDisplay error={getErrorMessage(error)} />;
+  }
 
   return (
     <div className="p-6">
-      {isError && <ErrorDisplay error={getErrorMessage(error)} />}
       <StudentTraitsTable
+        subjects={student.class_subjects}
         studentId={studentId}
         studentTraits={data.student_traits}
+        meta={data.meta}
         isMobile={isMobile}
       />
     </div>

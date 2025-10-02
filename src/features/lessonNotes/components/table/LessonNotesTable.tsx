@@ -57,11 +57,13 @@ import { HEADER_COLOR_BY_SUBJECT } from "../../constants/lessonNoteTable";
 import type { subjectType } from "@/features/students/types/students";
 import { CreateLessonNoteDialog } from "../dialog/CreateLessonNoteDialog";
 import type { LessonNoteTableProps } from "../../types/lessonNoteTable";
+import { useLessonNotesStore } from "@/stores/lessonNotesStore";
 
 export const LessonNotesTable = ({
   studentId,
   subjects,
   lessonNotes,
+  meta,
   isAdmin,
   isMobile,
 }: LessonNoteTableProps) => {
@@ -80,12 +82,28 @@ export const LessonNotesTable = ({
     pageIndex: 0,
     pageSize: 5,
   });
-  // 科目ごとにヘッダーの背景色を変える
+  const filters = useLessonNotesStore((state) => state.filters);
+  const setFilters = useLessonNotesStore((state) => state.setFilters);
 
   const headerBGColor =
     HEADER_COLOR_BY_SUBJECT[tabValue as subjectType] ?? "bg-muted";
 
   const columns = LessonNotesColumns({ isAdmin, subjects, studentId });
+
+  const pageCount =
+    meta.total_pages ??
+    (meta.total_count
+      ? Math.ceil(meta.total_count / (filters.perPage ?? 10))
+      : 1);
+
+  // setFiltersは描画後に更新する
+  useEffect(() => {
+    setFilters((prev) => ({
+      ...prev,
+      page: pagination.pageIndex + 1,
+      perPage: pagination.pageSize,
+    }));
+  }, [pagination.pageIndex, pagination.pageSize, setFilters]);
 
   const table = useReactTable({
     data: lessonNotes,
@@ -99,6 +117,8 @@ export const LessonNotesTable = ({
     },
     getRowId: (row) => row.id.toString(),
     enableRowSelection: true,
+    manualPagination: true,
+    pageCount,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,

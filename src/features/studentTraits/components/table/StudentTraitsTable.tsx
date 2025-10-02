@@ -53,21 +53,20 @@ import {
   TabsTrigger,
 } from "@/components/ui/navigation/Tabs/tabs";
 import { StudentTraitsColumns } from "./StudentTraitsColumns";
-import type { StudentTraitType } from "@/features/studentDashboard/type/studentDashboard";
 import {
   HEADER_COLOR_BY_TRAIT,
   TRAITS_COLUMNS,
 } from "../../constants/StudentTraitTable";
+import type { StudentTraitsTableProps } from "../../types/studentTraitTable";
+import { useStudentTraitsStore } from "@/stores/studentTraitsStore";
 
 export const StudentTraitsTable = ({
+  subjects,
   studentId,
   studentTraits,
+  meta,
   isMobile,
-}: {
-  studentId: number;
-  studentTraits: StudentTraitType[];
-  isMobile: boolean;
-}) => {
+}: StudentTraitsTableProps) => {
   // タブの初期値を all に設定
   const defaultTabValue = TRAITS_COLUMNS[0].value;
 
@@ -82,11 +81,27 @@ export const StudentTraitsTable = ({
     pageIndex: 0,
     pageSize: 10,
   });
+  const filters = useStudentTraitsStore((state) => state.filters);
+  const setFilters = useStudentTraitsStore((state) => state.setFilters);
 
-  const columns = StudentTraitsColumns(studentId, isMobile);
+  const columns = StudentTraitsColumns({ studentId, subjects, isMobile });
   const headerBGColor =
     HEADER_COLOR_BY_TRAIT[tabValue as keyof typeof HEADER_COLOR_BY_TRAIT] ??
     "bg-muted";
+
+  const pageCount =
+    meta.total_pages ??
+    (meta.total_count
+      ? Math.ceil(meta.total_count / (filters.perPage ?? 10))
+      : 1);
+  // setFiltersは描画後に更新する
+  useEffect(() => {
+    setFilters((prev) => ({
+      ...prev,
+      page: pagination.pageIndex + 1,
+      perPage: pagination.pageSize,
+    }));
+  }, [pagination.pageIndex, pagination.pageSize, setFilters]);
 
   const table = useReactTable({
     data: studentTraits,
@@ -100,6 +115,8 @@ export const StudentTraitsTable = ({
     },
     getRowId: (row) => row.id.toString(),
     enableRowSelection: true,
+    manualPagination: true,
+    pageCount,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,

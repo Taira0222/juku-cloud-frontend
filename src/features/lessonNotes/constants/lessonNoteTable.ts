@@ -1,4 +1,3 @@
-import type { NoteType } from "@/features/studentDashboard/type/studentDashboard";
 import type { subjectType } from "@/features/students/types/students";
 import {
   IconBook2,
@@ -6,6 +5,7 @@ import {
   type TablerIcon,
 } from "@tabler/icons-react";
 import { School, type LucideIcon } from "lucide-react";
+import type { NoteType } from "../types/lessonNote";
 
 export type NoteTypeAttr = {
   name: string;

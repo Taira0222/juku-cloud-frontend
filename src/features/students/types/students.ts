@@ -110,6 +110,7 @@ export const studentSchema = z.object({
     message: "担当講師一覧の形式が不正です",
   }),
 });
+export type Student = z.infer<typeof studentSchema>;
 
 export const metaSchema = z.object({
   total_pages: z.number({ message: "ページ数は数値である必要があります" }),
@@ -121,6 +122,8 @@ export const metaSchema = z.object({
     message: "1ページあたりの件数は数値である必要があります",
   }),
 });
+
+export type Meta = z.infer<typeof metaSchema>;
 
 // レスポンス全体
 export const fetchStudentsSuccessResponseSchema = z.object({
@@ -163,7 +166,6 @@ export const createStudentSchema = z.object({
 });
 
 export type createStudentPayload = z.infer<typeof createStudentSchema>;
-export type Student = z.infer<typeof studentSchema>;
 
 // update 時の schema
 export const editStudentSchema = createStudentSchema.extend({

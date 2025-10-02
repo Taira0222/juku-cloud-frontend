@@ -1,14 +1,11 @@
-import type {
-  CategoryType,
-  studentTrait,
-} from "@/features/studentDashboard/type/studentDashboard";
 import { AlertTriangle, CheckCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { TraitHoverCard } from "../hoverCard/TraitHoverCard";
+import type { CategoryType, StudentTraitType } from "../../types/studentTraits";
 
 type TraitFieldProps = {
   cardTitle: string;
-  traits: studentTrait[];
+  traits: StudentTraitType[];
   isMobile: boolean;
   category: CategoryType;
 };

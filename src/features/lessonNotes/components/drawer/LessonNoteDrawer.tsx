@@ -11,12 +11,12 @@ import {
 import { Label } from "@/components/ui/form/Label/label";
 import { useIsMobile } from "@/hooks/useMobile";
 import { IconX } from "@tabler/icons-react";
-import type { lessonNote } from "@/features/studentDashboard/type/studentDashboard";
 import { formatIsoToDate } from "@/utils/formatIsoToDate";
+import type { lessonNoteType } from "../../types/lessonNote";
 
 type Props = {
   lessonNote: Pick<
-    lessonNote,
+    lessonNoteType,
     | "title"
     | "description"
     | "expire_date"
