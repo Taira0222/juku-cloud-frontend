@@ -4,10 +4,13 @@ import { LessonNotesRawActions } from "./LessonNotesRawActions";
 import type { lessonNote } from "@/features/studentDashboard/type/studentDashboard";
 import { columnsUtils } from "../../utils/columnsUtils";
 import { LessonNoteDrawer } from "../drawer/LessonNoteDrawer";
+import type { LessonNoteColumnsProps } from "../../types/lessonNoteTable";
 
-export const LessonNotesColumns = (
-  isAdmin: boolean
-): ColumnDef<lessonNote>[] => {
+export const LessonNotesColumns = ({
+  isAdmin,
+  subjects,
+  studentId,
+}: LessonNoteColumnsProps): ColumnDef<lessonNote>[] => {
   const { formatExpireDate, formatNoteType } = columnsUtils();
   return [
     {
@@ -98,7 +101,12 @@ export const LessonNotesColumns = (
       id: "actions",
       cell: ({ row }) => {
         return (
-          <LessonNotesRawActions lessonNote={row.original} isAdmin={isAdmin} />
+          <LessonNotesRawActions
+            studentId={studentId}
+            lessonNote={row.original}
+            subjects={subjects}
+            isAdmin={isAdmin}
+          />
         );
       },
     },

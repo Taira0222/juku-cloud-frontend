@@ -1,8 +1,5 @@
 import { useMemo, useState, useEffect } from "react";
-import type {
-  StudentFormMode,
-  StudentFormProps,
-} from "../../types/studentForm";
+import type { Mode, StudentFormProps } from "../../types/studentForm";
 import { createStudentFormHandlers } from "../../utils/studentFormHandlers";
 import { buildTeachersByTab } from "../../utils/studentFormDerived";
 import { ALL_DAY_IDS, shortDayLabel } from "../../constants/studentForm";
@@ -28,7 +25,7 @@ import { SelectedAssignmentsBadges } from "./parts/SelectedAssignmentsBadges";
 import { Button } from "@/components/ui/form/Button/button";
 import { ConfirmDialog } from "@/components/common/status/ConfirmDialog";
 
-export const StudentForm = <M extends StudentFormMode>({
+export const StudentForm = <M extends Mode>({
   mode,
   value,
   onChange,

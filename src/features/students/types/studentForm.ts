@@ -21,7 +21,7 @@ export type Draft = {
 
 export type EditDraft = Draft & { id: number };
 
-export type StudentFormMode = "create" | "edit";
+export type Mode = "create" | "edit";
 
 export type Teacher = {
   id: number;
@@ -36,20 +36,18 @@ export type SchemaByMode = {
 };
 
 // モードに応じて submit の型を切り替える
-export type PayloadByMode<M extends StudentFormMode> = z.infer<SchemaByMode[M]>;
+export type PayloadByMode<M extends Mode> = z.infer<SchemaByMode[M]>;
 
 // modeに応じてDraftの型を切り替える
-export type DraftByMode<T extends StudentFormMode> = T extends "edit"
-  ? EditDraft
-  : Draft;
+export type DraftByMode<T extends Mode> = T extends "edit" ? EditDraft : Draft;
 
 export type ToggleableKeys = "subject_ids" | "available_day_ids";
 
-export type OnChange<M extends StudentFormMode> = (
+export type OnChange<M extends Mode> = (
   updater: DraftByMode<M> | ((prev: DraftByMode<M>) => DraftByMode<M>)
 ) => void;
 
-export type StudentFormProps<M extends StudentFormMode> = {
+export type StudentFormProps<M extends Mode> = {
   mode: M;
   value: DraftByMode<M>;
   onChange: OnChange<M>;

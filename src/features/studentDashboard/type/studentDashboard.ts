@@ -9,13 +9,15 @@ import {
 
 import z from "zod";
 
-const titleSchema = z
+export const titleSchema = z
   .string()
-  .max(100, { message: "タイトルは100文字以内で入力してください" });
+  .trim()
+  .min(1, { message: "タイトルは必須です" })
+  .max(50, { message: "タイトルは50文字以内で入力してください" });
 
-const descriptionSchema = z
+export const descriptionSchema = z
   .string()
-  .max(1000, { message: "説明は1000文字以内で入力してください" })
+  .max(500, { message: "説明は500文字以内で入力してください" })
   .nullable();
 
 const categoryEnum = z.enum(["good", "careful"], {
@@ -24,7 +26,7 @@ const categoryEnum = z.enum(["good", "careful"], {
 
 export type CategoryType = z.infer<typeof categoryEnum>;
 
-const noteTypeEnum = z.enum(["homework", "lesson", "other"], {
+export const noteTypeEnum = z.enum(["homework", "lesson", "other"], {
   message: "ノートタイプが正しくありません",
 });
 

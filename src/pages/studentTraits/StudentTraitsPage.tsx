@@ -6,7 +6,7 @@ import { getErrorMessage } from "@/lib/errors/getErrorMessage";
 import { Navigate, useOutletContext } from "react-router-dom";
 
 export const StudentTraitsPage = () => {
-  const { query } = useOutletContext<StudentTraitsContextType>();
+  const { query, studentId } = useOutletContext<StudentTraitsContextType>();
   const isMobile = useIsMobile();
   const { data, isError, error } = query;
   if (!data) return <Navigate to="/404" replace />;
@@ -15,7 +15,7 @@ export const StudentTraitsPage = () => {
     <div className="p-6">
       {isError && <ErrorDisplay error={getErrorMessage(error)} />}
       <StudentTraitsTable
-        studentId={data.id}
+        studentId={studentId}
         studentTraits={data.student_traits}
         isMobile={isMobile}
       />

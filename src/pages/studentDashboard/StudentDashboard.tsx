@@ -62,7 +62,9 @@ export const StudentDashboard = () => {
         <div className="flex flex-1 flex-col">
           {/** ここがメインコンテンツ部分 */}
 
-          <Outlet context={{ query, role: user.role }} />
+          <Outlet
+            context={{ query, role: user.role, studentId: studentIdNumber }}
+          />
         </div>
       </SidebarInset>
     </SidebarProvider>

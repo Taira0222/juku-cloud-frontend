@@ -7,7 +7,7 @@ import {
 } from "@tabler/icons-react";
 import { School, type LucideIcon } from "lucide-react";
 
-type NoteTypeAttr = {
+export type NoteTypeAttr = {
   name: string;
   Icon: LucideIcon | TablerIcon;
   color: string;
@@ -29,7 +29,7 @@ export const NOTE_TYPE: Record<NoteType, NoteTypeAttr> = {
     Icon: IconDotsCircleHorizontal,
     color: "fill-gray-100 ",
   },
-};
+} as const satisfies Record<NoteType, NoteTypeAttr>;
 
 export const HEADER_COLOR_BY_SUBJECT = {
   english: "bg-purple-100",

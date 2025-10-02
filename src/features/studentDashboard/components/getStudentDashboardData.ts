@@ -26,7 +26,7 @@ export const getStudentDashboardData = ({
           },
           {
             title: "特性管理",
-            url: `/dashboard/${id}/traits`,
+            url: `/dashboard/${id}/student-traits`,
             icon: IconUserStar,
           },
         ]

@@ -3,12 +3,12 @@ import type {
   Assignment,
   ToggleableKeys,
   OnChange,
-  StudentFormMode,
   DraftByMode,
+  Mode,
 } from "../types/studentForm";
 import { toggleAssignment, toggleValueById } from "./studentFormToggles";
 
-export const createStudentFormHandlers = <M extends StudentFormMode>(
+export const createStudentFormHandlers = <M extends Mode>(
   onChange: OnChange<M>
 ) => {
   // Draftの型をmodeに応じて切り替え

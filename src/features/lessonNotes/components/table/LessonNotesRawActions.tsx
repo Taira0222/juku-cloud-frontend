@@ -9,14 +9,15 @@ import {
 import { IconDotsVertical } from "@tabler/icons-react";
 
 import { Link, useLocation } from "react-router-dom";
-import type { lessonNote } from "@/features/studentDashboard/type/studentDashboard";
 
-type Props = {
-  lessonNote: lessonNote;
-  isAdmin: boolean;
-};
+import type { LessonNoteRawActionsProps } from "../../types/lessonNoteTable";
 
-export const LessonNotesRawActions = ({ lessonNote, isAdmin }: Props) => {
+export const LessonNotesRawActions = ({
+  studentId,
+  lessonNote,
+  subjects,
+  isAdmin,
+}: LessonNoteRawActionsProps) => {
   const location = useLocation();
   return (
     <>
@@ -35,8 +36,12 @@ export const LessonNotesRawActions = ({ lessonNote, isAdmin }: Props) => {
         <DropdownMenuContent align="end" className="w-32">
           <DropdownMenuItem asChild>
             <Link
-              to={`/lessonNotes/${lessonNote.id}/edit`}
-              state={{ lessonNote: lessonNote, background: location }}
+              to={`/dashboard/${studentId}/lesson-notes/${lessonNote.id}/edit`}
+              state={{
+                lessonNote: lessonNote,
+                subjects: subjects,
+                background: location,
+              }}
             >
               編集
             </Link>

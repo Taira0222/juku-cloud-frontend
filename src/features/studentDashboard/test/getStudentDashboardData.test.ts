@@ -17,7 +17,7 @@ describe("getStudentDashboardData", () => {
     expect(navMain).toHaveLength(2);
     expect(navMain.map((i) => i.url)).toEqual([
       "/dashboard/123",
-      "/dashboard/123/traits",
+      "/dashboard/123/student-traits",
     ]);
     // icon は存在していれば十分（関数/コンポーネント参照）
     navMain.forEach((item) => {
