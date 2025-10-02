@@ -3,26 +3,26 @@ import {
   noteTypeEnum,
   titleSchema,
 } from "@/features/studentDashboard/type/studentDashboard";
+import { parseISO, startOfDay } from "date-fns";
 import z from "zod";
 
 export const createExpireDateSchema = z.string().refine(
   (val) => {
-    if (!val) return true;
-    const today = new Date();
-    const inputDate = new Date(val);
+    // startOfDay を使用し時間を切り捨てる
+    const today = startOfDay(new Date());
+    const inputDate = startOfDay(parseISO(val));
     return inputDate >= today;
   },
   {
     message: "有効期限は今日以降の日付を入力してください",
   }
 );
-
-const subjectIdsSchema = z
-  .array(z.number())
+const subjectIdSchema = z
+  .number()
   .min(1, { message: "科目を1つ以上選択してください" });
 
 export const createLessonNoteSchema = z.object({
-  subject_ids: subjectIdsSchema,
+  subject_id: subjectIdSchema,
   title: titleSchema,
   description: descriptionSchema,
   note_type: noteTypeEnum,

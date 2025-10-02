@@ -20,7 +20,7 @@ export const SubjectSelect = ({
   subjects,
   onChange,
 }: SubjectSelectProps) => {
-  const subjectIdString = subjectId ? String(subjectId) : "科目を選択";
+  const value = subjectId !== null ? String(subjectId) : undefined;
   const handleChange = (value: string) => {
     onChange(Number(value));
   };
@@ -29,7 +29,7 @@ export const SubjectSelect = ({
       <RequiredLabel htmlFor="subjectId" required>
         科目を選択
       </RequiredLabel>
-      <Select value={subjectIdString} onValueChange={handleChange}>
+      <Select value={value} onValueChange={handleChange}>
         <SelectTrigger id="subjectId">
           <SelectValue placeholder="科目を選択" />
         </SelectTrigger>

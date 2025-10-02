@@ -9,7 +9,7 @@ import type {
 } from "../types/studentForm";
 import { normalizePayload } from "../utils/studentFormTransforms";
 import { createStudentSchema, editStudentSchema } from "../types/students";
-import { makeByMode } from "@/utils/makeInitiakState";
+import { makeByMode } from "@/utils/makeInitialState";
 
 // satisfiesで型を保証
 const SCHEMA = {

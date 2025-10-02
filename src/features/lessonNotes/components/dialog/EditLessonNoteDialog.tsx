@@ -22,17 +22,17 @@ import { toast } from "sonner";
 export const EditLessonNoteDialog = () => {
   // URLでDialogの開閉を制御するため、常にtrueにしておく
   const open = true;
-  const { traitId, studentId } = useParams<{
-    traitId: string;
+  const { lessonNoteId, studentId } = useParams<{
+    lessonNoteId: string;
     studentId: string;
   }>();
-  const traitIdNumber = Number(traitId);
+  const lessonNoteIdNumber = Number(lessonNoteId);
   const studentIdNumber = Number(studentId);
   // 整数でない、または0以下の数値なら404へリダイレクト
   if (
-    !Number.isInteger(traitIdNumber) ||
+    !Number.isInteger(lessonNoteIdNumber) ||
     !Number.isInteger(studentIdNumber) ||
-    traitIdNumber <= 0 ||
+    lessonNoteIdNumber <= 0 ||
     studentIdNumber <= 0
   )
     return <Navigate to="/404" replace />;
@@ -51,6 +51,7 @@ export const EditLessonNoteDialog = () => {
   }
   // state を取得、なければquery で呼び出す予定
 
+  // state の処理を終わってから、初期値をセットする
   const { value, setValue, submit, reset } = useLessonNoteForm("edit");
   // mutationの実装は後で行う
   const { mutate, isPending } = useUpdateStudentMutation({

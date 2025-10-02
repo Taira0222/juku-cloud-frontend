@@ -8,7 +8,7 @@ import {
 } from "../types/lessonNoteForm";
 import { LessonNoteInitialValues } from "../constants/lessonNoteForm";
 import type { Mode } from "@/features/students/types/studentForm";
-import { makeByMode } from "@/utils/makeInitiakState";
+import { makeByMode } from "@/utils/makeInitialState";
 import { normalizeLessonNotePayload } from "../utils/lessonNoteFormTransforms";
 
 export const useLessonNoteForm = <M extends Mode>(

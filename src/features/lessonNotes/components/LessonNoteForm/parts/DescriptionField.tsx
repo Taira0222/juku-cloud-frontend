@@ -21,7 +21,7 @@ export const DescriptionField = <M extends Mode>({
       </RequiredLabel>
       <Input
         id="description"
-        value={description ?? undefined}
+        value={description ?? ""}
         onChange={onChange("description")}
         placeholder="詳細説明を入力"
         required
