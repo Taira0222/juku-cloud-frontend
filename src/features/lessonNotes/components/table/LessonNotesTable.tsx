@@ -103,7 +103,7 @@ export const LessonNotesTable = ({
       page: pagination.pageIndex + 1,
       perPage: pagination.pageSize,
     }));
-  }, [pagination.pageIndex, pagination.pageSize, setFilters]);
+  }, [pagination.pageIndex, pagination.pageSize]);
 
   const table = useReactTable({
     data: lessonNotes,
