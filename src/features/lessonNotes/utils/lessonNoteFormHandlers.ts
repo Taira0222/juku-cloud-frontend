@@ -13,6 +13,11 @@ export const lessonNoteFormHandlers = <M extends Mode>(
     (e: ChangeEvent<HTMLInputElement>) => {
       onChange((prev) => ({ ...prev, [field]: e.target.value }));
     };
+  const handleTextAreaChange =
+    (field: keyof LessonNoteFormValuesByMode<M>) =>
+    (e: ChangeEvent<HTMLTextAreaElement>) => {
+      onChange((prev) => ({ ...prev, [field]: e.target.value }));
+    };
 
   // Selectコンポーネント用のハンドラー
   const handleSelectChange =
@@ -23,6 +28,7 @@ export const lessonNoteFormHandlers = <M extends Mode>(
 
   return {
     handleInputChange,
+    handleTextAreaChange,
     handleSelectChange,
   };
 };

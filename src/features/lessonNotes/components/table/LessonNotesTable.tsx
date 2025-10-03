@@ -96,15 +96,6 @@ export const LessonNotesTable = ({
       ? Math.ceil(meta.total_count / (filters.perPage ?? 10))
       : 1);
 
-  // setFiltersは描画後に更新する
-  useEffect(() => {
-    setFilters((prev) => ({
-      ...prev,
-      page: pagination.pageIndex + 1,
-      perPage: pagination.pageSize,
-    }));
-  }, [pagination.pageIndex, pagination.pageSize]);
-
   const table = useReactTable({
     data: lessonNotes,
     columns,
@@ -145,9 +136,27 @@ export const LessonNotesTable = ({
     last_updated_by_name: "最終更新者",
   };
 
+  // setFiltersは描画後に更新する
+  useEffect(() => {
+    setFilters((prev) => ({
+      ...prev,
+      page: pagination.pageIndex + 1,
+      perPage: pagination.pageSize,
+    }));
+  }, [pagination.pageIndex, pagination.pageSize]);
+
   // タブが変わるたびにフィルタ更新
   useEffect(() => {
-    if (tabValue) setColumnFilters([{ id: "subject", value: tabValue }]);
+    if (tabValue) {
+      // 科目のフィルターを更新
+      setColumnFilters([{ id: "subject", value: tabValue }]);
+      setFilters((prev) => ({
+        ...prev,
+        subject_id: subjects.find((s) => s.name === tabValue)?.id ?? 0,
+      }));
+      // 科目が変わったらテーブルのページを最初に戻す
+      table.setPageIndex(0);
+    }
   }, [tabValue]);
 
   return (
@@ -212,7 +221,7 @@ export const LessonNotesTable = ({
           </DropdownMenu>
 
           {/** 科目ごとの引継ぎ事項を追加するボタン */}
-          <CreateLessonNoteDialog subjects={subjects} />
+          <CreateLessonNoteDialog subjects={subjects} studentId={studentId} />
         </div>
         {/** タブの内容 */}
       </div>

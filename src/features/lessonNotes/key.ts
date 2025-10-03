@@ -2,7 +2,8 @@
 export type LessonNoteSortByType = "expire_date_asc" | "expire_date_desc";
 
 export type LessonNoteListFilters = {
-  studentId: number;
+  student_id: number;
+  subject_id: number;
   searchKeyword?: string;
   sortBy?: LessonNoteSortByType;
   page?: number;
@@ -10,7 +11,8 @@ export type LessonNoteListFilters = {
 };
 
 const normalize = (filters: LessonNoteListFilters) => ({
-  studentId: filters.studentId,
+  student_id: filters.student_id,
+  subject_id: filters.subject_id,
   searchKeyword: filters.searchKeyword ?? "",
   sortBy: filters.sortBy ?? undefined, // undefined の場合はソートしない
   page: filters.page ?? 1,

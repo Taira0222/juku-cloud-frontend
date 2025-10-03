@@ -25,7 +25,7 @@ export const NoteTypeSelect = ({ noteType, onChange }: NoteTypeSelectProps) => {
       <RequiredLabel htmlFor="noteType" required>
         分類を選択
       </RequiredLabel>
-      <Select value={noteType ?? undefined} onValueChange={handleChange}>
+      <Select value={noteType ?? ""} onValueChange={handleChange}>
         <SelectTrigger id="noteType">
           <SelectValue placeholder="分類を選択" />
         </SelectTrigger>

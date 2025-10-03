@@ -1,6 +1,7 @@
 import {
   createLessonNoteSchema,
   editLessonNoteSchema,
+  type lessonNoteType,
   type NoteType,
 } from "./lessonNote";
 import type z from "zod";
@@ -57,4 +58,10 @@ export type LessonNoteFormProps<M extends Mode> = {
   onChange: OnChangeNote<M>;
   onSubmit: (valid: LessonNoteFormValuesByMode<M>) => void;
   loading: boolean;
+};
+
+export type EditLessonNoteLocationState = {
+  lessonNote: lessonNoteType;
+  subjects: ClassSubjectType[];
+  background: Location;
 };

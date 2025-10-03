@@ -2,7 +2,8 @@ import type { LessonNoteSortByType } from "@/features/lessonNotes/key";
 import { create } from "zustand";
 
 type LessonNotesFilters = {
-  studentId: number;
+  student_id: number;
+  subject_id: number;
   searchKeyword?: string;
   sortBy?: LessonNoteSortByType;
   page: number;
@@ -19,7 +20,7 @@ type LessonNoteState = {
 };
 
 export const useLessonNotesStore = create<LessonNoteState>((set) => ({
-  filters: { studentId: 0, page: 1, perPage: 10 },
+  filters: { student_id: 0, subject_id: 0, page: 1, perPage: 10 },
   setFilters: (patch) =>
     set((state) => ({
       filters: {

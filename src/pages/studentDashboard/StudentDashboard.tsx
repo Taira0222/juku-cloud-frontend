@@ -41,9 +41,21 @@ export const StudentDashboard = () => {
   } = useStudentDetailQuery(studentIdNumber);
 
   const studentQuery = useStudentTraitsQuery(
-    { ...traitsFilters, studentId: studentIdNumber },
+    { ...traitsFilters, student_id: studentIdNumber },
     { enabled: studentIdNumber > 0 }
   );
+
+  useEffect(() => {
+    // 生徒IDが変わったらフィルターを更新
+    setTraitsFilters({ student_id: studentIdNumber });
+  }, [studentIdNumber]);
+
+  useEffect(() => {
+    const subjects = studentData?.class_subjects ?? [];
+    if (subjects.length === 0) return;
+    const first = subjects[0].id;
+    setNotesFilters({ student_id: studentIdNumber, subject_id: first });
+  }, [studentIdNumber, studentData]);
 
   const sidebarData = getStudentDashboardData({
     role: user.role,
@@ -53,12 +65,6 @@ export const StudentDashboard = () => {
     },
     id: studentIdNumber.toString(),
   });
-
-  useEffect(() => {
-    // 生徒IDが変わったらフィルターを更新
-    setNotesFilters({ studentId: studentIdNumber });
-    setTraitsFilters({ studentId: studentIdNumber });
-  }, [studentIdNumber]);
 
   if (!sidebarData) return <Navigate to="/404" replace />;
 

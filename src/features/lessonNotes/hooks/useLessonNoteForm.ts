@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   LessonNoteFormSchema,
   type LessonNoteFormCreateValues,
@@ -15,14 +15,19 @@ export const useLessonNoteForm = <M extends Mode>(
   mode: M,
   initial?: LessonNoteFormValuesByMode<M>
 ) => {
-  const makeInitial = (): LessonNoteFormValuesByMode<M> =>
-    makeByMode<LessonNoteFormCreateValues, LessonNoteFormEditValues>(
-      mode as M,
-      initial as LessonNoteFormEditValues | undefined,
-      LessonNoteInitialValues
-    ) as LessonNoteFormValuesByMode<M>;
+  // 初期値はmode が切り替わった時だけに再生成する
+  const makeInitial = useCallback(
+    (): LessonNoteFormValuesByMode<M> =>
+      makeByMode<LessonNoteFormCreateValues, LessonNoteFormEditValues>(
+        mode as M,
+        initial as LessonNoteFormEditValues | undefined,
+        LessonNoteInitialValues
+      ) as LessonNoteFormValuesByMode<M>,
+    [mode]
+  );
 
-  const [value, setValue] = useState<LessonNoteFormValuesByMode<M>>(
+  // 遅延初期化によって初期値を初回マウント時のみにセットする
+  const [value, setValue] = useState<LessonNoteFormValuesByMode<M>>(() =>
     makeInitial()
   );
 

@@ -81,6 +81,12 @@ export const createLessonNoteSchema = z.object({
   expire_date: createExpireDateSchema,
 });
 
+export type LessonNoteCreate = z.infer<typeof createLessonNoteSchema>;
+
+export type LessonNoteCreateRequest = LessonNoteCreate & {
+  student_id: number;
+};
+
 // 有効期限がすでに過ぎている場合、編集時にエラーになるため、編集時は有効期限のバリデーションを外す
 export const editLessonNoteSchema = createLessonNoteSchema
   .omit({
@@ -90,3 +96,9 @@ export const editLessonNoteSchema = createLessonNoteSchema
     id: z.number({ message: "IDは数値である必要があります" }),
     expire_date: z.string({ message: "期限日の形式が不正です" }),
   });
+
+export type LessonNoteEdit = z.infer<typeof editLessonNoteSchema>;
+
+export type LessonNoteUpdateRequest = LessonNoteEdit & {
+  student_id: number;
+};
