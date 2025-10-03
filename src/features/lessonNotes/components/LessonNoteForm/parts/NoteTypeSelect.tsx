@@ -10,7 +10,7 @@ import {
   NOTE_TYPE,
   type NoteTypeAttr,
 } from "@/features/lessonNotes/constants/lessonNoteTable";
-import type { NoteType } from "@/features/studentDashboard/type/studentDashboard";
+import type { NoteType } from "@/features/lessonNotes/types/lessonNote";
 
 type NoteTypeSelectProps = {
   noteType: NoteType | null;

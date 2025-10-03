@@ -4,12 +4,12 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/layout/HoverCard/hover-card";
-import type { studentTrait } from "@/features/studentDashboard/type/studentDashboard";
 import { cn } from "@/lib/utils";
 import { TraitHoverBadge } from "../../utils/TraitHoverBadge";
+import type { StudentTraitType } from "../../types/studentTraits";
 
 type TraitHoverCardProps = {
-  trait: studentTrait;
+  trait: StudentTraitType;
   isMobile: boolean;
   className?: string;
 };

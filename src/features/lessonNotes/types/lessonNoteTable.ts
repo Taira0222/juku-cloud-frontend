@@ -1,10 +1,14 @@
-import type { lessonNote } from "@/features/studentDashboard/type/studentDashboard";
-import type { ClassSubjectType } from "@/features/students/types/students";
+import type {
+  ClassSubjectType,
+  Meta,
+} from "@/features/students/types/students";
+import type { lessonNoteType } from "./lessonNote";
 
 export type LessonNoteTableProps = {
   studentId: number;
   subjects: ClassSubjectType[];
-  lessonNotes: lessonNote[];
+  lessonNotes: lessonNoteType[];
+  meta: Meta;
   isAdmin: boolean;
   isMobile: boolean;
 };
@@ -16,7 +20,7 @@ export type LessonNoteColumnsProps = {
 };
 
 export type LessonNoteRawActionsProps = {
-  lessonNote: lessonNote;
+  lessonNote: lessonNoteType;
   subjects: ClassSubjectType[];
   isAdmin: boolean;
   studentId: number;

@@ -14,16 +14,36 @@ import {
   useOutletContext,
   useParams,
 } from "react-router-dom";
+import { useLessonNotesStore } from "@/stores/lessonNotesStore";
+import { useEffect } from "react";
+import { ErrorDisplay } from "@/components/common/status/ErrorDisplay";
+import { getErrorMessage } from "@/lib/errors/getErrorMessage";
+import { useStudentTraitsStore } from "@/stores/studentTraitsStore";
+import { useStudentTraitsQuery } from "@/features/studentTraits/queries/useStudentTraitsQuery";
 
 export const StudentDashboard = () => {
-  const user = useOutletContext<User>();
   const { studentId } = useParams<{ studentId: string }>();
   const studentIdNumber = Number(studentId);
   // 整数でない、または0以下の数値なら404へリダイレクト
   if (!Number.isInteger(studentIdNumber) || studentIdNumber <= 0)
     return <Navigate to="/404" replace />;
 
-  const query = useStudentDetailQuery(studentIdNumber);
+  const user = useOutletContext<User>();
+  const setNotesFilters = useLessonNotesStore((state) => state.setFilters);
+  const setTraitsFilters = useStudentTraitsStore((state) => state.setFilters);
+  const traitsFilters = useStudentTraitsStore((state) => state.filters);
+
+  const {
+    data: studentData,
+    isError: isStudentError,
+    error: studentError,
+    isPending: studentPending,
+  } = useStudentDetailQuery(studentIdNumber);
+
+  const studentQuery = useStudentTraitsQuery(
+    { ...traitsFilters, studentId: studentIdNumber },
+    { enabled: studentIdNumber > 0 }
+  );
 
   const sidebarData = getStudentDashboardData({
     role: user.role,
@@ -34,7 +54,16 @@ export const StudentDashboard = () => {
     id: studentIdNumber.toString(),
   });
 
-  if (!sidebarData || query.isPending)
+  useEffect(() => {
+    // 生徒IDが変わったらフィルターを更新
+    setNotesFilters({ studentId: studentIdNumber });
+    setTraitsFilters({ studentId: studentIdNumber });
+  }, [studentIdNumber]);
+
+  if (!sidebarData) return <Navigate to="/404" replace />;
+
+  // useStudentDetailQuery のローディングとエラーハンドリング
+  if (studentPending)
     return (
       <div className="p-6">
         <SpinnerWithText className="flex items-center justify-center h-32">
@@ -42,6 +71,8 @@ export const StudentDashboard = () => {
         </SpinnerWithText>
       </div>
     );
+  if (isStudentError)
+    return <ErrorDisplay error={getErrorMessage(studentError)} />;
 
   return (
     <SidebarProvider
@@ -56,14 +87,18 @@ export const StudentDashboard = () => {
       <AppSidebar variant="inset" data={sidebarData} />
       {/** ここがメイン部分 */}
       <SidebarInset>
-        {query.data && (
-          <StudentSiteHeader school={user.school} data={query.data} />
-        )}
+        <StudentSiteHeader school={user.school} data={studentData} />
+
         <div className="flex flex-1 flex-col">
           {/** ここがメインコンテンツ部分 */}
 
           <Outlet
-            context={{ query, role: user.role, studentId: studentIdNumber }}
+            context={{
+              student: studentData,
+              studentTraits: studentQuery,
+              role: user.role,
+              studentId: studentIdNumber,
+            }}
           />
         </div>
       </SidebarInset>

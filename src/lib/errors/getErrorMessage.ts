@@ -1,5 +1,5 @@
-import { isAxiosError } from 'axios';
-import { ZodError } from 'zod';
+import { isAxiosError } from "axios";
+import { ZodError } from "zod";
 
 type Errors = {
   code: string;
@@ -8,24 +8,26 @@ type Errors = {
 };
 
 type CommonServerError = {
-  errors?: Errors[]; 
+  errors?: Errors[];
 };
 
 export const getErrorMessage = (error: unknown): string[] => {
-  if (!error) return ['無効なエラー'];
+  if (!error) return ["無効なエラー"];
 
   // axiosError
   if (isAxiosError<CommonServerError>(error)) {
     const response = error.response?.data;
     const status = error.response?.status;
 
-    if (typeof status === 'number') {
+    if (typeof status === "number") {
       if ([401, 403, 404, 500].includes(status)) {
-        return [response?.errors?.[0].message || '予期せぬエラーが発生しました。'];
+        return [
+          response?.errors?.[0].message || "予期せぬエラーが発生しました。",
+        ];
       } else if ([400, 422].includes(status)) {
         return (
           response?.errors?.map((error) => error.message) || [
-            '予期せぬエラーが発生しました。',
+            "予期せぬエラーが発生しました。",
           ]
         );
       }
@@ -34,8 +36,8 @@ export const getErrorMessage = (error: unknown): string[] => {
 
   // ZodError
   if (error instanceof ZodError) {
-    return ['データ形式が不正です'];
+    return ["データ形式が不正です"];
   }
   // 通信エラーなど
-  return ['通信エラーが発生しました。'];
+  return ["通信エラーが発生しました。"];
 };

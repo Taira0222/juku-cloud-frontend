@@ -1,16 +1,16 @@
 import { Checkbox } from "@/components/ui/form/CheckBox/checkbox";
 import type { ColumnDef } from "@tanstack/react-table";
 import { LessonNotesRawActions } from "./LessonNotesRawActions";
-import type { lessonNote } from "@/features/studentDashboard/type/studentDashboard";
 import { columnsUtils } from "../../utils/columnsUtils";
 import { LessonNoteDrawer } from "../drawer/LessonNoteDrawer";
 import type { LessonNoteColumnsProps } from "../../types/lessonNoteTable";
+import type { lessonNoteType } from "../../types/lessonNote";
 
 export const LessonNotesColumns = ({
   isAdmin,
   subjects,
   studentId,
-}: LessonNoteColumnsProps): ColumnDef<lessonNote>[] => {
+}: LessonNoteColumnsProps): ColumnDef<lessonNoteType>[] => {
   const { formatExpireDate, formatNoteType } = columnsUtils();
   return [
     {

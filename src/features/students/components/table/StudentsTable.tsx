@@ -49,8 +49,7 @@ import { Tabs, TabsContent } from "@/components/ui/navigation/Tabs/tabs";
 import { StudentsColumns } from "./StudentsColumns";
 import { useStudentsStore } from "@/stores/studentsStore";
 import { STUDENTS_LEVEL_OPTIONS } from "@/constants/studentsLevel";
-import z from "zod";
-import { metaSchema, studentSchema } from "../../types/students";
+import { type Meta, type Student } from "../../types/students";
 import { CreateStudentDialog } from "../dialog/CreateStudentDialog";
 
 export const StudentsTable = ({
@@ -58,8 +57,8 @@ export const StudentsTable = ({
   meta,
   isAdmin,
 }: {
-  data: z.infer<typeof studentSchema>[];
-  meta: z.infer<typeof metaSchema>;
+  data: Student[];
+  meta: Meta;
   isAdmin: boolean;
 }) => {
   const [rowSelection, setRowSelection] = useState({});
@@ -75,8 +74,8 @@ export const StudentsTable = ({
 
   const columns = StudentsColumns(isAdmin);
   const pageCount =
-    meta?.total_pages ??
-    (meta?.total_count
+    meta.total_pages ??
+    (meta.total_count
       ? Math.ceil(meta.total_count / (filters.perPage ?? 10))
       : 1);
   const VIEW_VALUE = "students-table-view";

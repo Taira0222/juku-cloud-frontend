@@ -1,5 +1,8 @@
-import type { NoteType } from "@/features/studentDashboard/type/studentDashboard";
-import { createLessonNoteSchema, editLessonNoteSchema } from "./lessonNote";
+import {
+  createLessonNoteSchema,
+  editLessonNoteSchema,
+  type NoteType,
+} from "./lessonNote";
 import type z from "zod";
 import type { Mode } from "@/features/students/types/studentForm";
 import type { ClassSubjectType } from "@/features/students/types/students";

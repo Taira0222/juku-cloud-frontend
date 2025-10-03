@@ -1,8 +1,8 @@
 import { Badge } from "@/components/ui/display/Badge/badge";
-import type { CategoryType } from "@/features/studentDashboard/type/studentDashboard";
 import { cn } from "@/lib/utils";
 import { AlertTriangle, CheckCircle } from "lucide-react";
 import { TRAIT_CONFIG } from "../constants/StudentTraitTable";
+import type { CategoryType } from "../types/studentTraits";
 
 type TraitHoverBadgeProps = {
   category: CategoryType;
