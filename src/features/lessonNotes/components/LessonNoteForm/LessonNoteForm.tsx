@@ -8,6 +8,7 @@ import { DescriptionField } from "./parts/DescriptionField";
 import { NoteTypeSelect } from "./parts/NoteTypeSelect";
 import { ExpireDatePicker } from "./parts/ExpireDatePicker";
 import { SubjectSelect } from "./parts/SubjectSelect";
+import { SubjectField } from "./parts/SubjectField";
 
 export const LessonNoteForm = <M extends Mode>({
   mode,
@@ -27,12 +28,16 @@ export const LessonNoteForm = <M extends Mode>({
         }}
         className="px-4 sm:px-6 py-6 space-y-5"
       >
-        {/* 科目 */}
-        <SubjectSelect
-          subjectId={value.subject_id}
-          subjects={subjects}
-          onChange={H.handleSelectChange("subject_id")}
-        />
+        {/* 科目 (編集モードなら科目の表示だけ)*/}
+        {mode === "edit" ? (
+          <SubjectField subject_id={value.subject_id} subjects={subjects} />
+        ) : (
+          <SubjectSelect
+            subjectId={value.subject_id}
+            subjects={subjects}
+            onChange={H.handleSelectChange("subject_id")}
+          />
+        )}
 
         {/* タイトル */}
         <TitleField title={value.title} onChange={H.handleInputChange} />
