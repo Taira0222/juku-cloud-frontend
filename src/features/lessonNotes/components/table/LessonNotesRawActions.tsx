@@ -46,9 +46,12 @@ export const LessonNotesRawActions = ({
               編集
             </Link>
           </DropdownMenuItem>
-          <DropdownMenuSeparator />
+
           {isAdmin && (
-            <DropdownMenuItem variant="destructive">削除</DropdownMenuItem>
+            <>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem variant="destructive">削除</DropdownMenuItem>
+            </>
           )}
         </DropdownMenuContent>
       </DropdownMenu>

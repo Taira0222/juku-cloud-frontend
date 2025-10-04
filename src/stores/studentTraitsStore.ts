@@ -2,7 +2,7 @@ import type { StudentTraitSortByType } from "@/features/studentTraits/key";
 import { create } from "zustand";
 
 type StudentTraitsFilters = {
-  studentId: number;
+  student_id: number;
   searchKeyword?: string;
   sortBy?: StudentTraitSortByType;
   page: number;
@@ -19,7 +19,7 @@ type StudentTraitsState = {
 };
 
 export const useStudentTraitsStore = create<StudentTraitsState>((set) => ({
-  filters: { studentId: 0, page: 1, perPage: 10 },
+  filters: { student_id: 0, page: 1, perPage: 10 },
   setFilters: (patch) =>
     set((state) => ({
       filters: {

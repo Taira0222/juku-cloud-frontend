@@ -25,7 +25,7 @@ export const DashboardPage = () => {
 
   // 生徒IDが0以下の場合は取得しない
   const { data, isError, error, isPending } = useLessonNotesQuery(filters, {
-    enabled: filters.studentId > 0,
+    enabled: filters.student_id > 0,
   });
 
   const isMobile = useIsMobile();

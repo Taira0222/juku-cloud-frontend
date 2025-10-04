@@ -6,7 +6,7 @@ export type StudentTraitSortByType =
   | "updated_at_desc";
 
 export type StudentTraitListFilters = {
-  studentId: number;
+  student_id: number;
   searchKeyword?: string;
   sortBy?: StudentTraitSortByType;
   page?: number;
@@ -14,7 +14,7 @@ export type StudentTraitListFilters = {
 };
 
 const normalize = (filters: StudentTraitListFilters) => ({
-  studentId: filters.studentId,
+  student_id: filters.student_id,
   searchKeyword: filters.searchKeyword ?? "",
   sortBy: filters.sortBy ?? undefined, // undefined の場合はソートしない
   page: filters.page ?? 1,

@@ -40,7 +40,7 @@ export const LessonNoteForm = <M extends Mode>({
         {/* 説明 */}
         <DescriptionField
           description={value.description}
-          onChange={H.handleInputChange}
+          onChange={H.handleTextAreaChange}
         />
 
         {/* 分類 */}

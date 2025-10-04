@@ -6,11 +6,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/form/Select/select";
+import { SUBJECT_JA_NAMES } from "@/constants/subjectTranslations";
 
 import type { ClassSubjectType } from "@/features/students/types/students";
 
 type SubjectSelectProps = {
-  subjectId: number | null;
+  subjectId?: number;
   subjects: ClassSubjectType[];
   onChange: (value: number) => void;
 };
@@ -20,7 +21,7 @@ export const SubjectSelect = ({
   subjects,
   onChange,
 }: SubjectSelectProps) => {
-  const value = subjectId !== null ? String(subjectId) : undefined;
+  const value = subjectId ? String(subjectId) : undefined;
   const handleChange = (value: string) => {
     onChange(Number(value));
   };
@@ -36,7 +37,7 @@ export const SubjectSelect = ({
         <SelectContent>
           {subjects.map((subject) => (
             <SelectItem key={subject.id} value={String(subject.id)}>
-              {subject.name}
+              {SUBJECT_JA_NAMES[subject.name].name}
             </SelectItem>
           ))}
         </SelectContent>

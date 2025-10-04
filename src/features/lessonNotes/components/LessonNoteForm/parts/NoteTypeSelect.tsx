@@ -13,7 +13,7 @@ import {
 import type { NoteType } from "@/features/lessonNotes/types/lessonNote";
 
 type NoteTypeSelectProps = {
-  noteType: NoteType | null;
+  noteType?: NoteType;
   onChange: (value: NoteType) => void;
 };
 

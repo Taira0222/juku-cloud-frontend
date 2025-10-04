@@ -1,7 +1,7 @@
 export const LessonNoteInitialValues = {
-  subject_id: null,
+  subject_id: undefined,
   title: "",
   description: null,
-  note_type: null,
-  expire_date: "",
+  note_type: undefined,
+  expire_date: undefined,
 };

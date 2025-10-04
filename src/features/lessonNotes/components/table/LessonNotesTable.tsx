@@ -96,15 +96,6 @@ export const LessonNotesTable = ({
       ? Math.ceil(meta.total_count / (filters.perPage ?? 10))
       : 1);
 
-  // setFiltersは描画後に更新する
-  useEffect(() => {
-    setFilters((prev) => ({
-      ...prev,
-      page: pagination.pageIndex + 1,
-      perPage: pagination.pageSize,
-    }));
-  }, [pagination.pageIndex, pagination.pageSize]);
-
   const table = useReactTable({
     data: lessonNotes,
     columns,
@@ -117,17 +108,24 @@ export const LessonNotesTable = ({
     },
     getRowId: (row) => row.id.toString(),
     enableRowSelection: true,
-    manualPagination: true,
-    pageCount,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
     onPaginationChange: (updater) => {
-      setPagination((prev) =>
-        typeof updater === "function" ? updater(prev) : updater
-      );
+      setPagination((prev) => {
+        const next = typeof updater === "function" ? updater(prev) : updater;
+        // store も同時更新（副作用 useEffect 不要）
+        setFilters((prevFilters) => ({
+          ...prevFilters,
+          page: next.pageIndex + 1,
+          perPage: next.pageSize,
+        }));
+        return next;
+      });
     },
+    manualPagination: true,
+    pageCount,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -135,6 +133,32 @@ export const LessonNotesTable = ({
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
   });
+
+  useEffect(() => {
+    if (tabValue) {
+      // 科目フィルタ（React Table 内部）
+      setColumnFilters([{ id: "subject", value: tabValue }]);
+
+      // pageIndex を 0 にリセット
+      if (table.getState().pagination.pageIndex !== 0) {
+        table.setPageIndex(0);
+      }
+
+      const subjectId = subjects.find((s) => s.name === tabValue)?.id ?? 0;
+
+      setFilters((prev) => ({
+        ...prev,
+        subject_id: subjectId,
+        page: 1,
+        perPage: 10,
+      }));
+
+      // ローカル pagination state も同期
+      setPagination((prev) =>
+        prev.pageIndex === 0 ? prev : { ...prev, pageIndex: 0 }
+      );
+    }
+  }, [tabValue, subjects]);
 
   // カラム表示のラベルを定義
   const columnLabelMap: Record<string, string> = {
@@ -144,11 +168,6 @@ export const LessonNotesTable = ({
     created_by_name: "作成者",
     last_updated_by_name: "最終更新者",
   };
-
-  // タブが変わるたびにフィルタ更新
-  useEffect(() => {
-    if (tabValue) setColumnFilters([{ id: "subject", value: tabValue }]);
-  }, [tabValue]);
 
   return (
     <Tabs
@@ -212,7 +231,7 @@ export const LessonNotesTable = ({
           </DropdownMenu>
 
           {/** 科目ごとの引継ぎ事項を追加するボタン */}
-          <CreateLessonNoteDialog subjects={subjects} />
+          <CreateLessonNoteDialog subjects={subjects} studentId={studentId} />
         </div>
         {/** タブの内容 */}
       </div>

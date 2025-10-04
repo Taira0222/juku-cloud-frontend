@@ -1,5 +1,5 @@
 import { RequiredLabel } from "@/components/common/form/RequiredLabel";
-import { Input } from "@/components/ui/form/Input/input";
+import { Textarea } from "@/components/ui/form/TextArea/textarea";
 import type { LessonNoteFormValuesByMode } from "@/features/lessonNotes/types/lessonNoteForm";
 import type { Mode } from "@/features/students/types/studentForm";
 
@@ -7,7 +7,7 @@ type DescriptionFieldProps<M extends Mode> = {
   description: string | null;
   onChange: (
     field: keyof LessonNoteFormValuesByMode<M>
-  ) => (e: React.ChangeEvent<HTMLInputElement>) => void;
+  ) => (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
 };
 
 export const DescriptionField = <M extends Mode>({
@@ -19,12 +19,11 @@ export const DescriptionField = <M extends Mode>({
       <RequiredLabel htmlFor="description" required={false}>
         詳細説明
       </RequiredLabel>
-      <Input
+      <Textarea
         id="description"
         value={description ?? ""}
         onChange={onChange("description")}
         placeholder="詳細説明を入力"
-        required
       />
     </div>
   );

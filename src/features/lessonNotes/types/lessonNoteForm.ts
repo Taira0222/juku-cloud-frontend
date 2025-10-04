@@ -1,6 +1,7 @@
 import {
   createLessonNoteSchema,
   editLessonNoteSchema,
+  type lessonNoteType,
   type NoteType,
 } from "./lessonNote";
 import type z from "zod";
@@ -8,11 +9,11 @@ import type { Mode } from "@/features/students/types/studentForm";
 import type { ClassSubjectType } from "@/features/students/types/students";
 
 export type LessonNoteFormCreateValues = {
-  subject_id: number | null;
+  subject_id?: number;
   title: string;
   description: string | null;
-  note_type: NoteType | null;
-  expire_date: string;
+  note_type?: NoteType;
+  expire_date?: string;
 };
 
 export type LessonNoteFormEditValues = {
@@ -57,4 +58,10 @@ export type LessonNoteFormProps<M extends Mode> = {
   onChange: OnChangeNote<M>;
   onSubmit: (valid: LessonNoteFormValuesByMode<M>) => void;
   loading: boolean;
+};
+
+export type EditLessonNoteLocationState = {
+  lessonNote: lessonNoteType;
+  subjects: ClassSubjectType[];
+  background: Location;
 };
