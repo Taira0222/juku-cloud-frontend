@@ -13,7 +13,7 @@ import {
 import type { NoteType } from "@/features/lessonNotes/types/lessonNote";
 
 type NoteTypeSelectProps = {
-  noteType: NoteType | null;
+  noteType?: NoteType;
   onChange: (value: NoteType) => void;
 };
 
@@ -25,7 +25,7 @@ export const NoteTypeSelect = ({ noteType, onChange }: NoteTypeSelectProps) => {
       <RequiredLabel htmlFor="noteType" required>
         分類を選択
       </RequiredLabel>
-      <Select value={noteType ?? ""} onValueChange={handleChange}>
+      <Select value={noteType ?? undefined} onValueChange={handleChange}>
         <SelectTrigger id="noteType">
           <SelectValue placeholder="分類を選択" />
         </SelectTrigger>

@@ -12,7 +12,7 @@ import { dateToISO } from "@/features/students/utils/studentFormTransforms";
 import { format, parseISO } from "date-fns";
 
 export type ExpireDatePickerProps = {
-  expireDate: string;
+  expireDate?: string;
   onChange: (v: string) => void;
 };
 

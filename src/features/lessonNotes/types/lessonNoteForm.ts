@@ -9,11 +9,11 @@ import type { Mode } from "@/features/students/types/studentForm";
 import type { ClassSubjectType } from "@/features/students/types/students";
 
 export type LessonNoteFormCreateValues = {
-  subject_id: number | null;
+  subject_id?: number;
   title: string;
   description: string | null;
-  note_type: NoteType | null;
-  expire_date: string;
+  note_type?: NoteType;
+  expire_date?: string;
 };
 
 export type LessonNoteFormEditValues = {
