@@ -157,7 +157,7 @@ export const LessonNotesTable = ({
       // 科目が変わったらテーブルのページを最初に戻す
       table.setPageIndex(0);
     }
-  }, [tabValue]);
+  }, [tabValue, subjects, table]);
 
   return (
     <Tabs

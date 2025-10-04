@@ -15,7 +15,6 @@ export const useLessonNoteForm = <M extends Mode>(
   mode: M,
   initial?: LessonNoteFormValuesByMode<M>
 ) => {
-  // 初期値はmode が切り替わった時だけに再生成する
   const makeInitial = useCallback(
     (): LessonNoteFormValuesByMode<M> =>
       makeByMode<LessonNoteFormCreateValues, LessonNoteFormEditValues>(
@@ -23,7 +22,7 @@ export const useLessonNoteForm = <M extends Mode>(
         initial as LessonNoteFormEditValues | undefined,
         LessonNoteInitialValues
       ) as LessonNoteFormValuesByMode<M>,
-    [mode]
+    [mode, initial]
   );
 
   // 遅延初期化によって初期値を初回マウント時のみにセットする
