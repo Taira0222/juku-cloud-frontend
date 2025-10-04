@@ -158,7 +158,7 @@ export const LessonNotesTable = ({
         prev.pageIndex === 0 ? prev : { ...prev, pageIndex: 0 }
       );
     }
-  }, [tabValue, subjects, table, pagination.pageSize]);
+  }, [tabValue, subjects]);
 
   // カラム表示のラベルを定義
   const columnLabelMap: Record<string, string> = {

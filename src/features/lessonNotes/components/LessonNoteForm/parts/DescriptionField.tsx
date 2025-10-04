@@ -24,7 +24,6 @@ export const DescriptionField = <M extends Mode>({
         value={description ?? ""}
         onChange={onChange("description")}
         placeholder="詳細説明を入力"
-        required={false}
       />
     </div>
   );
