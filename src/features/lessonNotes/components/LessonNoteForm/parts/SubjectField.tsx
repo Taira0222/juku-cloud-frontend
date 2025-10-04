@@ -12,16 +12,14 @@ export const SubjectField = ({ subject_id, subjects }: SubjectFieldProps) => {
   const { createIconTranslationBadge } = subjectBadgeUtils("text-sm");
 
   if (!subject) {
-    return <div className="text-red-500">不明な科目 (ID: {subject_id})</div>;
+    return <div className="text-red-500">不明な科目</div>;
   }
 
   return (
     <div className="space-y-2">
-      <Label htmlFor="subject" className="flex items-center gap-1">
-        科目
-      </Label>
+      <Label className="flex items-center gap-1">科目</Label>
       <span className="text-gray-700">
-        {createIconTranslationBadge(subject.name) || "不明な科目"}
+        {createIconTranslationBadge(subject.name)}
       </span>
     </div>
   );
