@@ -1,3 +1,4 @@
+import type { StudentDetail } from "@/features/studentDashboard/type/studentDashboard";
 import type { Draft } from "@/features/students/types/studentForm";
 import type {
   createStudentPayload,
@@ -225,4 +226,18 @@ export const initialMockValue: Draft = {
   subject_ids: [],
   available_day_ids: [],
   assignments: [],
+};
+
+export const studentDetailMock: StudentDetail = {
+  id: mockStudent1.id,
+  name: mockStudent1.name,
+  status: mockStudent1.status,
+  school_stage: mockStudent1.school_stage,
+  grade: mockStudent1.grade,
+  desired_school: mockStudent1.desired_school,
+  joined_on: mockStudent1.joined_on,
+  class_subjects: [
+    mockStudent1.class_subjects[0],
+    mockStudent1.class_subjects[2],
+  ], // 英語、数学
 };

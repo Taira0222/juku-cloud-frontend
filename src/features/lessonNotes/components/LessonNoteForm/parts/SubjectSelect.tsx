@@ -9,20 +9,17 @@ import {
 import { SUBJECT_JA_NAMES } from "@/constants/subjectTranslations";
 
 import type { ClassSubjectType } from "@/features/students/types/students";
+import { useState } from "react";
 
-type SubjectSelectProps = {
-  subjectId?: number;
+export type SubjectSelectProps = {
   subjects: ClassSubjectType[];
   onChange: (value: number) => void;
 };
 
-export const SubjectSelect = ({
-  subjectId,
-  subjects,
-  onChange,
-}: SubjectSelectProps) => {
-  const value = subjectId ? String(subjectId) : undefined;
+export const SubjectSelect = ({ subjects, onChange }: SubjectSelectProps) => {
+  const [value, setValue] = useState<string | undefined>(undefined);
   const handleChange = (value: string) => {
+    setValue(value);
     onChange(Number(value));
   };
   return (

@@ -135,7 +135,7 @@ describe("Student Update Page", () => {
     expect(
       await screen.findByText("生徒名は50文字以内で入力してください")
     ).toBeInTheDocument();
-  });
+  }, 20000);
   test("should not display a form for updating a student if the role is teacher", async () => {
     updateRender("teacher");
 

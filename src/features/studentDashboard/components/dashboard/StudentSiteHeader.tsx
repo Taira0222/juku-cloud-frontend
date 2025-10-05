@@ -5,7 +5,7 @@ import { useIsMobile } from "@/hooks/useMobile";
 import { formatGrade } from "@/utils/formatGrade";
 import { StudentSiteHoverCard } from "./StudentSiteHoverCard";
 
-type SiteHeaderProps = {
+export type SiteHeaderProps = {
   school: string | null;
   data: StudentDetail;
 };

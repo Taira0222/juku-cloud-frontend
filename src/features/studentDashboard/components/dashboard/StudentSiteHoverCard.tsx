@@ -5,7 +5,7 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/layout/HoverCard/hover-card";
 
-type HoverCardGenericProps = {
+export type HoverCardGenericProps = {
   name: string;
   grade: string;
   desiredSchool: string;

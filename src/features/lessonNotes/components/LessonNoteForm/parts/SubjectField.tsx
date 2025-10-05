@@ -2,7 +2,7 @@ import { Label } from "@/components/ui/form/Label/label";
 import type { ClassSubjectType } from "@/features/students/types/students";
 import { subjectBadgeUtils } from "@/utils/subjectBadgeUtils";
 
-type SubjectFieldProps = {
+export type SubjectFieldProps = {
   subject_id?: number;
   subjects: ClassSubjectType[];
 };
