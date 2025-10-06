@@ -5,7 +5,7 @@ import {
   createResponseStudentMock,
   createStudentMockPayload,
 } from "@/tests/fixtures/students/students";
-import { renderHook, waitFor } from "@testing-library/react";
+import { act, renderHook, waitFor } from "@testing-library/react";
 import { useCreateStudentMutation } from "../../mutations/useCreateStudentMutation";
 import { studentKeys } from "../../../key";
 import { toast } from "sonner";
@@ -50,8 +50,12 @@ describe("useCreateStudentMutation", () => {
       wrapper,
     });
 
-    await waitFor(() => {
+    act(() => {
       result.current.mutate(mockPayload);
+    });
+
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
     });
 
     expect(invalidateSpy).toHaveBeenCalledWith({
@@ -61,7 +65,6 @@ describe("useCreateStudentMutation", () => {
     const detailKey = studentKeys.detail(mockResponseData.id);
     expect(setQueryDataSpy).toHaveBeenCalledWith(detailKey, mockResponseData);
 
-    expect(result.current.isSuccess).toBe(true);
     expect(result.current.data).toEqual(mockResponseData);
     expect(toast.success).toHaveBeenCalledWith("生徒を作成しました");
   });
@@ -78,11 +81,14 @@ describe("useCreateStudentMutation", () => {
       wrapper,
     });
 
-    await waitFor(() => {
+    act(() => {
       result.current.mutate(mockPayload);
     });
 
-    expect(result.current.isError).toBe(true);
+    await waitFor(() => {
+      expect(result.current.isError).toBe(true);
+    });
+
     expect(result.current.error).toBe(mockError);
     expect(toast.error).toHaveBeenCalled();
   });

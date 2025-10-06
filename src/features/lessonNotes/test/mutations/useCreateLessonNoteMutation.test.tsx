@@ -1,6 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { beforeEach, describe, expect, test, vi } from "vitest";
-import { renderHook, waitFor } from "@testing-library/react";
+import { act, renderHook, waitFor } from "@testing-library/react";
 import { toast } from "sonner";
 import {
   createLessonNotePayload,
@@ -50,8 +50,11 @@ describe("useCreateLessonNoteMutation", () => {
       wrapper,
     });
 
-    await waitFor(() => {
+    act(() => {
       result.current.mutate(mockPayload);
+    });
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
     });
 
     expect(invalidateSpy).toHaveBeenCalledWith({
@@ -61,7 +64,6 @@ describe("useCreateLessonNoteMutation", () => {
     const detailKey = lessonNoteKeys.detail(mockResponseData.id);
     expect(setQueryDataSpy).toHaveBeenCalledWith(detailKey, mockResponseData);
 
-    expect(result.current.isSuccess).toBe(true);
     expect(result.current.data).toEqual(mockResponseData);
     expect(toast.success).toHaveBeenCalledWith("授業引継ぎを作成しました");
   });
@@ -78,11 +80,14 @@ describe("useCreateLessonNoteMutation", () => {
       wrapper,
     });
 
-    await waitFor(() => {
+    act(() => {
       result.current.mutate(mockPayload);
     });
 
-    expect(result.current.isError).toBe(true);
+    await waitFor(() => {
+      expect(result.current.isError).toBe(true);
+    });
+
     expect(result.current.error).toBe(mockError);
     expect(toast.error).toHaveBeenCalled();
   });
