@@ -1,14 +1,14 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { renderHook, waitFor } from '@testing-library/react';
-import { useStudentsQuery } from '../../queries/useStudentsQuery';
-import { describe, expect, test, vi } from 'vitest';
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { renderHook, waitFor } from "@testing-library/react";
+import { useStudentsQuery } from "../../queries/useStudentsQuery";
+import { beforeEach, describe, expect, test, vi } from "vitest";
 import {
   mockMeta,
   studentsMock,
-} from '../../../../tests/fixtures/students/students';
-import { fetchStudents } from '../../api/studentsApi';
-import type z from 'zod';
-import type { fetchStudentsSuccessResponseSchema } from '../../types/students';
+} from "../../../../tests/fixtures/students/students";
+import { fetchStudents } from "../../api/studentsApi";
+import type z from "zod";
+import type { fetchStudentsSuccessResponseSchema } from "../../types/students";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -22,12 +22,16 @@ const wrapper = ({ children }: { children: React.ReactNode }) => (
   <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
 );
 
-vi.mock('../../api/studentsApi', () => ({
+vi.mock("../../api/studentsApi", () => ({
   fetchStudents: vi.fn(),
 }));
 
-describe('useStudentsQuery', () => {
-  test('should fetch students successfully', async () => {
+describe("useStudentsQuery", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    queryClient.clear();
+  });
+  test("should fetch students successfully", async () => {
     const mockFilters = {
       searchKeyword: undefined,
       school_stage: undefined,
@@ -53,7 +57,7 @@ describe('useStudentsQuery', () => {
     expect(result.current.data).toEqual(mockResponse);
   });
 
-  test('should handle error state', async () => {
+  test("should not fetch students when disabled", async () => {
     const mockFilters = {
       searchKeyword: undefined,
       school_stage: undefined,
@@ -61,7 +65,27 @@ describe('useStudentsQuery', () => {
       page: 1,
       perPage: 10,
     };
-    const mockError = new Error('Failed to fetch students');
+
+    const { result } = renderHook(
+      () => useStudentsQuery(mockFilters, { enabled: false }),
+      {
+        wrapper,
+      }
+    );
+
+    expect(result.current.data).toBeUndefined();
+    expect(fetchStudents).not.toHaveBeenCalled();
+  });
+
+  test("should handle error state", async () => {
+    const mockFilters = {
+      searchKeyword: undefined,
+      school_stage: undefined,
+      grade: undefined,
+      page: 1,
+      perPage: 10,
+    };
+    const mockError = new Error("Failed to fetch students");
 
     vi.mocked(fetchStudents).mockRejectedValueOnce(mockError);
 

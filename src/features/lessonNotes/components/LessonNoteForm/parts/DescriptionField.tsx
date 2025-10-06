@@ -3,7 +3,7 @@ import { Textarea } from "@/components/ui/form/TextArea/textarea";
 import type { LessonNoteFormValuesByMode } from "@/features/lessonNotes/types/lessonNoteForm";
 import type { Mode } from "@/features/students/types/studentForm";
 
-type DescriptionFieldProps<M extends Mode> = {
+export type DescriptionFieldProps<M extends Mode> = {
   description: string | null;
   onChange: (
     field: keyof LessonNoteFormValuesByMode<M>

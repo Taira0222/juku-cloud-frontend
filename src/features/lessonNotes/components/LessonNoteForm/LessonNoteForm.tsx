@@ -33,7 +33,6 @@ export const LessonNoteForm = <M extends Mode>({
           <SubjectField subject_id={value.subject_id} subjects={subjects} />
         ) : (
           <SubjectSelect
-            subjectId={value.subject_id}
             subjects={subjects}
             onChange={H.handleSelectChange("subject_id")}
           />

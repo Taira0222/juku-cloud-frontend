@@ -3,7 +3,6 @@ import { lessonNoteKeys, type LessonNoteListFilters } from "../key";
 import type { FetchLessonNotesResponse } from "../types/lessonNote";
 import { FetchLessonNotes } from "../api/lessonNotesApi";
 
-// EditLessonNoteDialog で利用
 type Opts = { enabled?: boolean };
 export const useLessonNotesQuery = (
   filters: LessonNoteListFilters,

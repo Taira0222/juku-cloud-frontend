@@ -12,7 +12,7 @@ import {
 } from "@/features/lessonNotes/constants/lessonNoteTable";
 import type { NoteType } from "@/features/lessonNotes/types/lessonNote";
 
-type NoteTypeSelectProps = {
+export type NoteTypeSelectProps = {
   noteType?: NoteType;
   onChange: (value: NoteType) => void;
 };

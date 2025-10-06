@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { getStudentDashboardData } from "../components/getStudentDashboardData";
+import { getStudentDashboardData } from "../../components/getStudentDashboardData";
 
 describe("getStudentDashboardData", () => {
   test("navMain has 2 items for admin", () => {

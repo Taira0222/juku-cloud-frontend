@@ -18,13 +18,15 @@ import { useLessonNoteForm } from "../../hooks/useLessonNoteForm";
 import type { ClassSubjectType } from "@/features/students/types/students";
 import { useCreateLessonNoteMutation } from "../../mutations/useCreateLessonNoteMutation";
 
+export type CreateLessonNoteDialogProps = {
+  studentId: number;
+  subjects: ClassSubjectType[];
+};
+
 export const CreateLessonNoteDialog = ({
   studentId,
   subjects,
-}: {
-  studentId: number;
-  subjects: ClassSubjectType[];
-}) => {
+}: CreateLessonNoteDialogProps) => {
   const isMobile = useIsMobile();
   const [open, setOpen] = useState(false);
   const { value, setValue, submit, reset } = useLessonNoteForm("create");

@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/form/Input/input";
 import type { LessonNoteFormValuesByMode } from "@/features/lessonNotes/types/lessonNoteForm";
 import type { Mode } from "@/features/students/types/studentForm";
 
-type TitleFieldProps<M extends Mode> = {
+export type TitleFieldProps<M extends Mode> = {
   title: string;
   onChange: (
     field: keyof LessonNoteFormValuesByMode<M>

@@ -14,7 +14,7 @@ import { IconX } from "@tabler/icons-react";
 import { formatIsoToDate } from "@/utils/formatIsoToDate";
 import type { lessonNoteType } from "../../types/lessonNote";
 
-type Props = {
+export type LessonNoteDrawerProps = {
   lessonNote: Pick<
     lessonNoteType,
     | "title"
@@ -27,7 +27,7 @@ type Props = {
   >;
 };
 
-export const LessonNoteDrawer = ({ lessonNote }: Props) => {
+export const LessonNoteDrawer = ({ lessonNote }: LessonNoteDrawerProps) => {
   const {
     title,
     description,
@@ -63,32 +63,32 @@ export const LessonNoteDrawer = ({ lessonNote }: Props) => {
         </DrawerHeader>
         <div className="flex flex-col gap-4 overflow-y-auto px-4 py-2 text-sm">
           <div className="flex flex-col gap-2">
-            <Label htmlFor="expireDate">有効期限</Label>
+            <Label>有効期限</Label>
             <p id="expireDate" className="text-muted-foreground">
               {expireDate}
             </p>
           </div>
           <div className="flex flex-col gap-2">
-            <Label htmlFor="createdBy">作成者</Label>
+            <Label>作成者</Label>
             <p id="createdBy" className="text-muted-foreground">
               {created_by_name}
             </p>
           </div>
           <div className="flex flex-col gap-2">
-            <Label htmlFor="createdAt">作成日</Label>
+            <Label>作成日</Label>
             <p id="createdAt" className="text-muted-foreground">
               {formatIsoToDate(created_at)}
             </p>
           </div>
 
           <div className="flex flex-col gap-2">
-            <Label htmlFor="lastUpdatedBy">最終更新者</Label>
+            <Label>最終更新者</Label>
             <div id="lastUpdatedBy" className="text-muted-foreground">
               {last_updated_by_name ? last_updated_by_name : "---"}
             </div>
           </div>
           <div className="flex flex-col gap-2">
-            <Label htmlFor="lastUpdatedAt">最終更新日</Label>
+            <Label>最終更新日</Label>
             <p id="lastUpdatedAt" className="text-muted-foreground">
               {created_at === updated_at ? "---" : formatIsoToDate(updated_at)}
             </p>
