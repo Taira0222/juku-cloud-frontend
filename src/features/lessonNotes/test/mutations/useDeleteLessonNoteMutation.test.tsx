@@ -1,6 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { beforeEach, describe, expect, test, vi } from "vitest";
-import { renderHook, waitFor } from "@testing-library/react";
+import { act, renderHook, waitFor } from "@testing-library/react";
 import { toast } from "sonner";
 import type { LessonNoteDeletePayload } from "../../types/lessonNote";
 import { useDeleteLessonNoteMutation } from "../../mutations/useDeleteLessonNoteMutation";
@@ -43,8 +43,12 @@ describe("useDeleteLessonNoteMutation", () => {
       wrapper,
     });
 
-    await waitFor(() => {
+    act(() => {
       result.current.mutate(mockProps);
+    });
+
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
     });
 
     expect(invalidateSpy).toHaveBeenCalledWith({
@@ -54,7 +58,6 @@ describe("useDeleteLessonNoteMutation", () => {
     const detailKey = lessonNoteKeys.detail(mockProps.lessonNoteId);
     expect(removeQuerySpy).toHaveBeenCalledWith({ queryKey: detailKey });
 
-    expect(result.current.isSuccess).toBe(true);
     expect(result.current.data).toBeUndefined();
     expect(toast.success).toHaveBeenCalledWith("授業引継ぎを削除しました");
   });
@@ -72,11 +75,14 @@ describe("useDeleteLessonNoteMutation", () => {
       wrapper,
     });
 
-    await waitFor(() => {
+    act(() => {
       result.current.mutate(mockProps);
     });
 
-    expect(result.current.isError).toBe(true);
+    await waitFor(() => {
+      expect(result.current.isError).toBe(true);
+    });
+
     expect(result.current.error).toBe(mockError);
     expect(toast.error).toHaveBeenCalled();
   });
