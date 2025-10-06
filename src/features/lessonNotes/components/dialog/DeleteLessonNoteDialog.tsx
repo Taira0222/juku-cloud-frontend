@@ -44,25 +44,33 @@ export const DeleteLessonNoteDialog = ({
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>授業引継ぎを削除</AlertDialogTitle>
-          <AlertDialogDescription>
-            この操作は元に戻せません。
-          </AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel onClick={() => onOpenChange(false)}>
-            キャンセル
-          </AlertDialogCancel>
-          <AlertDialogAction
-            className="text-red-500 bg-red-50 hover:bg-red-100 focus:ring-red-500"
-            onClick={() => {
-              mutate({ studentId, lessonNoteId });
-            }}
-          >
-            削除
-          </AlertDialogAction>
-        </AlertDialogFooter>
+        {isPending ? (
+          <SpinnerWithText className="px-3 py-2 w-full justify-center">
+            削除中...
+          </SpinnerWithText>
+        ) : (
+          <>
+            <AlertDialogHeader>
+              <AlertDialogTitle>授業引継ぎを削除</AlertDialogTitle>
+              <AlertDialogDescription>
+                この操作は元に戻せません。
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel onClick={() => onOpenChange(false)}>
+                キャンセル
+              </AlertDialogCancel>
+              <AlertDialogAction
+                className="text-red-500 bg-red-50 hover:bg-red-100 focus:ring-red-500"
+                onClick={() => {
+                  mutate({ studentId, lessonNoteId });
+                }}
+              >
+                削除
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </>
+        )}
       </AlertDialogContent>
     </AlertDialog>
   );
