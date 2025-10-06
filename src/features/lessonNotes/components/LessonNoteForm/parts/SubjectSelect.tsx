@@ -17,7 +17,7 @@ export type SubjectSelectProps = {
 };
 
 export const SubjectSelect = ({ subjects, onChange }: SubjectSelectProps) => {
-  const [value, setValue] = useState<string | undefined>("");
+  const [value, setValue] = useState<string>("");
   const handleChange = (value: string) => {
     setValue(value);
     onChange(Number(value));

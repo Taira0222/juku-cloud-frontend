@@ -7,7 +7,6 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "@/components/ui/feedback/Alert/alert-dialog";
 
 import { useDeleteLessonNoteMutation } from "../../mutations/useDeleteLessonNoteMutation";
@@ -35,11 +34,9 @@ export const DeleteLessonNoteDialog = ({
   if (isPending) {
     return (
       <AlertDialog open={open} onOpenChange={onOpenChange}>
-        <AlertDialogTrigger asChild>
-          <SpinnerWithText className="px-3 py-2 w-full justify-center">
-            削除中...
-          </SpinnerWithText>
-        </AlertDialogTrigger>
+        <SpinnerWithText className="px-3 py-2 w-full justify-center">
+          削除中...
+        </SpinnerWithText>
       </AlertDialog>
     );
   }
