@@ -102,3 +102,8 @@ export type LessonNoteEdit = z.infer<typeof editLessonNoteSchema>;
 export type LessonNoteUpdateRequest = LessonNoteEdit & {
   student_id: number;
 };
+
+export type LessonNoteDeletePayload = {
+  studentId: number;
+  lessonNoteId: number;
+};

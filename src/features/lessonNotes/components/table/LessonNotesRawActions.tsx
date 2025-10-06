@@ -11,6 +11,8 @@ import { IconDotsVertical } from "@tabler/icons-react";
 import { Link, useLocation } from "react-router-dom";
 
 import type { LessonNoteRawActionsProps } from "../../types/lessonNoteTable";
+import { DeleteLessonNoteDialog } from "../dialog/DeleteLessonNoteDialog";
+import { useState } from "react";
 
 export const LessonNotesRawActions = ({
   studentId,
@@ -19,6 +21,7 @@ export const LessonNotesRawActions = ({
   isAdmin,
 }: LessonNoteRawActionsProps) => {
   const location = useLocation();
+  const [open, setOpen] = useState(false);
   return (
     <>
       <DropdownMenu>
@@ -50,7 +53,21 @@ export const LessonNotesRawActions = ({
           {isAdmin && (
             <>
               <DropdownMenuSeparator />
-              <DropdownMenuItem variant="destructive">削除</DropdownMenuItem>
+              <DropdownMenuItem
+                variant="destructive"
+                onSelect={(e) => {
+                  e.preventDefault(); // フォーカス移動によるチラつき防止
+                  setOpen(true); // Dialog を開く
+                }}
+              >
+                削除
+              </DropdownMenuItem>
+              <DeleteLessonNoteDialog
+                open={open}
+                onOpenChange={setOpen}
+                studentId={studentId}
+                lessonNoteId={lessonNote.id}
+              />
             </>
           )}
         </DropdownMenuContent>
