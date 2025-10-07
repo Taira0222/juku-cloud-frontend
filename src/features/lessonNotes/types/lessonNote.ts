@@ -58,7 +58,7 @@ export const fetchLessonNotesSchema = z.object({
 
 export type FetchLessonNotesResponse = z.infer<typeof fetchLessonNotesSchema>;
 
-export const createExpireDateSchema = z.string().refine(
+export const ExpireDateSchema = z.string().refine(
   (val) => {
     // startOfDay を使用し時間を切り捨てる
     const today = startOfDay(new Date());
@@ -78,7 +78,7 @@ export const createLessonNoteSchema = z.object({
   title: titleSchema,
   description: descriptionSchema,
   note_type: noteTypeEnum,
-  expire_date: createExpireDateSchema,
+  expire_date: ExpireDateSchema,
 });
 
 export type LessonNoteCreate = z.infer<typeof createLessonNoteSchema>;
@@ -88,14 +88,9 @@ export type LessonNoteCreateRequest = LessonNoteCreate & {
 };
 
 // 有効期限がすでに過ぎている場合、編集時にエラーになるため、編集時は有効期限のバリデーションを外す
-export const editLessonNoteSchema = createLessonNoteSchema
-  .omit({
-    expire_date: true,
-  })
-  .extend({
-    id: z.number({ message: "IDは数値である必要があります" }),
-    expire_date: z.string({ message: "期限日の形式が不正です" }),
-  });
+export const editLessonNoteSchema = createLessonNoteSchema.extend({
+  id: z.number({ message: "IDは数値である必要があります" }),
+});
 
 export type LessonNoteEdit = z.infer<typeof editLessonNoteSchema>;
 

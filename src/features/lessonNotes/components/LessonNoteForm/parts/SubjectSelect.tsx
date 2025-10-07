@@ -13,14 +13,14 @@ import { useState } from "react";
 
 export type SubjectSelectProps = {
   subjects: ClassSubjectType[];
-  onChange: (value: number) => void;
+  onChange: (value: number | undefined) => void;
 };
 
 export const SubjectSelect = ({ subjects, onChange }: SubjectSelectProps) => {
   const [value, setValue] = useState<string>("");
   const handleChange = (value: string) => {
     setValue(value);
-    onChange(Number(value));
+    onChange(value === "" ? undefined : Number(value));
   };
   return (
     <div className="space-y-1">

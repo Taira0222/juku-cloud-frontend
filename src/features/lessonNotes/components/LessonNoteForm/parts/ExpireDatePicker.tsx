@@ -8,7 +8,6 @@ import {
 } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/form/Calendar/calendar";
 import { RequiredLabel } from "@/components/common/form/RequiredLabel";
-import { dateToISO } from "@/features/students/utils/studentFormTransforms";
 import { format, parseISO } from "date-fns";
 
 export type ExpireDatePickerProps = {
@@ -52,7 +51,7 @@ export const ExpireDatePicker = ({
               captionLayout="dropdown"
               onSelect={(date) => {
                 if (!date) return;
-                onChange(dateToISO(date));
+                onChange(format(date, "yyyy-MM-dd"));
                 setOpen(false);
               }}
             />

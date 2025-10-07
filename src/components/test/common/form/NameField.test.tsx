@@ -1,6 +1,6 @@
 import { NameField, type NameProps } from "@/components/common/form/NameField";
+import type { ValueKind, ValueType } from "@/components/common/form/type/form";
 import { initialMockValue } from "@/tests/fixtures/students/students";
-import type { ValueKind, ValueType } from "@/types";
 
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";

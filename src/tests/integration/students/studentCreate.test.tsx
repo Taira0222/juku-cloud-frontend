@@ -1,6 +1,7 @@
 import { Toaster } from "@/components/ui/feedback/Sonner/sonner";
 import { StudentsPage } from "@/pages/students/StudentsPage";
-import type { ContextType } from "@/types";
+import type { ContextType } from "@/pages/students/type/students";
+
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
