@@ -15,7 +15,7 @@ import userEvent from "@testing-library/user-event";
 import { addDays, format } from "date-fns";
 import { http, HttpResponse } from "msw";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
-import { afterEach, describe, expect, test } from "vitest";
+import { afterEach, beforeEach, describe, expect, test } from "vitest";
 
 const NotFoundPage = () => <div data-testid="not-found">Not Found</div>;
 const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -63,15 +63,18 @@ const getMenuButtonById = (id: string) => {
 };
 
 describe("LessonNote Update Test", () => {
+  beforeEach(() => {
+    useUserStore.setState({
+      user: currentAdminUser,
+    });
+  });
   afterEach(() => {
     queryClient.clear();
+    useUserStore.setState({ user: null });
   });
   const user = userEvent.setup();
 
   test("should update a lesson note", async () => {
-    useUserStore.setState({
-      user: currentAdminUser,
-    });
     UpdateRender();
 
     expect(await screen.findByText("英語の宿題")).toBeInTheDocument();
@@ -127,10 +130,6 @@ describe("LessonNote Update Test", () => {
   });
 
   test("should show zod error when expire date is past", async () => {
-    useUserStore.setState({
-      user: currentAdminUser,
-    });
-
     UpdateRender();
 
     expect(await screen.findByText("英語の宿題")).toBeInTheDocument();
@@ -166,10 +165,6 @@ describe("LessonNote Update Test", () => {
   });
 
   test("should show server error when update a lesson note fails", async () => {
-    useUserStore.setState({
-      user: currentAdminUser,
-    });
-
     server.use(
       http.patch(`${VITE_API_BASE_URL}/api/v1/lesson_notes/:id`, async () => {
         return HttpResponse.json(

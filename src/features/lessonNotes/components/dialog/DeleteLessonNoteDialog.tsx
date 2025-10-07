@@ -34,18 +34,18 @@ export const DeleteLessonNoteDialog = ({
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>授業引継ぎを削除</AlertDialogTitle>
+          <AlertDialogDescription>
+            授業引継ぎを削除しますか？この操作は取り消せません。
+          </AlertDialogDescription>
+        </AlertDialogHeader>
         {isPending ? (
           <SpinnerWithText className="px-3 py-2 w-full justify-center">
             削除中...
           </SpinnerWithText>
         ) : (
           <>
-            <AlertDialogHeader>
-              <AlertDialogTitle>授業引継ぎを削除</AlertDialogTitle>
-              <AlertDialogDescription>
-                授業引継ぎを削除しますか？この操作は取り消せません。
-              </AlertDialogDescription>
-            </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel onClick={() => onOpenChange(false)}>
                 キャンセル
