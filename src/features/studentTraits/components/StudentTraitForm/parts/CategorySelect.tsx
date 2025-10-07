@@ -31,11 +31,11 @@ export const CategorySelect = ({ category, onChange }: CategorySelectProps) => {
   return (
     <div className="space-y-1">
       <RequiredLabel htmlFor="noteType" required>
-        分類を選択
+        特性の種類を選択
       </RequiredLabel>
       <Select value={category ?? ""} onValueChange={handleChange}>
-        <SelectTrigger id="category" aria-label="分類を選択">
-          <SelectValue placeholder="分類を選択" />
+        <SelectTrigger id="category" aria-label="特性の種類を選択">
+          <SelectValue placeholder="特性の種類を選択" />
         </SelectTrigger>
         <SelectContent>
           {Object.entries(TRAIT_CONFIG).map(([key, trait]) => (

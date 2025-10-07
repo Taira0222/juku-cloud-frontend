@@ -9,7 +9,7 @@ export type CategoryFieldProps = {
 
 export const CategoryField = ({ category }: CategoryFieldProps) => {
   if (!category) {
-    return <div className="text-red-500">不明な科目</div>;
+    return <div className="text-red-500">不明な特性</div>;
   }
   const isMobile = useIsMobile();
   const { TraitBadge } = traitHoverBadge({
@@ -19,7 +19,7 @@ export const CategoryField = ({ category }: CategoryFieldProps) => {
 
   return (
     <div className="space-y-2">
-      <Label className="flex items-center gap-1">科目</Label>
+      <Label className="flex items-center gap-1">特性の種類</Label>
       <span className="text-gray-700">{<TraitBadge />}</span>
     </div>
   );

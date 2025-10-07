@@ -26,9 +26,7 @@ export const useUpdateStudentTraitMutation = (
       UpdateStudentTrait(payload),
     ...options,
     onSuccess: (studentTrait, variables, context) => {
-      // 引継ぎ事項のキャッシュを無効化して再フェッチ
       queryClient.invalidateQueries({ queryKey: studentTraitKeys.lists() });
-      // 詳細キャッシュは予め温めておくとUX良い
       queryClient.setQueryData(
         studentTraitKeys.detail(studentTrait.id),
         studentTrait

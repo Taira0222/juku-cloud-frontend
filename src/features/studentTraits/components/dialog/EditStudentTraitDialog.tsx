@@ -58,7 +58,7 @@ export const EditStudentTraitDialog = () => {
 
   const { studentTrait } = state;
 
-  // useLessonNoteForm の初期値をメモ化しておかないと、state 更新のたびに初期値が変わってしまう
+  // useStudentTraitForm の初期値をメモ化しておかないと、state 更新のたびに初期値が変わってしまう
   const initialState = useMemo(
     () => ({
       id: studentTrait.id,
