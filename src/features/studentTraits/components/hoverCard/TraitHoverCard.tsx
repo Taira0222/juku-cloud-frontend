@@ -5,7 +5,7 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/layout/HoverCard/hover-card";
 import { cn } from "@/lib/utils";
-import { traitHoverBadge } from "../../utils/traitHoverBadge";
+import { TraitHoverBadge } from "../../utils/traitHoverBadge";
 import type { StudentTraitType } from "../../types/studentTraits";
 
 type TraitHoverCardProps = {
@@ -19,7 +19,7 @@ export const TraitHoverCard = ({
   isMobile,
   className,
 }: TraitHoverCardProps) => {
-  const { TraitIcon } = traitHoverBadge({ category: trait.category, isMobile });
+  const { TraitIcon } = TraitHoverBadge({ category: trait.category, isMobile });
   return (
     <HoverCard>
       <HoverCardTrigger asChild>

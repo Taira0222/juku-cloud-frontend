@@ -1,6 +1,6 @@
 import { Label } from "@/components/ui/form/Label/label";
 import type { CategoryType } from "@/features/studentTraits/types/studentTraits";
-import { traitHoverBadge } from "@/features/studentTraits/utils/traitHoverBadge";
+import { TraitHoverBadge } from "@/features/studentTraits/utils/traitHoverBadge";
 import { useIsMobile } from "@/hooks/useMobile";
 
 export type CategoryFieldProps = {
@@ -12,7 +12,7 @@ export const CategoryField = ({ category }: CategoryFieldProps) => {
     return <div className="text-red-500">不明な特性</div>;
   }
   const isMobile = useIsMobile();
-  const { TraitBadge } = traitHoverBadge({
+  const { TraitBadge } = TraitHoverBadge({
     category: category,
     isMobile: isMobile,
   });

@@ -6,7 +6,7 @@ import { TraitHoverCard } from "@/features/studentTraits/components/hoverCard/Tr
 import { formatIsoToDate } from "@/utils/formatIsoToDate";
 import type { StudentTraitsColumnsProps } from "../../types/studentTraitTable";
 import type { StudentTraitType } from "../../types/studentTraits";
-import { traitHoverBadge } from "../../utils/traitHoverBadge";
+import { TraitHoverBadge } from "../../utils/traitHoverBadge";
 
 export const StudentTraitsColumns = ({
   studentId,
@@ -69,7 +69,7 @@ export const StudentTraitsColumns = ({
       accessorKey: "categoryDisplay",
       header: "特性の種類",
       cell: ({ row }) => {
-        const { TraitBadge } = traitHoverBadge({
+        const { TraitBadge } = TraitHoverBadge({
           category: row.original.category,
           isMobile,
         });

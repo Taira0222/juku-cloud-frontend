@@ -46,7 +46,6 @@ export const EditStudentTraitDialog = () => {
     navigate(-1);
   };
 
-  // --ここまでみた--
   const state: EditStudentTraitLocationState = location.state;
   const hasBackground = !!state?.background;
   // エラーハンドリングによる画面遷移

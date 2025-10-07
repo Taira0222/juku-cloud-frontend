@@ -9,7 +9,7 @@ type TraitHoverBadgeProps = {
   isMobile: boolean;
 };
 
-export const traitHoverBadge = ({
+export const TraitHoverBadge = ({
   category,
   isMobile,
 }: TraitHoverBadgeProps) => {
