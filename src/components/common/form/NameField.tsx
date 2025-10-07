@@ -2,8 +2,7 @@ import { RequiredLabel } from "@/components/common/form/RequiredLabel";
 
 import { Input } from "@/components/ui/form/Input/input";
 import { NAME_FIELD_PROPS } from "@/constants/Form";
-
-import type { ValueKind, ValueType } from "@/types";
+import type { ValueKind, ValueType } from "./type/form";
 
 export type NameProps<T extends ValueType, K extends ValueKind> = {
   variant: K;

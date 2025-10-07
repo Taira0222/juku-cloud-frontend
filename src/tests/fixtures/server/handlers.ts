@@ -25,14 +25,31 @@ import {
   type StudentUpdatePathParams,
   type StudentUpdateRequestBodyType,
   type StudentUpdateResponseBodyType,
+  type LessonNoteFetchRequestBodyType,
+  type LessonNoteFetchResponseBodyType,
+  type StudentDetailPathParams,
+  type StudentDetailResponseBodyType,
+  type StudentTraitsRequestBodyType,
+  type StudentTraitsResponseBodyType,
+  type LessonNoteCreateRequestBodyType,
+  type LessonNoteCreateResponseBodyType,
+  type LessonNoteDeletePathParams,
+  type LessonNoteDeleteRequestBodyType,
+  type LessonNoteDeleteResponseBodyType,
+  type LessonNoteUpdatePathParams,
 } from "@/tests/fixtures/server/types/msw";
 import { http, HttpResponse } from "msw";
 import {
   mockMeta,
   mockStudent1,
   mockStudent4,
+  studentDetailMock,
   studentsMock,
 } from "../students/students";
+import { lessonNotesMock } from "../lessonNotes/lessonNotes";
+import { mockStudentTraits } from "../studentTraits/studentTraits";
+import { currentAdminUser } from "../user/user";
+import { format } from "date-fns";
 
 const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const ADMIN_ID = "1";
@@ -464,6 +481,241 @@ export const handlers = [
               {
                 code: "NOT_FOUND",
                 message: "生徒が見つかりませんでした。",
+              },
+            ],
+          },
+          { status: 404 }
+        );
+      }
+    }
+  ),
+  // 生徒単体取得のハンドラー
+  http.get<StudentDetailPathParams, never, StudentDetailResponseBodyType>(
+    `${VITE_API_BASE_URL}/api/v1/dashboards/:id`,
+    async ({ params }) => {
+      const { id } = params;
+
+      if (id === "1") {
+        return HttpResponse.json(studentDetailMock, { status: 200 });
+      } else {
+        return HttpResponse.json(
+          {
+            errors: [
+              {
+                code: "NOT_FOUND",
+                message: "生徒が見つかりませんでした。",
+              },
+            ],
+          },
+          { status: 404 }
+        );
+      }
+    }
+  ),
+
+  // 授業引継ぎ一覧取得のハンドラー
+  http.get<
+    never,
+    LessonNoteFetchRequestBodyType,
+    LessonNoteFetchResponseBodyType
+  >(`${VITE_API_BASE_URL}/api/v1/lesson_notes`, async ({ request }) => {
+    const url = new URL(request.url);
+    const studentIdParam = url.searchParams.get("student_id");
+    const subjectIdParam = url.searchParams.get("subject_id");
+    const perPageParam = url.searchParams.get("perPage");
+
+    const student_id = studentIdParam ? Number(studentIdParam) : undefined;
+    const subject_id = subjectIdParam ? Number(subjectIdParam) : undefined;
+    const perPage = perPageParam ? Number(perPageParam) : undefined;
+
+    // mockStudent1(id:1)でsubject_id が1(英語の場合)
+    if (student_id === 1 && subject_id === 1) {
+      return HttpResponse.json(
+        {
+          lesson_notes: lessonNotesMock,
+          meta: {
+            total_count: 2,
+            per_page: 5,
+            current_page: 1,
+            total_pages: 1,
+          },
+        },
+        { status: 200 }
+      );
+    } else if (perPage === 10) {
+      return HttpResponse.json(
+        {
+          lesson_notes: lessonNotesMock,
+          meta: {
+            total_count: 2,
+            per_page: 10,
+            current_page: 1,
+            total_pages: 1,
+          },
+        },
+        { status: 200 }
+      );
+    } else if (student_id !== 1) {
+      return HttpResponse.json(
+        {
+          errors: [
+            {
+              code: "NOT_FOUND",
+              field: "base",
+              message: "この科目の授業引継ぎノートは見つかりませんでした。",
+            },
+          ],
+        },
+        { status: 404 }
+      );
+    }
+  }),
+  // 授業引継ぎノート作成のハンドラー
+  http.post<
+    never,
+    LessonNoteCreateRequestBodyType,
+    LessonNoteCreateResponseBodyType
+  >(`${VITE_API_BASE_URL}/api/v1/lesson_notes`, async ({ request }) => {
+    const body = await request.json();
+    const { title, subject_id, note_type, expire_date } = body;
+
+    // モックデータを使ってレスポンスを返す
+    return HttpResponse.json(
+      {
+        id: 4,
+        title: title,
+        description: body.description,
+        note_type: note_type,
+        created_by_name: currentAdminUser.name,
+        last_updated_by_name: null,
+        expire_date: expire_date,
+        created_by: {
+          id: currentAdminUser.id,
+          name: currentAdminUser.name,
+        },
+        last_updated_by: null,
+        student_class_subject: {
+          id: 1,
+          class_subject: {
+            id: subject_id,
+            name: "english",
+          },
+        },
+        created_at: format(new Date(), "yyyy-MM-dd'T'HH:mm:ss'Z'"),
+        updated_at: format(new Date(), "yyyy-MM-dd'T'HH:mm:ss'Z'"),
+      },
+      { status: 201 }
+    );
+  }),
+  // 授業引継ぎノート削除のハンドラー
+  http.delete<
+    LessonNoteDeletePathParams,
+    LessonNoteDeleteRequestBodyType,
+    LessonNoteDeleteResponseBodyType
+  >(
+    `${VITE_API_BASE_URL}/api/v1/lesson_notes/:id`,
+    async ({ request, params }) => {
+      const { id } = params;
+      const url = new URL(request.url);
+      const studentIdParam = url.searchParams.get("student_id");
+      const studentId = studentIdParam ? Number(studentIdParam) : undefined;
+
+      if (id === "1" && studentId === 1) {
+        return HttpResponse.json(null, { status: 204 });
+      }
+    }
+  ),
+  // 授業引継ぎノート更新のハンドラー
+  http.patch<
+    LessonNoteUpdatePathParams,
+    LessonNoteCreateRequestBodyType,
+    LessonNoteCreateResponseBodyType
+  >(
+    `${VITE_API_BASE_URL}/api/v1/lesson_notes/:id`,
+    async ({ params, request }) => {
+      const { id } = params;
+      const body = await request.json();
+      const { title, subject_id, note_type, expire_date } = body;
+
+      // モックデータを使ってレスポンスを返す
+      return HttpResponse.json(
+        {
+          id: Number(id),
+          title: title,
+          description: body.description,
+          note_type: note_type,
+          created_by_name: currentAdminUser.name,
+          last_updated_by_name: currentAdminUser.name,
+          expire_date: expire_date,
+          created_by: {
+            id: currentAdminUser.id,
+            name: currentAdminUser.name,
+          },
+          last_updated_by: {
+            id: currentAdminUser.id,
+            name: currentAdminUser.name,
+          },
+          student_class_subject: {
+            id: 1,
+            class_subject: {
+              id: subject_id,
+              name: "english",
+            },
+          },
+          created_at: format(new Date(), "yyyy-MM-dd'T'HH:mm:ss'Z'"),
+          updated_at: format(new Date(), "yyyy-MM-dd'T'HH:mm:ss'Z'"),
+        },
+        { status: 201 }
+      );
+    }
+  ),
+  // 生徒特性一覧取得のハンドラー
+  http.get<never, StudentTraitsRequestBodyType, StudentTraitsResponseBodyType>(
+    `${VITE_API_BASE_URL}/api/v1/student_traits`,
+    async ({ request }) => {
+      const url = new URL(request.url);
+      const studentIdParam = url.searchParams.get("student_id");
+      const perPageParam = url.searchParams.get("perPage");
+
+      const student_id = studentIdParam ? Number(studentIdParam) : undefined;
+      const perPage = perPageParam ? Number(perPageParam) : undefined;
+
+      // mockStudent1(id:1)の場合
+      if (student_id === 1) {
+        return HttpResponse.json(
+          {
+            student_traits: mockStudentTraits,
+            meta: {
+              total_count: 10,
+              per_page: 10,
+              current_page: 1,
+              total_pages: 1,
+            },
+          },
+          { status: 200 }
+        );
+        // 指導していない生徒の場合
+      } else if (perPage === 20) {
+        return HttpResponse.json(
+          {
+            student_traits: mockStudentTraits,
+            meta: {
+              total_count: 10,
+              per_page: 20,
+              current_page: 1,
+              total_pages: 1,
+            },
+          },
+          { status: 200 }
+        );
+      } else if (student_id !== 1) {
+        return HttpResponse.json(
+          {
+            errors: [
+              {
+                code: "NOT_FOUND",
+                field: "base",
+                message: "生徒の特性は見つかりませんでした。",
               },
             ],
           },

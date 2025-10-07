@@ -4,12 +4,22 @@ import type {
   SignUpSuccessResponse,
 } from "@/features/auth/types/signUp";
 import type { TokenConfirmSuccessResponse } from "@/features/auth/types/tokenConfirm";
+import type { LessonNoteListFilters } from "@/features/lessonNotes/key";
+import type {
+  FetchLessonNotesResponse,
+  LessonNoteCreateRequest,
+  lessonNoteType,
+  LessonNoteUpdateRequest,
+} from "@/features/lessonNotes/types/lessonNote";
+import type { StudentDetail } from "@/features/studentDashboard/type/studentDashboard";
 import type {
   createStudentPayload,
   editStudentPayload,
   FetchStudentsSuccessResponse,
   Student,
 } from "@/features/students/types/students";
+import type { StudentTraitListFilters } from "@/features/studentTraits/key";
+import type { FetchStudentTraitsResponse } from "@/features/studentTraits/types/studentTraits";
 import type { InviteTokenSuccessResponse } from "@/features/teachers/types/inviteToken";
 import type {
   fetchTeachersSuccessResponse,
@@ -120,3 +130,41 @@ export type StudentDeletePathParams = {
 };
 
 export type StudentDeleteResponseBodyType = never | CommonErrorResponse;
+
+export type StudentDetailPathParams = {
+  id: string;
+};
+
+export type StudentDetailResponseBodyType = StudentDetail | CommonErrorResponse;
+
+export type LessonNoteFetchRequestBodyType = LessonNoteListFilters;
+
+export type LessonNoteFetchResponseBodyType =
+  | FetchLessonNotesResponse
+  | CommonErrorResponse;
+
+export type LessonNoteCreateRequestBodyType = LessonNoteCreateRequest;
+export type LessonNoteCreateResponseBodyType =
+  | lessonNoteType
+  | CommonErrorResponse;
+
+export type LessonNoteDeletePathParams = {
+  id: string;
+};
+export type LessonNoteDeleteRequestBodyType = { student_id: number };
+export type LessonNoteDeleteResponseBodyType = never | CommonErrorResponse;
+
+export type LessonNoteUpdatePathParams = {
+  id: string;
+};
+
+export type LessonNoteUpdateRequestBodyType = LessonNoteUpdateRequest;
+export type LessonNoteUpdateResponseBodyType =
+  | lessonNoteType
+  | CommonErrorResponse;
+
+export type StudentTraitsRequestBodyType = StudentTraitListFilters;
+
+export type StudentTraitsResponseBodyType =
+  | FetchStudentTraitsResponse
+  | CommonErrorResponse;

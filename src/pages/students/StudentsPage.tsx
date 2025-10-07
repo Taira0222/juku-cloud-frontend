@@ -4,9 +4,9 @@ import { StudentsTable } from "@/features/students/components/table/StudentsTabl
 import { useStudentsQuery } from "@/features/students/queries/useStudentsQuery";
 import { getErrorMessage } from "@/lib/errors/getErrorMessage";
 import { useStudentsStore } from "@/stores/studentsStore";
-import type { ContextType } from "@/types";
 
 import { useOutletContext } from "react-router-dom";
+import type { ContextType } from "./type/students";
 
 export const StudentsPage = () => {
   const { role } = useOutletContext<ContextType>();

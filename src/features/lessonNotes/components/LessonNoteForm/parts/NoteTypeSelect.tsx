@@ -13,20 +13,30 @@ import {
 import type { NoteType } from "@/features/lessonNotes/types/lessonNote";
 
 export type NoteTypeSelectProps = {
-  noteType?: NoteType;
-  onChange: (value: NoteType) => void;
+  noteType?: NoteType; // undefined = 未選択
+  onChange: (value?: NoteType) => void;
 };
+// 型ガード
+const isNoteType = (value: string): value is NoteType => value in NOTE_TYPE;
 
 export const NoteTypeSelect = ({ noteType, onChange }: NoteTypeSelectProps) => {
-  // 内部受け取りでNoteType に変更する
-  const handleChange = (v: string) => onChange(v as NoteType);
+  const handleChange = (value: string) => {
+    if (value === "") {
+      onChange(undefined); // クリア
+      return;
+    }
+    if (isNoteType(value)) {
+      onChange(value);
+    }
+  };
+
   return (
     <div className="space-y-1">
       <RequiredLabel htmlFor="noteType" required>
         分類を選択
       </RequiredLabel>
-      <Select value={noteType ?? undefined} onValueChange={handleChange}>
-        <SelectTrigger id="noteType">
+      <Select value={noteType ?? ""} onValueChange={handleChange}>
+        <SelectTrigger id="noteType" aria-label="分類を選択">
           <SelectValue placeholder="分類を選択" />
         </SelectTrigger>
         <SelectContent>

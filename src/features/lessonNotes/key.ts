@@ -16,7 +16,7 @@ const normalize = (filters: LessonNoteListFilters) => ({
   searchKeyword: filters.searchKeyword ?? "",
   sortBy: filters.sortBy ?? undefined, // undefined の場合はソートしない
   page: filters.page ?? 1,
-  perPage: filters.perPage ?? 10,
+  perPage: filters.perPage ?? 5,
 });
 
 export const lessonNoteKeys = {

@@ -3,7 +3,7 @@ type school = {
   name: string;
 };
 
-type data = {
+export type UserData = {
   id: number;
   provider: string;
   uid: string;
@@ -18,7 +18,7 @@ type data = {
 
 export type fetchUserSuccessResponse = {
   success: boolean;
-  data: data;
+  data: UserData;
 };
 
 export type fetchUserErrorResponse = {
