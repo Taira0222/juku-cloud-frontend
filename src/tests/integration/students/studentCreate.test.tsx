@@ -12,7 +12,7 @@ import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { format } from "date-fns";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
-import { describe, expect, test } from "vitest";
+import { afterEach, beforeEach, describe, expect, test } from "vitest";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -43,11 +43,18 @@ const createRender = () => {
 };
 
 describe("Student Create Page", () => {
-  test("should display a form for creating a student when the user is an admin", async () => {
+  beforeEach(() => {
     useUserStore.setState({
       user: currentAdminUser,
     });
-    const user = userEvent.setup();
+  });
+  afterEach(() => {
+    queryClient.clear();
+    useUserStore.setState({ user: null });
+  });
+  const user = userEvent.setup();
+
+  test("should display a form for creating a student when the user is an admin", async () => {
     createRender();
 
     expect(await screen.findByText("mockStudent One")).toBeInTheDocument();
@@ -123,13 +130,7 @@ describe("Student Create Page", () => {
   });
 
   test("should display validation errors when submitting an empty form", async () => {
-    const user = userEvent.setup();
-    useUserStore.setState({
-      user: currentAdminUser,
-    });
-
     createRender();
-
     expect(await screen.findByText("mockStudent One")).toBeInTheDocument();
 
     const createButton = screen.getByRole("button", { name: "生徒の追加" });

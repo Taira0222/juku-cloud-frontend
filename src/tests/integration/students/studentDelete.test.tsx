@@ -13,7 +13,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
-import { describe, expect, test } from "vitest";
+import { afterEach } from "vitest";
+import { beforeEach, describe, expect, test } from "vitest";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -56,12 +57,17 @@ const getMenuButtonById = (id: string) => {
 const STUDENT1_ID = "1";
 
 describe("Student Delete Page", () => {
-  test("should display a list of students", async () => {
+  beforeEach(() => {
     useUserStore.setState({
       user: currentAdminUser,
     });
-
-    const user = userEvent.setup();
+  });
+  afterEach(() => {
+    queryClient.clear();
+    useUserStore.setState({ user: null });
+  });
+  const user = userEvent.setup();
+  test("should display a list of students", async () => {
     deleteRender();
 
     expect(await screen.findByText("mockStudent One")).toBeInTheDocument();
@@ -86,10 +92,6 @@ describe("Student Delete Page", () => {
     expect(await screen.findByText("生徒を削除しました")).toBeInTheDocument();
   });
   test("should show a warning if the name does not match", async () => {
-    useUserStore.setState({
-      user: currentAdminUser,
-    });
-    const user = userEvent.setup();
     deleteRender();
 
     expect(await screen.findByText("mockStudent One")).toBeInTheDocument();

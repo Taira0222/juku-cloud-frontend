@@ -14,7 +14,7 @@ import userEvent from "@testing-library/user-event";
 import { format } from "date-fns";
 import { http, HttpResponse } from "msw";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
-import { afterEach, describe, expect, test } from "vitest";
+import { afterEach, beforeEach, describe, expect, test } from "vitest";
 
 const NotFoundPage = () => <div data-testid="not-found">Not Found</div>;
 const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -87,14 +87,17 @@ const createOperation = async (
 };
 
 describe("LessonNote Create Test", () => {
-  afterEach(() => {
-    queryClient.clear();
-  });
-
-  test("should create a new lesson note", async () => {
+  beforeEach(() => {
     useUserStore.setState({
       user: currentAdminUser,
     });
+  });
+  afterEach(() => {
+    queryClient.clear();
+    useUserStore.setState({ user: null });
+  });
+
+  test("should create a new lesson note", async () => {
     CreateRender();
     await createOperation();
 
@@ -116,9 +119,6 @@ describe("LessonNote Create Test", () => {
   });
 
   test("should show zod error when title is over 50 characters", async () => {
-    useUserStore.setState({
-      user: currentAdminUser,
-    });
     CreateRender();
     await createOperation("A".repeat(51));
 
@@ -128,9 +128,6 @@ describe("LessonNote Create Test", () => {
   });
 
   test("should show server error when server returns 500", async () => {
-    useUserStore.setState({
-      user: currentAdminUser,
-    });
     server.use(
       http.post(`${VITE_API_BASE_URL}/api/v1/lesson_notes`, async () => {
         return HttpResponse.json(
