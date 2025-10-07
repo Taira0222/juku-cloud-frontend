@@ -40,9 +40,6 @@ export const NoteTypeSelect = ({ noteType, onChange }: NoteTypeSelectProps) => {
           <SelectValue placeholder="分類を選択" />
         </SelectTrigger>
         <SelectContent>
-          {/* クリアを許可したいなら以下を追加
-          <SelectItem value="">未選択</SelectItem>
-          */}
           {(Object.entries(NOTE_TYPE) as [NoteType, NoteTypeAttr][]).map(
             ([key, note]) => (
               <SelectItem key={key} value={key}>
