@@ -1,16 +1,18 @@
 import { Toaster } from "@/components/ui/feedback/Sonner/sonner";
 import { EditStudentDialog } from "@/features/students/components/dialog/EditStudentDialog";
+import { ManagementDashboard } from "@/pages/managementDashboard/ManagementDashboard";
 import { StudentsPage } from "@/pages/students/StudentsPage";
-import type { ContextType } from "@/pages/students/type/students";
+import { RoleRoute } from "@/Router/RoleRoute";
+import { useUserStore } from "@/stores/userStore";
+import {
+  currentAdminUser,
+  currentTeacherUser,
+} from "@/tests/fixtures/user/user";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { MemoryRouter, Outlet, Route, Routes } from "react-router-dom";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { describe, expect, test } from "vitest";
-
-const Layout = ({ context }: { context: ContextType }) => {
-  return <Outlet context={context} />;
-};
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -23,18 +25,20 @@ const queryClient = new QueryClient({
   },
 });
 
-const updateRender = (role: ContextType["role"] = "admin") => {
+const updateRender = () => {
   render(
     <QueryClientProvider client={queryClient}>
       <MemoryRouter initialEntries={["/students"]}>
         <Toaster />
         <Routes>
-          <Route element={<Layout context={{ role }} />}>
-            <Route path="/students" element={<StudentsPage />} />
-            <Route
-              path="/students/:studentId/edit"
-              element={<EditStudentDialog />}
-            />
+          <Route element={<RoleRoute allowedRoles={["admin", "teacher"]} />}>
+            <Route element={<ManagementDashboard />}>
+              <Route path="/students" element={<StudentsPage />} />
+              <Route
+                path="/students/:studentId/edit"
+                element={<EditStudentDialog />}
+              />
+            </Route>
           </Route>
         </Routes>
       </MemoryRouter>
@@ -59,6 +63,9 @@ const STUDENT1_ID = "1";
 
 describe("Student Update Page", () => {
   test("should display a form for updating a student", async () => {
+    useUserStore.setState({
+      user: currentAdminUser,
+    });
     const user = userEvent.setup();
     updateRender();
 
@@ -83,6 +90,9 @@ describe("Student Update Page", () => {
   }, 20000);
 
   test("should display a confirmation dialog when removing subjects", async () => {
+    useUserStore.setState({
+      user: currentAdminUser,
+    });
     const user = userEvent.setup();
     updateRender();
 
@@ -112,6 +122,9 @@ describe("Student Update Page", () => {
   });
 
   test("should display validation errors when submitting an empty form", async () => {
+    useUserStore.setState({
+      user: currentAdminUser,
+    });
     const user = userEvent.setup();
     updateRender();
 
@@ -135,9 +148,12 @@ describe("Student Update Page", () => {
     expect(
       await screen.findByText("生徒名は50文字以内で入力してください")
     ).toBeInTheDocument();
-  }, 20000);
+  });
   test("should not display a form for updating a student if the role is teacher", async () => {
-    updateRender("teacher");
+    useUserStore.setState({
+      user: currentTeacherUser,
+    });
+    updateRender();
 
     expect(await screen.findByText("mockStudent One")).toBeInTheDocument();
 

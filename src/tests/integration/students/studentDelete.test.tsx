@@ -1,17 +1,19 @@
 import { Toaster } from "@/components/ui/feedback/Sonner/sonner";
+import { ManagementDashboard } from "@/pages/managementDashboard/ManagementDashboard";
 import { StudentsPage } from "@/pages/students/StudentsPage";
-import type { ContextType } from "@/pages/students/type/students";
+import { RoleRoute } from "@/Router/RoleRoute";
+import { useUserStore } from "@/stores/userStore";
 import { mockStudent1 } from "@/tests/fixtures/students/students";
+import {
+  currentAdminUser,
+  currentTeacherUser,
+} from "@/tests/fixtures/user/user";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { MemoryRouter, Outlet, Route, Routes } from "react-router-dom";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { describe, expect, test } from "vitest";
-
-const Layout = ({ context }: { context: ContextType }) => {
-  return <Outlet context={context} />;
-};
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -21,14 +23,16 @@ const queryClient = new QueryClient({
   },
 });
 
-const deleteRender = (role: ContextType["role"] = "admin") => {
+const deleteRender = () => {
   render(
     <QueryClientProvider client={queryClient}>
       <MemoryRouter initialEntries={["/students"]}>
         <Toaster />
         <Routes>
-          <Route element={<Layout context={{ role }} />}>
-            <Route path="/students" element={<StudentsPage />} />
+          <Route element={<RoleRoute allowedRoles={["admin", "teacher"]} />}>
+            <Route element={<ManagementDashboard />}>
+              <Route path="/students" element={<StudentsPage />} />
+            </Route>
           </Route>
         </Routes>
       </MemoryRouter>
@@ -53,6 +57,10 @@ const STUDENT1_ID = "1";
 
 describe("Student Delete Page", () => {
   test("should display a list of students", async () => {
+    useUserStore.setState({
+      user: currentAdminUser,
+    });
+
     const user = userEvent.setup();
     deleteRender();
 
@@ -78,6 +86,9 @@ describe("Student Delete Page", () => {
     expect(await screen.findByText("生徒を削除しました")).toBeInTheDocument();
   });
   test("should show a warning if the name does not match", async () => {
+    useUserStore.setState({
+      user: currentAdminUser,
+    });
     const user = userEvent.setup();
     deleteRender();
 
@@ -104,7 +115,10 @@ describe("Student Delete Page", () => {
   });
 
   test("should not display a form for deleting a student if the role is teacher", async () => {
-    deleteRender("teacher");
+    useUserStore.setState({
+      user: currentTeacherUser,
+    });
+    deleteRender();
 
     expect(await screen.findByText("mockStudent One")).toBeInTheDocument();
 

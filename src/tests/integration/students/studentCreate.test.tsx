@@ -1,17 +1,18 @@
 import { Toaster } from "@/components/ui/feedback/Sonner/sonner";
+import { ManagementDashboard } from "@/pages/managementDashboard/ManagementDashboard";
 import { StudentsPage } from "@/pages/students/StudentsPage";
-import type { ContextType } from "@/pages/students/type/students";
-
+import { RoleRoute } from "@/Router/RoleRoute";
+import { useUserStore } from "@/stores/userStore";
+import {
+  currentAdminUser,
+  currentTeacherUser,
+} from "@/tests/fixtures/user/user";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { format } from "date-fns";
-import { MemoryRouter, Outlet, Route, Routes } from "react-router-dom";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { describe, expect, test } from "vitest";
-
-const Layout = ({ context }: { context: ContextType }) => {
-  return <Outlet context={context} />;
-};
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -24,14 +25,16 @@ const queryClient = new QueryClient({
   },
 });
 
-const createRender = (role: ContextType["role"] = "admin") => {
+const createRender = () => {
   render(
     <QueryClientProvider client={queryClient}>
       <MemoryRouter initialEntries={["/students"]}>
         <Toaster />
         <Routes>
-          <Route element={<Layout context={{ role }} />}>
-            <Route path="/students" element={<StudentsPage />} />
+          <Route element={<RoleRoute allowedRoles={["admin", "teacher"]} />}>
+            <Route element={<ManagementDashboard />}>
+              <Route path="/students" element={<StudentsPage />} />
+            </Route>
           </Route>
         </Routes>
       </MemoryRouter>
@@ -40,7 +43,10 @@ const createRender = (role: ContextType["role"] = "admin") => {
 };
 
 describe("Student Create Page", () => {
-  test("should display a form for creating a student", async () => {
+  test("should display a form for creating a student when the user is an admin", async () => {
+    useUserStore.setState({
+      user: currentAdminUser,
+    });
     const user = userEvent.setup();
     createRender();
 
@@ -102,10 +108,13 @@ describe("Student Create Page", () => {
     await user.click(submitButton);
 
     expect(await screen.findByText("生徒を作成しました")).toBeInTheDocument();
-  }, 20000);
+  });
 
   test("should not display a form for creating a student if the role is teacher", async () => {
-    createRender("teacher");
+    useUserStore.setState({
+      user: currentTeacherUser,
+    });
+    createRender();
 
     expect(await screen.findByText("mockStudent One")).toBeInTheDocument();
 
@@ -115,6 +124,9 @@ describe("Student Create Page", () => {
 
   test("should display validation errors when submitting an empty form", async () => {
     const user = userEvent.setup();
+    useUserStore.setState({
+      user: currentAdminUser,
+    });
 
     createRender();
 

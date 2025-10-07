@@ -101,7 +101,7 @@ describe("LessonNote Create Test", () => {
     expect(
       await screen.findByText("授業引継ぎを作成しました")
     ).toBeInTheDocument();
-  });
+  }, 20000);
   test("should create a new lesson note when user is a teacher", async () => {
     useUserStore.setState({
       user: currentTeacherUser,

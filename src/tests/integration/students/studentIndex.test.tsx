@@ -1,17 +1,16 @@
+import { ManagementDashboard } from "@/pages/managementDashboard/ManagementDashboard";
 import { StudentsPage } from "@/pages/students/StudentsPage";
-import type { ContextType } from "@/pages/students/type/students";
+import { RoleRoute } from "@/Router/RoleRoute";
+import { useUserStore } from "@/stores/userStore";
 import { server } from "@/tests/fixtures/server/server";
+import { currentAdminUser } from "@/tests/fixtures/user/user";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { http, HttpResponse } from "msw";
-import { MemoryRouter, Outlet, Route, Routes } from "react-router-dom";
-import { describe, expect, test } from "vitest";
-
-const Layout = ({ context }: { context: ContextType }) => {
-  return <Outlet context={context} />;
-};
+import { MemoryRouter, Route, Routes } from "react-router-dom";
+import { beforeEach, describe, expect, test } from "vitest";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -21,13 +20,15 @@ const queryClient = new QueryClient({
   },
 });
 
-const indexRender = (role: ContextType["role"] = "admin") => {
+const indexRender = () => {
   render(
     <QueryClientProvider client={queryClient}>
       <MemoryRouter initialEntries={["/students"]}>
         <Routes>
-          <Route element={<Layout context={{ role }} />}>
-            <Route path="/students" element={<StudentsPage />} />
+          <Route element={<RoleRoute allowedRoles={["admin", "teacher"]} />}>
+            <Route element={<ManagementDashboard />}>
+              <Route path="/students" element={<StudentsPage />} />
+            </Route>
           </Route>
         </Routes>
       </MemoryRouter>
@@ -38,6 +39,11 @@ const indexRender = (role: ContextType["role"] = "admin") => {
 const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 describe("Student Index Page", () => {
+  beforeEach(() => {
+    useUserStore.setState({
+      user: currentAdminUser,
+    });
+  });
   test("should display a list of students", async () => {
     const user = userEvent.setup();
     indexRender();
