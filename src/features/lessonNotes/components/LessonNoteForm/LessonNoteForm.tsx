@@ -3,8 +3,8 @@ import type { LessonNoteFormProps } from "../../types/lessonNoteForm";
 import { Button } from "@/components/ui/form/Button/button";
 
 import { lessonNoteFormHandlers } from "@/features/lessonNotes/utils/lessonNoteFormHandlers";
-import { TitleField } from "./parts/TitleField";
-import { DescriptionField } from "./parts/DescriptionField";
+import { TitleField } from "../../../../components/common/form/TitleField";
+import { DescriptionField } from "../../../../components/common/form/DescriptionField";
 import { NoteTypeSelect } from "./parts/NoteTypeSelect";
 import { ExpireDatePicker } from "./parts/ExpireDatePicker";
 import { SubjectSelect } from "./parts/SubjectSelect";
@@ -19,6 +19,7 @@ export const LessonNoteForm = <M extends Mode>({
   loading,
 }: LessonNoteFormProps<M>) => {
   const H = lessonNoteFormHandlers(onChange);
+  const variant = "lessonNote";
   return (
     <>
       <form
@@ -39,10 +40,15 @@ export const LessonNoteForm = <M extends Mode>({
         )}
 
         {/* タイトル */}
-        <TitleField title={value.title} onChange={H.handleInputChange} />
+        <TitleField
+          variant={variant}
+          title={value.title}
+          onChange={H.handleInputChange}
+        />
 
         {/* 説明 */}
         <DescriptionField
+          variant={variant}
           description={value.description}
           onChange={H.handleTextAreaChange}
         />

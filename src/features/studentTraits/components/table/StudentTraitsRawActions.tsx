@@ -13,7 +13,6 @@ import type { StudentTraitsRawActionsProps } from "../../types/studentTraitTable
 
 export const StudentTraitsRawActions = ({
   studentId,
-  subjects,
   studentTrait,
 }: StudentTraitsRawActionsProps) => {
   const location = useLocation();
@@ -34,8 +33,8 @@ export const StudentTraitsRawActions = ({
         <DropdownMenuContent align="end" className="w-32">
           <DropdownMenuItem asChild>
             <Link
-              to={`/dashboard/${studentId}/traits/${studentTrait.id}/edit`}
-              state={{ studentTrait, subjects, background: location }}
+              to={`/dashboard/${studentId}/student-traits/${studentTrait.id}/edit`}
+              state={{ studentTrait, background: location }}
             >
               編集
             </Link>

@@ -5,7 +5,7 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/layout/HoverCard/hover-card";
 import { cn } from "@/lib/utils";
-import { TraitHoverBadge } from "../../utils/TraitHoverBadge";
+import { TraitHoverBadge } from "../../utils/traitHoverBadge";
 import type { StudentTraitType } from "../../types/studentTraits";
 
 type TraitHoverCardProps = {

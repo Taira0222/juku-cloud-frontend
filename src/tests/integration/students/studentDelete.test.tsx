@@ -10,7 +10,7 @@ import {
 } from "@/tests/fixtures/user/user";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { afterEach } from "vitest";
@@ -58,13 +58,17 @@ const STUDENT1_ID = "1";
 
 describe("Student Delete Page", () => {
   beforeEach(() => {
-    useUserStore.setState({
-      user: currentAdminUser,
+    act(() => {
+      useUserStore.setState({
+        user: currentAdminUser,
+      });
     });
   });
   afterEach(() => {
     queryClient.clear();
-    useUserStore.setState({ user: null });
+    act(() => {
+      useUserStore.setState({ user: null });
+    });
   });
   const user = userEvent.setup();
   test("should display a list of students", async () => {

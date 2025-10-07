@@ -9,16 +9,22 @@ import {
 
 import z from "zod";
 
+const emptyStringToNullTrimmed = () =>
+  z.preprocess((v) => {
+    if (typeof v === "string") {
+      const t = v.trim();
+      return t === "" ? null : t; // 空はnullへ
+    }
+    return v; // 文字列以外は素通し
+  }, z.string().max(500, { message: "説明は500文字以内で入力してください" }).nullable());
+
 export const titleSchema = z
   .string()
   .trim()
   .min(1, { message: "タイトルは必須です" })
   .max(50, { message: "タイトルは50文字以内で入力してください" });
 
-export const descriptionSchema = z
-  .string()
-  .max(500, { message: "説明は500文字以内で入力してください" })
-  .nullable();
+export const descriptionSchema = emptyStringToNullTrimmed();
 
 export const StudentDetailSchema = z.object({
   id: z.number({ message: "生徒IDは数値である必要があります" }),

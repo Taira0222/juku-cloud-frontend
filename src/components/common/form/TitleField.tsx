@@ -1,19 +1,20 @@
 import { RequiredLabel } from "@/components/common/form/RequiredLabel";
 import { Input } from "@/components/ui/form/Input/input";
-import type { LessonNoteFormValuesByMode } from "@/features/lessonNotes/types/lessonNoteForm";
 import type { Mode } from "@/features/students/types/studentForm";
+import type { FormValuesByVariant, Variant } from "./type/form";
 
-export type TitleFieldProps<M extends Mode> = {
+export type TitleFieldProps<M extends Mode, V extends Variant> = {
+  variant: V;
   title: string;
   onChange: (
-    field: keyof LessonNoteFormValuesByMode<M>
+    field: keyof FormValuesByVariant<M, V>
   ) => (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-export const TitleField = <M extends Mode>({
+export const TitleField = <M extends Mode, V extends Variant>({
   title,
   onChange,
-}: TitleFieldProps<M>) => {
+}: TitleFieldProps<M, V>) => {
   return (
     <div className="space-y-2">
       <RequiredLabel htmlFor="title" required>

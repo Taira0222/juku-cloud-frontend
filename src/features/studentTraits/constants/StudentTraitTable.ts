@@ -1,3 +1,5 @@
+import type { CategoryType } from "../types/studentTraits";
+
 export const TRAITS_COLUMNS = [
   {
     id: 1,
@@ -31,4 +33,4 @@ export const TRAIT_CONFIG = {
     color: "amber",
     text: "注意が必要な特性",
   },
-} as const;
+} as const satisfies Record<CategoryType, { color: string; text: string }>;

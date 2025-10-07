@@ -32,3 +32,26 @@ export const fetchStudentTraitsSchema = z.object({
 export type FetchStudentTraitsResponse = z.infer<
   typeof fetchStudentTraitsSchema
 >;
+
+export const createStudentTraitSchema = studentTraitSchema.omit({
+  id: true,
+  created_at: true,
+  updated_at: true,
+});
+
+export type StudentTraitCreate = z.infer<typeof createStudentTraitSchema>;
+
+export type StudentTraitCreateRequest = StudentTraitCreate & {
+  student_id: number;
+};
+
+export const editStudentTraitSchema = studentTraitSchema.omit({
+  created_at: true,
+  updated_at: true,
+});
+
+export type StudentTraitEdit = z.infer<typeof editStudentTraitSchema>;
+
+export type StudentTraitUpdateRequest = StudentTraitEdit & {
+  student_id: number;
+};

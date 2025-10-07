@@ -9,7 +9,6 @@ import {
 import { LessonNoteInitialValues } from "../constants/lessonNoteForm";
 import type { Mode } from "@/features/students/types/studentForm";
 import { makeByMode } from "@/utils/makeInitialState";
-import { normalizeLessonNotePayload } from "../utils/lessonNoteFormTransforms";
 
 export const useLessonNoteForm = <M extends Mode>(
   mode: M,
@@ -40,8 +39,7 @@ export const useLessonNoteForm = <M extends Mode>(
     onValid: (data: LessonNoteFormPayloadByMode<M>) => void,
     onInvalid?: (msgs: string[]) => void
   ) => {
-    const payload = normalizeLessonNotePayload<M>(value);
-    const parsed = schema.safeParse(payload);
+    const parsed = schema.safeParse(value);
     // 実行時にはmodeとMは一致するので, PayloadByMode<M>は安全な型アサーション
     if (parsed.success) onValid(parsed.data as LessonNoteFormPayloadByMode<M>);
     else onInvalid?.(parsed.error.issues.map((i) => i.message));

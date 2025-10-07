@@ -6,11 +6,11 @@ import { server } from "@/tests/fixtures/server/server";
 import { currentAdminUser } from "@/tests/fixtures/user/user";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { render, screen, waitFor, within } from "@testing-library/react";
+import { act, render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { http, HttpResponse } from "msw";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
-import { beforeEach, describe, expect, test } from "vitest";
+import { afterEach, beforeEach, describe, expect, test } from "vitest";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -40,9 +40,14 @@ const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 describe("Student Index Page", () => {
   beforeEach(() => {
-    useUserStore.setState({
-      user: currentAdminUser,
+    act(() => {
+      useUserStore.setState({
+        user: currentAdminUser,
+      });
     });
+  });
+  afterEach(() => {
+    queryClient.clear();
   });
   test("should display a list of students", async () => {
     const user = userEvent.setup();
@@ -74,7 +79,7 @@ describe("Student Index Page", () => {
     indexRender();
 
     // ページネーションのセレクターを取得してクリック
-    const paginationSelector = screen.getByRole("combobox", {
+    const paginationSelector = await screen.findByRole("combobox", {
       name: "1ページに表示する行数",
     });
     expect(paginationSelector).toBeInTheDocument();

@@ -9,7 +9,7 @@ import {
   currentTeacherUser,
 } from "@/tests/fixtures/user/user";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { http, HttpResponse } from "msw";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
@@ -58,13 +58,17 @@ const getMenuButtonById = (id: string) => {
 
 describe("LessonNote Delete Test", () => {
   beforeEach(() => {
-    useUserStore.setState({
-      user: currentAdminUser,
+    act(() => {
+      useUserStore.setState({
+        user: currentAdminUser,
+      });
     });
   });
   afterEach(() => {
     queryClient.clear();
-    useUserStore.setState({ user: null });
+    act(() => {
+      useUserStore.setState({ user: null });
+    });
   });
   const user = userEvent.setup();
   test("should delete a lesson note", async () => {

@@ -2,14 +2,14 @@ import { Checkbox } from "@/components/ui/form/CheckBox/checkbox";
 import type { ColumnDef } from "@tanstack/react-table";
 import { StudentTraitsRawActions } from "./StudentTraitsRawActions";
 import { TraitHoverCard } from "@/features/studentTraits/components/hoverCard/TraitHoverCard";
-import { TraitHoverBadge } from "@/features/studentTraits/utils/TraitHoverBadge";
+
 import { formatIsoToDate } from "@/utils/formatIsoToDate";
 import type { StudentTraitsColumnsProps } from "../../types/studentTraitTable";
 import type { StudentTraitType } from "../../types/studentTraits";
+import { TraitHoverBadge } from "../../utils/traitHoverBadge";
 
 export const StudentTraitsColumns = ({
   studentId,
-  subjects,
   isMobile,
 }: StudentTraitsColumnsProps): ColumnDef<StudentTraitType>[] => {
   return [
@@ -107,7 +107,6 @@ export const StudentTraitsColumns = ({
         return (
           <StudentTraitsRawActions
             studentTrait={row.original}
-            subjects={subjects}
             studentId={studentId}
           />
         );

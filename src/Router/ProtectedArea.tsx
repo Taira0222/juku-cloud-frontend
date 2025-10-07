@@ -71,7 +71,7 @@ export const ProtectedArea = () => {
             />
             {!background && (
               <Route
-                path="/dashboard/:studentId/student-traits/:traitId/edit"
+                path="/dashboard/:studentId/student-traits/:studentTraitId/edit"
                 element={<EditStudentTraitDialog />}
               />
             )}
@@ -107,7 +107,7 @@ export const ProtectedArea = () => {
               element={<EditStudentDialog />}
             />
             <Route
-              path="/dashboard/:studentId/student-traits/:traitId/edit"
+              path="/dashboard/:studentId/student-traits/:studentTraitId/edit"
               element={<EditStudentTraitDialog />}
             />
           </Route>

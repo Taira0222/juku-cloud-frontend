@@ -9,7 +9,7 @@ import { ErrorDisplay } from "@/components/common/status/ErrorDisplay";
 import { getErrorMessage } from "@/lib/errors/getErrorMessage";
 
 export const StudentTraitsPage = () => {
-  const { student, studentId } = useOutletContext<StudentTraitsContextType>();
+  const { studentId } = useOutletContext<StudentTraitsContextType>();
   const filters = useStudentTraitsStore((state) => state.filters);
   const { data, isError, error, isPending } = useStudentTraitsQuery(filters);
   const isMobile = useIsMobile();
@@ -30,7 +30,6 @@ export const StudentTraitsPage = () => {
   return (
     <div className="p-6">
       <StudentTraitsTable
-        subjects={student.class_subjects}
         studentId={studentId}
         studentTraits={data.student_traits}
         meta={data.meta}
