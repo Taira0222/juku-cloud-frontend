@@ -5,7 +5,6 @@ import {
   IconChevronsLeft,
   IconChevronsRight,
   IconLayoutColumns,
-  IconPlus,
 } from "@tabler/icons-react";
 import {
   flexRender,
@@ -59,9 +58,9 @@ import {
 } from "../../constants/StudentTraitTable";
 import type { StudentTraitsTableProps } from "../../types/studentTraitTable";
 import { useStudentTraitsStore } from "@/stores/studentTraitsStore";
+import { CreateStudentTraitDialog } from "../dialog/CreateStudentTraitDialog";
 
 export const StudentTraitsTable = ({
-  subjects,
   studentId,
   studentTraits,
   meta,
@@ -84,7 +83,7 @@ export const StudentTraitsTable = ({
   const filters = useStudentTraitsStore((state) => state.filters);
   const setFilters = useStudentTraitsStore((state) => state.setFilters);
 
-  const columns = StudentTraitsColumns({ studentId, subjects, isMobile });
+  const columns = StudentTraitsColumns({ studentId, isMobile });
   const headerBGColor =
     HEADER_COLOR_BY_TRAIT[tabValue as keyof typeof HEADER_COLOR_BY_TRAIT] ??
     "bg-muted";
@@ -94,14 +93,6 @@ export const StudentTraitsTable = ({
     (meta.total_count
       ? Math.ceil(meta.total_count / (filters.perPage ?? 10))
       : 1);
-  // setFiltersは描画後に更新する
-  useEffect(() => {
-    setFilters((prev) => ({
-      ...prev,
-      page: pagination.pageIndex + 1,
-      perPage: pagination.pageSize,
-    }));
-  }, [pagination.pageIndex, pagination.pageSize]);
 
   const table = useReactTable({
     data: studentTraits,
@@ -122,9 +113,16 @@ export const StudentTraitsTable = ({
     onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
     onPaginationChange: (updater) => {
-      setPagination((prev) =>
-        typeof updater === "function" ? updater(prev) : updater
-      );
+      setPagination((prev) => {
+        const next = typeof updater === "function" ? updater(prev) : updater;
+        // store も同時更新（副作用 useEffect 不要）
+        setFilters((prevFilters) => ({
+          ...prevFilters,
+          page: next.pageIndex + 1,
+          perPage: next.pageSize,
+        }));
+        return next;
+      });
     },
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
@@ -149,7 +147,18 @@ export const StudentTraitsTable = ({
       return;
     }
     // category カラムでフィルタリング
-    if (tabValue) setColumnFilters([{ id: "category", value: tabValue }]);
+    if (tabValue) {
+      setColumnFilters([{ id: "category", value: tabValue }]);
+
+      // pageIndex を 0 にリセット
+      if (table.getState().pagination.pageIndex !== 0) {
+        table.setPageIndex(0);
+      }
+      // ローカル pagination state も同期
+      setPagination((prev) =>
+        prev.pageIndex === 0 ? prev : { ...prev, pageIndex: 0 }
+      );
+    }
   }, [tabValue]);
 
   return (
@@ -213,11 +222,8 @@ export const StudentTraitsTable = ({
             </DropdownMenu>
           )}
 
-          {/** 科目ごとの引継ぎ事項を追加するボタン */}
-          <Button variant="outline" size="sm">
-            <IconPlus />
-            <span className="hidden lg:inline">特性を追加</span>
-          </Button>
+          {/** 科目ごとの特性を追加するボタン */}
+          <CreateStudentTraitDialog studentId={studentId} />
         </div>
         {/** タブの内容 */}
       </div>

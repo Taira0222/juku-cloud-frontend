@@ -8,7 +8,7 @@ import {
   currentTeacherUser,
 } from "@/tests/fixtures/user/user";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { render, screen, within } from "@testing-library/react";
+import { act, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { format } from "date-fns";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
@@ -44,13 +44,17 @@ const createRender = () => {
 
 describe("Student Create Page", () => {
   beforeEach(() => {
-    useUserStore.setState({
-      user: currentAdminUser,
+    act(() => {
+      useUserStore.setState({
+        user: currentAdminUser,
+      });
     });
   });
   afterEach(() => {
     queryClient.clear();
-    useUserStore.setState({ user: null });
+    act(() => {
+      useUserStore.setState({ user: null });
+    });
   });
   const user = userEvent.setup();
 

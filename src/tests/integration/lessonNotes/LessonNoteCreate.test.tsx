@@ -9,7 +9,7 @@ import {
   currentTeacherUser,
 } from "@/tests/fixtures/user/user";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { render, screen, within } from "@testing-library/react";
+import { act, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { format } from "date-fns";
 import { http, HttpResponse } from "msw";
@@ -51,17 +51,21 @@ const createOperation = async (
   await screen.findByText("英語の宿題");
   await screen.findByText("英語の授業");
 
-  const createButton = screen.getByRole("button", { name: "引継ぎ事項を追加" });
+  const createButton = await screen.findByRole("button", {
+    name: "引継ぎ事項を追加",
+  });
   await user.click(createButton);
 
   await screen.findByText("引継ぎ事項を新規作成");
 
-  const subjectCombobox = screen.getByRole("combobox", { name: /科目を選択/ });
+  const subjectCombobox = await screen.findByRole("combobox", {
+    name: /科目を選択/,
+  });
   await user.click(subjectCombobox);
-  await user.click(screen.getByRole("option", { name: "英語" }));
+  await user.click(await screen.findByRole("option", { name: "英語" }));
 
   // タイトル入力
-  const titleInput = screen.getByLabelText(/タイトル/);
+  const titleInput = await screen.findByLabelText(/タイトル/);
   await user.type(titleInput, inputTitle);
 
   // タイプ
@@ -72,7 +76,7 @@ const createOperation = async (
   await user.click(await screen.findByRole("option", { name: "宿題" }));
 
   // 有効期限
-  const dayButton = screen.getByRole("button", { name: /有効期限/ });
+  const dayButton = await screen.findByRole("button", { name: /有効期限/ });
   await user.click(dayButton);
   const calendar = await screen.findByRole("dialog");
 
@@ -81,20 +85,24 @@ const createOperation = async (
     `[data-day="${isoToday}"]`
   );
   if (!dayCell) throw new Error(`Calendar cell for ${isoToday} not found`);
-  await user.click(within(dayCell).getByRole("button"));
+  await user.click(await within(dayCell).findByRole("button"));
 
   await user.click(await screen.findByRole("button", { name: "作成" }));
 };
 
 describe("LessonNote Create Test", () => {
   beforeEach(() => {
-    useUserStore.setState({
-      user: currentAdminUser,
+    act(() => {
+      useUserStore.setState({
+        user: currentAdminUser,
+      });
     });
   });
   afterEach(() => {
     queryClient.clear();
-    useUserStore.setState({ user: null });
+    act(() => {
+      useUserStore.setState({ user: null });
+    });
   });
 
   test("should create a new lesson note", async () => {
