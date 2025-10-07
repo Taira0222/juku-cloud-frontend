@@ -87,7 +87,6 @@ export type LessonNoteCreateRequest = LessonNoteCreate & {
   student_id: number;
 };
 
-// 有効期限がすでに過ぎている場合、編集時にエラーになるため、編集時は有効期限のバリデーションを外す
 export const editLessonNoteSchema = createLessonNoteSchema.extend({
   id: z.number({ message: "IDは数値である必要があります" }),
 });
