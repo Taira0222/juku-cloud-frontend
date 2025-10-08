@@ -40,7 +40,7 @@ describe("DeleteStudentTraitDialog", () => {
   const mutateMock = vi.fn();
   const onChangeMock = vi.fn();
 
-  test("should open and close the dialog correctly and reset the form", async () => {
+  test("should open and close the dialog correctly", async () => {
     const user = userEvent.setup();
 
     vi.mocked(useDeleteStudentTraitMutation).mockReturnValue({

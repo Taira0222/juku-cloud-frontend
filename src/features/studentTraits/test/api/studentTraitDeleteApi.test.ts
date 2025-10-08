@@ -34,7 +34,7 @@ describe("studentTraitDeleteApi", () => {
     );
   });
 
-  test("deleteStudentTrait - handles API error", async () => {
+  test("DeleteStudentTrait - handles API error", async () => {
     const apiError = new Error("API Error");
     const mockProps: StudentTraitDeletePayload = {
       studentId: 1,
@@ -45,13 +45,13 @@ describe("studentTraitDeleteApi", () => {
     await expect(DeleteStudentTrait(mockProps)).rejects.toThrow("API Error");
   });
 
-  test("deleteStudentTrait - handles 404 error response", async () => {
+  test("DeleteStudentTrait - handles 404 error response", async () => {
     const invalidResponse = {
       data: {
         errors: {
           code: "NotFound",
           field: "base",
-          message: "Lesson note not found",
+          message: "Student trait not found",
         },
       },
       status: 404,
