@@ -1,29 +1,35 @@
-import { Button } from '@/components/ui/form/Button/button';
+import { Button } from "@/components/ui/form/Button/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/navigation/DropdownMenu/dropdown-menu';
-import { IconDotsVertical } from '@tabler/icons-react';
-import { useState } from 'react';
-import { DeleteTeacherDialog } from '../dialogs/DeleteTeacherDialog';
-import { useTeachersStore } from '@/stores/teachersStore';
-import { Link, useLocation } from 'react-router-dom';
+} from "@/components/ui/navigation/DropdownMenu/dropdown-menu";
+import { IconDotsVertical } from "@tabler/icons-react";
+import { useEffect, useState } from "react";
+import { DeleteTeacherDialog } from "../dialogs/DeleteTeacherDialog";
+import { useTeachersStore } from "@/stores/teachersStore";
+import { Link, useLocation } from "react-router-dom";
 
 type Props = {
   teacherId: number;
 };
 
 export const TeacherRawActions = ({ teacherId }: Props) => {
-  const [open, setOpen] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const getTeacherData = useTeachersStore((state) => state.getTeacherData);
   const teacher = getTeacherData(teacherId);
   const location = useLocation();
+  useEffect(() => {
+    if (!dialogOpen) {
+      setMenuOpen(false); // Dialog が閉じたらメニューも閉じる
+    }
+  }, [dialogOpen]);
   return (
     <>
-      <DropdownMenu>
+      <DropdownMenu open={menuOpen} onOpenChange={setMenuOpen}>
         <DropdownMenuTrigger asChild>
           <Button
             variant="ghost"
@@ -44,14 +50,14 @@ export const TeacherRawActions = ({ teacherId }: Props) => {
               編集
             </Link>
           </DropdownMenuItem>
-          {teacher?.role !== 'admin' && (
+          {teacher?.role !== "admin" && (
             <>
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 variant="destructive"
                 onSelect={(e) => {
                   e.preventDefault(); // フォーカス移動によるチラつき防止
-                  setOpen(true); // Dialog を開く
+                  setDialogOpen(true); // Dialog を開く
                 }}
               >
                 削除
@@ -61,8 +67,8 @@ export const TeacherRawActions = ({ teacherId }: Props) => {
         </DropdownMenuContent>
       </DropdownMenu>
       <DeleteTeacherDialog
-        open={open}
-        onOpenChange={setOpen}
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
         teacherId={teacherId}
       />
     </>

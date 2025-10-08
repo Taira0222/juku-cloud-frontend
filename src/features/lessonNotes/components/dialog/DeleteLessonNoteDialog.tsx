@@ -47,11 +47,10 @@ export const DeleteLessonNoteDialog = ({
         ) : (
           <>
             <AlertDialogFooter>
-              <AlertDialogCancel onClick={() => onOpenChange(false)}>
-                キャンセル
-              </AlertDialogCancel>
+              <AlertDialogCancel>キャンセル</AlertDialogCancel>
               <AlertDialogAction
                 className="text-red-500 bg-red-50 hover:bg-red-100 focus:ring-red-500"
+                disabled={isPending}
                 onClick={() => {
                   mutate({ studentId, lessonNoteId });
                 }}

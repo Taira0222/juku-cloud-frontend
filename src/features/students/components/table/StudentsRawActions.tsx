@@ -11,7 +11,7 @@ import { IconDotsVertical } from "@tabler/icons-react";
 import { Link, useLocation } from "react-router-dom";
 import type { Student } from "../../types/students";
 import { DeleteStudentDialog } from "../dialog/DeleteStudentDialog";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type Props = {
   student: Student;
@@ -19,10 +19,16 @@ type Props = {
 
 export const StudentsRawActions = ({ student }: Props) => {
   const location = useLocation();
-  const [open, setOpen] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  useEffect(() => {
+    if (!dialogOpen) {
+      setMenuOpen(false); // Dialog が閉じたらメニューも閉じる
+    }
+  }, [dialogOpen]);
   return (
     <>
-      <DropdownMenu>
+      <DropdownMenu open={menuOpen} onOpenChange={setMenuOpen}>
         <DropdownMenuTrigger asChild>
           <Button
             variant="ghost"
@@ -48,7 +54,7 @@ export const StudentsRawActions = ({ student }: Props) => {
             variant="destructive"
             onSelect={(e) => {
               e.preventDefault(); // フォーカス移動によるチラつき防止
-              setOpen(true); // Dialog を開く
+              setDialogOpen(true); // Dialog を開く
             }}
           >
             削除
@@ -56,8 +62,8 @@ export const StudentsRawActions = ({ student }: Props) => {
         </DropdownMenuContent>
       </DropdownMenu>
       <DeleteStudentDialog
-        open={open}
-        onOpenChange={setOpen}
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
         student={student}
       />
     </>
