@@ -1,9 +1,9 @@
 import { Toaster } from "@/components/ui/feedback/Sonner/sonner";
 import {
-  DeleteLessonNoteDialog,
-  type DeleteLessonNoteDialogProps,
-} from "@/features/lessonNotes/components/dialog/DeleteLessonNoteDialog";
-import { useDeleteLessonNoteMutation } from "@/features/lessonNotes/mutations/useDeleteLessonNoteMutation";
+  DeleteStudentTraitDialog,
+  type DeleteStudentTraitDialogProps,
+} from "@/features/studentTraits/components/dialog/DeleteStudentTraitDialog";
+import { useDeleteStudentTraitMutation } from "@/features/studentTraits/mutations/useDeleteStudentTraitMutation";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -15,20 +15,23 @@ const queryClient = new QueryClient({
   },
 });
 
-const wrapper = (props: DeleteLessonNoteDialogProps) => {
+const wrapper = (props: DeleteStudentTraitDialogProps) => {
   render(
     <QueryClientProvider client={queryClient}>
       <Toaster />
-      <DeleteLessonNoteDialog {...props} />
+      <DeleteStudentTraitDialog {...props} />
     </QueryClientProvider>
   );
 };
 
-vi.mock("@/features/lessonNotes/mutations/useDeleteLessonNoteMutation", () => ({
-  useDeleteLessonNoteMutation: vi.fn(),
-}));
+vi.mock(
+  "@/features/studentTraits/mutations/useDeleteStudentTraitMutation",
+  () => ({
+    useDeleteStudentTraitMutation: vi.fn(),
+  })
+);
 
-describe("DeleteLessonNoteDialog", () => {
+describe("DeleteStudentTraitDialog", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     queryClient.clear();
@@ -40,21 +43,21 @@ describe("DeleteLessonNoteDialog", () => {
   test("should open and close the dialog correctly", async () => {
     const user = userEvent.setup();
 
-    vi.mocked(useDeleteLessonNoteMutation).mockReturnValue({
+    vi.mocked(useDeleteStudentTraitMutation).mockReturnValue({
       mutate: mutateMock,
       isPending: false,
-    } as unknown as ReturnType<typeof useDeleteLessonNoteMutation>);
+    } as unknown as ReturnType<typeof useDeleteStudentTraitMutation>);
 
-    const mockProps: DeleteLessonNoteDialogProps = {
+    const mockProps: DeleteStudentTraitDialogProps = {
       open: true,
       onOpenChange: onChangeMock,
       studentId: 1,
-      lessonNoteId: 1,
+      studentTraitId: 1,
     };
 
     wrapper(mockProps);
 
-    expect(screen.getByText("授業引継ぎを削除")).toBeInTheDocument();
+    expect(screen.getByText("生徒の特性を削除")).toBeInTheDocument();
     const cancelButton = screen.getByRole("button", { name: "キャンセル" });
     expect(cancelButton).toBeInTheDocument();
 
@@ -65,39 +68,42 @@ describe("DeleteLessonNoteDialog", () => {
   test("should call mutate when delete button is clicked", async () => {
     const user = userEvent.setup();
 
-    vi.mocked(useDeleteLessonNoteMutation).mockReturnValue({
+    vi.mocked(useDeleteStudentTraitMutation).mockReturnValue({
       mutate: mutateMock,
       isPending: false,
-    } as unknown as ReturnType<typeof useDeleteLessonNoteMutation>);
+    } as unknown as ReturnType<typeof useDeleteStudentTraitMutation>);
 
-    const mockProps: DeleteLessonNoteDialogProps = {
+    const mockProps: DeleteStudentTraitDialogProps = {
       open: true,
       onOpenChange: onChangeMock,
       studentId: 1,
-      lessonNoteId: 1,
+      studentTraitId: 1,
     };
 
     wrapper(mockProps);
-    expect(screen.getByText("授業引継ぎを削除")).toBeInTheDocument();
+    expect(screen.getByText("生徒の特性を削除")).toBeInTheDocument();
 
     const deleteButton = screen.getByRole("button", { name: "削除" });
     expect(deleteButton).toBeInTheDocument();
 
     await user.click(deleteButton);
-    expect(mutateMock).toHaveBeenCalledWith({ studentId: 1, lessonNoteId: 1 });
+    expect(mutateMock).toHaveBeenCalledWith({
+      studentId: 1,
+      studentTraitId: 1,
+    });
     expect(onChangeMock).toHaveBeenCalled();
   });
   test("should show loading state when isPending is true", () => {
-    vi.mocked(useDeleteLessonNoteMutation).mockReturnValue({
+    vi.mocked(useDeleteStudentTraitMutation).mockReturnValue({
       mutate: mutateMock,
       isPending: true,
-    } as unknown as ReturnType<typeof useDeleteLessonNoteMutation>);
+    } as unknown as ReturnType<typeof useDeleteStudentTraitMutation>);
 
-    const mockProps: DeleteLessonNoteDialogProps = {
+    const mockProps: DeleteStudentTraitDialogProps = {
       open: true,
       onOpenChange: onChangeMock,
       studentId: 1,
-      lessonNoteId: 1,
+      studentTraitId: 1,
     };
 
     wrapper(mockProps);

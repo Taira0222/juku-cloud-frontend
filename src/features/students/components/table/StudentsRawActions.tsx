@@ -58,6 +58,7 @@ export const StudentsRawActions = ({ student }: Props) => {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
+      {/* Dropdownが閉じてしまってもDialogは空いたままにするために外側に出している */}
       <DeleteStudentDialog
         open={dialogOpen}
         onOpenChange={setDialogOpen}

@@ -69,6 +69,7 @@ export const LessonNotesRawActions = ({
           )}
         </DropdownMenuContent>
       </DropdownMenu>
+      {/* Dropdownが閉じてしまってもDialogは空いたままにするために外側に出している */}
       <DeleteLessonNoteDialog
         open={dialogOpen}
         onOpenChange={setDialogOpen}
