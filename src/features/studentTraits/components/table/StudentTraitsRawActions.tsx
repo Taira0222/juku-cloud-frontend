@@ -58,6 +58,7 @@ export const StudentTraitsRawActions = ({
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
+      {/* Dropdownが閉じてしまってもDialogは空いたままにするために外側に出している */}
       <DeleteStudentTraitDialog
         open={dialogOpen}
         onOpenChange={setDialogOpen}
