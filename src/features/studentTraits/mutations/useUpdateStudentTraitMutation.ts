@@ -16,16 +16,22 @@ export const useUpdateStudentTraitMutation = (
   options?: UseMutationOptions<
     StudentTraitType,
     unknown,
-    StudentTraitUpdateRequest
+    StudentTraitUpdateRequest,
+    unknown
   >
 ) => {
   const queryClient = useQueryClient();
 
-  return useMutation<StudentTraitType, unknown, StudentTraitUpdateRequest>({
+  return useMutation<
+    StudentTraitType,
+    unknown,
+    StudentTraitUpdateRequest,
+    unknown
+  >({
     mutationFn: (payload: StudentTraitUpdateRequest) =>
       UpdateStudentTrait(payload),
     ...options,
-    onSuccess: (studentTrait, variables, context) => {
+    onSuccess: (studentTrait, variables, context, mutation) => {
       queryClient.invalidateQueries({ queryKey: studentTraitKeys.lists() });
       queryClient.setQueryData(
         studentTraitKeys.detail(studentTrait.id),
@@ -34,7 +40,7 @@ export const useUpdateStudentTraitMutation = (
 
       toast.success("特性を更新しました");
       // 呼び出し側で渡された onSuccess も続けて呼ぶ（合体）
-      options?.onSuccess?.(studentTrait, variables, context);
+      options?.onSuccess?.(studentTrait, variables, context, mutation);
     },
     onError: (error) => {
       getErrorMessage(error).forEach((msg) => toast.error(msg));

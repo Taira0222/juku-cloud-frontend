@@ -16,16 +16,22 @@ export const useCreateStudentTraitMutation = (
   options?: UseMutationOptions<
     StudentTraitType,
     unknown,
-    StudentTraitCreateRequest
+    StudentTraitCreateRequest,
+    unknown
   >
 ) => {
   const queryClient = useQueryClient();
 
-  return useMutation<StudentTraitType, unknown, StudentTraitCreateRequest>({
+  return useMutation<
+    StudentTraitType,
+    unknown,
+    StudentTraitCreateRequest,
+    unknown
+  >({
     mutationFn: (payload: StudentTraitCreateRequest) =>
       CreateStudentTrait(payload),
     ...options,
-    onSuccess: (studentTrait, variables, context) => {
+    onSuccess: (studentTrait, variables, context, mutation) => {
       // 学生特性一覧のキャッシュを無効化して再フェッチ
       queryClient.invalidateQueries({ queryKey: studentTraitKeys.lists() });
       // 詳細キャッシュは予め温めておくとUX良い
@@ -36,7 +42,7 @@ export const useCreateStudentTraitMutation = (
 
       toast.success("特性を作成しました");
       // 呼び出し側で渡された onSuccess も続けて呼ぶ（合体）
-      options?.onSuccess?.(studentTrait, variables, context);
+      options?.onSuccess?.(studentTrait, variables, context, mutation);
     },
     onError: (error) => {
       getErrorMessage(error).forEach((msg) => toast.error(msg));

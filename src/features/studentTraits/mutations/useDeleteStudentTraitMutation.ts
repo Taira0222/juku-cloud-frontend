@@ -10,22 +10,32 @@ import type { StudentTraitDeletePayload } from "../types/studentTraits";
 import { DeleteStudentTrait } from "../api/studentTraitDeleteApi";
 
 export const useDeleteStudentTraitMutation = (
-  options?: UseMutationOptions<void, unknown, StudentTraitDeletePayload>
+  options?: UseMutationOptions<
+    void,
+    unknown,
+    StudentTraitDeletePayload,
+    unknown
+  >
 ) => {
   const queryClient = useQueryClient();
 
-  return useMutation<void, unknown, StudentTraitDeletePayload>({
+  return useMutation<void, unknown, StudentTraitDeletePayload, unknown>({
     mutationFn: ({ studentId, studentTraitId }) =>
       DeleteStudentTrait({ studentId, studentTraitId }),
     ...options,
-    onSuccess: (_void, { studentTraitId, studentId }, context) => {
+    onSuccess: (_void, { studentTraitId, studentId }, context, mutation) => {
       queryClient.invalidateQueries({ queryKey: studentTraitKeys.lists() });
       queryClient.removeQueries({
         queryKey: studentTraitKeys.detail(studentTraitId),
       });
       toast.success("特性を削除しました");
       // 呼び出し側で渡された onSuccess も続けて呼ぶ（合体）
-      options?.onSuccess?.(_void, { studentTraitId, studentId }, context);
+      options?.onSuccess?.(
+        _void,
+        { studentTraitId, studentId },
+        context,
+        mutation
+      );
     },
     onError: (error) => {
       getErrorMessage(error).forEach((msg) => toast.error(msg));

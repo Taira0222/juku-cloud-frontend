@@ -19,6 +19,7 @@ import { afterEach, beforeEach, describe, expect, test } from "vitest";
 
 const NotFoundPage = () => <div data-testid="not-found">Not Found</div>;
 const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const LESSON_NOTE_ID = "1";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -83,7 +84,7 @@ describe("LessonNote Update Test", () => {
 
     expect(await screen.findByText("英語の宿題")).toBeInTheDocument();
 
-    const menuButton = getMenuButtonById("1");
+    const menuButton = getMenuButtonById(LESSON_NOTE_ID);
     await user.click(menuButton);
 
     const editMenuButton = screen.getByRole("menuitem", { name: "編集" });
@@ -112,7 +113,7 @@ describe("LessonNote Update Test", () => {
 
     expect(await screen.findByText("英語の宿題")).toBeInTheDocument();
 
-    const menuButton = getMenuButtonById("1");
+    const menuButton = getMenuButtonById(LESSON_NOTE_ID);
     await user.click(menuButton);
 
     const editMenuButton = screen.getByRole("menuitem", { name: "編集" });
@@ -138,7 +139,7 @@ describe("LessonNote Update Test", () => {
 
     expect(await screen.findByText("英語の宿題")).toBeInTheDocument();
 
-    const menuButton = getMenuButtonById("1");
+    const menuButton = getMenuButtonById(LESSON_NOTE_ID);
     await user.click(menuButton);
 
     const editMenuButton = screen.getByRole("menuitem", { name: "編集" });
@@ -191,7 +192,7 @@ describe("LessonNote Update Test", () => {
 
     expect(await screen.findByText("英語の宿題")).toBeInTheDocument();
 
-    const menuButton = getMenuButtonById("1");
+    const menuButton = getMenuButtonById(LESSON_NOTE_ID);
     await user.click(menuButton);
 
     const editMenuButton = screen.getByRole("menuitem", { name: "編集" });
