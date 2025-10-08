@@ -56,9 +56,9 @@ describe("Student Create Page", () => {
       useUserStore.setState({ user: null });
     });
   });
-  const user = userEvent.setup();
 
   test("should display a form for creating a student when the user is an admin", async () => {
+    const user = userEvent.setup();
     createRender();
 
     expect(await screen.findByText("mockStudent One")).toBeInTheDocument();
@@ -134,6 +134,7 @@ describe("Student Create Page", () => {
   });
 
   test("should display validation errors when submitting an empty form", async () => {
+    const user = userEvent.setup();
     createRender();
     expect(await screen.findByText("mockStudent One")).toBeInTheDocument();
 

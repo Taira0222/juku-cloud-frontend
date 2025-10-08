@@ -19,7 +19,12 @@ import type {
   Student,
 } from "@/features/students/types/students";
 import type { StudentTraitListFilters } from "@/features/studentTraits/key";
-import type { FetchStudentTraitsResponse } from "@/features/studentTraits/types/studentTraits";
+import type {
+  FetchStudentTraitsResponse,
+  StudentTraitCreateRequest,
+  StudentTraitType,
+  StudentTraitUpdateRequest,
+} from "@/features/studentTraits/types/studentTraits";
 import type { InviteTokenSuccessResponse } from "@/features/teachers/types/inviteToken";
 import type {
   fetchTeachersSuccessResponse,
@@ -167,4 +172,24 @@ export type StudentTraitsRequestBodyType = StudentTraitListFilters;
 
 export type StudentTraitsResponseBodyType =
   | FetchStudentTraitsResponse
+  | CommonErrorResponse;
+
+export type StudentTraitCreateRequestBodyType = StudentTraitCreateRequest;
+export type StudentTraitCreateResponseBodyType =
+  | StudentTraitType
+  | CommonErrorResponse;
+
+export type StudentTraitDeletePathParams = {
+  id: string;
+};
+export type StudentTraitDeleteRequestBodyType = { student_id: number };
+export type StudentTraitDeleteResponseBodyType = never | CommonErrorResponse;
+
+export type StudentTraitUpdatePathParams = {
+  id: string;
+};
+
+export type StudentTraitUpdateRequestBodyType = StudentTraitUpdateRequest;
+export type StudentTraitUpdateResponseBodyType =
+  | StudentTraitType
   | CommonErrorResponse;

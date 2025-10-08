@@ -14,6 +14,7 @@ import userEvent from "@testing-library/user-event";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
 
+const STUDENT1_ID = "1";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -59,8 +60,6 @@ const getMenuButtonById = (id: string) => {
   return menuButton;
 };
 
-const STUDENT1_ID = "1";
-
 describe("Student Update Page", () => {
   beforeEach(() => {
     act(() => {
@@ -75,8 +74,9 @@ describe("Student Update Page", () => {
       useUserStore.setState({ user: null });
     });
   });
-  const user = userEvent.setup();
+
   test("should display a form for updating a student", async () => {
+    const user = userEvent.setup();
     updateRender();
 
     expect(await screen.findByText("mockStudent One")).toBeInTheDocument();
@@ -100,6 +100,7 @@ describe("Student Update Page", () => {
   }, 20000);
 
   test("should display a confirmation dialog when removing subjects", async () => {
+    const user = userEvent.setup();
     updateRender();
 
     expect(await screen.findByText("mockStudent One")).toBeInTheDocument();
@@ -128,6 +129,7 @@ describe("Student Update Page", () => {
   });
 
   test("should display validation errors when submitting an empty form", async () => {
+    const user = userEvent.setup();
     updateRender();
 
     expect(await screen.findByText("mockStudent One")).toBeInTheDocument();

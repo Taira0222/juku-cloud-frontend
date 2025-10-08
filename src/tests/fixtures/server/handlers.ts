@@ -37,6 +37,14 @@ import {
   type LessonNoteDeleteRequestBodyType,
   type LessonNoteDeleteResponseBodyType,
   type LessonNoteUpdatePathParams,
+  type StudentTraitCreateRequestBodyType,
+  type StudentTraitCreateResponseBodyType,
+  type StudentTraitDeletePathParams,
+  type StudentTraitDeleteRequestBodyType,
+  type StudentTraitDeleteResponseBodyType,
+  type StudentTraitUpdatePathParams,
+  type StudentTraitUpdateRequestBodyType,
+  type StudentTraitUpdateResponseBodyType,
 } from "@/tests/fixtures/server/types/msw";
 import { http, HttpResponse } from "msw";
 import {
@@ -715,13 +723,77 @@ export const handlers = [
               {
                 code: "NOT_FOUND",
                 field: "base",
-                message: "生徒の特性は見つかりませんでした。",
+                message: "生徒が見つかりませんでした。",
               },
             ],
           },
           { status: 404 }
         );
       }
+    }
+  ),
+  // 生徒特性作成のハンドラー
+  http.post<
+    never,
+    StudentTraitCreateRequestBodyType,
+    StudentTraitCreateResponseBodyType
+  >(`${VITE_API_BASE_URL}/api/v1/student_traits`, async ({ request }) => {
+    const body = await request.json();
+    const { title, category } = body;
+
+    // モックデータを使ってレスポンスを返す
+    return HttpResponse.json(
+      {
+        id: 11,
+        title: title,
+        description: body.description,
+        category: category,
+        created_at: format(new Date(), "yyyy-MM-dd'T'HH:mm:ss'Z'"),
+        updated_at: format(new Date(), "yyyy-MM-dd'T'HH:mm:ss'Z'"),
+      },
+      { status: 201 }
+    );
+  }),
+  // 生徒特性の削除のハンドラー
+  http.delete<
+    StudentTraitDeletePathParams,
+    StudentTraitDeleteRequestBodyType,
+    StudentTraitDeleteResponseBodyType
+  >(
+    `${VITE_API_BASE_URL}/api/v1/student_traits/:id`,
+    async ({ request, params }) => {
+      const { id } = params;
+      const url = new URL(request.url);
+      const studentIdParam = url.searchParams.get("student_id");
+      const studentId = studentIdParam ? Number(studentIdParam) : undefined;
+
+      if (id === "1" && studentId === 1) {
+        return HttpResponse.json(null, { status: 204 });
+      }
+    }
+  ),
+  // 生徒特性の更新のハンドラー
+  http.patch<
+    StudentTraitUpdatePathParams,
+    StudentTraitUpdateRequestBodyType,
+    StudentTraitUpdateResponseBodyType
+  >(
+    `${VITE_API_BASE_URL}/api/v1/student_traits/:id`,
+    async ({ params, request }) => {
+      const { id } = params;
+      const body = await request.json();
+      const { title, category } = body;
+      return HttpResponse.json(
+        {
+          id: Number(id),
+          title: title,
+          description: body.description,
+          category: category,
+          created_at: format(new Date(), "yyyy-MM-dd'T'HH:mm:ss'Z'"),
+          updated_at: format(new Date(), "yyyy-MM-dd'T'HH:mm:ss'Z'"),
+        },
+        { status: 200 }
+      );
     }
   ),
 ];
