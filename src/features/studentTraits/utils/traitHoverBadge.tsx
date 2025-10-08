@@ -4,7 +4,7 @@ import { AlertTriangle, CheckCircle } from "lucide-react";
 import { TRAIT_CONFIG } from "../constants/StudentTraitTable";
 import type { CategoryType } from "../types/studentTraits";
 
-type TraitHoverBadgeProps = {
+export type TraitHoverBadgeProps = {
   category: CategoryType;
   isMobile: boolean;
 };
@@ -18,11 +18,13 @@ export const TraitHoverBadge = ({
       <CheckCircle
         className={cn("text-emerald-300", isMobile ? "size-3" : "size-4")}
         aria-hidden
+        data-testid="check-icon"
       />
     ) : (
       <AlertTriangle
         className={cn("text-amber-300", isMobile ? "size-3" : "size-4")}
         aria-hidden
+        data-testid="alert-icon"
       />
     );
 
@@ -32,6 +34,7 @@ export const TraitHoverBadge = ({
 
     return (
       <Badge
+        data-testid="trait-badge"
         variant="outline"
         color={badgeColor}
         className={cn(

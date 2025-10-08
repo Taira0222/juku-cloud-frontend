@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 import { TraitHoverBadge } from "../../utils/traitHoverBadge";
 import type { StudentTraitType } from "../../types/studentTraits";
 
-type TraitHoverCardProps = {
+export type TraitHoverCardProps = {
   trait: StudentTraitType;
   isMobile: boolean;
   className?: string;

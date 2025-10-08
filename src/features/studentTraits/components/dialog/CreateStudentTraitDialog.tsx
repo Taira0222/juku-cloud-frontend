@@ -27,7 +27,7 @@ export const CreateStudentTraitDialog = ({
   const isMobile = useIsMobile();
   const [open, setOpen] = useState(false);
   const { value, setValue, submit, reset } = useStudentTraitForm("create");
-  // mutationの実装は後で行うので仮でおいてる
+
   const { mutate, isPending } = useCreateStudentTraitMutation({
     onSuccess: () => {
       setOpen(false);
