@@ -7,7 +7,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/navigation/DropdownMenu/dropdown-menu";
 import { IconDotsVertical } from "@tabler/icons-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { DeleteTeacherDialog } from "../dialogs/DeleteTeacherDialog";
 import { useTeachersStore } from "@/stores/teachersStore";
 import { Link, useLocation } from "react-router-dom";
@@ -22,11 +22,6 @@ export const TeacherRawActions = ({ teacherId }: Props) => {
   const getTeacherData = useTeachersStore((state) => state.getTeacherData);
   const teacher = getTeacherData(teacherId);
   const location = useLocation();
-  useEffect(() => {
-    if (!dialogOpen) {
-      setMenuOpen(false); // Dialog が閉じたらメニューも閉じる
-    }
-  }, [dialogOpen]);
   return (
     <>
       <DropdownMenu open={menuOpen} onOpenChange={setMenuOpen}>
@@ -58,6 +53,7 @@ export const TeacherRawActions = ({ teacherId }: Props) => {
                 onSelect={(e) => {
                   e.preventDefault(); // フォーカス移動によるチラつき防止
                   setDialogOpen(true); // Dialog を開く
+                  setMenuOpen(false); // メニューを閉じる
                 }}
               >
                 削除

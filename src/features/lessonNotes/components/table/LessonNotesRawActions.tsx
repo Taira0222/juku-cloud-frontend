@@ -12,7 +12,7 @@ import { Link, useLocation } from "react-router-dom";
 
 import type { LessonNoteRawActionsProps } from "../../types/lessonNoteTable";
 import { DeleteLessonNoteDialog } from "../dialog/DeleteLessonNoteDialog";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export const LessonNotesRawActions = ({
   studentId,
@@ -24,11 +24,6 @@ export const LessonNotesRawActions = ({
   const [dialogOpen, setDialogOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
-  useEffect(() => {
-    if (!dialogOpen) {
-      setMenuOpen(false); // Dialog が閉じたらメニューも閉じる
-    }
-  }, [dialogOpen]);
   return (
     <>
       <DropdownMenu open={menuOpen} onOpenChange={setMenuOpen}>
@@ -65,20 +60,21 @@ export const LessonNotesRawActions = ({
                 onSelect={(e) => {
                   e.preventDefault(); // フォーカス移動によるチラつき防止
                   setDialogOpen(true); // Dialog を開く
+                  setMenuOpen(false); // メニューを閉じる
                 }}
               >
                 削除
               </DropdownMenuItem>
-              <DeleteLessonNoteDialog
-                open={dialogOpen}
-                onOpenChange={setDialogOpen}
-                studentId={studentId}
-                lessonNoteId={lessonNote.id}
-              />
             </>
           )}
         </DropdownMenuContent>
       </DropdownMenu>
+      <DeleteLessonNoteDialog
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+        studentId={studentId}
+        lessonNoteId={lessonNote.id}
+      />
     </>
   );
 };

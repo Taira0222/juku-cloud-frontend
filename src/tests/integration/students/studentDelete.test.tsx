@@ -103,7 +103,9 @@ describe("Student Delete Page", () => {
     const menuButton = getMenuButtonById(STUDENT1_ID);
     await user.click(menuButton);
 
-    const deleteMenuButton = screen.getByRole("menuitem", { name: "削除" });
+    const deleteMenuButton = await screen.findByRole("menuitem", {
+      name: "削除",
+    });
     await user.click(deleteMenuButton);
 
     expect(await screen.findByText("生徒を削除しますか？")).toBeInTheDocument();
