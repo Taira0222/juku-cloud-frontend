@@ -55,3 +55,8 @@ export type StudentTraitEdit = z.infer<typeof editStudentTraitSchema>;
 export type StudentTraitUpdateRequest = StudentTraitEdit & {
   student_id: number;
 };
+
+export type StudentTraitDeletePayload = {
+  studentId: number;
+  studentTraitId: number;
+};

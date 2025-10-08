@@ -21,10 +21,12 @@ export const LessonNotesRawActions = ({
   isAdmin,
 }: LessonNoteRawActionsProps) => {
   const location = useLocation();
-  const [open, setOpen] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+
   return (
     <>
-      <DropdownMenu>
+      <DropdownMenu open={menuOpen} onOpenChange={setMenuOpen}>
         <DropdownMenuTrigger asChild>
           <Button
             variant="ghost"
@@ -57,21 +59,22 @@ export const LessonNotesRawActions = ({
                 variant="destructive"
                 onSelect={(e) => {
                   e.preventDefault(); // フォーカス移動によるチラつき防止
-                  setOpen(true); // Dialog を開く
+                  setDialogOpen(true); // Dialog を開く
+                  setMenuOpen(false); // メニューを閉じる
                 }}
               >
                 削除
               </DropdownMenuItem>
-              <DeleteLessonNoteDialog
-                open={open}
-                onOpenChange={setOpen}
-                studentId={studentId}
-                lessonNoteId={lessonNote.id}
-              />
             </>
           )}
         </DropdownMenuContent>
       </DropdownMenu>
+      <DeleteLessonNoteDialog
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+        studentId={studentId}
+        lessonNoteId={lessonNote.id}
+      />
     </>
   );
 };

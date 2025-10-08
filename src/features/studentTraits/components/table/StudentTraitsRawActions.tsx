@@ -10,15 +10,20 @@ import { IconDotsVertical } from "@tabler/icons-react";
 
 import { Link, useLocation } from "react-router-dom";
 import type { StudentTraitsRawActionsProps } from "../../types/studentTraitTable";
+import { useState } from "react";
+import { DeleteStudentTraitDialog } from "../dialog/DeleteStudentTraitDialog";
 
 export const StudentTraitsRawActions = ({
   studentId,
   studentTrait,
 }: StudentTraitsRawActionsProps) => {
   const location = useLocation();
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+
   return (
     <>
-      <DropdownMenu>
+      <DropdownMenu open={menuOpen} onOpenChange={setMenuOpen}>
         <DropdownMenuTrigger asChild>
           <Button
             variant="ghost"
@@ -41,9 +46,24 @@ export const StudentTraitsRawActions = ({
           </DropdownMenuItem>
           <DropdownMenuSeparator />
 
-          <DropdownMenuItem variant="destructive">削除</DropdownMenuItem>
+          <DropdownMenuItem
+            variant="destructive"
+            onSelect={(e) => {
+              e.preventDefault(); // フォーカス移動によるチラつき防止
+              setDialogOpen(true); // Dialog を開く
+              setMenuOpen(false); // メニューを閉じる
+            }}
+          >
+            削除
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
+      <DeleteStudentTraitDialog
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+        studentId={studentId}
+        studentTraitId={studentTrait.id}
+      />
     </>
   );
 };

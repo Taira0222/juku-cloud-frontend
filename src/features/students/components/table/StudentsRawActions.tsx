@@ -19,10 +19,12 @@ type Props = {
 
 export const StudentsRawActions = ({ student }: Props) => {
   const location = useLocation();
-  const [open, setOpen] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+
   return (
     <>
-      <DropdownMenu>
+      <DropdownMenu open={menuOpen} onOpenChange={setMenuOpen}>
         <DropdownMenuTrigger asChild>
           <Button
             variant="ghost"
@@ -48,7 +50,8 @@ export const StudentsRawActions = ({ student }: Props) => {
             variant="destructive"
             onSelect={(e) => {
               e.preventDefault(); // フォーカス移動によるチラつき防止
-              setOpen(true); // Dialog を開く
+              setDialogOpen(true); // Dialog を開く
+              setMenuOpen(false); // メニューを閉じる
             }}
           >
             削除
@@ -56,8 +59,8 @@ export const StudentsRawActions = ({ student }: Props) => {
         </DropdownMenuContent>
       </DropdownMenu>
       <DeleteStudentDialog
-        open={open}
-        onOpenChange={setOpen}
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
         student={student}
       />
     </>

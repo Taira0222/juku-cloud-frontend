@@ -9,23 +9,23 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/feedback/Alert/alert-dialog";
 
-import { useDeleteLessonNoteMutation } from "../../mutations/useDeleteLessonNoteMutation";
+import { useDeleteStudentTraitMutation } from "../../mutations/useDeleteStudentTraitMutation";
 import SpinnerWithText from "@/components/common/status/Loading";
 
-export type DeleteLessonNoteDialogProps = {
+export type DeleteStudentTraitDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   studentId: number;
-  lessonNoteId: number;
+  studentTraitId: number;
 };
 
-export const DeleteLessonNoteDialog = ({
+export const DeleteStudentTraitDialog = ({
   open,
   onOpenChange,
   studentId,
-  lessonNoteId,
-}: DeleteLessonNoteDialogProps) => {
-  const { mutate, isPending } = useDeleteLessonNoteMutation({
+  studentTraitId,
+}: DeleteStudentTraitDialogProps) => {
+  const { mutate, isPending } = useDeleteStudentTraitMutation({
     onSuccess: () => {
       onOpenChange(false);
     },
@@ -35,9 +35,9 @@ export const DeleteLessonNoteDialog = ({
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>授業引継ぎを削除</AlertDialogTitle>
+          <AlertDialogTitle>生徒の特性を削除</AlertDialogTitle>
           <AlertDialogDescription>
-            授業引継ぎを削除しますか？この操作は取り消せません。
+            生徒の特性を削除しますか？この操作は取り消せません。
           </AlertDialogDescription>
         </AlertDialogHeader>
         {isPending ? (
@@ -52,7 +52,7 @@ export const DeleteLessonNoteDialog = ({
                 className="text-red-500 bg-red-50 hover:bg-red-100 focus:ring-red-500"
                 disabled={isPending}
                 onClick={() => {
-                  mutate({ studentId, lessonNoteId });
+                  mutate({ studentId, studentTraitId });
                 }}
               >
                 削除
