@@ -1,9 +1,9 @@
-import { AlertTriangle, CheckCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { TraitHoverCard } from "../hoverCard/TraitHoverCard";
 import type { CategoryType, StudentTraitType } from "../../types/studentTraits";
+import { TraitHoverBadge } from "../../utils/traitHoverBadge";
 
-type TraitFieldProps = {
+export type StudentTraitListProps = {
   cardTitle: string;
   traits: StudentTraitType[];
   isMobile: boolean;
@@ -15,20 +15,9 @@ export const StudentTraitList = ({
   traits,
   isMobile,
   category,
-}: TraitFieldProps) => {
+}: StudentTraitListProps) => {
   const isGood = category === "good";
-
-  const traitIcon = isGood ? (
-    <CheckCircle
-      className={cn("text-emerald-300", isMobile ? "size-3" : "size-4")}
-      aria-hidden
-    />
-  ) : (
-    <AlertTriangle
-      className={cn("text-amber-300", isMobile ? "size-3" : "size-4")}
-      aria-hidden
-    />
-  );
+  const { TraitIcon } = TraitHoverBadge({ category, isMobile });
 
   return (
     <section
@@ -44,7 +33,7 @@ export const StudentTraitList = ({
           isMobile ? "text-xs" : "text-sm"
         )}
       >
-        {traitIcon}
+        {TraitIcon}
         {cardTitle}
       </h3>
 

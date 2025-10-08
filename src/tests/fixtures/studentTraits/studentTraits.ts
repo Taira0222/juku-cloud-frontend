@@ -1,4 +1,11 @@
-import type { StudentTraitType } from "@/features/studentTraits/types/studentTraits";
+import { StudentTraitInitialValues } from "@/features/studentTraits/constants/studentTraitForm";
+import type {
+  StudentTraitCreate,
+  StudentTraitCreateRequest,
+  StudentTraitEdit,
+  StudentTraitType,
+  StudentTraitUpdateRequest,
+} from "@/features/studentTraits/types/studentTraits";
 import { format } from "date-fns";
 
 export const mockStudentTraits: StudentTraitType[] = [
@@ -86,3 +93,61 @@ export const mockStudentTraits: StudentTraitType[] = [
     updated_at: format(new Date(), "yyyy-MM-dd'T'HH:mm:ss'Z'"),
   },
 ];
+
+export const StudentTraitsMeta = {
+  total_pages: 1,
+  total_count: 10,
+  current_page: 1,
+  per_page: 10,
+};
+
+export const StudentTraitCreateFormMockValue: StudentTraitCreate = {
+  title: "新しい特性",
+  description: "これは新しく作成された特性です。",
+  category: "good",
+};
+
+export const createStudentTraitPayload: StudentTraitCreateRequest = {
+  ...StudentTraitCreateFormMockValue,
+  student_id: 1,
+};
+
+export const createResponseStudentTraitMock: StudentTraitType = {
+  id: 11,
+  title: "新しい特性",
+  description: "これは新しく作成された特性です。",
+  category: "good",
+  created_at: format(new Date(), "yyyy-MM-dd'T'HH:mm:ss'Z'"),
+  updated_at: format(new Date(), "yyyy-MM-dd'T'HH:mm:ss'Z'"),
+};
+
+export const editStudentTraitFormMockValue: StudentTraitEdit = {
+  id: 1,
+  title: "勉強の重要性を理解し積み重ねて学習しようとする姿勢がある - 編集済み",
+  description:
+    "勉強の重要性を理解し、日々の学習を積み重ねていく姿勢がある - 編集済み",
+  category: "good",
+};
+
+export const editStudentTraitPayload: StudentTraitUpdateRequest = {
+  ...editStudentTraitFormMockValue,
+  student_id: 1,
+};
+
+export const editResponseStudentTraitMock: StudentTraitType = {
+  id: editStudentTraitPayload.id,
+  title: editStudentTraitPayload.title,
+  description: editStudentTraitPayload.description,
+  category: editStudentTraitPayload.category,
+  created_at: format(new Date(), "yyyy-MM-dd'T'HH:mm:ss'Z'"),
+  updated_at: format(new Date(), "yyyy-MM-dd'T'HH:mm:ss'Z'"),
+};
+
+export const initialStudentTraitFormEditMockValue: StudentTraitEdit = {
+  id: mockStudentTraits[0].id,
+  title: mockStudentTraits[0].title,
+  description: mockStudentTraits[0].description,
+  category: mockStudentTraits[0].category,
+};
+
+export const initialStudentTraitFormCreateMockValue = StudentTraitInitialValues;

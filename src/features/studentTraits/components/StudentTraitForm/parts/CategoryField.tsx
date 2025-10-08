@@ -19,7 +19,7 @@ export const CategoryField = ({ category }: CategoryFieldProps) => {
 
   return (
     <div className="space-y-2">
-      <Label className="flex items-center gap-1">特性の種類</Label>
+      <Label className="flex items-center gap-1">特性</Label>
       <span className="text-gray-700">{<TraitBadge />}</span>
     </div>
   );
