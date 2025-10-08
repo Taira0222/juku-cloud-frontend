@@ -69,8 +69,9 @@ describe("LessonNote Delete Test", () => {
       useUserStore.setState({ user: null });
     });
   });
-  const user = userEvent.setup();
+
   test("should delete a lesson note", async () => {
+    const user = userEvent.setup();
     DeleteRender();
 
     expect(await screen.findByText("英語の宿題")).toBeInTheDocument();
@@ -92,6 +93,7 @@ describe("LessonNote Delete Test", () => {
     ).toBeInTheDocument();
   });
   test("should not render delete menu item for teacher user", async () => {
+    const user = userEvent.setup();
     useUserStore.setState({
       user: currentTeacherUser,
     });
@@ -108,6 +110,7 @@ describe("LessonNote Delete Test", () => {
   });
 
   test("should show error toast if delete lesson note fails", async () => {
+    const user = userEvent.setup();
     server.use(
       http.delete(`${VITE_API_BASE_URL}/api/v1/lesson_notes/:id`, async () => {
         return HttpResponse.json(

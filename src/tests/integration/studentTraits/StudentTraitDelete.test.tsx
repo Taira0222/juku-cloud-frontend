@@ -74,8 +74,9 @@ describe("StudentTrait Delete Test", () => {
       useUserStore.setState({ user: null });
     });
   });
-  const user = userEvent.setup();
+
   test("should delete a student trait", async () => {
+    const user = userEvent.setup();
     DeleteRender();
 
     expect(await screen.findByText("明るい")).toBeInTheDocument();
@@ -103,6 +104,7 @@ describe("StudentTrait Delete Test", () => {
   });
 
   test("should show server error when server returns 500", async () => {
+    const user = userEvent.setup();
     server.use(
       http.delete(
         `${VITE_API_BASE_URL}/api/v1/student_traits/:id`,

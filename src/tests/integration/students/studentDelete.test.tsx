@@ -15,7 +15,7 @@ import userEvent from "@testing-library/user-event";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { afterEach } from "vitest";
 import { beforeEach, describe, expect, test } from "vitest";
-
+const STUDENT1_ID = "1";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -54,8 +54,6 @@ const getMenuButtonById = (id: string) => {
   return menuButton;
 };
 
-const STUDENT1_ID = "1";
-
 describe("Student Delete Page", () => {
   beforeEach(() => {
     act(() => {
@@ -70,8 +68,9 @@ describe("Student Delete Page", () => {
       useUserStore.setState({ user: null });
     });
   });
-  const user = userEvent.setup();
+
   test("should display a list of students", async () => {
+    const user = userEvent.setup();
     deleteRender();
 
     expect(await screen.findByText("mockStudent One")).toBeInTheDocument();
@@ -96,6 +95,7 @@ describe("Student Delete Page", () => {
     expect(await screen.findByText("生徒を削除しました")).toBeInTheDocument();
   });
   test("should show a warning if the name does not match", async () => {
+    const user = userEvent.setup();
     deleteRender();
 
     expect(await screen.findByText("mockStudent One")).toBeInTheDocument();
