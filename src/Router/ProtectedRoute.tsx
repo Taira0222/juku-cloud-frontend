@@ -30,7 +30,7 @@ export const ProtectedRoute = () => {
   }, [authenticated, setWarningMessage]);
 
   if (isError) {
-    return <Navigate to="404" />;
+    return <Navigate to="/404" />;
   }
 
   if (!authenticated) {
