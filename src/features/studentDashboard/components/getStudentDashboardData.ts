@@ -1,4 +1,4 @@
-import { IconUser, IconUserStar } from "@tabler/icons-react";
+import { IconDashboard, IconPuzzle } from "@tabler/icons-react";
 
 type GetStudentDashboardDataProps = {
   role: string;
@@ -22,19 +22,19 @@ export const getStudentDashboardData = ({
           {
             title: "ダッシュボード",
             url: `/dashboard/${id}`,
-            icon: IconUser,
+            icon: IconDashboard,
           },
           {
             title: "特性管理",
             url: `/dashboard/${id}/student-traits`,
-            icon: IconUserStar,
+            icon: IconPuzzle,
           },
         ]
       : [
           {
             title: "ダッシュボード",
             url: `/dashboard/${id}`,
-            icon: IconUser,
+            icon: IconDashboard,
           },
         ];
 

@@ -1,14 +1,7 @@
-import { ArrowRight, Users, BookOpen, Award, CloudCog } from "lucide-react";
+import { ArrowRight, CloudCog } from "lucide-react";
 import { Link } from "react-router-dom";
-import ReactImage from "@/assets/react.svg";
+import AppScreen from "@/assets/AppScreen.png";
 import { Button } from "@/components/ui/form/Button/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/layout/Card/card";
 import { useAuthStore } from "@/stores/authStore";
 import { useEffect } from "react";
 
@@ -18,129 +11,83 @@ export const Home = () => {
   );
 
   useEffect(() => {
-    // ホームページに来たら signOutInProgress を false にする
     setSignOutInProgress(false);
   }, [setSignOutInProgress]);
+
   return (
     <>
-      <div className="min-h-svh">
+      <div className="min-h-svh bg-gradient-to-b from-background to-muted/30">
         {/* Header */}
-        <div className="flex justify-center p-6 md:p-10">
+        <header className="flex justify-center p-6 md:p-10">
           <Link to="/" className="flex items-center gap-2 font-medium">
             <div className="bg-primary text-primary-foreground flex size-6 items-center justify-center rounded-md">
               <CloudCog className="size-4" />
             </div>
-            Juku Cloud
+            JukuCloud
           </Link>
-        </div>
+        </header>
 
-        {/* Main Content */}
-        <div className="flex flex-col items-center justify-center space-y-12 px-6 py-8 md:px-10 md:py-16">
-          {/* Hero Section */}
-          <div className="text-center max-w-4xl">
-            <h1 className="text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
-              学習管理を
-              <span className="text-primary">クラウド</span>で
-            </h1>
-            <p className="mt-6 text-xl text-muted-foreground max-w-2xl mx-auto">
-              塾・教育機関向けの包括的な学習管理システム。
-              生徒の進捗管理から成績分析まで、教育をサポートします。
-            </p>
-          </div>
-
-          {/* Hero Image */}
-          <div className="w-full max-w-2xl">
-            <img
-              src={ReactImage}
-              alt="Juku Cloud - 学習管理システム"
-              className="w-full h-auto rounded-lg shadow-lg"
-            />
-          </div>
-
-          {/* Features */}
-          <div className="w-full max-w-4xl">
-            <h2 className="text-2xl font-bold text-center mb-8">主な機能</h2>
-            <div className="grid gap-6 md:grid-cols-3">
-              <Card className="text-center">
-                <CardHeader className="pb-4">
-                  <Users className="mx-auto h-12 w-12 text-primary mb-4" />
-                  <CardTitle className="text-lg">生徒管理</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription>
-                    生徒情報の一元管理で、個々の学習状況を詳細に把握できます。
-                  </CardDescription>
-                </CardContent>
-              </Card>
-
-              <Card className="text-center">
-                <CardHeader className="pb-4">
-                  <BookOpen className="mx-auto h-12 w-12 text-primary mb-4" />
-                  <CardTitle className="text-lg">学習追跡</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription>
-                    進捗と成績の可視化により、学習効果を最大化します。
-                  </CardDescription>
-                </CardContent>
-              </Card>
-
-              <Card className="text-center">
-                <CardHeader className="pb-4">
-                  <Award className="mx-auto h-12 w-12 text-primary mb-4" />
-                  <CardTitle className="text-lg">成績分析</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription>
-                    詳細な分析レポートで、指導方針の最適化をサポートします。
-                  </CardDescription>
-                </CardContent>
-              </Card>
+        {/* Main */}
+        <main className="mx-auto w-full max-w-6xl px-6 md:px-10 py-8 space-y-10">
+          {/* Hero: 2カラムにして重心を作る */}
+          <section className="grid items-center gap-14 md:grid-cols-2">
+            {/* App Screenshot（ブラウザ枠付き） */}
+            <div className="rounded-xl border bg-background/60 shadow-2xl backdrop-blur supports-[backdrop-filter]:bg-background/40">
+              <div className="flex items-center gap-1 px-3 py-2 border-b">
+                <span className="size-2 rounded-full bg-red-400" />
+                <span className="size-2 rounded-full bg-yellow-400" />
+                <span className="size-2 rounded-full bg-green-400" />
+                <span className="ml-3 text-xs text-muted-foreground">
+                  JukuCloud.com
+                </span>
+              </div>
+              <img
+                src={AppScreen}
+                alt="Juku Cloud の管理画面（生徒一覧）"
+                className="w-full h-auto rounded-b-xl"
+                loading="eager"
+                decoding="async"
+              />
             </div>
-          </div>
+            <div className="text-center md:text-left">
+              <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
+                学習管理を<span className="text-primary">クラウド</span>で、
+                <br className="hidden sm:block" />
+                効率的な指導を実現
+              </h1>
+              <p className="mt-6 text-lg text-muted-foreground">
+                生徒情報・講師管理・特性管理・引継ぎノートまでワンストップ。
+                <br />
+                「探す・集計・伝える」にかける時間を、指導に還元できます。
+              </p>
 
-          {/* CTA Section */}
-          <div className="text-center space-y-8 max-w-md w-full">
-            <h2 className="text-2xl font-bold">今すぐ始めよう</h2>
-
-            <div className="flex flex-col gap-4">
-              <Button asChild size="lg" className="w-full">
-                <Link
-                  to="/sign_in"
-                  className="flex items-center justify-center gap-2"
+              <div className="mt-8 flex justify-center md:justify-start">
+                <Button
+                  asChild
+                  size="lg"
+                  className="px-8 py-6 bg-primary text-white font-semibold shadow-sm hover:shadow-md transition-all"
                 >
-                  ログイン
-                  <ArrowRight className="h-5 w-5" />
-                </Link>
-              </Button>
-              <Button variant="outline" asChild size="lg" className="w-full">
-                <Link
-                  to="/sign_up"
-                  className="flex items-center justify-center gap-2"
-                >
-                  新規登録
-                </Link>
-              </Button>
+                  <Link
+                    to="/sign_in"
+                    className="flex items-center justify-center gap-2"
+                  >
+                    ログイン
+                    <ArrowRight className="h-5 w-5" />
+                  </Link>
+                </Button>
+              </div>
             </div>
-
-            <p className="text-sm text-muted-foreground">
-              すでにアカウントをお持ちの方は{" "}
-              <Link
-                to="/sign_in"
-                className="text-primary hover:underline font-medium"
-              >
-                こちらからログイン
-              </Link>
-            </p>
-          </div>
-        </div>
+          </section>
+        </main>
 
         {/* Footer */}
-        <div className="border-t bg-muted/30 py-8">
-          <div className="text-center text-sm text-muted-foreground">
-            © 2024 Juku Cloud. All rights reserved.
+        <footer className="border-t bg-muted/30 py-6">
+          <div className="mx-auto max-w-6xl px-6 md:px-10">
+            <div className="text-center text-sm text-muted-foreground">
+              © 2025 Juku Cloud. All rights reserved.
+            </div>
           </div>
-        </div>
+        </footer>
       </div>
     </>
   );

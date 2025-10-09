@@ -26,8 +26,8 @@ GitHub Flow を用いて開発を進める
 
 ```bash
 # UI コンポーネント
-components/ui/Button/index.tsx
-features/students/components/StudentCard/index.tsx
+components/ui/Button/Button.tsx
+features/students/components/StudentCard/StudentCard.tsx
 ```
 
 **ページコンポーネント**
@@ -126,8 +126,8 @@ lib/constants.ts
 ```
 
 ```typescript
-export const API_BASE_URL = 'https://example.com';
-export const HEADER_ACCESS_TOKEN = 'access-token';
+export const API_BASE_URL = "https://example.com";
+export const HEADER_ACCESS_TOKEN = "access-token";
 ```
 
 ## Issues
@@ -144,30 +144,30 @@ contact_links:
 
 # Issue作成時のテンプレート設定
 defaults:
-  - template: 'bug_report.yml'
-    name: '🐛 バグ報告'
-    about: 'バグを報告する'
-    labels: ['bug']
+  - template: "bug_report.yml"
+    name: "🐛 バグ報告"
+    about: "バグを報告する"
+    labels: ["bug"]
 
-  - template: 'feature_request.yml'
-    name: '💡 機能リクエスト'
-    about: '新機能のアイデアを提案する'
-    labels: ['feature']
+  - template: "feature_request.yml"
+    name: "💡 機能リクエスト"
+    about: "新機能のアイデアを提案する"
+    labels: ["feature"]
 
-  - template: 'documentation.yml'
-    name: '✍️ ドキュメント改善'
-    about: 'READMEやガイドなどの文書の改善提案'
-    labels: ['documentation']
+  - template: "documentation.yml"
+    name: "✍️ ドキュメント改善"
+    about: "READMEやガイドなどの文書の改善提案"
+    labels: ["documentation"]
 
-  - template: 'test_request.yml'
-    name: '🧪 テスト改善'
-    about: 'テストコードの改善や新しいテストケースの提案'
-    labels: ['test']
+  - template: "test_request.yml"
+    name: "🧪 テスト改善"
+    about: "テストコードの改善や新しいテストケースの提案"
+    labels: ["test"]
 
-  - template: 'ci_cd.yml'
-    name: '📦 インフラ・CI/CD改善'
-    about: 'Docker、GitHub Actions、AWSなどのCI/CD・インフラに関する提案を記入してください'
-    labels: ['ci/cd']
+  - template: "ci_cd.yml"
+    name: "📦 インフラ・CI/CD改善"
+    about: "Docker、GitHub Actions、AWSなどのCI/CD・インフラに関する提案を記入してください"
+    labels: ["ci/cd"]
 ```
 
 `.github/ISSUE_TEMPLATE` に保存し、Issues を統一化する
