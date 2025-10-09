@@ -1,12 +1,14 @@
-import { describe, expect, test, vi } from 'vitest';
+import { describe, expect, test, vi } from "vitest";
 
-import { render, screen } from '@testing-library/react';
-import { MemoryRouter, Outlet, Route, Routes } from 'react-router-dom';
-import { useAuthStore } from '@/stores/authStore';
-import { useWarningStore } from '@/stores/warningStore';
-import type { ReactElement } from 'react';
-import { useFetchUser } from '@/queries/useFetchUser';
-import { ProtectedRoute } from '../ProtectedRoute';
+import { render, screen } from "@testing-library/react";
+import { MemoryRouter, Outlet, Route, Routes } from "react-router-dom";
+import { useAuthStore } from "@/stores/authStore";
+import { useWarningStore } from "@/stores/warningStore";
+import type { ReactElement } from "react";
+import { ProtectedRoute } from "../ProtectedRoute";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { useUserQuery } from "@/queries/useUserQuery";
+import { currentAdminUser } from "@/tests/fixtures/user/user";
 
 type MockRenderData = {
   initialEntries: string[];
@@ -20,11 +22,11 @@ type MockRenderData = {
 
 type MockTestInfo = {
   isAuthenticated: boolean;
-  error: string[] | null;
+  isError: boolean;
 };
 
-vi.mock('@/queries/useFetchUser', () => ({
-  useFetchUser: vi.fn(),
+vi.mock("@/queries/useUserQuery", () => ({
+  useUserQuery: vi.fn(),
 }));
 
 const StudentsPage = () => <div data-testid="students">Students Page</div>;
@@ -32,9 +34,15 @@ const SignInPage = () => <div data-testid="sign-in">Sign In Page</div>;
 const NotFoundPage = () => <div data-testid="not-found">Not Found Page</div>;
 const DummyLayout = () => <Outlet />;
 
-describe('ProtectedRoute', () => {
-  const genericRender = (renderData: MockRenderData) => {
-    return render(
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: { retry: false },
+  },
+});
+
+const genericRender = (renderData: MockRenderData) => {
+  return render(
+    <QueryClientProvider client={queryClient}>
       <MemoryRouter initialEntries={renderData.initialEntries}>
         <Routes>
           <Route element={<ProtectedRoute />}>
@@ -45,91 +53,94 @@ describe('ProtectedRoute', () => {
           <Route path={renderData.navPath} element={renderData.navElement} />
         </Routes>
       </MemoryRouter>
-    );
-  };
+    </QueryClientProvider>
+  );
+};
 
-  const renderTest = (renderData: MockRenderData, testInfo: MockTestInfo) => {
-    vi.spyOn(useAuthStore.getState(), 'isAuthenticated').mockReturnValue(
-      testInfo.isAuthenticated
-    );
-    vi.mocked(useFetchUser).mockReturnValue({
-      error: testInfo.error,
-      fetchUserData: vi.fn().mockResolvedValue(undefined),
-    });
+const renderTest = (renderData: MockRenderData, testInfo: MockTestInfo) => {
+  vi.spyOn(useAuthStore.getState(), "isAuthenticated").mockReturnValue(
+    testInfo.isAuthenticated
+  );
+  vi.mocked(useUserQuery).mockReturnValue({
+    isError: testInfo.isError,
+    isSuccess: testInfo.isError ? false : true,
+    data: testInfo.isError ? null : currentAdminUser,
+  } as unknown as ReturnType<typeof useUserQuery>);
 
-    genericRender(renderData);
+  genericRender(renderData);
 
-    if (renderData.navTestId) {
-      expect(screen.queryByTestId(renderData.testId)).toBeNull();
-      expect(screen.getByTestId(renderData.navTestId)).toBeInTheDocument();
-      return;
-    }
-    expect(screen.getByTestId(renderData.testId)).toBeInTheDocument();
-  };
+  if (renderData.navTestId) {
+    expect(screen.queryByTestId(renderData.testId)).toBeNull();
+    expect(screen.getByTestId(renderData.navTestId)).toBeInTheDocument();
+    return;
+  }
+  expect(screen.getByTestId(renderData.testId)).toBeInTheDocument();
+};
 
-  test('should render Outlet when user is authenticated', () => {
+describe("ProtectedRoute", () => {
+  test("should render Outlet when user is authenticated", () => {
     const renderData: MockRenderData = {
-      initialEntries: ['/students'],
-      path: '/students',
-      testId: 'students',
+      initialEntries: ["/students"],
+      path: "/students",
+      testId: "students",
       element: <StudentsPage />,
     };
     const testInfo: MockTestInfo = {
       isAuthenticated: true,
-      error: null,
+      isError: false,
     };
     renderTest(renderData, testInfo);
   });
 
-  test('should render loading message', () => {
+  test("should render loading message", () => {
     const renderData: MockRenderData = {
-      initialEntries: ['/students'],
-      path: '/students',
-      testId: 'students',
+      initialEntries: ["/students"],
+      path: "/students",
+      testId: "students",
       element: <StudentsPage />,
     };
     const testInfo: MockTestInfo = {
       isAuthenticated: true,
-      error: null,
+      isError: false,
     };
     renderTest(renderData, testInfo);
   });
-  test('should redirect to sign in page if not authenticated', () => {
+  test("should redirect to sign in page if not authenticated", () => {
     const renderData: MockRenderData = {
-      initialEntries: ['/students'],
-      path: '/students',
-      testId: 'students',
+      initialEntries: ["/students"],
+      path: "/students",
+      testId: "students",
       element: <StudentsPage />,
-      navPath: '/sign_in',
-      navTestId: 'sign-in',
+      navPath: "/sign_in",
+      navTestId: "sign-in",
       navElement: <SignInPage />,
     };
 
     const setWarningSpy = vi.spyOn(
       useWarningStore.getState(),
-      'setWarningMessage'
+      "setWarningMessage"
     );
     const testInfo: MockTestInfo = {
       isAuthenticated: false,
-      error: null,
+      isError: false,
     };
     renderTest(renderData, testInfo);
-    expect(setWarningSpy).toHaveBeenCalledWith('ログインが必要です');
+    expect(setWarningSpy).toHaveBeenCalledWith("ログインが必要です");
   });
 
-  test('should render 404 page if route is not found', () => {
+  test("should render 404 page if route is not found", () => {
     const renderData: MockRenderData = {
-      initialEntries: ['/students'],
-      path: '/students',
-      testId: 'students',
+      initialEntries: ["/students"],
+      path: "/students",
+      testId: "students",
       element: <StudentsPage />,
-      navPath: '/404',
-      navTestId: 'not-found',
+      navPath: "/404",
+      navTestId: "not-found",
       navElement: <NotFoundPage />,
     };
     const testInfo: MockTestInfo = {
       isAuthenticated: true,
-      error: ['Unexpected Error'],
+      isError: true,
     };
 
     renderTest(renderData, testInfo);

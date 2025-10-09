@@ -1,25 +1,20 @@
-import {
-  IconDotsVertical,
-  IconLogout,
-  IconSettings,
-  IconUserCircle,
-} from '@tabler/icons-react';
+import { IconDotsVertical, IconLogout } from "@tabler/icons-react";
 
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/navigation/DropdownMenu/dropdown-menu';
+} from "@/components/ui/navigation/DropdownMenu/dropdown-menu";
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from '@/components/ui/layout/Sidebar/sidebar';
+} from "@/components/ui/layout/Sidebar/sidebar";
+import { useSignOutMutation } from "@/mutations/useSignOutMutation";
 
 export function NavUser({
   user,
@@ -30,6 +25,10 @@ export function NavUser({
   };
 }) {
   const { isMobile } = useSidebar();
+  const { mutate, isPending } = useSignOutMutation();
+  const handleSignOut = () => {
+    mutate();
+  };
 
   return (
     <SidebarMenu>
@@ -41,9 +40,9 @@ export function NavUser({
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">{user.name || ''}</span>
+                <span className="truncate font-medium">{user.name || ""}</span>
                 <span className="text-muted-foreground truncate text-xs">
-                  {user.email || ''}
+                  {user.email || ""}
                 </span>
               </div>
               <IconDotsVertical className="ml-auto size-4" />
@@ -52,7 +51,7 @@ export function NavUser({
 
           <DropdownMenuContent
             className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
-            side={isMobile ? 'bottom' : 'right'}
+            side={isMobile ? "bottom" : "right"}
             align="end"
             sideOffset={4}
           >
@@ -67,18 +66,7 @@ export function NavUser({
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <IconUserCircle />
-                アカウント
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <IconSettings />
-                設定
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onSelect={handleSignOut} disabled={isPending}>
               <IconLogout />
               ログアウト
             </DropdownMenuItem>

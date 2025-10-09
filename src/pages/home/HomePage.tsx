@@ -1,16 +1,26 @@
-import { ArrowRight, Users, BookOpen, Award, CloudCog } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import ReactImage from '@/assets/react.svg';
-import { Button } from '@/components/ui/form/Button/button';
+import { ArrowRight, Users, BookOpen, Award, CloudCog } from "lucide-react";
+import { Link } from "react-router-dom";
+import ReactImage from "@/assets/react.svg";
+import { Button } from "@/components/ui/form/Button/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/layout/Card/card';
+} from "@/components/ui/layout/Card/card";
+import { useAuthStore } from "@/stores/authStore";
+import { useEffect } from "react";
 
 export const Home = () => {
+  const setSignOutInProgress = useAuthStore(
+    (state) => state.setSignOutInProgress
+  );
+
+  useEffect(() => {
+    // ホームページに来たら signOutInProgress を false にする
+    setSignOutInProgress(false);
+  }, [setSignOutInProgress]);
   return (
     <>
       <div className="min-h-svh">
@@ -114,7 +124,7 @@ export const Home = () => {
             </div>
 
             <p className="text-sm text-muted-foreground">
-              すでにアカウントをお持ちの方は{' '}
+              すでにアカウントをお持ちの方は{" "}
               <Link
                 to="/sign_in"
                 className="text-primary hover:underline font-medium"

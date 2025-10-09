@@ -1,26 +1,22 @@
-import { useAuthStore } from '@/stores/authStore';
-import { useNavStore } from '@/stores/navStore';
-import { useWarningStore } from '@/stores/warningStore';
-import axios, {
-  isAxiosError,
-  type AxiosRequestConfig,
-  type InternalAxiosRequestConfig,
-} from 'axios';
-import { toast } from 'sonner';
+import { useAuthStore } from "@/stores/authStore";
+import { useNavStore } from "@/stores/navStore";
+import { useWarningStore } from "@/stores/warningStore";
+import axios, { isAxiosError, type InternalAxiosRequestConfig } from "axios";
+import { toast } from "sonner";
 
 export const api = axios.create({
   // APIのベースURLを環境変数から取得
   baseURL: `${import.meta.env.VITE_API_BASE_URL}/api/v1`,
   withCredentials: false,
-  headers: { 'Content-Type': 'application/json' },
+  headers: { "Content-Type": "application/json" },
 });
 
 // ヘッダー名の定数を定義
-const HEADER_ACCESS_TOKEN = 'access-token';
-const HEADER_CLIENT = 'client';
-const HEADER_UID = 'uid';
-const HEADER_TOKEN_TYPE = 'token-type';
-const HEADER_EXPIRY = 'expiry';
+const HEADER_ACCESS_TOKEN = "access-token";
+const HEADER_CLIENT = "client";
+const HEADER_UID = "uid";
+const HEADER_TOKEN_TYPE = "token-type";
+const HEADER_EXPIRY = "expiry";
 
 // HTTPステータスコードの定数を定義
 const HTTP_STATUS_UNAUTHORIZED = 401;
@@ -34,10 +30,10 @@ api.interceptors.request.use(
     // auth は値なので、常に最新の状態を取得する
     const { auth } = useAuthStore.getState();
     if (auth) {
-      config.headers[HEADER_ACCESS_TOKEN] = auth['access-token'];
+      config.headers[HEADER_ACCESS_TOKEN] = auth["access-token"];
       config.headers[HEADER_CLIENT] = auth.client;
       config.headers[HEADER_UID] = auth.uid;
-      config.headers[HEADER_TOKEN_TYPE] = auth['token-type'];
+      config.headers[HEADER_TOKEN_TYPE] = auth["token-type"];
       config.headers[HEADER_EXPIRY] = auth.expiry;
     }
     return config;
@@ -72,20 +68,19 @@ api.interceptors.response.use(
       return Promise.reject(error);
     }
     // キャンセルエラー → 触らず返す
-    if (isAxiosError(error) && error.code === 'ERR_CANCELED') {
+    if (isAxiosError(error) && error.code === "ERR_CANCELED") {
       return Promise.reject(error);
     }
 
     if (!error.response) {
       toast.error(
-        '通信エラーが発生しました。接続を確認して再度お試しください。'
+        "通信エラーが発生しました。接続を確認して再度お試しください。"
       );
       return Promise.reject(error);
     }
 
     // ここから下は "AxiosError かつ response あり" が確定
     const status = error.response.status;
-    const cfg = error.config as AxiosRequestConfig | undefined;
 
     const { clearAuth } = useAuthStore.getState();
     const { setNextPath } = useNavStore.getState();
@@ -95,19 +90,17 @@ api.interceptors.response.use(
     switch (status) {
       case HTTP_STATUS_UNAUTHORIZED:
         clearAuth();
-        if (!cfg?.suppressAuthRedirect) {
-          setWarningMessage('認証情報が不完全です。ログインしてください。');
-          setNextPath('/sign_in', { replace: true });
-        }
+        setWarningMessage("認証情報が不完全です。ログインしてください。");
+        setNextPath("/sign_in", { replace: true });
         break;
       case HTTP_STATUS_FORBIDDEN:
-        setNextPath('/forbidden');
+        setNextPath("/forbidden");
         break;
       case HTTP_STATUS_NOT_FOUND:
-        setNextPath('/404');
+        setNextPath("/404");
         break;
       case HTTP_STATUS_INTERNAL_SERVER_ERROR:
-        setNextPath('/internal_server_error');
+        setNextPath("/internal_server_error");
         break;
     }
 

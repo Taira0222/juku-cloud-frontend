@@ -9,7 +9,7 @@ import {
   currentTeacherUser,
 } from "@/tests/fixtures/user/user";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { act, render, screen } from "@testing-library/react";
+import { act, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { http, HttpResponse } from "msw";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
@@ -79,6 +79,10 @@ describe("StudentTrait Delete Test", () => {
     const user = userEvent.setup();
     DeleteRender();
 
+    // ローディング完了を確実に待つ
+    await waitFor(() => {
+      expect(screen.queryByText(/Loading/i)).not.toBeInTheDocument();
+    });
     expect(await screen.findByText("明るい")).toBeInTheDocument();
 
     const menuButton = getMenuButtonById(STUDENT_TRAIT_ID);
@@ -127,6 +131,11 @@ describe("StudentTrait Delete Test", () => {
     );
 
     DeleteRender();
+
+    // ローディング完了を確実に待つ
+    await waitFor(() => {
+      expect(screen.queryByText(/Loading/i)).not.toBeInTheDocument();
+    });
     expect(await screen.findByText("明るい")).toBeInTheDocument();
 
     const menuButton = getMenuButtonById(STUDENT_TRAIT_ID);

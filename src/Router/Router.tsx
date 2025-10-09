@@ -1,17 +1,17 @@
-import { Home } from '@/pages/home/HomePage';
+import { Home } from "@/pages/home/HomePage";
 
-import { Route, Routes } from 'react-router-dom';
-import { ProtectedRoute } from './ProtectedRoute';
-import { SignInPage } from '@/pages/auth/SignInPage';
-import { SignUpPage } from '@/pages/auth/SignUpPage';
-import { ConfirmationSent } from '@/pages/confirm/ConfirmationSentPage';
-import { ConfirmedPage } from '@/pages/confirm/ConfirmedPage';
-import { NotFoundPage } from '@/pages/error/NotFoundPage';
-import { AuthRoute } from './AuthRoute';
+import { Route, Routes } from "react-router-dom";
+import { ProtectedRoute } from "./ProtectedRoute";
+import { SignInPage } from "@/pages/auth/SignInPage";
+import { SignUpPage } from "@/pages/auth/SignUpPage";
+import { ConfirmationSent } from "@/pages/confirm/ConfirmationSentPage";
+import { ConfirmedPage } from "@/pages/confirm/ConfirmedPage";
+import { NotFoundPage } from "@/pages/error/NotFoundPage";
+import { AuthRoute } from "./AuthRoute";
 
-import { ForbiddenPage } from '@/pages/error/ForbiddenPage';
-import { ProtectedArea } from './ProtectedArea';
-import { InternalServerErrorPage } from '@/pages/error/InternalServerErrorPage';
+import { ForbiddenPage } from "@/pages/error/ForbiddenPage";
+import { ProtectedArea } from "./ProtectedArea";
+import { InternalServerErrorPage } from "@/pages/error/InternalServerErrorPage";
 
 export const Router = () => {
   return (

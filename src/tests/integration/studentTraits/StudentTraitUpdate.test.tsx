@@ -10,7 +10,7 @@ import {
   currentTeacherUser,
 } from "@/tests/fixtures/user/user";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { act, render, screen } from "@testing-library/react";
+import { act, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { http, HttpResponse } from "msw";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
@@ -67,6 +67,7 @@ const getMenuButtonById = (id: string) => {
 
 const updateOperation = async (inputTitle: string = "新しいタイトル") => {
   const user = userEvent.setup();
+
   await screen.findByText("明るい");
 
   const menuButton = getMenuButtonById(STUDENT_TRAIT_ID);
@@ -103,6 +104,11 @@ describe("StudentTrait Update Test", () => {
 
   test("should update an existing student trait", async () => {
     UpdateRender();
+
+    // ローディング完了を確実に待つ
+    await waitFor(() => {
+      expect(screen.queryByText(/Loading/i)).not.toBeInTheDocument();
+    });
     await updateOperation();
 
     expect(await screen.findByText("特性を更新しました")).toBeInTheDocument();
@@ -117,6 +123,11 @@ describe("StudentTrait Update Test", () => {
 
   test("should show zod error when title is over 50 characters", async () => {
     UpdateRender();
+
+    // ローディング完了を確実に待つ
+    await waitFor(() => {
+      expect(screen.queryByText(/Loading/i)).not.toBeInTheDocument();
+    });
     await updateOperation("A".repeat(51));
 
     expect(
@@ -144,6 +155,11 @@ describe("StudentTrait Update Test", () => {
     );
 
     UpdateRender();
+
+    // ローディング完了を確実に待つ
+    await waitFor(() => {
+      expect(screen.queryByText(/Loading/i)).not.toBeInTheDocument();
+    });
     await updateOperation();
     expect(
       await screen.findByText(
