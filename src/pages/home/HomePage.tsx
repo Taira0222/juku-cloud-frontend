@@ -6,7 +6,9 @@ import { useAuthStore } from "@/stores/authStore";
 import { useEffect } from "react";
 
 export const Home = () => {
-  const setSignOutInProgress = useAuthStore((s) => s.setSignOutInProgress);
+  const setSignOutInProgress = useAuthStore(
+    (state) => state.setSignOutInProgress
+  );
 
   useEffect(() => {
     setSignOutInProgress(false);
@@ -59,7 +61,7 @@ export const Home = () => {
                 「探す・集計・伝える」にかける時間を、指導に還元できます。
               </p>
 
-              <div className="mt-8 flex md:justify-start">
+              <div className="mt-8 flex justify-center md:justify-start">
                 <Button
                   asChild
                   size="lg"
