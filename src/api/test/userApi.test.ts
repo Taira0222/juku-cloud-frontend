@@ -1,42 +1,35 @@
-import { api } from '@/lib/api';
-import { beforeEach, describe, expect, test, vi } from 'vitest';
-import type { AxiosError, AxiosResponse } from 'axios';
-import type {
-  fetchUserErrorResponse,
-  fetchUserSuccessResponse,
-} from '@/types/user';
-import { fetchUser } from '@/api/userApi';
+import { api } from "@/lib/api";
+import { beforeEach, describe, expect, test, vi } from "vitest";
+import type { AxiosError, AxiosResponse } from "axios";
+import type { fetchUserErrorResponse } from "@/types/user";
+import { fetchUser } from "@/api/userApi";
 
-vi.mock('@/lib/api', () => ({
+vi.mock("@/lib/api", () => ({
   api: {
     get: vi.fn(),
   },
 }));
 
-describe('User API', () => {
+describe("User API", () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
-  test('fetchUser', async () => {
-    const mockResponse: Pick<
-      AxiosResponse<fetchUserSuccessResponse>,
-      'data'
-    > = {
+  test("fetchUser", async () => {
+    const mockResponse = {
       data: {
-        success: true,
         data: {
           id: 1,
-          provider: 'google',
-          uid: '12345',
+          provider: "google",
+          uid: "12345",
           allow_password_change: true,
-          name: 'John Doe',
-          role: 'admin',
-          email: 'john.doe@example.com',
+          name: "John Doe",
+          role: "admin",
+          email: "john.doe@example.com",
           school_id: 1,
-          employment_status: 'employed',
+          employment_status: "employed",
           school: {
             id: 1,
-            name: 'Example High School',
+            name: "Example High School",
           },
         },
       },
@@ -45,18 +38,17 @@ describe('User API', () => {
     vi.mocked(api.get).mockResolvedValue(mockResponse);
 
     const result = await fetchUser();
-    expect(result.data.success).toEqual(mockResponse.data.success);
-    expect(result.data).toEqual(mockResponse.data);
+    expect(result.data).toEqual(mockResponse.data.data);
   });
-  test('returns error response', async () => {
+  test("returns error response", async () => {
     const mockErrorResponse: Pick<
       AxiosError<fetchUserErrorResponse>,
-      'response'
+      "response"
     > = {
       response: {
         data: {
           success: false,
-          errors: ['token_invalid'],
+          errors: ["token_invalid"],
         },
       } as AxiosResponse<fetchUserErrorResponse>,
     };
@@ -64,7 +56,7 @@ describe('User API', () => {
     vi.mocked(api.get).mockRejectedValue(mockErrorResponse);
 
     await expect(fetchUser()).rejects.toMatchObject({
-      response: { data: { success: false, errors: ['token_invalid'] } },
+      response: { data: { success: false, errors: ["token_invalid"] } },
     });
   });
 });

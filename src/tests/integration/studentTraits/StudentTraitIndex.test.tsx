@@ -9,7 +9,7 @@ import {
   currentTeacherUser,
 } from "@/tests/fixtures/user/user";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { act, render, screen } from "@testing-library/react";
+import { act, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { http, HttpResponse } from "msw";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
@@ -70,6 +70,13 @@ describe("Student Traits Index Page", () => {
     const user = userEvent.setup();
     indexRender();
 
+    // ローディング完了を確実に待つ
+    await waitFor(() => {
+      expect(screen.queryByText(/Loading/i)).not.toBeInTheDocument();
+    });
+
+    await screen.findByText("明るい");
+
     const goodTrait = await screen.findByText("明るい");
     expect(goodTrait).toBeInTheDocument();
     await user.hover(goodTrait);
@@ -81,6 +88,11 @@ describe("Student Traits Index Page", () => {
   test("should change the number of rows displayed per page", async () => {
     const user = userEvent.setup();
     indexRender();
+
+    // ローディング完了を確実に待つ
+    await waitFor(() => {
+      expect(screen.queryByText(/Loading/i)).not.toBeInTheDocument();
+    });
     await screen.findByText("明るい");
 
     const select = screen.getByRole("combobox", {
