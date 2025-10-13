@@ -2,8 +2,8 @@ import {
   StatusSelect,
   type StatusSelectProps,
 } from "@/components/common/form/StatusSelect";
+import type { ValueKind } from "@/components/common/form/type/form";
 import { initialMockValue } from "@/tests/fixtures/students/students";
-import type { ValueKind } from "@/types";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, test, vi } from "vitest";

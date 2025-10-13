@@ -129,9 +129,9 @@ export const teacher3 = {
 
 export const teachersData = [teacher1];
 
-const detailRowsMap = teachersData.map(toTeacherDetailDrawer);
+export const detailRowsMap = teachersData.map(toTeacherDetailDrawer);
 
-export const detailDrawer = [
+export const detailDrawer: teacherDetailDrawer[] = [
   toTeacherDetailDrawer(currentUserResponse),
   ...detailRowsMap,
 ];
