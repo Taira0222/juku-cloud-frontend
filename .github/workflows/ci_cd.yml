@@ -51,6 +51,8 @@ jobs:
       S3_BUCKET: ${{ secrets.S3_BUCKET }}
       CF_DISTRIBUTION_ID: ${{ secrets.CF_DISTRIBUTION_ID }}
       ROLE_ARN: ${{ secrets.AWS_ROLE_ARN_FRONT }}
+      VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL }}
+      VITE_FRONTEND_BASE_URL: ${{ secrets.VITE_FRONTEND_BASE_URL }}
 
     steps:
       - uses: actions/checkout@v4
@@ -63,8 +65,8 @@ jobs:
       # Viteの環境変数をセット
       - name: Export Vite envs to GitHub Actions
         run: |
-          echo "VITE_API_BASE_URL=${{ secrets.VITE_API_BASE_URL }}" >> $GITHUB_ENV
-          echo "VITE_FRONTEND_BASE_URL=${{ secrets.VITE_FRONTEND_BASE_URL }}" >> $GITHUB_ENV
+          echo "VITE_API_BASE_URL=${{ env.VITE_API_BASE_URL }}" >> $GITHUB_ENV
+          echo "VITE_FRONTEND_BASE_URL=${{ env.VITE_FRONTEND_BASE_URL }}" >> $GITHUB_ENV
 
       - name: Build
         run: |
