@@ -1,16 +1,16 @@
 // __tests__/SignUpPage.test.tsx
-import { describe, expect, test, vi, beforeEach } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
-import { SignUpPage } from '@/pages/auth/SignUpPage';
+import { describe, expect, test, vi, beforeEach } from "vitest";
+import { render, screen, waitFor } from "@testing-library/react";
+import { MemoryRouter } from "react-router-dom";
+import { SignUpPage } from "@/pages/auth/SignUpPage";
 
 // モジュール全体を vi.fn() に差し替える
-vi.mock('@/features/auth/hooks/useTokenConfirm', () => ({
+vi.mock("@/features/auth/hooks/useTokenConfirm", () => ({
   useTokenConfirm: vi.fn(),
 }));
 
 // 差し替わったuseTokenConfirm のモックをインポート
-import { useTokenConfirm } from '@/features/auth/hooks/useTokenConfirm';
+import { useTokenConfirm } from "@/features/auth/hooks/useTokenConfirm";
 const mockedUseTokenConfirm = vi.mocked(useTokenConfirm);
 
 beforeEach(() => {
@@ -20,10 +20,10 @@ beforeEach(() => {
 //テスト用: NotFoundPageコンポーネントのダミー実装
 const NotFoundPage = () => <div data-testid="not-found">Not Found Page</div>;
 // 学校名
-const SCHOOL_NAME = 'First_school';
+const SCHOOL_NAME = "First_school";
 
-describe('SignUp component', () => {
-  test('switch loading → success screen', async () => {
+describe("SignUp component", () => {
+  test("switch loading → success screen", async () => {
     // 最初はローディングを返す
     mockedUseTokenConfirm.mockReturnValue({
       loading: true,
@@ -32,7 +32,7 @@ describe('SignUp component', () => {
     });
 
     const ui = (
-      <MemoryRouter initialEntries={['/sign_up?token=123456']}>
+      <MemoryRouter initialEntries={["/sign_up?token=123456"]}>
         <SignUpPage />
       </MemoryRouter>
     );
@@ -47,26 +47,26 @@ describe('SignUp component', () => {
     });
 
     rerender(
-      <MemoryRouter initialEntries={['/sign_up?token=123456']}>
+      <MemoryRouter initialEntries={["/sign_up?token=123456"]}>
         <SignUpPage />
       </MemoryRouter>
     );
 
     await waitFor(() => {
-      expect(screen.getByText('Juku Cloud')).toBeInTheDocument();
+      expect(screen.getByText("Juku Cloud")).toBeInTheDocument();
       expect(screen.getByText(`${SCHOOL_NAME}へようこそ`)).toBeInTheDocument();
     });
   });
 
-  test('display error', async () => {
+  test("display error", async () => {
     mockedUseTokenConfirm.mockReturnValue({
       loading: false,
-      tokenError: 'Invalid token',
+      tokenError: ["Invalid token"],
       data: null,
     });
 
     render(
-      <MemoryRouter initialEntries={['/sign_up?token=bad']}>
+      <MemoryRouter initialEntries={["/sign_up?token=bad"]}>
         <SignUpPage />
         <NotFoundPage />
       </MemoryRouter>
@@ -74,7 +74,7 @@ describe('SignUp component', () => {
 
     // NotFoundPage へ遷移
     await waitFor(() => {
-      expect(screen.getByTestId('not-found')).toBeInTheDocument();
+      expect(screen.getByTestId("not-found")).toBeInTheDocument();
     });
   });
 });

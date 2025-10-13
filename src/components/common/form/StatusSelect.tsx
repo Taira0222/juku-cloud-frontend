@@ -6,8 +6,9 @@ import {
   SelectValue,
 } from "@/components/ui/form/Select/select";
 import { RequiredLabel } from "@/components/common/form/RequiredLabel";
-import type { ValueKind } from "@/types";
+
 import { STATUS_SELECT_PROPS } from "@/constants/Form";
+import type { ValueKind } from "./type/form";
 
 export type StatusSelectProps<K extends ValueKind> = {
   variant: K;
