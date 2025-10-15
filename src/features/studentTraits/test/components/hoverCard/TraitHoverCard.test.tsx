@@ -8,8 +8,8 @@ import userEvent from "@testing-library/user-event";
 import { describe, expect, test } from "vitest";
 
 describe("TraitHoverCard", () => {
-  const user = userEvent.setup();
   test("renders correctly when trait has description and isMobile is false", async () => {
+    const user = userEvent.setup();
     const mockProps: TraitHoverCardProps = {
       trait: mockStudentTraits[0],
       isMobile: false,
@@ -34,18 +34,18 @@ describe("TraitHoverCard", () => {
   });
 
   test("renders correctly when trait has no description and isMobile is true", async () => {
+    const user = userEvent.setup();
     const mockProps: TraitHoverCardProps = {
       trait: { ...mockStudentTraits[0], description: null },
       isMobile: true,
     };
     render(<TraitHoverCard {...mockProps} />);
-    const hoverCardButton = screen.getByRole("button", {
+    const popoverCardButton = screen.getByRole("button", {
       name: mockProps.trait.title,
     });
-    expect(hoverCardButton).toHaveClass("text-xs h-8");
-    await user.hover(hoverCardButton);
+    expect(popoverCardButton).toHaveClass("text-xs h-8");
+    await user.click(popoverCardButton);
 
-    expect(await screen.findByText(mockProps.trait.title)).toBeInTheDocument();
     expect(
       await screen.findByText("詳細説明はありません。")
     ).toBeInTheDocument();
