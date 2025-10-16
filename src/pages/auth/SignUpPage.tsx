@@ -1,17 +1,17 @@
-import { CloudCog } from 'lucide-react';
-import { SignUpForm } from '@/features/auth/components/SignUpForm';
+import JukuCloudLogo from "@/assets/Juku-Cloud.svg";
+import { SignUpForm } from "@/features/auth/components/SignUpForm";
 import {
   Card,
   CardContent,
   CardHeader,
-} from '@/components/ui/layout/Card/card';
-import { Link, Navigate, useSearchParams } from 'react-router-dom';
-import { useTokenConfirm } from '@/features/auth/hooks/useTokenConfirm';
-import SpinnerWithText from '@/components/common/status/Loading';
+} from "@/components/ui/layout/Card/card";
+import { Link, Navigate, useSearchParams } from "react-router-dom";
+import { useTokenConfirm } from "@/features/auth/hooks/useTokenConfirm";
+import SpinnerWithText from "@/components/common/status/Loading";
 
 export const SignUpPage = () => {
   const [params] = useSearchParams();
-  const token = params.get('token');
+  const token = params.get("token");
   const { loading, tokenError, data } = useTokenConfirm(token);
   return (
     <>
@@ -31,8 +31,8 @@ export const SignUpPage = () => {
                 to="/"
                 className="flex items-center gap-2 justify-center font-medium"
               >
-                <div className="bg-primary text-primary-foreground flex size-6 items-center justify-center rounded-md">
-                  <CloudCog className="size-4" />
+                <div className="bg-primary text-primary-foreground flex size-8 items-center justify-center rounded-md">
+                  <img src={JukuCloudLogo} alt="Juku Cloud Logo" />
                 </div>
                 Juku Cloud
               </Link>

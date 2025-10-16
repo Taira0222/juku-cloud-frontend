@@ -22,11 +22,7 @@ export const Home = () => {
         <header className="flex justify-center p-6 md:p-10">
           <Link to="/" className="flex items-center gap-2 font-medium">
             <div className="text-primary-foreground flex size-8 items-center justify-center rounded-md">
-              <img
-                src={JukuCloudLogo}
-                alt="Juku Cloud Logo"
-                className="size-10"
-              />
+              <img src={JukuCloudLogo} alt="Juku Cloud Logo" />
             </div>
             JukuCloud
           </Link>
