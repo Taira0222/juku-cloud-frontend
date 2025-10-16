@@ -1,12 +1,11 @@
-import { CloudCog } from 'lucide-react';
-
+import JukuCloudLogo from "@/assets/Juku-Cloud.svg";
 import {
   Card,
   CardContent,
   CardHeader,
-} from '@/components/ui/layout/Card/card';
-import { Link } from 'react-router-dom';
-import { SignInForm } from '@/features/auth/components/SignInForm';
+} from "@/components/ui/layout/Card/card";
+import { Link } from "react-router-dom";
+import { SignInForm } from "@/features/auth/components/SignInForm";
 
 export const SignInPage = () => {
   return (
@@ -17,8 +16,12 @@ export const SignInPage = () => {
             to="/"
             className="flex items-center gap-2 justify-center font-medium"
           >
-            <div className="bg-primary text-primary-foreground flex size-6 items-center justify-center rounded-md">
-              <CloudCog className="size-4" />
+            <div className="text-primary-foreground flex size-8 items-center justify-center rounded-md">
+              <img
+                src={JukuCloudLogo}
+                alt="Juku Cloud Logo"
+                className="h-8 w-8"
+              />
             </div>
             Juku Cloud
           </Link>

@@ -11,7 +11,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/layout/Sidebar/sidebar";
-import { CloudCog } from "lucide-react";
+import JukuCloudLogo from "@/assets/Juku-Cloud.svg";
 import { Link } from "react-router-dom";
 import type { IconProps } from "@tabler/icons-react";
 
@@ -41,7 +41,11 @@ export function AppSidebar({ data, ...props }: AppSidebarProps) {
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
               <Link to="/students">
-                <CloudCog className="!size-5" />
+                <img
+                  src={JukuCloudLogo}
+                  alt="Juku Cloud Logo"
+                  className="h-6 w-6"
+                />
                 <span className="text-base font-semibold">Juku Cloud</span>
               </Link>
             </SidebarMenuButton>
