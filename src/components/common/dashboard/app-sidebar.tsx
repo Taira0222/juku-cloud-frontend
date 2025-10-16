@@ -44,7 +44,7 @@ export function AppSidebar({ data, ...props }: AppSidebarProps) {
                 <img
                   src={JukuCloudLogo}
                   alt="Juku Cloud Logo"
-                  className="size-6"
+                  className="h-6 w-6"
                 />
                 <span className="text-base font-semibold">Juku Cloud</span>
               </Link>

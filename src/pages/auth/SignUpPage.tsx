@@ -32,7 +32,11 @@ export const SignUpPage = () => {
                 className="flex items-center gap-2 justify-center font-medium"
               >
                 <div className="bg-primary text-primary-foreground flex size-8 items-center justify-center rounded-md">
-                  <img src={JukuCloudLogo} alt="Juku Cloud Logo" />
+                  <img
+                    src={JukuCloudLogo}
+                    alt="Juku Cloud Logo"
+                    className="w-8 h-8"
+                  />
                 </div>
                 Juku Cloud
               </Link>

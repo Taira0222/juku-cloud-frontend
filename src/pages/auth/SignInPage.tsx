@@ -17,7 +17,11 @@ export const SignInPage = () => {
             className="flex items-center gap-2 justify-center font-medium"
           >
             <div className="text-primary-foreground flex size-8 items-center justify-center rounded-md">
-              <img src={JukuCloudLogo} alt="Juku Cloud Logo" />
+              <img
+                src={JukuCloudLogo}
+                alt="Juku Cloud Logo"
+                className="h-8 w-8"
+              />
             </div>
             Juku Cloud
           </Link>

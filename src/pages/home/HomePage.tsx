@@ -22,7 +22,11 @@ export const Home = () => {
         <header className="flex justify-center p-6 md:p-10">
           <Link to="/" className="flex items-center gap-2 font-medium">
             <div className="text-primary-foreground flex size-8 items-center justify-center rounded-md">
-              <img src={JukuCloudLogo} alt="Juku Cloud Logo" />
+              <img
+                src={JukuCloudLogo}
+                alt="Juku Cloud Logo"
+                className="h-8 w-8"
+              />
             </div>
             JukuCloud
           </Link>
@@ -63,6 +67,8 @@ export const Home = () => {
             <img
               src={AppScreen}
               alt="Juku Cloud の管理画面（生徒一覧）"
+              width={935}
+              height={669}
               className="w-full h-auto rounded-b-xl"
               loading="eager"
               decoding="async"
