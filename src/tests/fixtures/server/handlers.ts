@@ -162,12 +162,12 @@ export const handlers = [
         });
       }
 
-      // 学校コードの有効性チェック
+      // tokenの有効性チェック
       if (token !== "123456") {
         errors.push({
-          code: "INVALID_SCHOOL_CODE",
+          code: "INVALID_TOKEN",
           field: "token",
-          message: "学校コードが無効です。",
+          message: "トークンが無効です。",
         });
       }
 
