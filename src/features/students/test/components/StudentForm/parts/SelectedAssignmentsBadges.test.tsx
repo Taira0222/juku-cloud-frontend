@@ -1,18 +1,18 @@
 import {
   SelectedAssignmentsBadges,
   type SelectedAssignmentsBadgesProps,
-} from '@/features/students/components/StudentForm/parts/SelectedAssignmentsBadges';
-import { mockTeachers } from '@/tests/fixtures/students/students';
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { describe, expect, test, vi } from 'vitest';
+} from "@/features/students/components/StudentForm/parts/SelectedAssignmentsBadges";
+import { mockTeachers } from "@/tests/fixtures/students/students";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { describe, expect, test, vi } from "vitest";
 
-describe('SelectedAssignmentsBadges', () => {
+describe("SelectedAssignmentsBadges", () => {
   const wrapper = (props: SelectedAssignmentsBadgesProps) => {
     render(<SelectedAssignmentsBadges {...props} />);
   };
 
-  test('should render correctly', async () => {
+  test("should render correctly", async () => {
     const user = userEvent.setup();
     const mockProps: SelectedAssignmentsBadgesProps = {
       assignments: [
@@ -23,6 +23,8 @@ describe('SelectedAssignmentsBadges', () => {
         },
       ],
       teachers: [mockTeachers[0], mockTeachers[1]], // teacher1, teacher2
+      selectedDayIds: [3], // 火曜日
+      selectedSubjectIds: [1], // 英語
       untoggle: vi.fn(() => {}),
     };
 
@@ -38,15 +40,17 @@ describe('SelectedAssignmentsBadges', () => {
       day_id: 3,
     });
   });
-  test('should not render when no assignments', () => {
+  test("should not render when no assignments", () => {
     const mockProps: SelectedAssignmentsBadgesProps = {
       assignments: [],
       teachers: [mockTeachers[0], mockTeachers[1]], // teacher1, teacher2
+      selectedDayIds: [3], // 火曜日
+      selectedSubjectIds: [1], // 英語
       untoggle: vi.fn(() => {}),
     };
 
     wrapper(mockProps);
     // 画面に何も表示されていない
-    expect(screen.queryByRole('section')).not.toBeInTheDocument();
+    expect(screen.queryByRole("section")).not.toBeInTheDocument();
   });
 });
