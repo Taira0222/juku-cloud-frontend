@@ -25,16 +25,16 @@ export const SelectedAssignmentsBadges = ({
     <section aria-label="選択中の講師" className="flex flex-wrap gap-2 pt-1">
       {assignments.map(({ teacher_id, subject_id, day_id }) => {
         const teacher = teachers.find((t) => t.id === teacher_id);
-        const matchedSubjectId = selectedSubjectIds.find(
-          (sid) => sid === subject_id
-        );
-        const subjectData = Object.entries(SUBJECT_TRANSLATIONS).find(
-          ([, v]) => v.id === matchedSubjectId
-        )?.[1];
-        const subjectName = subjectData?.name;
 
-        const matchedDayId = selectedDayIds.find((did) => did === day_id);
-        const dayData = DAY_OF_WEEK_WITH_ID.find((d) => d.id === matchedDayId);
+        // 選択されていない科目・曜日のバッジは表示しない
+        if (!selectedSubjectIds.includes(subject_id)) return null;
+        if (!selectedDayIds.includes(day_id)) return null;
+
+        const subjectData = Object.values(SUBJECT_TRANSLATIONS).find(
+          (s) => s.id === subject_id
+        );
+        const subjectName = subjectData?.name;
+        const dayData = DAY_OF_WEEK_WITH_ID.find((d) => d.id === day_id);
         const displayDay = shortDayLabel(dayData?.name ?? "");
 
         return (
