@@ -33,7 +33,7 @@ export const SelectedAssignmentsBadges = ({
         const subjectData = Object.values(SUBJECT_TRANSLATIONS).find(
           (s) => s.id === subject_id
         );
-        const subjectName = subjectData?.name;
+        const subjectName = subjectData?.name ?? "";
         const dayData = DAY_OF_WEEK_WITH_ID.find((d) => d.id === day_id);
         const displayDay = shortDayLabel(dayData?.name ?? "");
 
