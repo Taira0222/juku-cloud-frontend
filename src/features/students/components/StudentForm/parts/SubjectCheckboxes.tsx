@@ -2,19 +2,32 @@ import { Checkbox } from "@/components/ui/form/CheckBox/checkbox";
 import { Label } from "@/components/ui/form/Label/label";
 import { Badge } from "@/components/ui/display/Badge/badge";
 import { SUBJECT_TRANSLATIONS } from "@/constants/subjectTranslations";
-import type { Draft } from "../../../types/studentForm";
+import type { Assignment, Draft } from "../../../types/studentForm";
 import { RequiredLabel } from "@/components/common/form/RequiredLabel";
+import { useEffect } from "react";
 
 export type SubjectCheckboxesProps = {
   value: Draft;
   toggle: (id: number) => void;
+  untoggleAssignments: (a: Assignment) => void;
 };
 
 export const SubjectCheckboxes = ({
   value,
   toggle,
+  untoggleAssignments,
 }: SubjectCheckboxesProps) => {
   const selected = value.subject_ids ?? [];
+
+  useEffect(() => {
+    if (!value.assignments) return;
+    // 科目が解除されたときに関連する担当講師も解除する
+    value.assignments.forEach((a) => {
+      if (!selected.includes(a.subject_id)) {
+        untoggleAssignments(a);
+      }
+    });
+  }, [selected]);
   return (
     <div className="space-y-2">
       <RequiredLabel required>受講科目（複数可）</RequiredLabel>

@@ -118,11 +118,13 @@ export const StudentForm = <M extends Mode>({
           <SubjectCheckboxes
             value={value}
             toggle={(id: number) => H.toggleInArray("subject_ids", id)}
+            untoggleAssignments={H.toggleAssignmentInForm}
           />
 
           <DayCheckboxes
             value={value}
             toggle={(id: number) => H.toggleInArray("available_day_ids", id)}
+            untoggleAssignments={H.toggleAssignmentInForm}
           />
 
           {/* 担当講師 */}
@@ -187,6 +189,8 @@ export const StudentForm = <M extends Mode>({
 
               <SelectedAssignmentsBadges
                 assignments={value.assignments}
+                selectedSubjectIds={selectedSubjectIds}
+                selectedDayIds={selectedDayIds}
                 teachers={teachers}
                 untoggle={H.toggleAssignmentInForm}
               />

@@ -29,7 +29,7 @@ export const SchoolStageEnum = z.enum(
 
 export const StatusEnum = z.enum(
   ["active", "inactive", "on_leave", "graduated"],
-  { message: "ステータスが不正です" }
+  { message: "通塾状況が不正です" }
 );
 
 const roleEnum = z.enum(["admin", "teacher"], { message: "役割が不正です" });
