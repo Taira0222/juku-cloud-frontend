@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/form/Button/button";
 import { Input } from "@/components/ui/form/Input/input";
 import { Label } from "@/components/ui/form/Label/label";
-import { useState, type ComponentProps, type FormEvent } from "react";
+import { useState, type FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
 import { useWarningStore } from "@/stores/warningStore";
@@ -10,7 +10,7 @@ import { useSignUp } from "../hooks/useSignUp";
 import type { TokenConfirmSuccessResponse } from "../types/tokenConfirm";
 import { ErrorDisplay } from "@/components/common/status/ErrorDisplay";
 
-type SignUpFormProps = ComponentProps<"form"> & {
+type SignUpFormProps = {
   token: string | null;
   data: TokenConfirmSuccessResponse | null;
 };
