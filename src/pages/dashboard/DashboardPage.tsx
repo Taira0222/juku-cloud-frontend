@@ -80,7 +80,7 @@ export const DashboardPage = () => {
       </div>
 
       <h2 className="text-lg font-medium text-gray-600 px-4">
-        科目ごとの引継ぎ事項
+        授業の引継ぎ事項
       </h2>
       <LessonNotesTable
         studentId={studentId}
