@@ -130,6 +130,7 @@ export function SignUpForm({ token, data }: SignUpFormProps) {
             name="password_confirmation"
             type={showPasswordConfirmation ? "text" : "password"}
             value={passwordConfirmation}
+            autoComplete="new-password"
             onChange={(e) => setPasswordConfirmation(e.target.value)}
             required
           />
