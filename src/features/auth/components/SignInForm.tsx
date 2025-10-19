@@ -8,10 +8,7 @@ import { useWarningStore } from "@/stores/warningStore";
 import { useSignIn } from "../hooks/useSignIn";
 import { ErrorDisplay } from "@/components/common/status/ErrorDisplay";
 
-export function SignInForm({
-  className,
-  ...props
-}: React.ComponentProps<"form">) {
+export function SignInForm() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const navigate = useNavigate();
@@ -30,11 +27,7 @@ export function SignInForm({
     }
   };
   return (
-    <form
-      className={cn("flex flex-col gap-6", className)}
-      onSubmit={handleSubmit}
-      {...props}
-    >
+    <form className={cn("flex flex-col gap-6")} onSubmit={handleSubmit}>
       <div className="flex flex-col items-center gap-2 text-center">
         <h1 className="text-2xl font-bold">アカウントにログイン</h1>
         <p className="text-muted-foreground text-sm text-balance">
