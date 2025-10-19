@@ -31,7 +31,7 @@ export const SignUpPage = () => {
                 to="/"
                 className="flex items-center gap-2 justify-center font-medium"
               >
-                <div className="bg-primary text-primary-foreground flex size-8 items-center justify-center rounded-md">
+                <div className="text-primary-foreground flex size-8 items-center justify-center rounded-md">
                   <img
                     src={JukuCloudLogo}
                     alt="Juku Cloud Logo"
