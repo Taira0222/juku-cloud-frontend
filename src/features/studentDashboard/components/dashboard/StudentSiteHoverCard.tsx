@@ -4,6 +4,12 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/layout/HoverCard/hover-card";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { useIsMobile } from "@/hooks/useMobile";
 
 export type HoverCardGenericProps = {
   name: string;
@@ -16,28 +22,42 @@ export const StudentSiteHoverCard = ({
   grade,
   desiredSchool,
 }: HoverCardGenericProps) => {
+  const isMobile = useIsMobile();
+
+  const TriggerButton = (
+    <Button variant="link" className="ml-auto flex items-center">
+      <span className="text-sm text-muted-foreground">氏名</span>
+      <span className="font-medium">{name}</span>
+    </Button>
+  );
+
+  const ContentInner = (
+    <div className="flex justify-between">
+      <div className="space-y-1 text-sm text-gray-600">
+        <div className="ml-auto flex items-center gap-2">
+          <div className="text-muted-foreground">学年</div>
+          <div className="font-medium"> {grade}</div>
+        </div>
+        <div className="ml-auto flex items-center gap-2">
+          <div className="text-muted-foreground">志望校</div>
+          <div className="font-medium">{desiredSchool}</div>
+        </div>
+      </div>
+    </div>
+  );
+
+  if (isMobile) {
+    return (
+      <Popover>
+        <PopoverTrigger asChild>{TriggerButton}</PopoverTrigger>
+        <PopoverContent className="w-60">{ContentInner}</PopoverContent>
+      </Popover>
+    );
+  }
   return (
     <HoverCard>
-      <HoverCardTrigger asChild>
-        <Button variant="link" className="ml-auto flex items-center">
-          <span className="text-sm text-muted-foreground">氏名</span>
-          <span className="font-medium">{name}</span>
-        </Button>
-      </HoverCardTrigger>
-      <HoverCardContent className="w-60">
-        <div className="flex justify-between">
-          <div className="space-y-1 text-sm text-gray-600">
-            <div className="ml-auto flex items-center gap-2">
-              <div className="text-muted-foreground">学年</div>
-              <div className="font-medium"> {grade}</div>
-            </div>
-            <div className="ml-auto flex items-center gap-2">
-              <div className="text-muted-foreground">志望校</div>
-              <div className="font-medium">{desiredSchool}</div>
-            </div>
-          </div>
-        </div>
-      </HoverCardContent>
+      <HoverCardTrigger asChild>{TriggerButton}</HoverCardTrigger>
+      <HoverCardContent className="w-60">{ContentInner}</HoverCardContent>
     </HoverCard>
   );
 };
