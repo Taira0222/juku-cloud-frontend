@@ -24,14 +24,14 @@ export const StudentSiteHoverCard = ({
 }: HoverCardGenericProps) => {
   const isMobile = useIsMobile();
 
-  const TriggerButton = (
+  const triggerButton = (
     <Button variant="link" className="ml-auto flex items-center">
       <span className="text-sm text-muted-foreground">氏名</span>
       <span className="font-medium">{name}</span>
     </Button>
   );
 
-  const ContentInner = (
+  const contentInner = (
     <div className="flex justify-between">
       <div className="space-y-1 text-sm text-gray-600">
         <div className="ml-auto flex items-center gap-2">
@@ -49,15 +49,15 @@ export const StudentSiteHoverCard = ({
   if (isMobile) {
     return (
       <Popover>
-        <PopoverTrigger asChild>{TriggerButton}</PopoverTrigger>
-        <PopoverContent className="w-60">{ContentInner}</PopoverContent>
+        <PopoverTrigger asChild>{triggerButton}</PopoverTrigger>
+        <PopoverContent className="w-60">{contentInner}</PopoverContent>
       </Popover>
     );
   }
   return (
     <HoverCard>
-      <HoverCardTrigger asChild>{TriggerButton}</HoverCardTrigger>
-      <HoverCardContent className="w-60">{ContentInner}</HoverCardContent>
+      <HoverCardTrigger asChild>{triggerButton}</HoverCardTrigger>
+      <HoverCardContent className="w-60">{contentInner}</HoverCardContent>
     </HoverCard>
   );
 };
