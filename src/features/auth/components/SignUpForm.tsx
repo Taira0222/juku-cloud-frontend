@@ -15,12 +15,7 @@ type SignUpFormProps = ComponentProps<"form"> & {
   data: TokenConfirmSuccessResponse | null;
 };
 
-export function SignUpForm({
-  className,
-  token,
-  data,
-  ...props
-}: SignUpFormProps) {
+export function SignUpForm({ token, data }: SignUpFormProps) {
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -54,11 +49,7 @@ export function SignUpForm({
   };
 
   return (
-    <form
-      className={cn("flex flex-col gap-6", className)}
-      onSubmit={handleSubmit}
-      {...props}
-    >
+    <form className={cn("flex flex-col gap-6")} onSubmit={handleSubmit}>
       <div className="flex flex-col items-center gap-2 text-center ">
         <h1 className="text-2xl font-bold">アカウントを新規作成</h1>
         <h2 className="text-muted-foreground text-sm">
@@ -84,6 +75,7 @@ export function SignUpForm({
           <Label htmlFor="name">名前</Label>
           <Input
             id="name"
+            name="name"
             type="text"
             placeholder="山田 太郎"
             value={name}
@@ -97,6 +89,8 @@ export function SignUpForm({
           <Input
             id="email"
             type="email"
+            name="email"
+            autoComplete="username"
             placeholder="m@example.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -108,8 +102,10 @@ export function SignUpForm({
           <Label htmlFor="password">パスワード</Label>
           <Input
             id="password"
+            name="password"
             type={showPassword ? "text" : "password"}
             value={password}
+            autoComplete="new-password"
             onChange={(e) => setPassword(e.target.value)}
             required
           />
@@ -131,6 +127,7 @@ export function SignUpForm({
           <Label htmlFor="password_confirmation">パスワード確認</Label>
           <Input
             id="password_confirmation"
+            name="password_confirmation"
             type={showPasswordConfirmation ? "text" : "password"}
             value={passwordConfirmation}
             onChange={(e) => setPasswordConfirmation(e.target.value)}
