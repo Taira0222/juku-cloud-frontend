@@ -3,7 +3,6 @@
 本リポジトリは Juku Cloud のフロントエンド（SPA）です。  
 S3 + CloudFront でホスティングし、Rails API と通信します。
 
-- 本番サービス: https://www.juku-cloud.com
 - バックエンド: https://github.com/Taira0222/juku-cloud-backend
 
 ## ✨ 技術スタック
