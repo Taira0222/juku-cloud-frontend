@@ -9,6 +9,11 @@ description: 機能設計書を作成するスキル
 
 PRDで定義された要求を、実装可能な機能仕様に落とし込みます。
 
+## 前提条件
+
+このスキルを実行する前に、以下のスキルが完了している必要があります:
+- **prd-writing**: `docs/product-requirements.md` が作成されていること
+
 ## 入力
 
 - `docs/product-requirements.md`

@@ -231,6 +231,9 @@ graph TD
 
 ### データモデル
 
+> **注意**: 以下は概念モデルです。実際の実装はバックエンドAPI仕様に従います。
+> 詳細は [CLAUDE.md](../CLAUDE.md#sddと実装の関係) を参照してください。
+
 ```typescript
 interface LessonNote {
   id: number;
@@ -355,6 +358,9 @@ sequenceDiagram
 
 ### データモデル
 
+> **注意**: 以下は概念モデルです。実際の実装はバックエンドAPI仕様に従います。
+> 詳細は [CLAUDE.md](../CLAUDE.md#sddと実装の関係) を参照してください。
+
 ```typescript
 interface StudentTrait {
   id: number;
@@ -445,6 +451,9 @@ interface StudentTrait {
 ```
 
 ### データモデル
+
+> **注意**: 以下は概念モデルです。実際の実装はバックエンドAPI仕様に従います。
+> 詳細は [CLAUDE.md](../CLAUDE.md#sddと実装の関係) を参照してください。
 
 ```typescript
 interface Grade {
@@ -568,4 +577,4 @@ graph TD
 
 | 日付 | バージョン | 変更内容 | 担当者 |
 |------|-----------|---------|--------|
-| 2025-01-XX | 1.0 | 初版作成 | - |
+| 2025-12-31 | 1.0 | 初版作成 | - |

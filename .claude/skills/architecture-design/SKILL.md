@@ -9,6 +9,12 @@ description: アーキテクチャ設計書を作成するスキル
 
 システム全体のアーキテクチャ設計書を作成します。
 
+## 前提条件
+
+このスキルを実行する前に、以下のスキルが完了している必要があります:
+- **prd-writing**: `docs/product-requirements.md` が作成されていること
+- **functional-design**: `docs/functional-design.md` が作成されていること
+
 ## 入力
 
 - `docs/product-requirements.md`

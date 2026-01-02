@@ -9,6 +9,11 @@ description: リポジトリ構造定義書を作成するスキル
 
 開発チームが一貫性のあるファイル配置を行えるよう、リポジトリの構造を明確に定義します。
 
+## 前提条件
+
+このスキルを実行する前に、以下のスキルが完了している必要があります:
+- **architecture-design**: `docs/architecture.md` が作成されていること
+
 ## 入力
 
 - `docs/architecture.md`

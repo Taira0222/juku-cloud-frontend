@@ -9,6 +9,12 @@ description: 開発ガイドラインを作成するスキル
 
 チーム全体で一貫した開発を行うための基準を定義します。
 
+## 前提条件
+
+このスキルを実行する前に、以下のスキルが完了している必要があります:
+- **architecture-design**: `docs/architecture.md` が作成されていること
+- **repository-structure**: `docs/repository-structure.md` が作成されていること
+
 ## 入力
 
 - `docs/architecture.md`

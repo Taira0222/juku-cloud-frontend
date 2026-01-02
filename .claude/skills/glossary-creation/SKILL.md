@@ -9,6 +9,13 @@ description: プロジェクトの用語集を作成するスキル
 
 チームメンバー間の共通理解を促進し、用語の認識齟齬を防ぎます。
 
+## 前提条件
+
+このスキルを実行する前に、以下のスキルが完了している必要があります:
+- **prd-writing**: `docs/product-requirements.md` が作成されていること
+- **functional-design**: `docs/functional-design.md` が作成されていること
+- **architecture-design**: `docs/architecture.md` が作成されていること
+
 ## 入力
 
 - `docs/product-requirements.md`
