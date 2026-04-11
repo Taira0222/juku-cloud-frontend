@@ -1,0 +1,17 @@
+{
+  "name": "Frontend React",
+  "dockerComposeFile": ["docker-compose.yml"],
+  "service": "frontend",
+  "workspaceFolder": "/app",
+  "customizations": {
+    "vscode": {
+      "extensions": ["dbaeumer.vscode-eslint", "esbenp.prettier-vscode"]
+    }
+  },
+  "forwardPorts": [5173],
+  "containerEnv": {
+    "CHOKIDAR_USEPOLLING": "true"
+  },
+  "remoteUser": "node",
+  "postCreateCommand": "echo '\nparse_git_branch() { git branch 2>/dev/null | sed -n \"/\\* /s///p\"; }\nexport PS1=\"\\[\\e[32m\\]\\u@\\h:\\w \\[\\e[33m\\](\\$(parse_git_branch))\\[\\e[0m\\]\\n\\$ \"' >> ~/.bashrc"
+}

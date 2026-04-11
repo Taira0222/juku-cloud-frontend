@@ -29,3 +29,9 @@ dist-ssr
 # status files
 coverage
 stats.html
+
+# claude
+.claude
+
+# steering
+.steering
