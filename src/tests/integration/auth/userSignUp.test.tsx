@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, test, vi, type Mock } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
@@ -15,7 +15,7 @@ const ConfirmationSent = () => (
 const NotFoundPage = () => <div data-testid="not-found">Not Found Page</div>;
 
 describe('SignUp integration tests', () => {
-  let seen: ReturnType<typeof vi.fn>;
+  let seen: Mock<(token: string | undefined) => void>;
 
   beforeEach(() => {
     seen = vi.fn();

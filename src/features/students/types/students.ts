@@ -1,3 +1,4 @@
+import { parseISO, startOfDay } from "date-fns";
 import { z } from "zod";
 
 const subjectEnum = z.enum(
@@ -46,8 +47,9 @@ export const desiredSchoolSchema = z
 export const joinedOnSchema = z.string().refine(
   (val) => {
     if (!val) return true;
-    const today = new Date();
-    const inputDate = new Date(val);
+    // 日付どうしで比べる（new Date("yyyy-MM-dd") は UTC の 0 時になり、日本時間の 0〜9 時は今日が弾かれるため）
+    const today = startOfDay(new Date());
+    const inputDate = startOfDay(parseISO(val));
     return inputDate <= today;
   },
   {

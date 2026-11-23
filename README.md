@@ -51,7 +51,7 @@ npm run test           # Unit and integration tests (API mocked with MSW)
 npm run test:coverage
 ```
 
-Coverage: statements 97% · branches 92% · functions 92% · lines 97% (target: 80%+).
+Coverage: statements 96% · branches 84% · functions 95% · lines 96% (target: 80%+).
 
 ## Run locally
 

@@ -43,7 +43,7 @@ npm run test:coverage
 
 ```
 
-- 実績: stmts 97% / branch 92% / funcs 92% / lines 97%（目標: 80%以上）
+- 実績: stmts 96% / branch 84% / funcs 95% / lines 96%（目標: 80%以上）
 
 ## 🧩 実装のこだわり（要点）
 
